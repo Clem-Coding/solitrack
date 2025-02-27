@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class UserHomepageController extends AbstractController
+final class SalesController extends AbstractController
 {
-    #[Route('/user/homepage', name: 'app_user_homepage')]
+    #[Route('/ventes', name: 'app_sales')]
     public function index(): Response
     {
-        return $this->render('user_homepage/index.html.twig', [
-            'controller_name' => 'UserHomepageController',
+        return $this->render('sales/index.html.twig', [
+            'controller_name' => 'SalesController',
         ]);
     }
 }
