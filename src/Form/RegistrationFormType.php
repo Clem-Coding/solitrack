@@ -4,13 +4,12 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
@@ -21,30 +20,21 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
-            ->add('email', EmailType::class, [
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'L\'email ne peut pas être vide.',
-                    ]),
-
-                ],
-            ])
-
+            ->add('email', EmailType::class)
 
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
                     ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères, 1 majuscule et 1 caractère spécial',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?!.*\s).{8,4096}$/',
+                        'message' => 'Votre mot de passe doit contenir au moins 8 caractères, avec une majuscule, un chiffre et un caractère spécial.',
+                    ]),
+                    new NotCompromisedPassword([
+                        'message' => 'Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre.',
                     ]),
                 ],
             ]);
