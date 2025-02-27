@@ -47,8 +47,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
 
     // A faire : changer le message d'avertissement par défaut en français
-    #[Assert\NotCompromisedPassword()]
-    #[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
+    // #[Assert\NotCompromisedPassword()]
+    // #[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
     #[ORM\Column]
     private ?string $password = null;
 

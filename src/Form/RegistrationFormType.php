@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class)
 
             ->add('plainPassword', PasswordType::class, [
-                'mapped' => false, // Ce champ n'est pas lié directement à l'entité
+                'mapped' => true, // Ce champ n'est pas lié directement à l'entité
                 'required' => false, // Rendre le champ optionnel
 
             ]);
