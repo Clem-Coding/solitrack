@@ -1,19 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register
+{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+	<h1 class="text-center my-4">S'enregistrer</h1>
 
-    {{ form_errors(registrationForm) }}
+	<section id="about">
+		<div class="container mt-5">
+			<div
+				class="row justify-content-center">
+				<!-- Colonne de taille fixée pour garder de l'espace sur les côtés -->
+				<div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+					{{ form_errors(registrationForm) }}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+					{{ form_start(registrationForm) }}
+
+
+					{{ form_row(registrationForm.firstname, {label: 'Prénom', attr: {'class': 'form-control'}}) }}
+
+
+					{{ form_row(registrationForm.lastname, {label: 'Nom', attr: {'class': 'form-control'}}) }}
+
+
+					{{ form_row(registrationForm.email, {label: 'Adresse email', attr: {'class': 'form-control'}}) }}
+
+					{{ form_row(registrationForm.plainPassword, {label: 'Mot de passe', attr: {'class': 'form-control'}}) }}
+
+
+					<button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+
+					{{ form_end(registrationForm) }}
+
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}

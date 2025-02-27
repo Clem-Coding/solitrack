@@ -1,0 +1,4 @@
+entity:
+  user:
+    email:
+      unique: "Il existe déjà un compte avec cet email."
