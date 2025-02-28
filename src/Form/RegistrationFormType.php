@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?!.*\s).{8,4096}$/',
@@ -38,7 +38,7 @@ class RegistrationFormType extends AbstractType
                 ],
 
                 'mapped' => false,
-                'required' => false,
+
             ]);
     }
 

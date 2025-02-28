@@ -13,9 +13,10 @@
 				<!-- Colonne de taille fixée pour garder de l'espace sur les côtés -->
 				<div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
 
-					{{ form_errors(registrationForm) }}
+					  {{ form_errors(registrationForm) }}
 
 					{{ form_start(registrationForm) }}
+				{{ form_start(registrationForm, {attr: {novalidate: 'novalidate'}}) }}
 
 
 					{{ form_row(registrationForm.firstname, {label: 'Prénom', attr: {'class': 'form-control'}}) }}

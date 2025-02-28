@@ -14,14 +14,11 @@
 
 					{{ form_errors(form) }}
 
-					{{ form_start(form) }}
-
+					{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
 
 					{{ form_row(form.firstName, {label: 'Prénom', attr: {'class': 'form-control'}}) }}
 
-
 					{{ form_row(form.lastName, {label: 'Nom', attr: {'class': 'form-control'}}) }}
-
 
 					{{ form_row(form.email, {label: 'Adresse email', attr: {'class': 'form-control'}}) }}
 
@@ -34,11 +31,11 @@
 
 				</div>
 
-				{% for message in app.flashes('success') %}
-					<div class="alert alert-success">
-						{{ message }}
-					</div>
-				{% endfor %}
+				{# {% for message in app.flashes('success') %}
+									<div class="alert alert-success">
+										{{ message }}
+									</div>
+								{% endfor %} #}
 			</div>
 		</div>
 	</section>

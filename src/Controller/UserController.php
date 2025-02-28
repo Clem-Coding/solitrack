@@ -9,9 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\UserAccountType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
-use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
+use App\Repository\UserRepository;
+
 
 
 // use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -32,14 +32,10 @@ final class UserController extends AbstractController
     }
 
     #[Route('/mon-compte', name: 'app_user_account', methods: ['GET', 'POST'])]
-    public function editAccount(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    public function editAccount(Request $request,  EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
 
-
-
-        /** @var \App\Entity\User $user */
         $user = $this->getUser();
-
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
@@ -55,7 +51,7 @@ final class UserController extends AbstractController
                 $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($hashedPassword);
             }
-
+            $manager->persist($user);
             $manager->flush();
 
             $this->addFlash('success', 'Vos informations ont été enregistrées avec succès.');

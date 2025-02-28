@@ -17,18 +17,15 @@ class UserAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName')
-            ->add('lastName')
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class)
 
-            ->add('email', EmailType::class, [
-                'required' => false,
-            ])
+            ->add('email', EmailType::class)
             ->add('newPassword', PasswordType::class, [
-                'mapped' => false,  // Ne lie pas ce champ directement à l'entité User
+                'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
-                'required' => false,  // Ne le rend pas obligatoire
+                'required' => false,
                 'constraints' => [
-
                     new Regex([
                         'pattern' => '/^(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?!.*\s).{8,4096}$/',
                         'message' => 'Votre mot de passe doit contenir au moins 8 caractères, avec une majuscule, un chiffre et un caractère spécial.',
@@ -39,7 +36,7 @@ class UserAccountType extends AbstractType
                 ],
 
                 'mapped' => false,
-                'required' => false,
+
             ]);
     }
 
