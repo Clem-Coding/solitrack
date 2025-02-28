@@ -36,8 +36,13 @@ security:
   # Easy way to control access for large sections of your site
   # Note: Only the *first* access control that matches will be used
   access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
+    - { path: ^/tableau-de-bord/parametres, roles: ROLE_ADMIN }
+    - { path: ^/tableau-de-bord/gestion-utilisateurs, roles: ROLE_ADMIN }
+
+    - { path: ^/tableau-de-bord, roles: [ROLE_ADMIN, ROLE_VOLUNTEER_PLUS] }
+
+    - { path: ^/tableau-de-bord/statistiques, roles: [ROLE_ADMIN, ROLE_VOLUNTEER_PLUS] }
+    - { path: ^/tableau-de-bord/controle-de-caisse, roles: [ROLE_ADMIN, ROLE_VOLUNTEER_PLUS] }
 
 when@test:
   security:

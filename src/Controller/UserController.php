@@ -9,17 +9,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\UserAccountType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use App\Entity\User;
+
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
 
 
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+// use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\UserType;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
+#[IsGranted('IS_AUTHENTICATED')]
 final class UserController extends AbstractController
 {
     #[Route('/accueil', name: 'app_user_homepage')]
@@ -31,12 +32,12 @@ final class UserController extends AbstractController
     }
 
     #[Route('/mon-compte', name: 'app_user_account', methods: ['GET', 'POST'])]
-    public function editAccount(Request $request, UserRepository $userRepository, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
+    public function editAccount(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
     {
 
 
 
-        /** @var \App\Entity\User $user */     //précise que c'est une instance User
+        /** @var \App\Entity\User $user */
         $user = $this->getUser();
 
 
@@ -47,25 +48,18 @@ final class UserController extends AbstractController
         $form = $this->createForm(UserAccountType::class, $user);
         $form->handleRequest($request);
 
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form->get('newPassword')->getData();
-            $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
-            $userRepository->upgradePassword($user, $hashedPassword);
 
+            if ($newPassword) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                $user->setPassword($hashedPassword);
+            }
 
-            // if (!empty($plainPassword)) {
+            $manager->flush();
 
-            //     $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            // }
+            $this->addFlash('success', 'Vos informations ont été enregistrées avec succès.');
 
-
-            // $manager->flush();
-
-
-
-            // Redirection après la soumission du formulaire
             return $this->redirectToRoute('app_user_account');
         }
 
