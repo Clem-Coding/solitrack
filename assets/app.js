@@ -1,5 +1,7 @@
 import "./bootstrap.js";
 import "phosphor-icons";
+import "./js/entries.js";
+import "./js/sales.js";
 /*
  * Welcome to your app's main JavaScript file!
  *

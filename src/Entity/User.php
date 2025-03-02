@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
 
 // A faire : renommer la table en BDD "users"
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -20,8 +23,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-
-    // A faire : changer le message d'avertissement par défaut
     #[Assert\Email()]
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255, unique: true)]
@@ -37,18 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
 
-    /** 
-     * La contrainte Regex valide que le mot de passe :
-     * * contient au moins un chiffre
-     * * contient au moins une lettre en minuscule
-     * * contient au moins une lettre en majuscule
-     * * contient au moins un caractère spécial qui n'est pas un espace
-     * * fait entre 8 et 32 caractères de long
-     */
 
-    // A faire : changer le message d'avertissement par défaut en français
-    // #[Assert\NotCompromisedPassword()]
-    // #[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
     #[ORM\Column]
     private ?string $password = null;
 
@@ -59,6 +49,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, Donation>
+     */
+    #[ORM\OneToMany(targetEntity: Donation::class, mappedBy: 'user')]
+    private Collection $donations;
+
+    public function __construct()
+    {
+        $this->donations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,6 +156,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Donation>
+     */
+    public function getDonations(): Collection
+    {
+        return $this->donations;
+    }
+
+    public function addDonation(Donation $donation): static
+    {
+        if (!$this->donations->contains($donation)) {
+            $this->donations->add($donation);
+            $donation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDonation(Donation $donation): static
+    {
+        if ($this->donations->removeElement($donation)) {
+            // set the owning side to null (unless already changed)
+            if ($donation->getUser() === $this) {
+                $donation->setUser(null);
+            }
+        }
 
         return $this;
     }

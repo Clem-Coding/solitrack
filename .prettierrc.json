@@ -1,16 +1,4 @@
 {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "twigAlwaysBreakObjects": false,
-    "plugins": ["@zackad/prettier-plugin-twig"],
-    "htmlWhitespaceSensitivity": "ignore",
-    "overrides": [
-        {
-            "files": "*.twig",
-            "options": {
-                "printWidth": 140,
-                "htmlWhitespaceSensitivity": "ignore"
-            }
-        }
-    ]
+  "twigMelodyPlugins": ["node_modules/prettier-plugin-twig-enhancements"],
+  "twigPrintWidth": 120
 }

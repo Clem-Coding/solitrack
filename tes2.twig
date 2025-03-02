@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Mon compte
+{% endblock %}
+
+{% block body %}
+  <h1 class="text-center my-4">Modifier mes informations</h1>
+
+  <section id="about">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">{{ form_errors(form) }}</div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.dueDate) }}
+
+        {# prettier-ignore #}
+        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_end(form) }}
+
+        {# prettier-ignore #}
+        {{form_errors(form) }}
+      </div>
+    </div>
+  </section>
+{% endblock %}

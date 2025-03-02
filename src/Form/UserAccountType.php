@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class UserAccountType extends AbstractType
 {
@@ -21,9 +22,10 @@ class UserAccountType extends AbstractType
             ->add('lastName', TextType::class)
 
             ->add('email', EmailType::class)
-            ->add('newPassword', PasswordType::class, [
+            ->add('newPassword', RepeatedType::class, [
+                'type' =>  PasswordType::class,
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+
                 'required' => false,
                 'constraints' => [
                     new Regex([
@@ -34,9 +36,15 @@ class UserAccountType extends AbstractType
                         'message' => 'Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre.',
                     ]),
                 ],
-
+                'first_options' => [
+                    'hash_property_path' => 'password',
+                    'label' => 'label.new_password',
+                    'attr' => ['autocomplete' => 'new-password'],
+                ],
                 'mapped' => false,
-
+                'second_options' => [
+                    'label' => 'label.new_password_confirm',
+                ],
             ]);
     }
 

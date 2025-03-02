@@ -1,78 +1,61 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>
-            {% block title %}
-                Soli'Track
-            {% endblock %}
-        </title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% block title %}
+        Soli'Track
+      {% endblock %}
+    </title>
 
-        <link
-            rel="icon"
-            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"
-        />
-        {% block stylesheets %}
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"
+    />
+    {% block stylesheets %}{% endblock %} {% block javascripts %}
+      {% block importmap %}
+        {{ importmap('app') }}
+      {% endblock %}
+    {% endblock %}
+  </head>
 
+  <body>
+    <header>
+      <a href="{{ app.user ? path('app_user_homepage') : path('app_homepage') }}" aria-label="Accueil">
+        <h1>Soli'Track</h1>
+      </a>
+
+      <a href="{{ app.user ? path('app_user_homepage') : path('app_login') }}" aria-label="Se connecter">
+        {% if app.user %}
+          <i class="ph ph-user-circle-check"></i> Bienvenue
+        {% else %}
+          <i class="ph ph-user-circle"></i> Se connecter
+        {% endif %}
+      </a>
+
+      {% if app.request.pathinfo != '/' %}
+        {% block navbar %}
+          <nav>
+            <ul>
+              <li><a href="{{ path('app_user_homepage') }}" aria-label="Retour à l'accueil">Accueil</a></li>
+              <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
+              <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
+              <li>
+                <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a>
+              </li>
+            </ul>
+          </nav>
         {% endblock %}
+      {% endif %}
+    </header>
 
-        {% block javascripts %}
-            {% block importmap %}
-                {{ importmap('app') }}
-            {% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        <header>
-            <a href="/" aria-label="Accueil"><h1>Soli'Track</h1></a>
-            <a href="{{ path('app_login') }}" aria-label="Se connecter"><i class="ph-light ph-user-circle"></i>Se connecter</a>
+    {% block body %}{% endblock %}
 
-            {% if app.request.pathinfo != '/' %}
-                {% block navbar %}
-                    <nav>
-                        <ul>
-                            <li><a href="{{ path('app_user_homepage') }}" aria-label="Retour à l'accueil">Accueil</a></li>
-                            <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
-                            <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
-                            <li><a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a></li>
-                        </ul>
-                    </nav>
-
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur laboriosam dignissimos odio beatae dolorem fugit
-                        perspiciatis adipisci quo commodi ex, iste aperiam molestiae quas deserunt eligendi! Neque expedita quo magnam et
-                        consequatur eaque possimus molestiae veniam sit aliquid odio in non sint reprehenderit tempore earum labore
-                        quibusdam deleniti, adipisci architecto ut culpa animi? Natus unde error exercitationem quibusdam ea nisi dolor
-                        omnis ipsum nesciunt nemo officia totam quasi, aliquam mollitia? Perspiciatis repellat modi rem veniam nisi dolorum
-                        explicabo tenetur eum aliquid quod dolores numquam voluptates temporibus reprehenderit, nulla quaerat neque qui odio
-                        sequi, consequuntur quis. Consequuntur voluptatibus dolore minus cum quos id alias quisquam similique nostrum saepe
-                        non labore iure ad eligendi, laudantium qui in vitae aliquid nisi veritatis. Placeat commodi laborum at voluptas
-                        quam aliquid ea eos, nobis, nulla, quas libero error dicta eveniet natus vel neque reprehenderit. Aut, cupiditate,
-                        quaerat dolores ex voluptas facere similique, doloremque quam facilis dolore animi illum repellendus recusandae
-                        ratione veritatis quas. Odit optio, veritatis mollitia minus autem necessitatibus. Excepturi, sapiente? Similique
-                        animi odit officia quidem itaque sunt doloribus aut expedita. Ipsam nobis quisquam atque totam cupiditate mollitia
-                        dolor fuga ea ipsum consectetur. In repellendus eos id sunt accusamus quam atque suscipit saepe aliquam!
-                    </p>
-                {% endblock %}
-            {% endif %}
-        </header>
-
-        {% block body %}
-
-        {% endblock %}
-
-        <footer>
-            <section></section>
-            <article>
-                <p>
-                    test
-                </p>
-            </article>
-            <section class="{{ { base: css.prices }|classes }}"></section>
-            <!-- prettier-ignore -->
-            <p>
-                test
-            </p>
-        </footer>
-    </body>
+    {% block footer %}
+      <footer>
+        <p>Mentions légales</p>
+        <p>2025 Clem-Coding</p>
+      </footer>
+    {% endblock %}
+  </body>
 </html>

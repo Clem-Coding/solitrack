@@ -7,6 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
+/.env
+
+
 
 ###< symfony/framework-bundle ###
 
@@ -25,5 +28,5 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-.env
+
 

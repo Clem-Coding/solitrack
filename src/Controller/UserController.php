@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +13,7 @@ use App\Form\UserAccountType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Security;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 
 
@@ -32,10 +35,13 @@ final class UserController extends AbstractController
     }
 
     #[Route('/mon-compte', name: 'app_user_account', methods: ['GET', 'POST'])]
-    public function editAccount(Request $request,  EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher): Response
-    {
+    public function editAccount(
+        #[CurrentUser] User $user,
+        Request $request,
+        EntityManagerInterface $manager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
 
-        $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
@@ -45,13 +51,13 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newPassword = $form->get('newPassword')->getData();
+            // $newPassword = $form->get('newPassword')->getData();
 
-            if ($newPassword) {
-                $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
-                $user->setPassword($hashedPassword);
-            }
-            $manager->persist($user);
+            // if ($newPassword) {
+            //     $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+            //     $user->setPassword($hashedPassword);
+            // }
+
             $manager->flush();
 
             $this->addFlash('success', 'Vos informations ont été enregistrées avec succès.');

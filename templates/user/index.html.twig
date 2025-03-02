@@ -1,16 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Espace personnel
+{% block title %}
+  Espace personnel
 {% endblock %}
 
 {% block body %}
+  <main>
+    <article>
+      <h2>Hello{{ app.user.firstName }}!</h2>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur omnis nobis aliquid quaerat praesentium
+        laborum assumenda numquam quibusdam? Aliquam, sequi nulla perferendis voluptatem blanditiis quo aliquid velit
+        illum expedita odio.
+      </p>
+    </article>
 
-	<main>
-		<article>
-			<h1>Hello{{ app.user.firstName  }}! ✅</h1>
-			<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur omnis nobis aliquid quaerat praesentium laborum assumenda numquam quibusdam? Aliquam, sequi nulla perferendis voluptatem blanditiis quo aliquid velit illum expedita odio.</p>
-		</article>
-	</main>
-
-
-</div>{% endblock %}
+    <article>
+      <h2>Les statistiques du mois de février</h2>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatibus, voluptatum quos deleniti, numquam
+        culpa soluta natus, assumenda explicabo officia quidem eius laborum repudiandae iusto nemo corrupti rerum
+        incidunt molestiae.
+      </p>
+    </article>
+  </main>
+{% endblock %}
