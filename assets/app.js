@@ -1,4 +1,4 @@
-import "./bootstrap.js";
+// import "./bootstrap.js";
 import "phosphor-icons";
 import "./js/entries.js";
 import "./js/sales.js";

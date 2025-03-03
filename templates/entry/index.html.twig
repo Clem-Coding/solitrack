@@ -6,9 +6,23 @@
 
 {% block body %}
   <main>
-    <h1>Les entrées</h1>
-    <article></article>
-    <article></article>
-    <article></article>
+    <h1>Les Entrées</h1>
+    <article>
+      <p>Quel article souhaitez-vous enregistrer ?</p>
+      <button id="clothing" data-category="1">Vêtements</button>
+      <button id="other-items" data-category="2">Autres articles</button>
+    </article>
+
+    <article>
+      {{ form_errors(form) }}
+      {{ form_start(form) }}
+      {{ form_row(form.weight) }}
+      {{ form_row(form.categoryId) }}
+      <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+
+      {{ form_end(form) }}
+    </article>
+
+    <article><p>Dernière entrée</p></article>
   </main>
 {% endblock %}
