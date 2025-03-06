@@ -23,6 +23,22 @@
       {{ form_end(form) }}
     </article>
 
-    <article><p>Dernière entrée</p></article>
+    <article>
+      <h2>Dernière entrée</h2>
+      <p>Catégorie : {{ lastEntryName }}</p>
+      <p id="lastEntryDetails">Poids : {{ lastEntryWeight }}</p>
+      <button id="deleteLastEntry">Supprimer la ligne</button>
+    </article>
+
+    <article>
+      <h2>Message feedback</h2>
+      <p>
+        {% if totalWeightToday is null %}
+          Aucune donnée disponible pour aujourd'hui.
+        {% else %}
+          Chaque kilo compte : aujourd'hui, {{ totalWeightToday }} rentrés!
+        {% endif %}
+      </p>
+    </article>
   </main>
 {% endblock %}

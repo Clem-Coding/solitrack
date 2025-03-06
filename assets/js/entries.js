@@ -26,4 +26,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
       //A faire plus tard avec des classes .active en css
     });
   }
+
+  document
+    .getElementById("deleteLastEntry")
+    .addEventListener("click", function () {
+      console.log("detele");
+      fetch("/entrees/delete-last", {
+        method: "DELETE",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            document.getElementById("lastEntryDetails").textContent =
+              "Blablabla";
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
 });

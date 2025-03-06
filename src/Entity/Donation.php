@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DonationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
 class Donation
@@ -13,6 +14,8 @@ class Donation
     #[ORM\Column]
     private ?int $id = null;
 
+
+    #[Assert\NotBlank()]
     #[ORM\Column]
     private ?float $weight = null;
 
