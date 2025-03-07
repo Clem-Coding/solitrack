@@ -17,7 +17,6 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-
 #[IsGranted('IS_AUTHENTICATED')]
 final class EntryController extends AbstractController
 {
@@ -35,7 +34,6 @@ final class EntryController extends AbstractController
 
             $categoryId = $form->get('categoryId')->getData();
             $categoryId = (int) $categoryId;
-
             $category = $categoryRepository->find($categoryId);
 
 
@@ -46,50 +44,85 @@ final class EntryController extends AbstractController
             $entityManager->persist($donation);
             $entityManager->flush();
 
-
             return $this->redirectToRoute('app_entry');
         }
 
-        $totalWeightToday = $donationRepository->getTotalWeightForToday();
         $lastEntry = $donationRepository->getLatestEntry();
-        dump($lastEntry);
-        dump("le poids total de la journée : ", $totalWeightToday);
+        // dd($lastEntry);
 
-
-        // if ($lastEntry) {
-
-        //     $lastEntryDetails = "Catégorie : {$lastEntry['categoryName']} / Poids : {$lastEntry['weight']} Kg";
-        // } else {
-        //     $lastEntryDetails = "Aucune entrée à supprimer";
-        // }
+        $lastEntryName = $lastEntry['categoryName'] ?? null;
+        $lastEntryWeight = $lastEntry['weight'] ?? null;
 
 
 
         return $this->render('entry/index.html.twig', [
             'form' => $form,
-            'lastEntryName' => $lastEntry['categoryName'],
-            'lastEntryWeight' => $lastEntry['weight'],
-            'totalWeightToday' => $totalWeightToday
+            'lastEntryName' => $lastEntryName,
+            'lastEntryWeight' => $lastEntryWeight,
         ]);
     }
 
+    // #[Route('/entrees/show-last', name: 'app_entry_show_last', methods: ['GET'])]
+    // public function showLastEntry(Request $request, DonationRepository $donationRepository, EntityManagerInterface $manager): Response
+    // {
+    //     $lastEntry = $donationRepository->getLatestEntry();
+
+    //     return $this->render('entry/index.html.twig', [
+
+    //         'lastEntryName' => $lastEntry['categoryName'],
+    //         'lastEntryWeight' => $lastEntry['weight'],
+    //     ]);
+    // }
+
+
+    // $totalWeightToday = $donationRepository->getTotalWeightForToday();
+    // 'totalWeightToday' => $totalWeightToday
+
     #[Route('/entrees/delete-last', name: 'app_entry_delete_last', methods: ['DELETE'])]
-    public function deleteLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): JsonResponse
+    public function deleteLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): Response
     {
-        try {
-            $lastEntry = $donationRepository->getLatestEntry();
+        $lastEntry = $donationRepository->getLatestEntry();
 
-            if ($lastEntry && isset($lastEntry['id'])) {
+        if ($lastEntry === null) {
+
+            $this->addFlash('erreur', 'Aucune donnée enregistrée en BDD.');
+        } else {
+            if (isset($lastEntry['id'])) {
                 $donation = $donationRepository->find($lastEntry['id']);
-                $entityManager->remove($donation);
-                $entityManager->flush();
-
-                return new JsonResponse(['success' => true]);
+                if ($donation) {
+                    $entityManager->remove($donation);
+                    $entityManager->flush();
+                    $this->addFlash('succès', 'Votre dernière entrée a bien été supprimée.');
+                } else {
+                    $this->addFlash('erreur', 'Entrée introuvable.');
+                }
+            } else {
+                $this->addFlash('erreur', 'Aucune entrée à supprimer.');
             }
-
-            return new JsonResponse(['success' => false, 'message' => 'Aucune entrée à supprimer.']);
-        } catch (\Exception $e) {
-            return new JsonResponse(['success' => false, 'message' => 'Une erreur est survenue : ' . $e->getMessage()]);
         }
+
+        return $this->redirectToRoute('app_entry');
     }
+
+
+
+    // #[Route('/entrees/edit-last', name: 'app_entry_edit_last', methods: ['POST'])]
+    // public function editLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): JsonResponse
+    // {
+    //     try {
+    //         $lastEntry = $donationRepository->getLatestEntry();
+
+    //         if ($lastEntry && isset($lastEntry['id'])) {
+    //             $donation = $donationRepository->find($lastEntry['id']);
+    //             $entityManager->remove($donation);
+    //             $entityManager->flush();
+
+    //             return new JsonResponse(['success' => true]);
+    //         }
+
+    //         return new JsonResponse(['success' => false, 'message' => 'Aucune entrée à supprimer.']);
+    //     } catch (\Exception $e) {
+    //         return new JsonResponse(['success' => false, 'message' => 'Une erreur est survenue : ' . $e->getMessage()]);
+    //     }
+    // }
 }

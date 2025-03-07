@@ -24,9 +24,14 @@ class DonationRepository extends ServiceEntityRepository
             ->where('d.created_at >= :today') // >= s'assure que ce soit à partir de minuit et toute la journée et pas uniquement minuit
             ->setParameter('today', new \DateTime('today'))
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult(); // renvoit une valeur scalaire qui est une valeur "simple" et pas un tableau ou un objet ou collection, utile dans le cas du poids total
     }
 
+    // Définition wikipedia :"On parle aussi de valeur ou de variable scalaire pour désigner une valeur ou un contenant 
+    //destiné par son type à contenir une valeur atomique. On oppose valeur atomique à valeur composite. 
+    //Un entier, un nombre flottant sont des valeurs atomiques. Un tableau ou une table associative sont des valeurs composites. 
+    //Une valeur composite est une structure de données composée récursivement ou non de valeurs scalaires.
+    // Une chaîne de caractères peut être considérée comme un tableau ou une valeur scalaire selon le langage de programmation."
 
 
     public function getLatestEntry(): ?array

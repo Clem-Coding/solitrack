@@ -22,23 +22,53 @@
 
       {{ form_end(form) }}
     </article>
+    {# 
+    <article>
+      <h2>Dernière entrée</h2>
+
+    
+      {% if app.flashes('succès') %}
+        <div class="alert alert-success">{{ app.flashes('succès')|join('') }}</div>
+      {% elseif app.flashes('erreur') %}
+        <div class="alert alert-danger">{{ app.flashes('erreur')|join('') }}</div>
+      {% elseif lastEntryName is not null %}
+        <p>Catégorie : {{ lastEntryName }}</p>
+        <p>Poids : {{ lastEntryWeight }} kg</p>
+        <form action="{{ path('app_entry_delete_last') }}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          {{ csrf_token('delete' ~ lastEntryName) }}
+          <button type="submit">Supprimer la ligne</button>
+        </form>
+      {% else %}
+        <p>Aucune donnée enregistrée en BDD.</p>
+      {% endif %}
+    </article> #}
 
     <article>
       <h2>Dernière entrée</h2>
-      <p>Catégorie : {{ lastEntryName }}</p>
-      <p id="lastEntryDetails">Poids : {{ lastEntryWeight }}</p>
-      <button id="deleteLastEntry">Supprimer la ligne</button>
+
+      {% if lastEntryName is not null %}
+        <p>Catégorie : {{ lastEntryName }}</p>
+        <p>Poids : {{ lastEntryWeight }} kg</p>
+        <form action="{{ path('app_entry_delete_last') }}" method="post">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
+          <button type="submit">Supprimer la ligne</button>
+        </form>
+      {% else %}
+        <p>Aucune donnée disponible dans la base de données.</p>
+      {% endif %}
     </article>
 
-    <article>
+    {# <article>
       <h2>Message feedback</h2>
       <p>
         {% if totalWeightToday is null %}
-          Aucune donnée disponible pour aujourd'hui.
+          La journée commence à peine, pas de données à l'horizon... mais ça ne va pas durer longtemps !
         {% else %}
-          Chaque kilo compte : aujourd'hui, {{ totalWeightToday }} rentrés!
+          Chaque kilo compte : aujourd'hui, {{ totalWeightToday }} kg rentrés!
         {% endif %}
       </p>
-    </article>
+    </article> #}
   </main>
 {% endblock %}
