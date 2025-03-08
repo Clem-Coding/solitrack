@@ -19,6 +19,8 @@ class Donation
     #[ORM\Column]
     private ?float $weight = null;
 
+
+    #[Assert\DateTime]
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 

@@ -36,8 +36,13 @@ final class EntryController extends AbstractController
             $categoryId = (int) $categoryId;
             $category = $categoryRepository->find($categoryId);
 
+            if (!empty($category)) {
+                $donation->setCategory($category);
+            } else {
+                $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
+                return $this->redirectToRoute('app_entry');
+            }
 
-            $donation->setCategory($category);
             $donation->setUser($user);
             $donation->setCreatedAt(new \DateTimeImmutable());
 
@@ -62,17 +67,6 @@ final class EntryController extends AbstractController
         ]);
     }
 
-    // #[Route('/entrees/show-last', name: 'app_entry_show_last', methods: ['GET'])]
-    // public function showLastEntry(Request $request, DonationRepository $donationRepository, EntityManagerInterface $manager): Response
-    // {
-    //     $lastEntry = $donationRepository->getLatestEntry();
-
-    //     return $this->render('entry/index.html.twig', [
-
-    //         'lastEntryName' => $lastEntry['categoryName'],
-    //         'lastEntryWeight' => $lastEntry['weight'],
-    //     ]);
-    // }
 
 
     // $totalWeightToday = $donationRepository->getTotalWeightForToday();

@@ -19,7 +19,7 @@
       {{ form_row(form.weight) }}
       {{ form_row(form.categoryId) }}
       <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
-
+      <div>{% include 'partials/flash.html.twig' %}</div>
       {{ form_end(form) }}
     </article>
     {# 
@@ -43,20 +43,27 @@
         <p>Aucune donnée enregistrée en BDD.</p>
       {% endif %}
     </article> #}
-
     <article>
       <h2>Dernière entrée</h2>
 
-      {% if lastEntryName is not null %}
-        <p>Catégorie : {{ lastEntryName }}</p>
-        <p>Poids : {{ lastEntryWeight }} kg</p>
-        <form action="{{ path('app_entry_delete_last') }}" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
-          <button type="submit">Supprimer la ligne</button>
-        </form>
+      {% if app.flashes('succès') %}
+        <p>Votre dernière entrée a bien été supprimée</p>
       {% else %}
-        <p>Aucune donnée disponible dans la base de données.</p>
+        {% if lastEntryName is not null %}
+          <p>Catégorie : {{ lastEntryName }}</p>
+          <p>Poids : {{ lastEntryWeight }} kg</p>
+          <form action="{{ path('app_entry_delete_last') }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
+            <button type="submit">Supprimer la ligne</button>
+          </form>
+        {% else %}
+          {% if app.flashes('succès') %}
+            <p>Votre dernière entrée a bien été supprimée</p>
+          {% else %}
+            <p>Aucune donnée disponible dans la base de données.</p>
+          {% endif %}
+        {% endif %}
       {% endif %}
     </article>
 
