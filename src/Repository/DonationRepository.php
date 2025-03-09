@@ -21,7 +21,7 @@ class DonationRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('d')
             ->select('SUM(d.weight) as total_weight')
-            ->where('d.created_at >= :today') // >= s'assure que ce soit à partir de minuit et toute la journée et pas uniquement minuit
+            ->where('d.createdAt >= :today') // >= s'assure que ce soit à partir de minuit et toute la journée et pas uniquement minuit
             ->setParameter('today', new \DateTime('today'))
             ->getQuery()
             ->getSingleScalarResult(); // renvoit une valeur scalaire qui est une valeur "simple" et pas un tableau ou un objet ou collection, utile dans le cas du poids total
@@ -39,7 +39,7 @@ class DonationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('d')
             ->select('d.id', 'd.weight', 'c.name AS categoryName')
             ->leftJoin('d.category', 'c')
-            ->orderBy('d.created_at', 'DESC')
+            ->orderBy('d.createdAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
