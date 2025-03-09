@@ -1,23 +1,11 @@
-document.addEventListener("DOMContentLoaded", (event) => {
-  const buttons = document.querySelectorAll("button[data-category]");
-  console.log(buttons);
+document.addEventListener("DOMContentLoaded", () => {
+  // CONSTANTS
+  const buttons = document.querySelectorAll("#entry-section .category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
-  // categoryInput.value = "";
   const form = document.querySelector("form");
   const errorMessage = document.getElementById("error-message");
-  console.log(errorMessage);
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      const clickedButton = e.target;
-      setCategory(clickedButton.getAttribute("data-category"));
-      resetButtonColors(buttons);
-      clickedButton.style.backgroundColor = "#FFA500";
-      resetButtonColors(buttons);
-      clickedButton.style.backgroundColor = "#FFA500";
-    });
-  });
-
+  // FUNCTIONS
   function setCategory(category) {
     categoryInput.value = category;
     console.log("Catégorie sélectionnée :", categoryInput.value);
@@ -29,14 +17,32 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 
-  form.addEventListener("submit", function (event) {
+  function handleButtonClick(e) {
+    const clickedButton = e.target;
+    setCategory(clickedButton.getAttribute("data-category"));
+    resetButtonColors(buttons);
+    clickedButton.style.backgroundColor = "#FFA500";
+  }
+
+  function handleFormSubmit(event) {
     if (!categoryInput.value) {
       event.preventDefault();
       errorMessage.style.display = "block";
     } else {
       errorMessage.style.display = "none";
     }
+  }
+
+  // EVENT LISTENERS
+  buttons.forEach((button) => {
+    button.addEventListener("click", handleButtonClick);
   });
+
+  form.addEventListener("submit", handleFormSubmit);
+
+  // LOGS
+  // console.log(buttons);
+  // console.log(errorMessage);
 });
 
 //A faire plus tard avec des classes .active en css

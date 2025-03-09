@@ -7,25 +7,30 @@
 {% block body %}
   <main>
     <h1>Les ventes</h1>
-    <article>
+    <article id="sales-section">
       <p>Quel article souhaitez-vous ajouter?</p>
-      <button id="clothing" data-category="1">Vêtements</button>
-      <button id="other-items" data-category="2">Autres articles</button>
-      <button id="tagged-item" data-category="3">Vêtements</button>
-      <button id="drinks" data-category="4">Autres articles</button>
+      <button class="category-button" data-category="1">Vêtements</button>
+      <button class="category-button" data-category="2">Autres articles</button>
+      <button class="category-button" data-category="3">Vêtements</button>
+      <button class="category-button" data-category="4">Autres articles</button>
     </article>
     <article>
-      <h2>Formulaire de saisie</h2>
-      <form id="donation-form" method="POST" action="/submit">
-        <input type="hidden" name="category" id="category" />
-        <div id="form-fields">
-          <!-- Les champs seront ajoutés ici en fonction de la catégorie -->
-          <label for="weight">Poids (kg):</label>
-          <input type="number" id="weight" name="weight" />
-        </div>
-        <button type="submit">Soumettre</button>
-      </form>
+      <h2>Formulaire de Saisie</h2>
+      {{ form_errors(form) }}
+      {{ form_start(form) }}
+      {# {{ form_row(form.weight) }}
+      {{ form_row(form.categoryId) }} #}
+      <button type="submit" class="btn btn-outline-primary">Ajouter au panier</button>
+      <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
+      {# attention virer le style display:none pour le mettre en scss à part #}
+      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+      {{ form_end(form) }}
     </article>
-    <article><h2>Panier</h2></article>
+    <article>
+      <h2>Panier</h2>
+
+      {# prettier-ignore #}
+      {# <a href="{{ path('app_cart_add', { 'id': salesItem.id }) }}">Passer à la caisse</a> #}
+    </article>
   </main>
 {% endblock %}

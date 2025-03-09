@@ -1,4 +1,5 @@
 {
+  "printWidth": 120,
   "twigMelodyPlugins": ["node_modules/prettier-plugin-twig-enhancements"],
   "twigPrintWidth": 120
 }
