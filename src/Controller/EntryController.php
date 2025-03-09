@@ -36,11 +36,15 @@ final class EntryController extends AbstractController
             $categoryId = (int) $categoryId;
             $category = $categoryRepository->find($categoryId);
 
+            if (empty($category)) {
+                // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
+                // return $this->redirectToRoute('app_entry');
+            }
+
+
+            $totalWeightToday = $donationRepository->getTotalWeightForToday();
             if (!empty($category)) {
                 $donation->setCategory($category);
-            } else {
-                $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
-                return $this->redirectToRoute('app_entry');
             }
 
             $donation->setUser($user);
@@ -53,47 +57,47 @@ final class EntryController extends AbstractController
         }
 
         $lastEntry = $donationRepository->getLatestEntry();
-        // dd($lastEntry);
-
         $lastEntryName = $lastEntry['categoryName'] ?? null;
         $lastEntryWeight = $lastEntry['weight'] ?? null;
 
+        $totalWeightToday = $donationRepository->getTotalWeightForToday();
+
+        $messages = [
+            "Chaque kilo compte : aujourd'hui, $totalWeightToday kg rentrés !",
+            "$totalWeightToday kg, allez les fourmis, on lâche rien !",
+            "Vous avez enregistré $totalWeightToday kg !",
+            "Une belle collecte aujourd'hui : $totalWeightToday kg déjà !",
+            "Ohlala $totalWeightToday kg! si ça continue comme ça, il va falloir pousser les murs !"
+        ];
+
+        $feedbackMessage = $messages[array_rand($messages)];
 
 
         return $this->render('entry/index.html.twig', [
             'form' => $form,
             'lastEntryName' => $lastEntryName,
             'lastEntryWeight' => $lastEntryWeight,
+            'totalWeightToday' => $totalWeightToday,
+            'feedbackMessage' => $feedbackMessage
         ]);
     }
 
 
-
-    // $totalWeightToday = $donationRepository->getTotalWeightForToday();
-    // 'totalWeightToday' => $totalWeightToday
 
     #[Route('/entrees/delete-last', name: 'app_entry_delete_last', methods: ['DELETE'])]
     public function deleteLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): Response
     {
         $lastEntry = $donationRepository->getLatestEntry();
 
-        if ($lastEntry === null) {
-
-            $this->addFlash('erreur', 'Aucune donnée enregistrée en BDD.');
-        } else {
-            if (isset($lastEntry['id'])) {
-                $donation = $donationRepository->find($lastEntry['id']);
-                if ($donation) {
-                    $entityManager->remove($donation);
-                    $entityManager->flush();
-                    $this->addFlash('succès', 'Votre dernière entrée a bien été supprimée.');
-                } else {
-                    $this->addFlash('erreur', 'Entrée introuvable.');
-                }
-            } else {
-                $this->addFlash('erreur', 'Aucune entrée à supprimer.');
+        if ($lastEntry && isset($lastEntry['id'])) {
+            $donation = $donationRepository->find($lastEntry['id']);
+            if ($donation) {
+                $entityManager->remove($donation);
+                $entityManager->flush();
             }
         }
+
+        $this->addFlash('success', 'Votre dernière entrée a bien été supprimée.');
 
         return $this->redirectToRoute('app_entry');
     }

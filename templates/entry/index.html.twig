@@ -19,35 +19,17 @@
       {{ form_row(form.weight) }}
       {{ form_row(form.categoryId) }}
       <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
-      <div>{% include 'partials/flash.html.twig' %}</div>
+      <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
+      {# attention virer le style display:none pour le mettre en scss à part #}
+      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
       {{ form_end(form) }}
     </article>
-    {# 
+
     <article>
       <h2>Dernière entrée</h2>
 
-    
-      {% if app.flashes('succès') %}
-        <div class="alert alert-success">{{ app.flashes('succès')|join('') }}</div>
-      {% elseif app.flashes('erreur') %}
-        <div class="alert alert-danger">{{ app.flashes('erreur')|join('') }}</div>
-      {% elseif lastEntryName is not null %}
-        <p>Catégorie : {{ lastEntryName }}</p>
-        <p>Poids : {{ lastEntryWeight }} kg</p>
-        <form action="{{ path('app_entry_delete_last') }}" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          {{ csrf_token('delete' ~ lastEntryName) }}
-          <button type="submit">Supprimer la ligne</button>
-        </form>
-      {% else %}
-        <p>Aucune donnée enregistrée en BDD.</p>
-      {% endif %}
-    </article> #}
-    <article>
-      <h2>Dernière entrée</h2>
-
-      {% if app.flashes('succès') %}
-        <p>Votre dernière entrée a bien été supprimée</p>
+      {% if app.flashes('success') %}
+        <p>Votre dernière entrée a bien été supprimée.</p>
       {% else %}
         {% if lastEntryName is not null %}
           <p>Catégorie : {{ lastEntryName }}</p>
@@ -58,8 +40,8 @@
             <button type="submit">Supprimer la ligne</button>
           </form>
         {% else %}
-          {% if app.flashes('succès') %}
-            <p>Votre dernière entrée a bien été supprimée</p>
+          {% if app.flashes('success') %}
+            <p>Votre dernière entrée a bien été supprimée.</p>
           {% else %}
             <p>Aucune donnée disponible dans la base de données.</p>
           {% endif %}
@@ -67,15 +49,15 @@
       {% endif %}
     </article>
 
-    {# <article>
+    <article>
       <h2>Message feedback</h2>
       <p>
         {% if totalWeightToday is null %}
-          La journée commence à peine, pas de données à l'horizon... mais ça ne va pas durer longtemps !
+          Pas de données à l'horizon... mais ça ne va pas durer longtemps !
         {% else %}
-          Chaque kilo compte : aujourd'hui, {{ totalWeightToday }} kg rentrés!
+          {{ feedbackMessage }}
         {% endif %}
       </p>
-    </article> #}
+    </article>
   </main>
 {% endblock %}

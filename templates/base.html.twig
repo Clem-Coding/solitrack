@@ -33,7 +33,7 @@
         {% endif %}
       </a>
 
-      {% if app.request.pathinfo != '/' %}
+      {% if app.user %}
         {% block navbar %}
           <nav>
             <ul>

@@ -9,12 +9,23 @@
     <h1>Les ventes</h1>
     <article>
       <p>Quel article souhaitez-vous ajouter?</p>
-      <button>Vêtements</button>
-      <button>Autres articles</button>
-      <button>Article étiqueté</button>
-      <button>Boisson</button>
+      <button id="clothing" data-category="1">Vêtements</button>
+      <button id="other-items" data-category="2">Autres articles</button>
+      <button id="tagged-item" data-category="3">Vêtements</button>
+      <button id="drinks" data-category="4">Autres articles</button>
     </article>
-    <article></article>
-    <article><p>Panier</p></article>
+    <article>
+      <h2>Formulaire de saisie</h2>
+      <form id="donation-form" method="POST" action="/submit">
+        <input type="hidden" name="category" id="category" />
+        <div id="form-fields">
+          <!-- Les champs seront ajoutés ici en fonction de la catégorie -->
+          <label for="weight">Poids (kg):</label>
+          <input type="number" id="weight" name="weight" />
+        </div>
+        <button type="submit">Soumettre</button>
+      </form>
+    </article>
+    <article><h2>Panier</h2></article>
   </main>
 {% endblock %}

@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const buttons = document.querySelectorAll("button[data-category]");
   console.log(buttons);
   const categoryInput = document.getElementById("donation_form_categoryId");
-  categoryInput.value = "";
+  // categoryInput.value = "";
+  const form = document.querySelector("form");
+  const errorMessage = document.getElementById("error-message");
+  console.log(errorMessage);
 
   buttons.forEach((button) => {
     button.addEventListener("click", (e) => {
@@ -25,6 +28,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
       button.style.backgroundColor = "";
     });
   }
+
+  form.addEventListener("submit", function (event) {
+    if (!categoryInput.value) {
+      event.preventDefault();
+      errorMessage.style.display = "block";
+    } else {
+      errorMessage.style.display = "none";
+    }
+  });
 });
 
 //A faire plus tard avec des classes .active en css

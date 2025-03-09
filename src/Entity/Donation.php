@@ -28,6 +28,8 @@ class Donation
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+
+
     #[ORM\ManyToOne(inversedBy: 'donations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
