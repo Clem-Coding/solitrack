@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("#entry-section .category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
   const form = document.querySelector("form");
+  const weightInput = document.getElementById("donation_form_weight");
   const errorMessage = document.getElementById("error-message");
+
+  weightInput.value = "";
 
   // FUNCTIONS
   function setCategory(category) {
@@ -19,8 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleButtonClick(e) {
     const clickedButton = e.target;
+    if (errorMessage.style.display !== "block") {
+      weightInput.value = "";
+    }
+
     setCategory(clickedButton.getAttribute("data-category"));
     resetButtonColors(buttons);
+
     clickedButton.style.backgroundColor = "#FFA500";
   }
 

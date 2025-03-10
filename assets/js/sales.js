@@ -4,15 +4,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const categoryInput = document.getElementById("sales_item_categoryId");
   const errorMessage = document.getElementById("error-message");
   const form = document.querySelector("form");
-  const weightInput = document.getElementById("weight-input");
-  const priceInput = document.getElementById("price-input");
-  const quantityInput = document.getElementById("quantity-input");
+  const weightInputWrapper = document.getElementById("weight-input");
+  const priceInputWrapper = document.getElementById("price-input");
+  const quantityInputWrapper = document.getElementById("quantity-input");
+  const inputs = [
+    weightInputWrapper.querySelector("input"),
+    priceInputWrapper.querySelector("input"),
+    quantityInputWrapper.querySelector("input"),
+  ];
   const addCartButton = document.getElementById("add-cart-button");
 
   // FUNCTIONS
 
   function setCategory(category) {
-    categoryInput.value = category;
+    categoryInput.setAttribute("value", category);
   }
 
   function resetButtonColors(buttons) {
@@ -26,7 +31,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     setCategory(clickedButton.getAttribute("data-category"));
     resetButtonColors(buttons);
     clickedButton.style.backgroundColor = "#FFA500";
-    console.log(categoryInput);
   }
 
   function handleFormSubmit(event) {
@@ -40,18 +44,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
   function handleCategoryChange() {
     const category = categoryInput.value;
+
+    inputs.forEach((input) => {
+      input.value = "";
+    });
+
     addCartButton.classList.remove("hidden");
-    priceInput.classList.add("hidden");
-    quantityInput.classList.add("hidden");
-    weightInput.classList.add("hidden");
+    priceInputWrapper.classList.add("hidden");
+    quantityInputWrapper.classList.add("hidden");
+    weightInputWrapper.classList.add("hidden");
 
     if (category === "1" || category === "2") {
-      weightInput.classList.remove("hidden");
+      weightInputWrapper.classList.remove("hidden");
     } else if (category === "3") {
-      weightInput.classList.remove("hidden");
-      priceInput.classList.remove("hidden");
+      weightInputWrapper.classList.remove("hidden");
+      priceInputWrapper.classList.remove("hidden");
     } else if (category === "4") {
-      quantityInput.classList.remove("hidden");
+      quantityInputWrapper.classList.remove("hidden");
     }
   }
 

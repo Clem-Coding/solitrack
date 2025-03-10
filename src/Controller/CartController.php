@@ -16,9 +16,13 @@ final class CartController extends AbstractController
 {
 
 
-    #[Route('/add{id}', name: 'app_cart_add')]
-    public function add(SalesItem $salesItem, SessionInterface $session)
+    #[Route('/add', name: 'app_cart_add')]
+    public function add(SessionInterface $session)
     {
+
+
+
+        $this->addFlash('success', 'Article ajouté au panier !');
         dd($session);
     }
 }

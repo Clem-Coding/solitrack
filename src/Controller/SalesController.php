@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('IS_AUTHENTICATED')]
 final class SalesController extends AbstractController
 {
-    #[Route('/ventes', name: 'app_sales')]
+    #[Route('/ventes', name: 'app_sales', methods: ['GET', 'POST'])]
     public function index(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
 
@@ -24,27 +24,28 @@ final class SalesController extends AbstractController
         $form = $this->createForm(SalesItemType::class, $salesItem);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
 
-        // if ($form->isSubmitted() && $form->isValid()) {
+            dd($salesItem);
+            $session = $request->getSession();
+            $session->set('sales_item', $salesItem);
 
-        //     $categoryId = $form->get('categoryId')->getData();
-        //     $categoryId = (int) $categoryId;
-        //     $category = $categoryRepository->find($categoryId);
-
-        //     if (empty($category)) {
-        //         // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
-        //         // return $this->redirectToRoute('app_entry');
-        //     }
-
-        //     $entityManager->persist($salesItem);
-        //     $entityManager->flush();
-
-        //     return $this->redirectToRoute('app_entry');
-        // }
-
+            // Rediriger vers le CartController
+            return $this->redirectToRoute('app_cart_add');
+        }
 
         return $this->render('sales/index.html.twig', [
             'form' => $form,
         ]);
     }
 }
+
+
+
+
+ // return $this->redirectToRoute('app_cart_add', [
+            //     'category' => $salesItem->getCategory(),
+            //     'weight' => $salesItem->getWeight(),
+            //     'price' => $salesItem->getPrice(),
+            //     'quantity' => $salesItem->getQuantity(),
+            // ]);
