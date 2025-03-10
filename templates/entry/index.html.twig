@@ -61,3 +61,8 @@
     </article>
   </main>
 {% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/entries.js') }}"></script>
+{% endblock %}

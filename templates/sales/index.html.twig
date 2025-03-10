@@ -11,16 +11,18 @@
       <p>Quel article souhaitez-vous ajouter?</p>
       <button class="category-button" data-category="1">Vêtements</button>
       <button class="category-button" data-category="2">Autres articles</button>
-      <button class="category-button" data-category="3">Vêtements</button>
-      <button class="category-button" data-category="4">Autres articles</button>
+      <button class="category-button" data-category="3">Article étiqueté</button>
+      <button class="category-button" data-category="4">Boisson</button>
     </article>
     <article>
       <h2>Formulaire de Saisie</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
-      {# {{ form_row(form.weight) }}
-      {{ form_row(form.categoryId) }} #}
-      <button type="submit" class="btn btn-outline-primary">Ajouter au panier</button>
+      {{ form_row(form.weight) }}
+      {{ form_row(form.categoryId) }}
+      {{ form_row(form.price) }}
+      {{ form_row(form.quantity) }}
+      <button id="add-cart-button" type="submit" class="hidden">Ajouter au panier</button>
       <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
       {# attention virer le style display:none pour le mettre en scss à part #}
       {# <div>{% include 'partials/flash.html.twig' %}</div> #}
@@ -33,4 +35,9 @@
       {# <a href="{{ path('app_cart_add', { 'id': salesItem.id }) }}">Passer à la caisse</a> #}
     </article>
   </main>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/sales.js') }}"></script>
 {% endblock %}

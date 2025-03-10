@@ -1,3 +1,7 @@
 body {
   background-color: skyblue;
-} /*# sourceMappingURL=app.css.map */
+}
+
+.hidden {
+  display: none;
+}/*# sourceMappingURL=app.css.map */

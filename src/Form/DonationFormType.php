@@ -13,7 +13,9 @@ class DonationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('weight')
+            ->add('weight', null, [
+                'label' => 'Poids'
+            ])
             ->add('categoryId', HiddenType::class, [
                 'mapped' => false,
             ]);

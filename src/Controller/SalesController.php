@@ -25,22 +25,22 @@ final class SalesController extends AbstractController
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        // if ($form->isSubmitted() && $form->isValid()) {
 
-            $categoryId = $form->get('categoryId')->getData();
-            $categoryId = (int) $categoryId;
-            $category = $categoryRepository->find($categoryId);
+        //     $categoryId = $form->get('categoryId')->getData();
+        //     $categoryId = (int) $categoryId;
+        //     $category = $categoryRepository->find($categoryId);
 
-            if (empty($category)) {
-                // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
-                // return $this->redirectToRoute('app_entry');
-            }
+        //     if (empty($category)) {
+        //         // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
+        //         // return $this->redirectToRoute('app_entry');
+        //     }
 
-            $entityManager->persist($salesItem);
-            $entityManager->flush();
+        //     $entityManager->persist($salesItem);
+        //     $entityManager->flush();
 
-            return $this->redirectToRoute('app_entry');
-        }
+        //     return $this->redirectToRoute('app_entry');
+        // }
 
 
         return $this->render('sales/index.html.twig', [

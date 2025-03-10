@@ -16,18 +16,30 @@ class SalesItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('weigth', null, [
-                'label' => 'Poids'
+            ->add('weight', null, [
+                'label' => 'Poids',
+                "row_attr" => [
+                    "class" => "hidden",
+                    "id" => "weight-input"
+                ],
             ])
             ->add('price', null, [
-                'label' => 'Prix'
+                'label' => 'Prix',
+                "row_attr" => [
+                    "class" => "hidden",
+                    "id" => "price-input"
+                ],
             ])
             ->add('quantity', null, [
-                'label' => 'Quantité'
+                'label' => 'Quantité',
+                "row_attr" => [
+                    "class" => "hidden",
+                    "id" => "quantity-input"
+                ],
             ])
-            ->add('quantity', null, ['attr' => ['id' => 'quantity']])
             ->add('categoryId', HiddenType::class, [
                 'mapped' => false,
+
             ])
             ->add('sale', HiddenType::class, [
                 'mapped' => false,

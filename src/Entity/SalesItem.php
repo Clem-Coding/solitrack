@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SalesItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "sales_items")]
 #[ORM\Entity(repositoryClass: SalesItemRepository::class)]
@@ -23,12 +24,15 @@ class SalesItem
     #[ORM\JoinColumn(nullable: false)]
     private ?sale $sale = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $weigth = null;
+    private ?string $weight = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $price = null;
 
+    #[Assert\NotBlank()]
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 
@@ -61,14 +65,14 @@ class SalesItem
         return $this;
     }
 
-    public function getWeigth(): ?string
+    public function getWeight(): ?string
     {
-        return $this->weigth;
+        return $this->weight;
     }
 
-    public function setWeigth(?string $weigth): static
+    public function setWeight(?string $weight): static
     {
-        $this->weigth = $weigth;
+        $this->weight = $weight;
 
         return $this;
     }

@@ -1,7 +1,7 @@
 // import "./bootstrap.js";
 import "phosphor-icons";
-import "./js/entries.js";
-import "./js/sales.js";
+// import "./js/entries.js";
+// import "./js/sales.js";
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -10,4 +10,4 @@ import "./js/sales.js";
  */
 import "./styles/css/app.css";
 
-console.log("This log comes from assets/app.js - welcome to AssetMapper! 🎉");
+// console.log("This log comes from assets/app.js - welcome to AssetMapper! 🎉");
