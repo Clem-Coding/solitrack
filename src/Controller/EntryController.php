@@ -33,8 +33,9 @@ final class EntryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $categoryId = $form->get('categoryId')->getData();
-            $categoryId = (int) $categoryId;
+            // $categoryId = (int) $categoryId;
             $category = $categoryRepository->find($categoryId);
+            dd($category);
 
             if (empty($category)) {
                 // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');

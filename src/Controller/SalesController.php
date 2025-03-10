@@ -26,11 +26,25 @@ final class SalesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            dd($salesItem);
-            $session = $request->getSession();
-            $session->set('sales_item', $salesItem);
+            $categoryId = $form->get('categoryId')->getData();
+            $category = $categoryRepository->find($categoryId);
+            $salesItem->setCategory($category);
 
-            // Rediriger vers le CartController
+
+            // On crée le panier ici
+            $request->getSession()->set('sales_cart', [
+                'category' => $category->getName(),
+                'weight' => $salesItem->getWeight(),
+                'price' => $salesItem->getPrice(),
+                'quantity' => $salesItem->getQuantity(),
+            ]);
+
+
+
+
+            $this->addFlash('success', 'Article ajouté au panier !');
+
+            // On redirige vers le cart controller où on effectura 
             return $this->redirectToRoute('app_cart_add');
         }
 

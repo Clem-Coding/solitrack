@@ -24,15 +24,15 @@ class SalesItem
     #[ORM\JoinColumn(nullable: false)]
     private ?sale $sale = null;
 
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank(groups: ['category_1', "category_2", "category_3"])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $weight = null;
 
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $price = null;
 
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     #[ORM\Column(nullable: true)]
     private ?int $quantity = null;
 

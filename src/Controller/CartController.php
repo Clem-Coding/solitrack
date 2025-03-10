@@ -22,7 +22,7 @@ final class CartController extends AbstractController
 
 
 
-        $this->addFlash('success', 'Article ajouté au panier !');
+
         dd($session);
     }
 }
