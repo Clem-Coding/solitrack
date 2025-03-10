@@ -41,8 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", handleFormSubmit);
 
   // LOGS
-  // console.log(buttons);
-  // console.log(errorMessage);
+  console.log(buttons);
 });
 
 //A faire plus tard avec des classes .active en css

@@ -1,22 +1,22 @@
-document.addEventListener("DOMContentLoaded", (event) => {
-  // CONSTANTS
+// document.addEventListener("DOMContentLoaded", (event) => {
+//   // CONSTANTS
 
-  const salesSection = document.querySelector("#sales-section");
-  console.log(salesSection);
+//   const salesSection = document.querySelector("#sales-section");
+//   console.log(salesSection);
 
-  //   const buttons = document.querySelectorAll("#sales-section .category-button");
-  //   if (salesSection) {
-  const salesButtons = salesSection.querySelectorAll(".category-button");
-  //   }
+//   //   const buttons = document.querySelectorAll("#sales-section .category-button");
+//   //   if (salesSection) {
+//   const salesButtons = salesSection.querySelectorAll(".category-button");
+//   //   }
 
-  //   console.log(buttons);
+//   //   console.log(buttons);
 
-  // FUNCTIONS
+//   // FUNCTIONS
 
-  // EVENT LISTENERS
+//   // EVENT LISTENERS
 
-  //LOGS
-  if (salesSection) {
-    console.log("les boutons", salesButtons);
-  }
-});
+//   //LOGS
+//   if (salesSection) {
+//     console.log("les boutons", salesButtons);
+//   }
+// });
