@@ -28,14 +28,21 @@
       {# <div>{% include 'partials/flash.html.twig' %}</div> #}
       {{ form_end(form) }}
     </article>
-    <article>
+    {# <article>
       <h2>Panier</h2>
+      <div id="cart-container">
+       
+      </div>
 
       <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
+    </article> #}
 
-      {# prettier-ignore #}
-      {# <a href="{{ path('app_cart_add', { 'id': salesItem.id }) }}">Passer à la caisse</a> #}
-    </article>
+    <section aria-labelledby="cart-heading">
+      <h2 id="cart-heading">Panier</h2>
+      <ul id="cart-container"></ul>
+
+      <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
+    </section>
   </main>
 {% endblock %}
 

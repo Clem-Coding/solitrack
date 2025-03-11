@@ -30,7 +30,6 @@ final class CartController extends AbstractController
 
 
         $session->set('sales_cart', $salesCart);
-        dd($session->get('sales_cart'));
     }
 
 

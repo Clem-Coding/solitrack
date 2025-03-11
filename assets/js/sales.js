@@ -1,93 +1,149 @@
-document.addEventListener("DOMContentLoaded", (event) => {
-  // CONSTANTES
+document.addEventListener("DOMContentLoaded", () => {
+  //CONSTANTS
   const buttons = document.querySelectorAll("#sales-section .category-button");
   const categoryInput = document.getElementById("sales_item_categoryId");
   const errorMessage = document.getElementById("error-message");
   const form = document.querySelector("form");
-  const weightInputWrapper = document.getElementById("weight-input");
-  const priceInputWrapper = document.getElementById("price-input");
-  const quantityInputWrapper = document.getElementById("quantity-input");
+  const cartContainer = document.getElementById("cart-container");
 
-  // Sélectionner les inputs
-  const weightInput = weightInputWrapper.querySelector("input");
-  const priceInput = priceInputWrapper.querySelector("input");
-  const quantityInput = quantityInputWrapper.querySelector("input");
+  const inputWrappers = {
+    weight: document.getElementById("weight-input"),
+    price: document.getElementById("price-input"),
+    quantity: document.getElementById("quantity-input"),
+  };
+
+  const inputs = {
+    weight: inputWrappers.weight.querySelector("input"),
+    price: inputWrappers.price.querySelector("input"),
+    quantity: inputWrappers.quantity.querySelector("input"),
+  };
 
   const addCartButton = document.getElementById("add-cart-button");
 
-  // Fonction pour définir la catégorie dans le champ caché
+  //FUNCTIONS
+
   function setCategory(category) {
-    categoryInput.setAttribute("value", category);
+    categoryInput.value = category;
   }
 
-  // Fonction pour réinitialiser la couleur des boutons
-  function resetButtonColors(buttons) {
-    buttons.forEach((button) => {
-      button.style.backgroundColor = "";
-    });
+  function resetButtonColors() {
+    buttons.forEach((button) => (button.style.backgroundColor = ""));
   }
 
-  // Fonction qui gère le clic sur les boutons des catégories
   function handleButtonClick(event) {
     const clickedButton = event.target;
     setCategory(clickedButton.getAttribute("data-category"));
-    resetButtonColors(buttons);
+    resetButtonColors();
     clickedButton.style.backgroundColor = "#FFA500";
+    handleCategoryChange();
   }
 
-  // Fonction pour gérer la soumission du formulaire
-  function handleFormSubmit(event) {
-    // Vérifie si une catégorie a été sélectionnée
-    if (!categoryInput.value) {
-      event.preventDefault();
-      errorMessage.style.display = "block";
-    } else {
-      errorMessage.style.display = "none";
-    }
-  }
-
-  // Fonction pour gérer le changement de catégorie
   function handleCategoryChange() {
     const category = categoryInput.value;
+    resetInputs();
 
-    // Réinitialisation des valeurs des champs
-    weightInput.value = "";
-    priceInput.value = "";
-    quantityInput.value = "";
-
-    // Retirer l'attribut "required" de tous les champs par défaut
-    weightInput.removeAttribute("required");
-    priceInput.removeAttribute("required");
-    quantityInput.removeAttribute("required");
-
-    addCartButton.classList.remove("hidden");
-    priceInputWrapper.classList.add("hidden");
-    quantityInputWrapper.classList.add("hidden");
-    weightInputWrapper.classList.add("hidden");
-
-    // Catégorie 1 ou 2 : Afficher Poids
-    if (category === "1" || category === "2") {
-      weightInputWrapper.classList.remove("hidden");
-      weightInput.setAttribute("required", "true");
-    }
-    // Catégorie 3 : Afficher Poids et Prix
-    else if (category === "3") {
-      weightInputWrapper.classList.remove("hidden");
-      priceInputWrapper.classList.remove("hidden");
-      weightInput.setAttribute("required", "true");
-      priceInput.setAttribute("required", "true");
-    } else if (category === "4") {
-      quantityInputWrapper.classList.remove("hidden");
-      quantityInput.setAttribute("required", "true");
+    switch (category) {
+      case "1":
+      case "2":
+        showInput(inputs.weight, inputWrappers.weight);
+        break;
+      case "3":
+        showInput(inputs.weight, inputWrappers.weight);
+        showInput(inputs.price, inputWrappers.price);
+        break;
+      case "4":
+        showInput(inputs.quantity, inputWrappers.quantity);
+        break;
     }
   }
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      handleButtonClick(event);
-      handleCategoryChange();
-    });
-  });
+  function resetInputs() {
+    for (const key in inputs) {
+      inputs[key].value = "";
+      inputs[key].removeAttribute("required");
+      inputWrappers[key].classList.add("hidden");
+    }
+    addCartButton.classList.remove("hidden");
+  }
 
+  function showInput(input, wrapper) {
+    input.setAttribute("required", "true");
+    wrapper.classList.remove("hidden");
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+
+    if (!categoryInput.value) {
+      errorMessage.style.display = "block";
+      return;
+    }
+
+    errorMessage.style.display = "none";
+
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          updateCartDisplay(data.cart);
+          console.log("Article ajouté au panier:", data.cart);
+        } else {
+          console.error("Échec de l'ajout au panier:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur:", error);
+      });
+  }
+
+  function updateCartDisplay(cart) {
+    const cartContainer = document.getElementById("cart-container");
+    cartContainer.innerHTML = ""; // ??
+
+    cart.forEach((item) => {
+      const itemElement = document.createElement("li");
+      itemElement.setAttribute("role", "listitem");
+
+      const articleElement = document.createElement("article");
+
+      const categoryElement = document.createElement("h3");
+      categoryElement.textContent = item.category;
+      articleElement.appendChild(categoryElement);
+
+      if (item.quantity !== null) {
+        const quantityElement = document.createElement("p");
+        quantityElement.innerHTML = `Quantité : <span>${item.quantity}</span>`;
+        articleElement.appendChild(quantityElement);
+      }
+
+      if (item.weight !== null) {
+        const weightElement = document.createElement("p");
+        weightElement.innerHTML = `Poids : <span>${item.weight}kg</span>`;
+        articleElement.appendChild(weightElement);
+      }
+
+      if (item.price !== null) {
+        const priceElement = document.createElement("p");
+        priceElement.innerHTML = `Prix : <span>${item.price}€</span>`;
+        articleElement.appendChild(priceElement);
+      }
+
+      itemElement.appendChild(articleElement);
+
+      cartContainer.appendChild(itemElement);
+    });
+  }
+
+  // EVENT LISTENERS
+
+  buttons.forEach((button) => button.addEventListener("click", handleButtonClick));
   form.addEventListener("submit", handleFormSubmit);
 });

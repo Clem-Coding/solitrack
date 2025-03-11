@@ -49,12 +49,21 @@ final class SalesController extends AbstractController
 
             $session->set('sales_cart', $salesCart);
 
+            // Si c'est une requête AJAX, on retourne directement les données du panier
+            if ($request->isXmlHttpRequest()) {
+                return $this->json([
+                    'status' => 'success',
+                    'cart' => $salesCart
+                ]);
+            }
+
+
 
 
             $this->addFlash('success', 'Article ajouté au panier !');
 
 
-            return $this->redirectToRoute('app_cart_add');
+            return $this->redirectToRoute('app_sales');
         }
 
         return $this->render('sales/index.html.twig', [

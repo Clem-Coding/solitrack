@@ -36,44 +36,11 @@ class PriceManagement
 
         // The current price is 1€/kg. Update these values if the pricing rules change.
         $pricePerKg = 1;
-        $minimumWeightThreshold = 1;
 
+        $weight = $salesItem->getWeight();
 
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request) {
-            $session = $request->getSession();
-            $salesCart = $session->get('sales_cart', []);
-        }
+        $totalPrice = $weight * $pricePerKg;
 
-
-        $totalWeightForCategory1And2 = 0;
-
-        if (!empty($salesCart)) {
-
-
-            foreach ($salesCart as $item) {
-                if (isset($item['category']) && isset($item['weight'])) {
-                    if ($item['category'] === 'Vêtements vrac' || $item['category'] === 'Autres articles vrac') {
-                        $weight = (float) $item['weight'];
-                        $totalWeightForCategory1And2 += $weight;
-                    }
-                }
-            }
-        } else {
-            $totalWeightForCategory1And2 = $salesItem->getWeight();
-        }
-
-        $totalPrice = 0;
-
-        if ($salesItem->getCategory() && $salesItem->getCategory()->getId() == 1 || $salesItem->getCategory()->getId() == 2) {
-
-            $WeightForEachCategory = $salesItem->getWeight();
-
-            if ($totalWeightForCategory1And2 >= $minimumWeightThreshold) {
-                $totalPrice = $WeightForEachCategory * $pricePerKg;
-            }
-
-            $salesItem->setPrice($this->roundDownToTenth($totalPrice));
-        }
+        $salesItem->setPrice($this->roundDownToTenth($totalPrice));
     }
 }
