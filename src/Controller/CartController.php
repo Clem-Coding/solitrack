@@ -21,7 +21,7 @@ final class CartController extends AbstractController
     public function add(SessionInterface $session)
     {
 
-        $salesCart = $session->get('sales_cart', []);
+        $salesCart = $session->get('shopping_cart', []);
 
         // foreach ($salesCart as $salesItem) {
 
@@ -29,15 +29,15 @@ final class CartController extends AbstractController
         // }
 
 
-        $session->set('sales_cart', $salesCart);
+        $session->set('shopping_cart', $salesCart);
     }
 
 
     #[Route('/cart/clear', name: 'app_cart_clear')]
     public function clearCart(SessionInterface $session)
     {
-        if ($session->has('sales_cart')) {
-            $session->remove('sales_cart');
+        if ($session->has('shopping_cart')) {
+            $session->remove('shopping_cart');
             $this->addFlash('success', 'Le panier a été vidé.');
         }
 

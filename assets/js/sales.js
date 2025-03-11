@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     errorMessage.style.display = "none";
 
     const formData = new FormData(form);
-
+    console.log("Form Data:", formData);
     fetch(form.action, {
       method: "POST",
       body: formData,
@@ -90,7 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "X-Requested-With": "XMLHttpRequest",
       },
     })
-      .then((response) => response.json())
+      .then((response) => {
+        // Log de la réponse brute pour voir ce que tu reçois
+        console.log("Réponse brute du serveur:", response);
+
+        return response.json(); // Ensuite on transforme la réponse en JSON
+      })
       .then((data) => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
@@ -99,8 +104,14 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("Échec de l'ajout au panier:", data.message);
         }
       })
-      .catch((error) => {
-        console.error("Erreur:", error);
+      .catch(async (error) => {
+        // console.error("Erreur JS:", error);
+        if (error instanceof Response) {
+          const text = await error.text(); // Lire le texte brut
+          console.error("Réponse brute du serveur:", text); // Affiche la vraie erreur PHP
+        } else {
+          console.error("Erreur non liée à une réponse HTTP");
+        }
       });
   }
 
@@ -109,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cartContainer.innerHTML = ""; // ??
 
     cart.forEach((item) => {
+      console.log("l'item", item);
       const itemElement = document.createElement("li");
       itemElement.setAttribute("role", "listitem");
 

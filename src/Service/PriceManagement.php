@@ -14,12 +14,20 @@ class PriceManagement
     public function setDrinkPrice(SalesItem $salesItem): void
     {
 
-        if ($salesItem->getCategory() && $salesItem->getCategory()->getId() == 4) {
+        $category = $salesItem->getCategory()->getId();
+        $quantity = $salesItem->getQuantity();
+
+
+
+        if ($category && $category === 4) {
 
             // The price per drink unit is set at 1€. Update this value if the pricing rules change.
             $drinkUnitPrice = 1;
 
-            $salesItem->setPrice($drinkUnitPrice);
+            $price = $drinkUnitPrice * $quantity;
+
+
+            $salesItem->setPrice($price);
         }
     }
 
@@ -33,14 +41,21 @@ class PriceManagement
 
     public function setWeightBasedPrice(SalesItem $salesItem): void
     {
+        $category = $salesItem->getCategory()->getId();
+
 
         // The current price is 1€/kg. Update these values if the pricing rules change.
         $pricePerKg = 1;
 
+        $totalPrice = 789;
+
         $weight = $salesItem->getWeight();
 
-        $totalPrice = $weight * $pricePerKg;
+        if ($category && ($category === 1 || $category === 2)) {
 
-        $salesItem->setPrice($this->roundDownToTenth($totalPrice));
+            $totalPrice = $weight * $pricePerKg;
+
+            $salesItem->setPrice($this->roundDownToTenth($totalPrice));
+        }
     }
 }

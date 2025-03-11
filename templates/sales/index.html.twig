@@ -7,14 +7,15 @@
 {% block body %}
   <main>
     <h1>Les ventes</h1>
-    <article id="sales-section">
+    <section id="sales-section">
+      <h2>Ajout des articles</h2>
       <p>Quel article souhaitez-vous ajouter?</p>
       <button class="category-button" data-category="1">Vêtements</button>
       <button class="category-button" data-category="2">Autres articles</button>
       <button class="category-button" data-category="3">Article étiqueté</button>
       <button class="category-button" data-category="4">Boisson</button>
-    </article>
-    <article>
+    </section>
+    <section>
       <h2>Formulaire de Saisie</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
@@ -27,21 +28,14 @@
       {# attention virer le style display:none pour le mettre en scss à part #}
       {# <div>{% include 'partials/flash.html.twig' %}</div> #}
       {{ form_end(form) }}
-    </article>
-    {# <article>
-      <h2>Panier</h2>
-      <div id="cart-container">
-       
-      </div>
-
-      <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
-    </article> #}
+    </section>
 
     <section aria-labelledby="cart-heading">
       <h2 id="cart-heading">Panier</h2>
       <ul id="cart-container"></ul>
 
       <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
+      <form action="{{ path('app_checkout') }}" method="post"><button type="submit">Passer à la caisse</button></form>
     </section>
   </main>
 {% endblock %}
