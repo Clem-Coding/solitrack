@@ -31,6 +31,8 @@
     <article>
       <h2>Panier</h2>
 
+      <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
+
       {# prettier-ignore #}
       {# <a href="{{ path('app_cart_add', { 'id': salesItem.id }) }}">Passer à la caisse</a> #}
     </article>

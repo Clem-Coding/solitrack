@@ -23,6 +23,18 @@ final class CartController extends AbstractController
 
 
 
-        dd($session);
+        dd($session->get('sales_cart'));
+    }
+
+
+    #[Route('/cart/clear', name: 'app_cart_clear')]
+    public function clearCart(SessionInterface $session)
+    {
+        if ($session->has('sales_cart')) {
+            $session->remove('sales_cart');
+            $this->addFlash('success', 'Le panier a été vidé.');
+        }
+
+        return $this->redirectToRoute('app_sales');
     }
 }

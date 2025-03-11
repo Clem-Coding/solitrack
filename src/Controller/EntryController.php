@@ -35,7 +35,7 @@ final class EntryController extends AbstractController
             $categoryId = $form->get('categoryId')->getData();
             // $categoryId = (int) $categoryId;
             $category = $categoryRepository->find($categoryId);
-            dd($category);
+
 
             if (empty($category)) {
                 // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
