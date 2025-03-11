@@ -36,6 +36,7 @@ final class SalesController extends AbstractController
             $salesItem->setCategory($category);
 
             $priceManagement->setDrinkPrice($salesItem);
+            $priceManagement->setWeightBasedPrice($salesItem);
 
             $salesCart = $session->get('sales_cart', []);
 
