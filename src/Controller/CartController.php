@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\SalesItem;
+use App\Service\PriceManagement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -20,8 +21,15 @@ final class CartController extends AbstractController
     public function add(SessionInterface $session)
     {
 
+        $salesCart = $session->get('sales_cart', []);
+
+        // foreach ($salesCart as $salesItem) {
+
+        //     $priceManagement->setDrinkPrice($salesItem);
+        // }
 
 
+        $session->set('sales_cart', $salesCart);
 
         dd($session->get('sales_cart'));
     }

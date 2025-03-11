@@ -6,6 +6,7 @@ use App\Entity\SalesItem;
 use App\Form\SalesItemType;
 use App\Repository\CategoryRepository;
 use App\Repository\SalesItemRepository;
+use App\Service\PriceManagement;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ final class SalesController extends AbstractController
 
 {
     #[Route('/ventes', name: 'app_sales', methods: ['GET', 'POST'])]
-    public function index(Request $request, CategoryRepository $categoryRepository, SessionInterface $session, SalesItemRepository $salesItemRepository): Response
+    public function index(Request $request, CategoryRepository $categoryRepository, SessionInterface $session, PriceManagement $priceManagement): Response
     {
 
         $salesItem = new SalesItem();
@@ -34,9 +35,17 @@ final class SalesController extends AbstractController
             $category = $categoryRepository->find($categoryId);
             $salesItem->setCategory($category);
 
-            // Récupérer les éléments existants dans le panier
+            $priceManagement->setDrinkPrice($salesItem);
+
             $salesCart = $session->get('sales_cart', []);
-            $salesCart[] = $salesItem;
+
+            $salesCart[] = [
+                'category' => $category->getName(),
+                'weight' => $salesItem->getWeight(),
+                'price' => $salesItem->getPrice(),
+                'quantity' => $salesItem->getQuantity(),
+            ];
+
             $session->set('sales_cart', $salesCart);
 
 
