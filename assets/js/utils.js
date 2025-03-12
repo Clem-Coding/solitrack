@@ -7,3 +7,11 @@ export function formatNumber(num) {
 
   return `${formattedInteger},${decimalPart}`;
 }
+
+export function formatInputValue(input) {
+  input.value = input.value
+    .replace(/[^\d.]/g, "") // Conserve uniquement les chiffres et le point
+    .replace(/(^[\d]{4})[\d]/g, "$1") // Pas plus de 4 chiffres au début
+    .replace(/(\..*)\./g, "$1") // Un seul point décimal autorisé
+    .replace(/(\.[\d]{2})./g, "$1"); // Pas plus de 2 chiffres après le point décimal
+}

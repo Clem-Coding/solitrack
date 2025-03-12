@@ -1,4 +1,4 @@
-import { formatNumber } from "./utils.js";
+import { formatNumber, formatInputValue } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // CONSTANTES
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return Number(remainingAmountElement.textContent.replace(",", "."));
   }
 
-  function setRemainingAmount(amount) {
+  function formatRemainingAmount(amount) {
     remainingAmountElement.textContent = formatNumber(amount);
   }
 
@@ -33,11 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return totalPaid;
   }
 
+  // ici on attribue au dataset initial -> la valeur total du panier
+  remainingAmountElement.dataset.initial = remainingAmountElement.textContent;
+
   function updateTotalAmount() {
     const totalPaid = getTotalPaid();
-    const initialTotal = Number(remainingAmountElement.dataset.initial.replace(",", "."));
+
+    console.log("total payé!!", totalPaid);
+    const initialTotal = Number(remainingAmountElement.dataset.initial);
+    console.log("intiital total???", initialTotal);
     const remaining = Math.max(initialTotal - totalPaid, 0);
-    setRemainingAmount(remaining);
+    console.log("restant à payer wesh", remaining);
+    formatRemainingAmount(remaining);
   }
 
   function addPaymentInput(amount, method) {
@@ -45,11 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
     inputGroup.classList.add("payment-group");
 
     const label = document.createElement("label");
-    label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
+    // label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
 
     const paymentInput = document.createElement("input");
-    paymentInput.type = "number";
+    paymentInput.type = "text";
     paymentInput.classList.add("payment-input");
+
     paymentInput.value = amount;
     paymentInput.min = 0;
 
@@ -62,7 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
       updateTotalAmount();
     });
 
-    paymentInput.addEventListener("input", () => {
+    paymentInput.addEventListener("input", (event) => {
+      console.log("hello l'input", paymentInput.value);
+      formatInputValue(paymentInput);
       updateTotalAmount();
     });
 
@@ -82,8 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  remainingAmountElement.dataset.initial = remainingAmountElement.textContent.replace(",", ".");
-
+  console.log("LALALALALA", remainingAmountElement.dataset.initial);
   // EVENT LISTENERS
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
