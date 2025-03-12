@@ -5,10 +5,48 @@
 {% endblock %}
 
 {% block body %}
-  <main><h1>La caisse</h1></main>
+  <main>
+    <h1>La caisse</h1>
+
+    <section>
+      <h2>Récapitulatif</h2>
+      {% for item in shopping_cart %}
+        <article>
+          {% if item.category %}
+            <h3>{{ item.category }}</h3>
+          {% endif %}
+          {% if item.weight %}
+            <p>Poids : {{ item.weight }} kg</p>
+          {% endif %}
+          {% if item.quantity %}
+            <p>Quantity : {{ item.quantity }}</p>
+          {% endif %}
+          {% if item.price %}
+            <p>Price: {{ item.price }} €</p>
+          {% endif %}
+        </article>
+      {% else %}
+        <p>Le panier est vide.</p>
+      {% endfor %}
+      <p>Total : {{ total }} €</p>
+      <button onclick="window.history.back()">Revenir en arrière</button>
+    </section>
+    <section>
+      <h2>Paiement</h2>
+
+      <button type="button" id="payment-button" data-method="card">Carte</button>
+      <button type="button" id="payment-button" data-method="cash">Espèce</button>
+
+      <div id="payment-methods"></div>
+
+      <p>Restant à payer : <span id="remaining">{{ total }}</span> €</p>
+
+      <button type="button" onclick="finalizeTransaction()">Finaliser la transaction</button>
+    </section>
+  </main>
 {% endblock %}
 
-{# {% block javascripts %}
+{% block javascripts %}
   {{ parent() }}
-  <script src="{{ asset('js/sales.js') }}"></script>
-{% endblock %} #}
+  <script src="{{ asset('js/confirm_order.js') }}"></script>
+{% endblock %}

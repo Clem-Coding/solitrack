@@ -26,27 +26,18 @@ final class SalesController extends AbstractController
         $salesItem = new SalesItem();
 
         $form = $this->createForm(SalesItemType::class, $salesItem);
-
         $form->handleRequest($request);
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $categoryId = $form->get('categoryId')->getData();
             $category = $categoryRepository->find($categoryId);
             $salesItem->setCategory($category);
-            // dump($categoryId); // Vérifie l'ID de la catégorie récupéré depuis le formulaire
-            // dump($category);
-
 
             $priceManagement->setDrinkPrice($salesItem);
             $priceManagement->setWeightBasedPrice($salesItem);
 
-
             $shoppingCart = $session->get('shopping_cart', []);
-
-
 
             $shoppingCart[] = [
                 'category' => $category->getName(),
@@ -55,24 +46,18 @@ final class SalesController extends AbstractController
                 'quantity' => $salesItem->getQuantity(),
             ];
 
-            dump($shoppingCart);
 
             $session->set('shopping_cart', $shoppingCart);
 
 
-            // Si c'est une requête AJAX, on retourne directement les données du panier
             if ($request->isXmlHttpRequest()) {
-
-
                 return $this->json([
                     'status' => 'success',
                     'cart' => $shoppingCart
                 ]);
             }
 
-
             $this->addFlash('success', 'Article ajouté au panier !');
-
 
             return $this->redirectToRoute('app_sales');
         }

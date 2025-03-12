@@ -58,4 +58,14 @@ class PriceManagement
             $salesItem->setPrice($this->roundDownToTenth($totalPrice));
         }
     }
+
+
+
+
+    public function getTotal(): float
+    {
+        $session = $this->requestStack->getSession();
+        $shoppingCart = $session->get('shopping_cart', []);
+        return array_sum(array_column($shoppingCart, 'price'));
+    }
 }

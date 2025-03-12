@@ -91,10 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     })
       .then((response) => {
-        // Log de la réponse brute pour voir ce que tu reçois
-        console.log("Réponse brute du serveur:", response);
+        // console.log("Réponse brute du serveur:", response);
 
-        return response.json(); // Ensuite on transforme la réponse en JSON
+        return response.json();
       })
       .then((data) => {
         if (data.status === "success") {
@@ -107,8 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(async (error) => {
         // console.error("Erreur JS:", error);
         if (error instanceof Response) {
-          const text = await error.text(); // Lire le texte brut
-          console.error("Réponse brute du serveur:", text); // Affiche la vraie erreur PHP
+          const text = await error.text();
+          console.error("Réponse brute du serveur:", text);
         } else {
           console.error("Erreur non liée à une réponse HTTP");
         }
@@ -120,7 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cartContainer.innerHTML = ""; // ??
 
     cart.forEach((item) => {
-      console.log("l'item", item);
+      const uniqueId = `${item.category}-${item.weight}-${item.price}`; //c'est nul comme manière de faire
+      console.log("l'item: ", uniqueId);
       const itemElement = document.createElement("li");
       itemElement.setAttribute("role", "listitem");
 
@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       categoryElement.textContent = item.category;
       articleElement.appendChild(categoryElement);
 
+      //mettre des else if
       if (item.quantity !== null) {
         const quantityElement = document.createElement("p");
         quantityElement.innerHTML = `Quantité : <span>${item.quantity}</span>`;
@@ -148,10 +149,43 @@ document.addEventListener("DOMContentLoaded", () => {
         articleElement.appendChild(priceElement);
       }
 
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Supprimer";
+      deleteButton.setAttribute("data-id", uniqueId);
+      deleteButton.addEventListener("click", handleDeleteItem);
+      articleElement.appendChild(deleteButton);
       itemElement.appendChild(articleElement);
-
       cartContainer.appendChild(itemElement);
     });
+  }
+
+  function handleDeleteItem(event) {
+    const uniqueId = event.target.getAttribute("data-id");
+    console.log("Index de l'article à supprimer:", uniqueId);
+
+    fetch("/cart/remove-item", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({ id: uniqueId }),
+    })
+      .then((response) => {
+        console.log("Réponse brute:", response);
+        return response.json();
+      })
+
+      .then((data) => {
+        if (data.status === "success") {
+          updateCartDisplay(data.cart);
+        } else {
+          console.error("Échec de la suppression de l'article:", data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression de l'article:", error);
+      });
   }
 
   // EVENT LISTENERS
