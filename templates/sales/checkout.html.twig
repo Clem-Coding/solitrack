@@ -60,7 +60,9 @@
         <h3 id="remaining-amount-heading" class="">Boutons d'action</h3>
         <button>Garder la monnaie</button>
         <button>Générer un reçu</button>
-        <button>Finaliser la transaction</button>
+        <form action="{{ path('app_sale_register') }}" method="post">
+          <button type="submit">Finaliser la transaction</button>
+        </form>
       </div>
     </section>
   </main>

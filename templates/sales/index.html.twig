@@ -31,11 +31,14 @@
     </section>
 
     <section aria-labelledby="cart-heading">
+      <div>{% include 'partials/flash.html.twig' %}</div>
       <h2 id="cart-heading">Panier</h2>
       <ul id="cart-container"></ul>
 
       <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
-      <form action="{{ path('app_checkout') }}" method="post"><button type="submit">Passer à la caisse</button></form>
+      <form action="{{ path('app_sale_checkout') }}" method="post">
+        <button type="submit">Passer à la caisse</button>
+      </form>
     </section>
   </main>
 {% endblock %}
