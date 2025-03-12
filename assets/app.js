@@ -1,5 +1,6 @@
 // import "./bootstrap.js";
 import "phosphor-icons";
+import "./js/utils.js";
 // import "./js/entries.js";
 // import "./js/sales.js";
 /*

@@ -1,8 +1,9 @@
 export function formatNumber(num) {
-  return num.toFixed(2).replace(".", ",");
-}
+  console.log("hello la fonction qui formatte le nombre!");
 
-export function addZero(num) {
-  console.log("coucou");
-  //   return Number(num.toString() + "0");
+  const fixedNumber = num.toFixed(2);
+  const [integerPart, decimalPart] = fixedNumber.split(".");
+  const formattedInteger = new Intl.NumberFormat("fr-FR").format(integerPart);
+
+  return `${formattedInteger},${decimalPart}`;
 }

@@ -1,15 +1,28 @@
-import { formatNumber } from "./utils";
+import { formatNumber } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  //CONSTANTS
+  // CONSTANTS
 
-  const remainingAmount = document.querySelector("#remaining");
+  const dataPrice = document.querySelectorAll(".data-price");
+
+  const remainingAmount = Number(document.querySelector(".remaining").textContent);
+  console.log("le montant restant", remainingAmount);
+
+  // FUNCTIONS
+
+  function formatPrices(dataPrice) {
+    dataPrice.forEach((data) => {
+      const toNumber = Number(data.textContent);
+      const formattedPrice = formatNumber(toNumber);
+      data.textContent = formattedPrice;
+    });
+  }
+
   const paymentButtons = document.querySelectorAll("#payment-button");
-  console.log(remainingAmount.textContent);
 
   //FUNCTIONS
   function handlePaymentSelection(method) {
-    let amount = Number(remainingAmount.textContent);
+    let amount = remainingAmount;
 
     if (method === "card" || method === "cash") {
       addPaymentInput(amount);
@@ -19,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addPaymentInput(amount) {
-    console.log("addPayment");
     const inputGroup = document.createElement("div");
 
     inputGroup.classList.add("payment-input-group");
@@ -60,4 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       handlePaymentSelection(paymentMethod);
     });
   });
+
+  formatPrices(dataPrice);
 });

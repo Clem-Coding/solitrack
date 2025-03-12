@@ -22,31 +22,45 @@
             <p>Quantity : {{ item.quantity }}</p>
           {% endif %}
           {% if item.price %}
-            <p>Price: {{ item.price }} €</p>
+            <p>Price: <span class="data-price">{{ item.price }}</span> €</p>
           {% endif %}
         </article>
       {% else %}
         <p>Le panier est vide.</p>
       {% endfor %}
-      <p>Total : {{ total }} €</p>
+      <p>Total :<span class="data-price">{{ total }}</span> €</p>
       <button onclick="window.history.back()">Revenir en arrière</button>
     </section>
     <section>
       <h2>Paiement</h2>
 
-      <button type="button" id="payment-button" data-method="card">Carte</button>
-      <button type="button" id="payment-button" data-method="cash">Espèce</button>
+      <div role="group" aria-labelledby="payment-method-heading">
+        <h3 id="payment-method-heading" class="visually-hidden">Méthode de paiement</h3>
+        <button type="button" id="payment-button" data-method="card">Carte</button>
+        <button type="button" id="payment-button" data-method="cash">Espèce</button>
+      </div>
 
-      <div id="payment-methods"></div>
+      <div role="region" aria-labelledby="payments-list-heading">
+        <h3 id="payments-list-heading" class="visually-hidden">Paiements effectués</h3>
+        <ul id="payments-list">
+          <li>
+            <span>Carte bleue : 50 €</span>
+            <button type="button" aria-label="Supprimer ce paiement">Supprimer</button>
+          </li>
+        </ul>
+      </div>
 
-      <p>Restant à payer : <span id="remaining">{{ total }}</span> €</p>
-
-      <button type="button" onclick="finalizeTransaction()">Finaliser la transaction</button>
+      <div role="region" aria-labelledby="remaining-amount-heading">
+        <h3 id="remaining-amount-heading" class="visually-hidden">Restant à payer</h3>
+        <p>Restant à payer : <span class="data-price remaining">{{ total }}</span> €</p>
+      </div>
+      {# 
+      <button type="button" onclick="finalizeTransaction()">Finaliser la transaction</button> #}
     </section>
   </main>
 {% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
-  <script type="module" src="{{ asset('js/checkout.js') }}"></script>
+  <script src="{{ asset('js/checkout.js') }}" type="module"></script>
 {% endblock %}
