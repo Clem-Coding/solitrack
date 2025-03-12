@@ -1,3 +1,5 @@
+import { formatInputValue } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   // CONSTANTS
   const buttons = document.querySelectorAll("#entry-section .category-button");
@@ -11,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // FUNCTIONS
   function setCategory(category) {
     categoryInput.value = category;
-    console.log("Catégorie sélectionnée :", categoryInput.value);
   }
 
   function resetButtonColors(buttons) {
@@ -48,6 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", handleFormSubmit);
 
+  weightInput.addEventListener("input", (event) => {
+    formatInputValue(weightInput);
+  });
   // LOGS
 });
 

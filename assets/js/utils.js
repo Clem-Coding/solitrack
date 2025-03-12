@@ -1,7 +1,20 @@
-export function formatNumber(num) {
-  console.log("hello la fonction qui formatte le nombre!");
+// A faire docstrings ou JSDoc
 
+export function formatNumber(num) {
   const fixedNumber = num.toFixed(2);
+  const [integerPart, decimalPart] = fixedNumber.split(".");
+  const formattedInteger = new Intl.NumberFormat("fr-FR").format(integerPart);
+
+  return `${formattedInteger},${decimalPart}`;
+}
+
+export function formatNumberFromString(numString) {
+  const parsedNum = parseFloat(numString);
+  if (isNaN(parsedNum)) {
+    return null;
+  }
+
+  const fixedNumber = parsedNum.toFixed(2);
   const [integerPart, decimalPart] = fixedNumber.split(".");
   const formattedInteger = new Intl.NumberFormat("fr-FR").format(integerPart);
 

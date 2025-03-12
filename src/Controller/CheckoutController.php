@@ -67,20 +67,20 @@ class CheckoutController extends AbstractController
                 $salesItem->setCategory($category);
             } else {
 
-                $salesItem->setCategory(null);  // Ou une autre gestion selon ton besoin
+                $salesItem->setCategory(null);
             }
 
 
-            $salesItem->setWeight($itemData['weight'] ?? null);  // Si 'weight' est null, il restera null
-            $salesItem->setPrice($itemData['price'] ?? null);    // Idem pour 'price'
+            $salesItem->setWeight($itemData['weight'] ?? null);
+            $salesItem->setPrice($itemData['price'] ?? null);
             $salesItem->setQuantity($itemData['quantity'] ?? null);
 
-            // Ajoute l'item à la collection de salesItems de la vente
+
             $sale->addSalesItem($salesItem);
 
             $itemPrice = $salesItem->getPrice();
 
-            //if tip condition pour ne pas ajouter le poids si prix libre donné
+            //A faire : if tip condition pour ne pas ajouter le poids si prix libre donné
             if ($itemPrice !== null) {
                 $totalPrice += $itemPrice;
             }

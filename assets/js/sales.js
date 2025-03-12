@@ -1,3 +1,5 @@
+import { formatInputValue, formatNumberFromString } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   //CONSTANTS
   const buttons = document.querySelectorAll("#sales-section .category-button");
@@ -144,8 +146,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (item.price !== null) {
+        const formattedPrice = formatNumberFromString(item.price);
         const priceElement = document.createElement("p");
-        priceElement.innerHTML = `Prix : <span>${item.price}€</span>`;
+        priceElement.innerHTML = `Prix : <span>${formattedPrice}€</span>`;
         articleElement.appendChild(priceElement);
       }
 
@@ -192,4 +195,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => button.addEventListener("click", handleButtonClick));
   form.addEventListener("submit", handleFormSubmit);
+
+  Object.values(inputs).forEach((input) => {
+    input.addEventListener("input", () => {
+      formatInputValue(input);
+    });
+  });
 });
