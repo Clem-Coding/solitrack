@@ -11,7 +11,12 @@
     <section>
       <h2>Récapitulatif</h2>
       {% for item in shopping_cart %}
-        <article>
+        <article
+          data-category="{{ item.category }}"
+          data-weight="{{ item.weight }}"
+          data-quantity="{{ item.quantity }}"
+          data-price="{{ item.price }}"
+        >
           {% if item.category %}
             <h3>{{ item.category }}</h3>
           {% endif %}
@@ -60,8 +65,8 @@
         <h3 id="remaining-amount-heading" class="">Boutons d'action</h3>
         <button>Garder la monnaie</button>
         <button>Générer un reçu</button>
-        <form action="{{ path('app_sale_register') }}" method="post">
-          <button type="submit">Finaliser la transaction</button>
+        <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
+          <button type="submit" class="register-sale-button">Finaliser la transaction</button>
         </form>
       </div>
     </section>

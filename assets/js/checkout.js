@@ -6,6 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const remainingAmountElement = document.querySelector(".remaining");
   const paymentButtons = document.querySelectorAll(".payment-button");
   const paymentsList = document.querySelector(".payments-list");
+  const registerSaleButton = document.querySelector(".register-sale-button");
+  const paymentForm = document.querySelector(".payment-form");
+  const salesItems = document.querySelectorAll("article");
+
+  // console.log(paymentForm);
 
   // FONCTIONS
 
@@ -107,7 +112,59 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function preventTransactionSubmission(event) {
+    const remainingAmount = getRemainingAmount(); // Récupère le montant restant à payer
+
+    if (remainingAmount > 0) {
+      const warningMessage = document.createElement("p");
+      warningMessage.textContent = "Le montant restant doit être réglé avant de finaliser la transaction.";
+
+      paymentForm.appendChild(warningMessage);
+      event.preventDefault();
+    }
+  }
+
+  function checkUnlabeledItemsWeight() {
+    let totalWeight = 0;
+
+    salesItems.forEach((item) => {
+      const category = item.dataset.category;
+      const weight = item.dataset.weight;
+
+      if (category === "Vêtements vrac" || category === "Autres articles vrac") {
+        totalWeight += Number(weight);
+      }
+    });
+
+    if (totalWeight < 1) {
+      const label = document.createElement("label");
+      label.setAttribute("for", "tip");
+      label.textContent = "Montant à payer en prix libre:";
+
+      const tipCustomerInput = document.createElement("input");
+      tipCustomerInput.type = "text";
+      tipCustomerInput.name = "tip";
+      tipCustomerInput.id = "tip";
+      tipCustomerInput.placeholder = "Entrez un montant";
+
+      tipCustomerInput.addEventListener("input", () => {
+        formatInputValue(tipCustomerInput);
+        const remainingAmount = getRemainingAmount();
+        const enteredAmount = Number(tipCustomerInput.value);
+        console.log(enteredAmount);
+        if (enteredAmount >= remainingAmount) {
+          remainingAmountElement.textContent = "0,00";
+          // remainingAmountElement.dataset.initial = "0";
+        } // else à continuer pour réafficher le prix initial
+      });
+
+      paymentForm.appendChild(label);
+      paymentForm.appendChild(tipCustomerInput);
+    }
+  }
+
   // EVENT LISTENERS
+
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       const paymentMethod = event.target.dataset.method;
@@ -116,4 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   formatPrices(dataPrice);
+
+  registerSaleButton.addEventListener("click", (event) => {
+    preventTransactionSubmission(event);
+    checkUnlabeledItemsWeight();
+  });
 });
