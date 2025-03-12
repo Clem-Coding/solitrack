@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // CONSTANTS
 
   const dataPrice = document.querySelectorAll(".data-price");
-
   const remainingAmount = Number(document.querySelector(".remaining").textContent);
-  console.log("le montant restant", remainingAmount);
+  const paymentButtons = document.querySelectorAll(".payment-button");
+  const paymentsList = document.querySelector(".payments-list");
+
+  console.log(paymentsList);
 
   // FUNCTIONS
 
@@ -18,9 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const paymentButtons = document.querySelectorAll("#payment-button");
-
-  //FUNCTIONS
   function handlePaymentSelection(method) {
     let amount = remainingAmount;
 
@@ -32,42 +31,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addPaymentInput(amount) {
-    const inputGroup = document.createElement("div");
+    const inputGroup = document.createElement("li");
 
-    inputGroup.classList.add("payment-input-group");
+    // inputGroup.classList.add("payment-input-group");
+    const labelInput = document.createElement("label");
     const paymentInput = document.createElement("input");
-
     paymentInput.type = "number";
-    paymentInput.value = amount.toFixed(2).replace(".", ",");
+
     console.log("la value", paymentInput.value);
     paymentInput.classList.add("payment-input");
-    // const deleteButton = document.createElement("button");
-    // deleteButton.textContent = "Supprimer";
-    // deleteButton.classList.add("delete-button");
-    // deleteButton.addEventListener("click", () => {
-    //   paymentContainer.removeChild(inputGroup);
-    //   updateTotalAmount();
-    // });
-    // inputGroup.appendChild(paymentInput);
-    // inputGroup.appendChild(deleteButton);
-    // paymentContainer.appendChild(inputGroup);
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Supprimer";
+    deleteButton.classList.add("delete-button");
+
+    inputGroup.appendChild(paymentInput);
+    inputGroup.appendChild(deleteButton);
+    paymentsList.appendChild(inputGroup);
   }
 
   function updateTotalAmount() {
     console.log("update");
-    // const paymentInputs = document.querySelectorAll(".payment-input");
-    // let totalAmount = 0;
-
-    // paymentInputs.forEach((input) => {
-    //   totalAmount += Number(input.value);
-    // });
-
-    // remainingAmount.textContent = totalAmount.toFixed(2);
   }
 
   // EVENT LISTENERS
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
+      console.log("helloi!");
       const paymentMethod = event.target.dataset.method;
       handlePaymentSelection(paymentMethod);
     });

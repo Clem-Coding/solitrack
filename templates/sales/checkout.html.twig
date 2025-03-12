@@ -35,23 +35,23 @@
       <h2>Paiement</h2>
 
       <div role="group" aria-labelledby="payment-method-heading">
-        <h3 id="payment-method-heading" class="visually-hidden">Méthode de paiement</h3>
-        <button type="button" id="payment-button" data-method="card">Carte</button>
-        <button type="button" id="payment-button" data-method="cash">Espèce</button>
+        <h3 id="payment-method-heading" class="">Méthode de paiement</h3>
+        <button type="button" class="payment-button" data-method="card">Carte</button>
+        <button type="button" class="payment-button" data-method="cash">Espèce</button>
       </div>
 
       <div role="region" aria-labelledby="payments-list-heading">
-        <h3 id="payments-list-heading" class="visually-hidden">Paiements effectués</h3>
-        <ul id="payments-list">
-          <li>
+        <h3 id="payments-list-heading" class="">Paiements effectués</h3>
+        <ul class="payments-list">
+          {# <li>
             <span>Carte bleue : 50 €</span>
             <button type="button" aria-label="Supprimer ce paiement">Supprimer</button>
-          </li>
+          </li> #}
         </ul>
       </div>
 
       <div role="region" aria-labelledby="remaining-amount-heading">
-        <h3 id="remaining-amount-heading" class="visually-hidden">Restant à payer</h3>
+        <h3 id="remaining-amount-heading" class="">Restant à payer</h3>
         <p>Restant à payer : <span class="data-price remaining">{{ total }}</span> €</p>
       </div>
       {# 
