@@ -8,10 +8,14 @@ export function formatNumber(num) {
   return `${formattedInteger},${decimalPart}`;
 }
 
+/**
+ * Formats the value of an input field to ensure it contains only numbers and a single decimal point.
+ * Additionally, it limits the number of digits after the decimal point to 2.
+ * @param {HTMLInputElement} input - The input element to format.
+ */
 export function formatInputValue(input) {
   input.value = input.value
-    .replace(/[^\d.]/g, "") // Conserve uniquement les chiffres et le point
-    .replace(/(^[\d]{4})[\d]/g, "$1") // Pas plus de 4 chiffres au début
-    .replace(/(\..*)\./g, "$1") // Un seul point décimal autorisé
-    .replace(/(\.[\d]{2})./g, "$1"); // Pas plus de 2 chiffres après le point décimal
+    .replace(/[^\d.]/g, "") // Keep only digits and the decimal point
+    .replace(/(\..*)\./g, "$1") // Ensure only one decimal point exists
+    .replace(/(\.[\d]{2})./g, "$1"); // Limit to 2 digits after the decimal point
 }

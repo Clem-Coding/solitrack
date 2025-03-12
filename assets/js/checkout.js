@@ -39,12 +39,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateTotalAmount() {
     const totalPaid = getTotalPaid();
 
-    console.log("total payé!!", totalPaid);
     const initialTotal = Number(remainingAmountElement.dataset.initial);
-    console.log("intiital total???", initialTotal);
     const remaining = Math.max(initialTotal - totalPaid, 0);
-    console.log("restant à payer wesh", remaining);
     formatRemainingAmount(remaining);
+  }
+
+  function updateRemainingText() {
+    const totalPaid = getTotalPaid();
+    const initialTotal = Number(remainingAmountElement.dataset.initial);
+    const remaining = initialTotal - totalPaid;
+
+    if (remaining < 0) {
+      // Si le client a trop payé, afficher "Retour Monnaie" en vert
+      remainingAmountElement.textContent = formatNumber(Math.abs(remaining));
+      document.querySelector("p .remaining").previousSibling.textContent = "Retour Monnaie : ";
+      document.querySelector("p .remaining").style.color = "green";
+    } else {
+      formatRemainingAmount(remaining);
+      document.querySelector("p .remaining").previousSibling.textContent = "Restant à payer : ";
+      document.querySelector("p .remaining").style.color = "red";
+    }
   }
 
   function addPaymentInput(amount, method) {
@@ -52,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputGroup.classList.add("payment-group");
 
     const label = document.createElement("label");
-    // label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
+    label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
 
     const paymentInput = document.createElement("input");
     paymentInput.type = "text";
@@ -68,12 +82,13 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteButton.addEventListener("click", () => {
       inputGroup.remove();
       updateTotalAmount();
+      updateRemainingText();
     });
 
     paymentInput.addEventListener("input", (event) => {
-      console.log("hello l'input", paymentInput.value);
       formatInputValue(paymentInput);
       updateTotalAmount();
+      updateRemainingText();
     });
 
     inputGroup.appendChild(label);
@@ -92,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  console.log("LALALALALA", remainingAmountElement.dataset.initial);
   // EVENT LISTENERS
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
