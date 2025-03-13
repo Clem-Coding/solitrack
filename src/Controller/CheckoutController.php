@@ -23,6 +23,7 @@ class CheckoutController extends AbstractController
 
 
         $shoppingCart = $session->get('shopping_cart', []);
+        $priceManagement->applyBulkPricingRule($shoppingCart);
 
 
         if (empty($shoppingCart)) {

@@ -8,35 +8,33 @@
   <main>
     <h1>La caisse</h1>
 
-    <section>
-      <h2>Récapitulatif</h2>
-      {% for item in shopping_cart %}
-        <article
-          data-category="{{ item.category }}"
-          data-weight="{{ item.weight }}"
-          data-quantity="{{ item.quantity }}"
-          data-price="{{ item.price }}"
-        >
-          {% if item.category %}
-            <h3>{{ item.category }}</h3>
-          {% endif %}
-          {% if item.weight %}
-            <p>Poids : {{ item.weight }} kg</p>
-          {% endif %}
-          {% if item.quantity %}
-            <p>Quantity : {{ item.quantity }}</p>
-          {% endif %}
-          {% if item.price %}
-            <p>Price: <span class="data-price">{{ item.price }}</span> €</p>
-          {% endif %}
-        </article>
-      {% else %}
-        <p>Le panier est vide.</p>
-      {% endfor %}
-      <p>Total :<span class="data-price">{{ total }}</span> €</p>
-      <button onclick="window.history.back()">Revenir en arrière</button>
-    </section>
-    <section>
+  <section>
+  <h2>Récapitulatif</h2>
+  {% for item in shopping_cart %}
+    <article
+      data-category="{{ item.category }}"
+      data-weight="{{ item.weight }}"
+      data-quantity="{{ item.quantity }}"
+      data-price="{{ item.price }}"
+    >
+      {% if item.category %}
+        <h3>{{ item.category }}</h3>
+      {% endif %}
+      {% if item.weight %}
+        <p>Poids : {{ item.weight }} kg</p>
+      {% endif %}
+      {% if item.quantity %}
+        <p>Quantité : {{ item.quantity }}</p>
+      {% endif %}
+      <p>Prix : <span class="data-price">{{ item.price ?? 0 }}</span> €</p>
+    </article>
+  {% else %}
+    <p>Le panier est vide.</p>
+  {% endfor %}
+  <p>Total : <span class="data-price">{{ total }}</span> €</p>
+  <button onclick="window.history.back()">Revenir en arrière</button>
+</section>
+
       <h2>Paiement</h2>
 
       <div role="group" aria-labelledby="payment-method-heading">

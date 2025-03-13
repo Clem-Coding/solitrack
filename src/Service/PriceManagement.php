@@ -68,4 +68,44 @@ class PriceManagement
         $shoppingCart = $session->get('shopping_cart', []);
         return array_sum(array_column($shoppingCart, 'price'));
     }
+
+
+
+    /**
+     * Apply the bulk pricing rule:
+     * - If the weight of category 1 (bulk clothing) and 2(bulk others items) is less than 1kg → 0€ default and open pricing for the customer
+     */
+    public function applyBulkPricingRule(): void
+    {
+        $session = $this->requestStack->getSession();
+        $shoppingCart = $session->get('shopping_cart', []);
+        $totalWeight = 0;
+
+        $bulkCategories = ['Vêtements vrac', 'Autres articles vrac'];
+
+
+        foreach ($shoppingCart as $itemData) {
+            if (in_array($itemData['category'], $bulkCategories)) {
+                $totalWeight += $itemData['weight'] ?? 0;
+            }
+        }
+
+
+
+        if ($totalWeight < 1) {
+            foreach ($shoppingCart as &$itemData) {
+                if (in_array($itemData['category'], $bulkCategories)) {
+                    $itemData['price'] = 0;
+                }
+            }
+        }
+
+        // IMPORTANT : Libérer la référence pour éviter les bugs d'affichage
+        unset($itemData);
+
+        dump($shoppingCart);
+
+        // Mise à jour du panier en session
+        $session->set('shopping_cart', $shoppingCart);
+    }
 }

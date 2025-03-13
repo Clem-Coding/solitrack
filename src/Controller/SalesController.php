@@ -57,7 +57,7 @@ final class SalesController extends AbstractController
             if ($request->isXmlHttpRequest()) {
                 return $this->json([
                     'status' => 'success',
-                    'cart' => $shoppingCart
+                    'cart' => $shoppingCart ?? [],
                 ]);
             }
 

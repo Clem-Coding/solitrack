@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // console.error("Erreur JS:", error);
         if (error instanceof Response) {
           const text = await error.text();
-          console.error("Réponse brute du serveur:", text);
+          // console.error("Réponse brute du serveur:", text);
         } else {
           console.error("Erreur non liée à une réponse HTTP");
         }
@@ -182,6 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
       })
 
       .then((data) => {
+        console.log("Données reçues après suppression:", data);
+        console.log("Cart après suppression :", data.cart);
+        console.log("ID envoyé :", uniqueId);
+
         if (data.status === "success") {
           updateCartDisplay(data.cart);
           localStorage.setItem("cart", JSON.stringify(data.cart));

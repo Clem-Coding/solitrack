@@ -166,19 +166,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (totalWeight < 1) {
       const label = document.createElement("label");
-      label.setAttribute("for", "tip");
+      label.setAttribute("for", "open-price");
       label.textContent = "Le poids des articles en vrac fait moins de 1kg. Montant à payer en prix libre:";
 
-      const tipCustomerInput = document.createElement("input");
-      tipCustomerInput.type = "text";
-      tipCustomerInput.name = "tip";
-      tipCustomerInput.id = "tip";
-      tipCustomerInput.placeholder = "Entrez un montant";
+      const openPriceInput = document.createElement("input");
+      openPriceInput.type = "text";
+      openPriceInput.name = "open-price";
+      openPriceInput.id = "open-price";
+      openPriceInput.placeholder = "Entrez un montant";
 
-      tipCustomerInput.addEventListener("input", () => {
-        formatInputValue(tipCustomerInput);
+      openPriceInput.addEventListener("input", () => {
+        formatInputValue(openPriceInput);
         const remainingAmount = getRemainingAmount();
-        const enteredAmount = Number(tipCustomerInput.value);
+        const enteredAmount = Number(openPriceInput.value);
 
         if (enteredAmount >= remainingAmount) {
           remainingAmountElement.textContent = "0,00";
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       paymentForm.appendChild(label);
-      paymentForm.appendChild(tipCustomerInput);
+      paymentForm.appendChild(openPriceInput);
     }
   }
 

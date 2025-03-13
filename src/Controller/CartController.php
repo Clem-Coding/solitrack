@@ -48,7 +48,8 @@ final class CartController extends AbstractController
             }
 
 
-            $session->set('shopping_cart', array_values($shoppingCart));
+            $shoppingCart = array_values($shoppingCart); // Réindexation
+            $session->set('shopping_cart', $shoppingCart);
 
 
             return $this->json(['status' => 'success', 'cart' => $shoppingCart]);
