@@ -49,6 +49,9 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $keep_change = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $PWYW_amount = null;
+
     public function __construct()
     {
         $this->salesItems = new ArrayCollection();
@@ -183,6 +186,18 @@ class Sale
     public function setKeepChange(?string $keep_change): static
     {
         $this->keep_change = $keep_change;
+
+        return $this;
+    }
+
+    public function getPWYWAmount(): ?string
+    {
+        return $this->PWYW_amount;
+    }
+
+    public function setPWYWAmount(?string $PWYW_amount): static
+    {
+        $this->PWYW_amount = $PWYW_amount;
 
         return $this;
     }

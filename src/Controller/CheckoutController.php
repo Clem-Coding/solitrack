@@ -49,9 +49,7 @@ class CheckoutController extends AbstractController
         $cardAmount = $request->get('card_amount');
         $cashAmount = $request->get('cash_amount');
         $keepChangeAmount = $request->get('keep_change');
-
-
-
+        $pwywAmount = $request->get("pwyw_amount");
 
 
         $shoppingCart = $session->get('shopping_cart', []);
@@ -71,6 +69,8 @@ class CheckoutController extends AbstractController
         $sale->setCardAmount($cardAmount ?? null);
         $sale->setCashAmount($cashAmount ?? null);
         $sale->setKeepChange($keepChangeAmount) ?? null;
+        $sale->setPWYWAmount($pwywAmount) ?? null;
+
 
         $totalPrice = 0;
 

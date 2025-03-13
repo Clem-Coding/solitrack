@@ -138,15 +138,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function createWarningMessageRemainingAmount() {
+    const warningMessageElement = document.createElement("p");
+
+    warningMessageElement.classList.add("error-remaining-amount");
+    warningMessageElement.classList.add("error-msg");
+
+    warningMessageElement.textContent = "Le montant restant doit être réglé avant de finaliser la transaction.";
+    return warningMessageElement;
+  }
+
+  function createWarningMessageOpenPricingAmount() {
+    const warningMessageElement = document.createElement("p");
+
+    warningMessageElement.classList.add("error-pwyw-amount");
+    warningMessageElement.classList.add("error-msg");
+
+    warningMessageElement.textContent = "Le montant de prix libre doit être réglé avant de finaliser la transaction";
+    return warningMessageElement;
+  }
+
   function preventTransactionSubmission(event) {
+    const remainingWarningMsgElement = document.querySelector(".error-remaining-amount");
+    const pwywWarningMsgElement = document.querySelector(".error-pwyw-amount");
+
     const remainingAmount = getRemainingAmount();
+    const pwywAmountInput = document.querySelector(".pwyw-amount");
+    console.log("la payment", pwywAmountInput.value);
 
     if (remainingAmount > 0) {
-      const warningMessage = document.createElement("p");
-      warningMessage.textContent = "Le montant restant doit être réglé avant de finaliser la transaction.";
+      // Vérifier si le message d'erreur est déjà dans le DOM
+      if (!remainingWarningMsgElement) {
+        const warningRemainingMsg = createWarningMessageRemainingAmount();
+        paymentForm.appendChild(warningRemainingMsg); // Ajouter le message d'erreur au formulaire
+      }
 
-      paymentForm.appendChild(warningMessage);
-      event.preventDefault();
+      event.preventDefault(); // Empêcher la soumission
+    }
+
+    if (
+      pwywAmountInput &&
+      (pwywAmountInput.value === "0" || pwywAmountInput.value === "" || pwywAmountInput.value === null)
+    ) {
+      event.preventDefault(); // Empêcher la soumission si pwywAmountInput n'est pas valide
+      if (!pwywWarningMsgElement) {
+        const warningMessage = createWarningMessageOpenPricingAmount();
+        paymentForm.appendChild(warningMessage);
+      }
+    } else {
+      console.log("prix libre supérieur à 0");
     }
   }
 
@@ -166,19 +206,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (totalWeight < 1) {
       const label = document.createElement("label");
-      label.setAttribute("for", "open-price");
+      label.setAttribute("for", "pwyw_amount");
       label.textContent = "Le poids des articles en vrac fait moins de 1kg. Montant à payer en prix libre:";
 
-      const openPriceInput = document.createElement("input");
-      openPriceInput.type = "text";
-      openPriceInput.name = "open-price";
-      openPriceInput.id = "open-price";
-      openPriceInput.placeholder = "Entrez un montant";
+      const pwywAmountInput = document.createElement("input");
+      pwywAmountInput.type = "text";
+      pwywAmountInput.name = "pwyw_amount";
+      pwywAmountInput.classList.add("pwyw-amount");
+      pwywAmountInput.placeholder = "Entrez un montant";
+      console.log(pwywAmountInput);
 
-      openPriceInput.addEventListener("input", () => {
-        formatInputValue(openPriceInput);
+      pwywAmountInput.addEventListener("input", () => {
+        formatInputValue(pwywAmountInput);
         const remainingAmount = getRemainingAmount();
-        const enteredAmount = Number(openPriceInput.value);
+        const enteredAmount = Number(pwywAmountInput.value);
 
         if (enteredAmount >= remainingAmount) {
           remainingAmountElement.textContent = "0,00";
@@ -187,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       paymentForm.appendChild(label);
-      paymentForm.appendChild(openPriceInput);
+      paymentForm.appendChild(pwywAmountInput);
     }
   }
 
