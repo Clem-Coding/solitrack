@@ -9,14 +9,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerSaleButton = document.querySelector(".register-sale-button");
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
+  const remainingTitle = document.querySelector(".remaining-title");
+  console.log(remainingTitle.textContent);
 
-  // console.log(paymentForm);
+  // ici on attribue au dataset initial -> la valeur total du panier
+  remainingAmountElement.dataset.initial = remainingAmountElement.textContent;
 
   // FONCTIONS
 
   function formatPrices(dataPrice) {
     dataPrice.forEach((data) => {
-      const toNumber = Number(data.textContent.replace(",", "."));
+      const toNumber = Number(data.textContent);
       const formattedPrice = formatNumber(toNumber);
       data.textContent = formattedPrice;
     });
@@ -26,44 +29,47 @@ document.addEventListener("DOMContentLoaded", () => {
     return Number(remainingAmountElement.textContent.replace(",", "."));
   }
 
-  function formatRemainingAmount(amount) {
-    remainingAmountElement.textContent = formatNumber(amount);
-  }
+  // function formatRemainingAmount(amount) {
+  //   remainingAmountElement.textContent = formatNumber(amount);
+  // }
 
   function getTotalPaid() {
+    const paymentInputs = document.querySelectorAll(".payment-input");
     let totalPaid = 0;
-    document.querySelectorAll(".payment-input").forEach((input) => {
+    paymentInputs.forEach((input) => {
       totalPaid += Number(input.value) || 0;
     });
     return totalPaid;
   }
 
-  // ici on attribue au dataset initial -> la valeur total du panier
-  remainingAmountElement.dataset.initial = remainingAmountElement.textContent;
-
-  function updateTotalAmount() {
+  function getRemainingAmount() {
     const totalPaid = getTotalPaid();
-
     const initialTotal = Number(remainingAmountElement.dataset.initial);
-    const remaining = Math.max(initialTotal - totalPaid, 0);
-    formatRemainingAmount(remaining);
+    return initialTotal - totalPaid;
   }
 
-  function updateRemainingText() {
-    const totalPaid = getTotalPaid();
-    const initialTotal = Number(remainingAmountElement.dataset.initial);
-    const remaining = initialTotal - totalPaid;
+  function updateRemainingUI(remaining) {
+    const isOverpaid = remaining < 0;
+    const amount = formatNumber(Math.abs(remaining));
+    const text = isOverpaid ? "Retour Monnaie : " : "Restant à payer : ";
 
-    if (remaining < 0) {
-      // Si le client a trop payé, afficher "Retour Monnaie" en vert
-      remainingAmountElement.textContent = formatNumber(Math.abs(remaining));
-      document.querySelector("p .remaining").previousSibling.textContent = "Retour Monnaie : ";
-      document.querySelector("p .remaining").style.color = "green";
-    } else {
-      formatRemainingAmount(remaining);
-      document.querySelector("p .remaining").previousSibling.textContent = "Restant à payer : ";
-      document.querySelector("p .remaining").style.color = "red";
+    let color = "red";
+    if (remaining === 0) {
+      color = "green";
+    } else if (isOverpaid) {
+      color = "green";
     }
+
+    remainingAmountElement.textContent = amount;
+    remainingTitle.textContent = text;
+    remainingAmountElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
+    remainingTitle.style.color = color;
+    remainingAmountElement.style.color = color;
+  }
+
+  function updateAmounts() {
+    const remaining = getRemainingAmount();
+    updateRemainingUI(remaining);
   }
 
   function addPaymentInput(amount, method) {
@@ -86,14 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     deleteButton.addEventListener("click", () => {
       inputGroup.remove();
-      updateTotalAmount();
-      updateRemainingText();
+      updateAmounts();
+      // updateRemainingText();
     });
 
     paymentInput.addEventListener("input", (event) => {
       formatInputValue(paymentInput);
-      updateTotalAmount();
-      updateRemainingText();
+      updateAmounts();
+      // updateRemainingText();
     });
 
     inputGroup.appendChild(label);
@@ -101,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputGroup.appendChild(deleteButton);
     paymentsList.appendChild(inputGroup);
 
-    updateTotalAmount();
+    updateAmounts();
   }
 
   function handlePaymentSelection(method) {
@@ -130,16 +136,18 @@ document.addEventListener("DOMContentLoaded", () => {
     salesItems.forEach((item) => {
       const category = item.dataset.category;
       const weight = item.dataset.weight;
+      let price = item.dataset.price;
 
       if (category === "Vêtements vrac" || category === "Autres articles vrac") {
         totalWeight += Number(weight);
+        price = "0";
       }
     });
 
     if (totalWeight < 1) {
       const label = document.createElement("label");
       label.setAttribute("for", "tip");
-      label.textContent = "Montant à payer en prix libre:";
+      label.textContent = "Le poids des articles en vrac fait moins de 1kg. Montant à payer en prix libre:";
 
       const tipCustomerInput = document.createElement("input");
       tipCustomerInput.type = "text";
@@ -151,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formatInputValue(tipCustomerInput);
         const remainingAmount = getRemainingAmount();
         const enteredAmount = Number(tipCustomerInput.value);
-        console.log(enteredAmount);
+
         if (enteredAmount >= remainingAmount) {
           remainingAmountElement.textContent = "0,00";
           // remainingAmountElement.dataset.initial = "0";
@@ -176,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   registerSaleButton.addEventListener("click", (event) => {
     preventTransactionSubmission(event);
-    checkUnlabeledItemsWeight();
   });
+
+  checkUnlabeledItemsWeight();
 });
