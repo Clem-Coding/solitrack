@@ -191,6 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   registerSaleButton.addEventListener("click", (event) => {
     preventTransactionSubmission(event);
+    localStorage.removeItem("cart");
   });
 
   checkUnlabeledItemsWeight();

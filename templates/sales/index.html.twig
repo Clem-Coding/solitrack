@@ -35,7 +35,7 @@
       <h2 id="cart-heading">Panier</h2>
       <ul id="cart-container"></ul>
 
-      <form action="{{ path('app_cart_clear') }}" method="post"><button type="submit">Vider le panier</button></form>
+      <button class="clear-cart-button">Vider le panier</button>
       <form action="{{ path('app_sale_checkout') }}" method="post">
         <button type="submit">Passer à la caisse</button>
       </form>

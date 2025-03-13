@@ -43,7 +43,7 @@ class Sale
     /**
      * @var Collection<int, SalesItem>
      */
-    #[ORM\OneToMany(targetEntity: SalesItem::class, mappedBy: 'sale')]
+    #[ORM\OneToMany(targetEntity: SalesItem::class, mappedBy: 'sale', cascade: ['persist'])]
     private Collection $salesItems;
 
     public function __construct()

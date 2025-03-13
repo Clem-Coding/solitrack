@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
 
 #[IsGranted('IS_AUTHENTICATED')]
 final class SalesController extends AbstractController
@@ -37,9 +38,11 @@ final class SalesController extends AbstractController
             $priceManagement->setDrinkPrice($salesItem);
             $priceManagement->setWeightBasedPrice($salesItem);
 
+            $uuid = Uuid::v1();
             $shoppingCart = $session->get('shopping_cart', []);
 
             $shoppingCart[] = [
+                'uuid' => $uuid->toString(),
                 'category' => $category->getName(),
                 'weight' => $salesItem->getWeight(),
                 'price' => $salesItem->getPrice(),
@@ -50,6 +53,7 @@ final class SalesController extends AbstractController
             $session->set('shopping_cart', $shoppingCart);
 
 
+            //à revoir XmLhttpRequest , supprimer?
             if ($request->isXmlHttpRequest()) {
                 return $this->json([
                     'status' => 'success',

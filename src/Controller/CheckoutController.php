@@ -84,13 +84,14 @@ class CheckoutController extends AbstractController
             if ($itemPrice !== null) {
                 $totalPrice += $itemPrice;
             }
-
-
             $entityManager->persist($salesItem);
         }
 
 
+        // $entityManager->persist($salesItem);
+
         $sale->setTotalPrice($totalPrice);
+        // dd($sale);
         $entityManager->persist($sale);
         $entityManager->flush();
 

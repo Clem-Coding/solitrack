@@ -7,6 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorMessage = document.getElementById("error-message");
   const form = document.querySelector("form");
   const cartContainer = document.getElementById("cart-container");
+  const savedCart = JSON.parse(localStorage.getItem("cart"));
+  const clearCartButton = document.querySelector(".clear-cart-button");
+  console.log("le button", clearCartButton);
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
@@ -100,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
+          localStorage.setItem("cart", JSON.stringify(data.cart));
           console.log("Article ajouté au panier:", data.cart);
         } else {
           console.error("Échec de l'ajout au panier:", data.message);
@@ -121,13 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
     cartContainer.innerHTML = ""; // ??
 
     cart.forEach((item) => {
-      const uniqueId = `${item.category}-${item.weight}-${item.price}`; //c'est nul comme manière de faire
-      console.log("l'item: ", uniqueId);
+      const uniqueId = item.uuid;
+
       const itemElement = document.createElement("li");
       itemElement.setAttribute("role", "listitem");
 
       const articleElement = document.createElement("article");
-
       const categoryElement = document.createElement("h3");
       categoryElement.textContent = item.category;
       articleElement.appendChild(categoryElement);
@@ -164,13 +167,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleDeleteItem(event) {
     const uniqueId = event.target.getAttribute("data-id");
-    console.log("Index de l'article à supprimer:", uniqueId);
 
     fetch("/cart/remove-item", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
+        // "X-Requested-With": "XMLHttpRequest",
       },
       body: JSON.stringify({ id: uniqueId }),
     })
@@ -182,12 +184,40 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
+          localStorage.setItem("cart", JSON.stringify(data.cart));
         } else {
           console.error("Échec de la suppression de l'article:", data.message);
         }
       })
       .catch((error) => {
         console.error("Erreur lors de la suppression de l'article:", error);
+      });
+  }
+
+  function handleClearCart() {
+    fetch("/cart/clear", {
+      method: "POST",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          localStorage.removeItem("cart");
+
+          const cartContainer = document.getElementById("cart-container");
+          if (cartContainer) {
+            cartContainer.innerHTML = "";
+          }
+
+          console.log(data.message);
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la suppression du panier:", error);
       });
   }
 
@@ -201,4 +231,10 @@ document.addEventListener("DOMContentLoaded", () => {
       formatInputValue(input);
     });
   });
+
+  if (savedCart && Array.isArray(savedCart)) {
+    updateCartDisplay(savedCart);
+  }
+
+  clearCartButton.addEventListener("click", handleClearCart);
 });
