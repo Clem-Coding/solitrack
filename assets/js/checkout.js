@@ -10,10 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
   const remainingTitle = document.querySelector(".remaining-title");
-  console.log(remainingTitle.textContent);
 
+  //INITIALIZE
   // ici on attribue au dataset initial -> la valeur total du panier
   remainingAmountElement.dataset.initial = remainingAmountElement.textContent;
+  remainingTitle.style.color = "red";
+  remainingAmountElement.style.color = "red";
 
   // FONCTIONS
 
@@ -45,7 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function getRemainingAmount() {
     const totalPaid = getTotalPaid();
     const initialTotal = Number(remainingAmountElement.dataset.initial);
-    return initialTotal - totalPaid;
+    const remaining = initialTotal - totalPaid;
+
+    // Arrondir à 2 décimales pour éviter les petites erreurs d'arrondi
+    return Math.round(remaining * 100) / 100;
   }
 
   function updateRemainingUI(remaining) {
@@ -119,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function preventTransactionSubmission(event) {
-    const remainingAmount = getRemainingAmount(); // Récupère le montant restant à payer
+    const remainingAmount = getRemainingAmount();
 
     if (remainingAmount > 0) {
       const warningMessage = document.createElement("p");
@@ -172,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // EVENT LISTENERS
+
+  // updateAmounts();
 
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
