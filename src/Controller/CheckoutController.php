@@ -18,8 +18,10 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class CheckoutController extends AbstractController
 {
     #[Route('/ventes/caisse', name: 'app_sale_checkout')]
-    public function index(SessionInterface $session, PriceManagement $priceManagement): Response
+    public function index(SessionInterface $session, PriceManagement $priceManagement, Request $request): Response
     {
+
+
         $shoppingCart = $session->get('shopping_cart', []);
 
 
@@ -39,10 +41,20 @@ class CheckoutController extends AbstractController
 
 
     #[Route('/ventes/caisse/register', name: 'app_sale_register')]
-    public function registerSale(#[CurrentUser] User $user, SessionInterface $session, EntityManagerInterface $entityManager)
+    public function registerSale(#[CurrentUser] User $user, Request $request, SessionInterface $session, EntityManagerInterface $entityManager)
     {
 
+
+        $cardAmount = $request->get('card_amount');
+        $cashAmount = $request->get('cash_amount');
+        $keepChangeAmount = $request->get('keep_change');
+
+
+
+
+
         $shoppingCart = $session->get('shopping_cart', []);
+
 
 
         // à laisser au cas où, mais empeecher de passer à la caisse si le panier est vide
@@ -55,6 +67,9 @@ class CheckoutController extends AbstractController
         $sale = new Sale();
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
+        $sale->setCardAmount($cardAmount ?? null);
+        $sale->setCashAmount($cashAmount ?? null);
+        $sale->setKeepChange($keepChangeAmount) ?? null;
 
         $totalPrice = 0;
 
@@ -74,6 +89,7 @@ class CheckoutController extends AbstractController
             $salesItem->setWeight($itemData['weight'] ?? null);
             $salesItem->setPrice($itemData['price'] ?? null);
             $salesItem->setQuantity($itemData['quantity'] ?? null);
+
 
 
             $sale->addSalesItem($salesItem);

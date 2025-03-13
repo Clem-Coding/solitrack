@@ -45,30 +45,27 @@
         <button type="button" class="payment-button" data-method="cash">Espèce</button>
       </div>
 
-      <div role="region" aria-labelledby="payments-list-heading">
-        <h3 id="payments-list-heading" class="">Paiements effectués</h3>
-        <ul class="payments-list">
-          {# <li>
-            <span>Carte bleue : 50 €</span>
-            <button type="button" aria-label="Supprimer ce paiement">Supprimer</button>
-          </li> #}
-        </ul>
-      </div>
+      {# !mettre un token sur le formulaire! #}
+      <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
+        <div role="region" aria-labelledby="payments-list-heading">
+          <h3 id="payments-list-heading" class="">Paiements effectués</h3>
+          <ul class="payments-list"></ul>
+        </div>
 
-      <div role="region" aria-labelledby="remaining-amount-heading">
-        <h3 class="remaining-title">Restant à payer</h3>
-        <p><span class="data-price remaining">{{ total }}</span> €</p>
-      </div>
-      {# 
-      <button type="button" onclick="finalizeTransaction()">Finaliser la transaction</button> #}
-      <div>
-        <h3 id="remaining-amount-heading" class="">Boutons d'action</h3>
-        <button class="keep-change_button">Garder la monnaie</button>
-        <button>Générer un reçu</button>
-        <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
+        <div role="region" aria-labelledby="remaining-amount-heading">
+          <h3 class="remaining-title">Restant à payer</h3>
+          <p><span class="data-price remaining">{{ total }}</span> €</p>
+        </div>
+
+        <div>
+          <h3 id="remaining-amount-heading" class="">Boutons d'action</h3>
+          <button class="keep-change-button" type="button">Garder la monnaie</button>
+          <input type="hidden" class="keep-change-input" name="keep_change" />
+          <button type="button">Générer un reçu</button>
+
           <button type="submit" class="register-sale-button">Finaliser la transaction</button>
-        </form>
-      </div>
+        </div>
+      </form>
     </section>
   </main>
 {% endblock %}

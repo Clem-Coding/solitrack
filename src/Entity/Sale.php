@@ -46,6 +46,9 @@ class Sale
     #[ORM\OneToMany(targetEntity: SalesItem::class, mappedBy: 'sale', cascade: ['persist'])]
     private Collection $salesItems;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $keep_change = null;
+
     public function __construct()
     {
         $this->salesItems = new ArrayCollection();
@@ -168,6 +171,18 @@ class Sale
                 $salesItem->setSale(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getKeepChange(): ?string
+    {
+        return $this->keep_change;
+    }
+
+    public function setKeepChange(?string $keep_change): static
+    {
+        $this->keep_change = $keep_change;
 
         return $this;
     }

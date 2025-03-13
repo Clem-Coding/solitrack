@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
   const remainingTitle = document.querySelector(".remaining-title");
+  const keepChangeButton = document.querySelector(".keep-change-button");
+  const keepChangeInput = document.querySelector(".keep-change-input");
 
   //INITIALIZE
   // ici on attribue au dataset initial -> la valeur total du panier
@@ -74,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateAmounts() {
     const remaining = getRemainingAmount();
+    console.log(remaining);
     updateRemainingUI(remaining);
   }
 
@@ -86,11 +89,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const paymentInput = document.createElement("input");
     paymentInput.type = "text";
+    // paymentInput.inputMode = "numeric";
     paymentInput.classList.add("payment-input");
 
-    paymentInput.value = amount;
+    // console.log("l'input avant : ", paymentInput);
+    console.log("Type de amount : ", typeof amount); // Vérifie la valeur avant la conversion
+    const amountAsNumber = Number(amount);
+    console.log("Après conversion : ", amountAsNumber); // Vérifie la valeur après conversion
+    paymentInput.value = amountAsNumber;
+    console.log(paymentInput.value);
+    console.log("l'input après : ", paymentInput);
     paymentInput.min = 0;
 
+    if (method === "card") {
+      paymentInput.name = "card_amount"; // Pas de crochets []
+    } else if (method === "cash") {
+      paymentInput.name = "cash_amount"; // Pas de crochets []
+    }
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Supprimer";
     deleteButton.classList.add("delete-button");
@@ -176,6 +191,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function handleKeepChange() {
+    if (remainingTitle.textContent === "Retour Monnaie : ") {
+      const keepChangeAmount = Math.abs(getRemainingAmount());
+      console.log(keepChangeAmount);
+      keepChangeInput.value = keepChangeAmount;
+      const messageElement = document.createElement("p");
+      messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;
+      paymentForm.appendChild(messageElement);
+      remainingTitle.textContent = "Restant à payer :";
+      remainingAmountElement.textContent = 0;
+    } else {
+      console.log("non non");
+    }
+  }
+
   // EVENT LISTENERS
 
   // updateAmounts();
@@ -195,4 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   checkUnlabeledItemsWeight();
+
+  keepChangeButton.addEventListener("click", handleKeepChange);
 });
