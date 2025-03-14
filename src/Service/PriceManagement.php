@@ -103,7 +103,7 @@ class PriceManagement
         // IMPORTANT : Libérer la référence pour éviter les bugs d'affichage
         unset($itemData);
 
-        dump($shoppingCart);
+        // dump($shoppingCart);
 
         // Mise à jour du panier en session
         $session->set('shopping_cart', $shoppingCart);

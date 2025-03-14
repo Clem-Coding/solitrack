@@ -45,6 +45,25 @@ class DonationRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+
+
+
+
+    // SELECT MONTH(created_at) AS month, SUM(weight) AS totalWeight FROM donations GROUP BY MONTH(created_at) ORDER BY month ASC;
+    // ex : 
+    // month 	totalWeight 	
+    // 3 	    477.11
+
+    public function findMonthlyDonations()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalWeight')
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Donation[] Returns an array of Donation objects
     //     */
