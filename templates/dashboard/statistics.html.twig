@@ -1,25 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    Hello DashboardController!
+{% block body %}
+  <h1>Statistiques</h1>
+
+  <!-- Filtres -->
+  <div>
+    <select id="filter-movement">
+      <option value="incoming">Articles Entrants</option>
+      <option value="outgoing">Articles Sortants</option>
+    </select>
+
+    <select id="filter-period">
+      <option value="daily">Journalier</option>
+      <option value="monthly">Mensuel</option>
+      <option value="yearly">Annuel</option>
+    </select>
+
+    <input type="date" id="filter-date" />
+    <input type="month" id="filter-month" style="display: none;" />
+    <input type="number" id="filter-year" min="2020" max="2030" style="display: none;" />
+  </div>
+
+  {{ render_chart(chart) }}
 {% endblock %}
 
-{% block body %}
-    <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px / 1.5 sans-serif; } .example-wrapper code {
-        background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-    <div class="example-wrapper">
-        <h1>Hello les stats!!</h1>This friendly message is coming from:<ul>
-            <li>
-                Your controller at
-                <code>C:/Users/vdema/Documents/Clémentine/DEV/solitrack/src/Controller/DashboardController.php</code>
-            </li>
-            <li>
-                Your template at
-                <code>C:/Users/vdema/Documents/Clémentine/DEV/solitrack/templates/dashboard/index.html.twig</code>
-            </li>
-        </ul>
-    </div>
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/statistics.js') }}" type="module"></script>
 {% endblock %}

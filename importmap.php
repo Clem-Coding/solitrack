@@ -28,4 +28,7 @@ return [
     'phosphor-icons' => [
         'version' => '1.4.2',
     ],
+    'chart.js' => [
+        'version' => '3.9.1',
+    ],
 ];

@@ -20,11 +20,11 @@ final class DashboardController extends AbstractController
     }
 
 
-    #[Route('/statistiques', name: 'app_dashboard_statistics')]
-    public function statistics(): Response
-    {
-        return $this->render('dashboard/statistics.html.twig');
-    }
+    // #[Route('/statistiques', name: 'app_dashboard_statistics')]
+    // public function statistics(): Response
+    // {
+    //     return $this->render('dashboard/statistics.html.twig');
+    // }
 
 
     #[Route('/controle-de-caisse', name: 'app_dashboard_cash_reconciliation')]
