@@ -4,4 +4,24 @@ body {
 
 .hidden {
   display: none;
+}
+
+.flash-success {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.flash-error {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: inline-block;
 }/*# sourceMappingURL=app.css.map */

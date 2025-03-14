@@ -111,9 +111,10 @@ class CheckoutController extends AbstractController
         // dd($sale);
         $entityManager->persist($sale);
         $entityManager->flush();
-
         $session->remove('shopping_cart');
+        $this->addFlash('success', 'Vente enregistrée avec succès.');
 
-        return $this->redirectToRoute('app_sales');
+
+        return $this->redirectToRoute('app_sales', ['clear_local_storage' => true]);
     }
 }

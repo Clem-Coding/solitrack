@@ -139,20 +139,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function createWarningMessageRemainingAmount() {
+    console.log("message montant restant à définir");
     const warningMessageElement = document.createElement("p");
 
     warningMessageElement.classList.add("error-remaining-amount");
-    warningMessageElement.classList.add("error-msg");
+    warningMessageElement.classList.add("flash-error");
 
     warningMessageElement.textContent = "Le montant restant doit être réglé avant de finaliser la transaction.";
     return warningMessageElement;
   }
 
   function createWarningMessageOpenPricingAmount() {
+    console.log("message keep change à définir");
     const warningMessageElement = document.createElement("p");
 
     warningMessageElement.classList.add("error-pwyw-amount");
-    warningMessageElement.classList.add("error-msg");
+    warningMessageElement.classList.add("flash-error");
 
     warningMessageElement.textContent = "Le montant de prix libre doit être réglé avant de finaliser la transaction";
     return warningMessageElement;
@@ -164,29 +166,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const remainingAmount = getRemainingAmount();
     const pwywAmountInput = document.querySelector(".pwyw-amount");
-    console.log("la payment", pwywAmountInput.value);
+    // console.log("la payment", pwywAmountInput.value);
 
     if (remainingAmount > 0) {
-      // Vérifier si le message d'erreur est déjà dans le DOM
       if (!remainingWarningMsgElement) {
         const warningRemainingMsg = createWarningMessageRemainingAmount();
-        paymentForm.appendChild(warningRemainingMsg); // Ajouter le message d'erreur au formulaire
+
+        paymentForm.appendChild(warningRemainingMsg);
       }
 
-      event.preventDefault(); // Empêcher la soumission
+      event.preventDefault();
     }
 
-    if (
-      pwywAmountInput &&
-      (pwywAmountInput.value === "0" || pwywAmountInput.value === "" || pwywAmountInput.value === null)
-    ) {
-      event.preventDefault(); // Empêcher la soumission si pwywAmountInput n'est pas valide
-      if (!pwywWarningMsgElement) {
-        const warningMessage = createWarningMessageOpenPricingAmount();
-        paymentForm.appendChild(warningMessage);
+    let warningMessage;
+
+    if (pwywAmountInput) {
+      if (pwywAmountInput.value === "0" || pwywAmountInput.value === "" || pwywAmountInput.value === null) {
+        event.preventDefault();
+
+        if (!document.querySelector(".error-pwyw-amount")) {
+          warningMessage = createWarningMessageOpenPricingAmount();
+          console.log("Message d'avertissement créé :", warningMessage);
+          paymentForm.appendChild(warningMessage);
+        }
       }
-    } else {
-      console.log("prix libre supérieur à 0");
+
+      pwywAmountInput.addEventListener("input", () => {
+        if (pwywAmountInput.value > 0) {
+          const existingWarningMessage = document.querySelector(".error-pwyw-amount");
+          if (existingWarningMessage) {
+            existingWarningMessage.remove();
+          }
+        }
+      });
     }
   }
 

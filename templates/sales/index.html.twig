@@ -40,6 +40,9 @@
         <button type="submit">Passer à la caisse</button>
       </form>
     </section>
+    {% if app.request.get('clear_local_storage') %}
+      <div id="clear-local-storage" data-clear-local-storage="true"></div>
+    {% endif %}
   </main>
 {% endblock %}
 

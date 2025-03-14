@@ -7,3 +7,37 @@ body {
 .hidden {
   display: none;
 }
+
+.flash-success {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: inline-block;
+  // animation: fadeOut 0.2s ease-out forwards;
+}
+
+.flash-error {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  display: inline-block;
+  // animation: fadeInOut 3s ease-out forwards; /* Animation avec une durée de 2.5s */
+}
+
+// @keyframes fadeInOut {
+//   0% {
+//     opacity: 1;
+//   }
+//   90% {
+//     opacity: 1; /* Garder l'opacité à 1 pendant 2 secondes */
+//   }
+//   100% {
+//     opacity: 0; /* Fade-out rapide après 2 secondes */
+//   }
+// }

@@ -1,4 +1,4 @@
-import { formatInputValue, formatNumberFromString } from "./utils.js";
+import { formatInputValue, formatNumberFromString, clearLocalStorage } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   //CONSTANTS
@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartContainer = document.getElementById("cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
-  console.log("le button", clearCartButton);
+  const clearLocalStorageElement = document.getElementById("clear-local-storage");
+  console.log(clearLocalStorageElement);
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
@@ -208,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          localStorage.removeItem("cart");
+          clearLocalStorage("cart");
 
           const cartContainer = document.getElementById("cart-container");
           if (cartContainer) {
@@ -236,9 +237,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (savedCart && Array.isArray(savedCart)) {
-    updateCartDisplay(savedCart);
-  }
+  const clearLocalStorageAndResetDisplay = () => {
+    if (clearLocalStorageElement && clearLocalStorageElement.dataset.clearLocalStorage === "true") {
+      clearLocalStorage("cart");
+      sessionStorage.removeItem("clearLocalStorage");
+    }
+
+    const savedCart = JSON.parse(localStorage.getItem("cart"));
+    if (savedCart && Array.isArray(savedCart)) {
+      updateCartDisplay(savedCart);
+    }
+  };
+
+  clearLocalStorageAndResetDisplay();
 
   clearCartButton.addEventListener("click", handleClearCart);
 });

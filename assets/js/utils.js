@@ -32,3 +32,8 @@ export function formatInputValue(input) {
     .replace(/(\..*)\./g, "$1") // Ensure only one decimal point exists
     .replace(/(\.[\d]{2})./g, "$1"); // Limit to 2 digits after the decimal point
 }
+
+export function clearLocalStorage(item) {
+  console.log("oui c'est clear");
+  localStorage.removeItem(item);
+}
