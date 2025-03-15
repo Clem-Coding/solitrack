@@ -12,7 +12,7 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 class StatisticsController extends AbstractController
 {
-    #[Route('/tableau-de-bord/statistiques', name: 'app_statistics')]
+    #[Route('/tableau-de-bord/statistiques', name: 'app_dashboard_statistics')]
     public function index(ChartBuilderInterface $chartBuilder, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): Response
     {
 
@@ -49,14 +49,14 @@ class StatisticsController extends AbstractController
             'labels' => $months,  // Mois de l'année
             'datasets' => [
                 [
-                    // 'label' => 'Poids total des dons',
+                    'label' => 'Total des articles entrants',
                     'backgroundColor' => 'rgb(255, 99, 132)',  // Couleur de fond des barres
                     'borderColor' => 'rgb(255, 99, 132)',  // Couleur des bordures des barres
                     'data' => $donationData,  // Les poids totaux pour chaque mois
                 ],
 
                 [
-                    // 'label' => 'Poids des donations sortantes',
+                    'label' => 'Total des articles sortants',
                     'backgroundColor' => 'rgb(54, 162, 235)',
                     'borderColor' => 'rgb(54, 162, 235)',
                     'data' => $monthlySalesWeightData,
@@ -69,14 +69,41 @@ class StatisticsController extends AbstractController
             'plugins' => [
                 'title' => [
                     'display' => true,
-                    'text' => strtoupper('Poids total entrant'), // Texte du titre
-                    'color' => '#ce1111', // Couleur du texte
+                    'text' => strtoupper('Poids total entrant'),
+                    'color' => '#ce1111',
                     'font' => [
-                        'size' => 16, // Taille de la police
+                        'size' => 16,
+                    ],
+                ],
+                'legend' => [
+                    'display' => true,
+                    'position' => 'top',
+                    'labels' => [
+                        'color' => '#333',
+                        'font' => [
+                            'size' => 10,
+                            'weight' => 'bold',
+                        ],
+                    ],
+                ],
+                'tooltip' => [
+                    'backgroundColor' => '#fff',
+                    'title' => "CHAT",
+                    'titleColor' => '#88498F', //ok -> violet
+                    'bodyColor' => '#157F1F', //ok -> vert -> label
+                    'titleFont' => [
+                        'size' => 25, //ok
+                    ],
+                    'bodyFont' => [
+                        'size' => 12,
+                        'weight' => 'bold',
+
                     ],
                 ],
             ],
+
         ]);
+
 
         // dd($chart);
 

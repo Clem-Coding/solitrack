@@ -40,8 +40,14 @@
               <li><a href="{{ path('app_user_homepage') }}" aria-label="Retour à l'accueil">Accueil</a></li>
               <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
               <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
-              <li>
+              <li class="dropdown">
                 <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a>
+                <nav class="dropdown-content">
+                  <a href="{{ path('app_dashboard_statistics') }}">Les statistiques</a>
+                  <a href="{{ path('app_dashboard_cash_reconciliation') }}">Contrôle de Caisse</a>
+                  <a href="{{ path('app_dashboard_user_management') }}">Gestion des utilisateurs</a>
+                  <a href="{{ path('app_dashboard_settings') }}">Paramètres</a>
+                </nav>
               </li>
             </ul>
           </nav>

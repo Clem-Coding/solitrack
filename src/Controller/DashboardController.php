@@ -3,19 +3,28 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\DateType;
 
 
 #[Route('/tableau-de-bord')]
 final class DashboardController extends AbstractController
 {
 
-    #[Route('', name: 'app_dashboard_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route('', name: 'app_dashboard_index', methods: ['GET', 'POST'])]
+    public function index(Request $request): Response
     {
+        $form = $this->createForm(DateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+        }
+
         return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
+
+            'form' => $form->createView(),
         ]);
     }
 

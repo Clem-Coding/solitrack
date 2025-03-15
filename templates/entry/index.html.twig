@@ -7,13 +7,13 @@
 {% block body %}
   <main>
     <h1>Les Entrées</h1>
-    <article id="entry-section">
+    <section id="entry-section">
       <p>Quel article souhaitez-vous enregistrer ?</p>
       <button class="category-button" data-category="1">Vêtements</button>
       <button class="category-button" data-category="2">Autres articles</button>
-    </article>
+    </section>
 
-    <article>
+    <section>
       {{ form_errors(form) }}
       {{ form_start(form) }}
       {{ form_row(form.weight) }}
@@ -23,9 +23,9 @@
       {# attention virer le style display:none pour le mettre en scss à part #}
       {# <div>{% include 'partials/flash.html.twig' %}</div> #}
       {{ form_end(form) }}
-    </article>
+    </section>
 
-    <article>
+    <section>
       <h2>Dernière entrée</h2>
 
       {% if app.flashes('success') %}
@@ -47,9 +47,9 @@
           {% endif %}
         {% endif %}
       {% endif %}
-    </article>
+    </section>
 
-    <article>
+    <section>
       <h2>Message feedback</h2>
       <p>
         {% if totalWeightToday is null %}
@@ -58,7 +58,7 @@
           {{ feedbackMessage }}
         {% endif %}
       </p>
-    </article>
+    </section>
   </main>
 {% endblock %}
 
