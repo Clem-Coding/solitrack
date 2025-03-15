@@ -7,13 +7,13 @@ use App\Repository\SalesItemRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+
 use Symfony\UX\Chartjs\Model\Chart;
 
 class StatisticsController extends AbstractController
 {
     #[Route('/tableau-de-bord/statistiques', name: 'app_dashboard_statistics')]
-    public function index(ChartBuilderInterface $chartBuilder, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): Response
+    public function index(DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): Response
     {
 
         $monthlyDonations = $donationRepository->findMonthlyDonations();
@@ -43,73 +43,10 @@ class StatisticsController extends AbstractController
 
 
 
-        $chart = $chartBuilder->createChart(Chart::TYPE_BAR);
-
-        $chart->setData([
-            'labels' => $months,  // Mois de l'année
-            'datasets' => [
-                [
-                    'label' => 'Total des articles entrants',
-                    'backgroundColor' => 'rgb(255, 99, 132)',  // Couleur de fond des barres
-                    'borderColor' => 'rgb(255, 99, 132)',  // Couleur des bordures des barres
-                    'data' => $donationData,  // Les poids totaux pour chaque mois
-                ],
-
-                [
-                    'label' => 'Total des articles sortants',
-                    'backgroundColor' => 'rgb(54, 162, 235)',
-                    'borderColor' => 'rgb(54, 162, 235)',
-                    'data' => $monthlySalesWeightData,
-                ],
-            ]
-
-        ]);
-        $chart->setOptions([
-            'responsive' => true,
-            'plugins' => [
-                'title' => [
-                    'display' => true,
-                    'text' => strtoupper('Poids total entrant'),
-                    'color' => '#ce1111',
-                    'font' => [
-                        'size' => 16,
-                    ],
-                ],
-                'legend' => [
-                    'display' => true,
-                    'position' => 'top',
-                    'labels' => [
-                        'color' => '#333',
-                        'font' => [
-                            'size' => 10,
-                            'weight' => 'bold',
-                        ],
-                    ],
-                ],
-                'tooltip' => [
-                    'backgroundColor' => '#fff',
-                    'title' => "CHAT",
-                    'titleColor' => '#88498F', //ok -> violet
-                    'bodyColor' => '#157F1F', //ok -> vert -> label
-                    'titleFont' => [
-                        'size' => 25, //ok
-                    ],
-                    'bodyFont' => [
-                        'size' => 12,
-                        'weight' => 'bold',
-
-                    ],
-                ],
-            ],
-
-        ]);
-
 
         // dd($chart);
 
         // Retourner la vue avec le graphique
-        return $this->render('dashboard/statistics.html.twig', [
-            'chart' => $chart,
-        ]);
+        return $this->render('dashboard/statistics.html.twig', []);
     }
 }

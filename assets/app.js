@@ -1,6 +1,9 @@
 // import "./bootstrap.js";
 import "phosphor-icons";
 import "./js/utils.js";
+
+// import "./js/statistics.js";
+
 // import "./js/entries.js";
 // import "./js/sales.js";
 /*
@@ -10,5 +13,11 @@ import "./js/utils.js";
  * which should already be in your base.html.twig.
  */
 import "./styles/css/app.css";
+
+// import canvasConfetti from "canvas-confetti";
+
+// document.body.addEventListener("click", () => {
+//   canvasConfetti();
+// });
 
 // console.log("This log comes from assets/app.js - welcome to AssetMapper! 🎉");

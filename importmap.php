@@ -28,7 +28,10 @@ return [
     'phosphor-icons' => [
         'version' => '1.4.2',
     ],
-    'chart.js' => [
-        'version' => '3.9.1',
+    '@kurkle/color' => [
+        'version' => '0.3.4',
+    ],
+    'canvas-confetti' => [
+        'version' => '1.9.3',
     ],
 ];
