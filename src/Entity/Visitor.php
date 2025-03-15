@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VisitorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 
@@ -16,10 +17,16 @@ class Visitor
     #[ORM\Column]
     private ?int $id = null;
 
+
+
+    #[Assert\PositiveOrZero]
+    #[Assert\NotBlank]
     #[ORM\Column]
     private ?int $count = null;
 
-    #[ORM\Column]
+    #[Assert\Type(\DateTimeInterface::class)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'date')]
     private ?\DateTimeImmutable $date = null;
 
     #[ORM\ManyToOne(inversedBy: 'visitors')]
