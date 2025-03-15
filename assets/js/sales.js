@@ -173,27 +173,16 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "X-Requested-With": "XMLHttpRequest",
       },
-      body: JSON.stringify({ id: uniqueId }),
     })
       .then((response) => {
-        console.log("Réponse brute:", response);
-        return response.json();
-      })
-
-      .then((data) => {
-        console.log("Données reçues après suppression:", data);
-        console.log("Cart après suppression :", data.cart);
-        console.log("ID envoyé :", uniqueId);
-
-        if (data.status === "success") {
-          updateCartDisplay(data.cart);
-          localStorage.setItem("cart", JSON.stringify(data.cart));
-        } else {
-          console.error("Échec de la suppression de l'article:", data.message);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        return response;
       })
+
       .catch((error) => {
         console.error("Erreur lors de la suppression de l'article:", error);
       });

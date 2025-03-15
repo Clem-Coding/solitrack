@@ -24,7 +24,7 @@ final class CartController extends AbstractController
 {
 
     #[Route('/cart/remove-item', name: 'app_cart_remove-item', methods: ['POST'])]
-    public function removeItem(Request $request, SessionInterface $session): HttpFoundationJsonResponse
+    public function removeItem(Request $request, SessionInterface $session)
     {
         try {
 
