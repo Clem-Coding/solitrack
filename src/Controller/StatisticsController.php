@@ -5,45 +5,69 @@ namespace App\Controller;
 use App\Repository\DonationRepository;
 use App\Repository\SalesItemRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class StatisticsController extends AbstractController
 {
-    #[Route('/tableau-de-bord/statistiques', name: 'app_dashboard_statistics')]
-    public function index(): Response
+    #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics', defaults: ['category' => 'all-items'])]
+    public function index(string $category): Response
     {
 
-        return $this->render('dashboard/statistics.html.twig');
+        $currentYear = (int) date('Y');;
+        $years = range($currentYear, $currentYear - 5);
+        // dump($category);
+
+
+
+        return $this->render('dashboard/statistics.html.twig', [
+            'category' => $category,
+            'years' => $years,
+            'current_year' => $currentYear, // Passe l'année actuelle à Twig
+        ]);
     }
 
-    // #[Route('/tableau-de-bord/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
-    // public function getStatisticsData(DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): JsonResponse
-    // {
+    #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
+    public function getStatisticsData(Request $request)
+    {
 
-    //     $monthlyDonationWeights = $donationRepository->findMonthlyDonations();
-    //     $months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-
-
-    //     $donationData = array_fill(0, 12, 0);
+        $period = $request->query->get('period');
+        $category = $request->query->get('category');
+        dump($category);
 
 
-
-    //     foreach ($monthlyDonationWeights as $monthlyDonationWeight) {
-    //         $month = $monthlyDonationWeight['month'] - 1;
-    //         $donationData[$month] = $monthlyDonationWeights['totalWeight'];
-    //     }
+        // $statistics = [];
 
 
+        $message = "coucou, je suis un message que j'envoie depuis l'API!!";
 
-    //     return $this->json([
-    //         'months' => $months,
-    //         'donations' => $donationData,
-    //         'salesWeights' => $salesWeightData,
-    //     ]);
-    // }
+        // switch ($category) {
+        //     case 'all-items':
+        //         $statistics = $statisticsService->getStatisticsByPeriod($period, $item);
+        //         break;
+        //     case 'vetements':
+        //         $statistics = $statisticsService->getStatisticsByPeriod($period, $item, 'clothing');
+        //         break;
+        //     case 'ventes':
+        //         $statistics = $statisticsService->getSalesStatistics($period);
+        //         break;
+        //     case 'visiteurs':
+        //         $statistics = $statisticsService->getVisitorStatistics($period);
+        //         break;
+        // }
+
+
+
+        return $this->json([
+            'message' => $message,
+            // 'months' => $months,
+            // 'donations' => $donationData,
+            // 'salesWeights' => $salesWeightData,
+        ]);
+    }
+}
 
 
 
@@ -71,7 +95,7 @@ class StatisticsController extends AbstractController
     //             'donations' => $donationData,
     //         ]);
     //     }
-}
+
 
 
 
