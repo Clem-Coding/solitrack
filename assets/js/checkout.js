@@ -29,35 +29,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function getRemainingAmount() {
-    return Number(remainingAmountElement.textContent.replace(",", "."));
-  }
+  // function getRemainingAmount() {
+  //   return Number(remainingAmountElement.textContent.replace(",", "."));
+  // }
 
   // function formatRemainingAmount(amount) {
   //   remainingAmountElement.textContent = formatNumber(amount);
   // }
 
+  //RECUPERER LE TOTAL PAYÉ
   function getTotalPaid() {
     const paymentInputs = document.querySelectorAll(".payment-input");
     let totalPaid = 0;
     paymentInputs.forEach((input) => {
-      totalPaid += Number(input.value) || 0;
+      totalPaid += Number(input.value.replace(",", ".")) || 0;
     });
     return totalPaid;
   }
 
+  //________________________RECUPERER LE MONTANT RESTANT A  PAYER_______________________________________________________
   function getRemainingAmount() {
     const totalPaid = getTotalPaid();
     const initialTotal = Number(remainingAmountElement.dataset.initial);
+
+    //le total restant sera négatif si le prix payé est supérieur on montant initial
     const remaining = initialTotal - totalPaid;
 
     // Arrondir à 2 décimales pour éviter les petites erreurs d'arrondi
     return Math.round(remaining * 100) / 100;
   }
 
+  //________METTRE A JOUR LE TEXT ET LES COULEURS POUR LE TOTAL RESTANT AINSI QUE LA VALEUR DU SOLDE____________________
   function updateRemainingUI(remaining) {
+    //équivaut à true si le remaining est négatif (cf function getRemainingAmount)
     const isOverpaid = remaining < 0;
-    const amount = formatNumber(Math.abs(remaining));
+
+    // on met Math.abs pour renvoyer la valeur absolue (si le restant est négatif, il devient positif pour la monnaie à rendre)
+    const balance = formatNumber(Math.abs(remaining));
+    console.log("le montant à rendre ou restant", balance);
     const text = isOverpaid ? "Retour Monnaie : " : "Restant à payer : ";
 
     let color = "red";
@@ -67,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       color = "green";
     }
 
-    remainingAmountElement.textContent = amount;
+    remainingAmountElement.textContent = balance;
     remainingTitle.textContent = text;
     remainingAmountElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
     remainingTitle.style.color = color;
@@ -76,13 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateAmounts() {
     const remaining = getRemainingAmount();
-    console.log(remaining);
     updateRemainingUI(remaining);
   }
 
   function addPaymentInput(amount, method) {
     const inputGroup = document.createElement("li");
     inputGroup.classList.add("payment-group");
+    console.log("l'amount", amount);
 
     const label = document.createElement("label");
     label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
@@ -93,12 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
     paymentInput.classList.add("payment-input");
 
     // console.log("l'input avant : ", paymentInput);
-    console.log("Type de amount : ", typeof amount); // Vérifie la valeur avant la conversion
+    // console.log("Type de amount : ", typeof amount);
     const amountAsNumber = Number(amount);
-    console.log("Après conversion : ", amountAsNumber); // Vérifie la valeur après conversion
+    // console.log("Après conversion : ", amountAsNumber);
     paymentInput.value = amountAsNumber;
-    console.log(paymentInput.value);
-    console.log("l'input après : ", paymentInput);
+    // console.log(paymentInput.value);
+    // console.log("l'input après : ", paymentInput);
     paymentInput.min = 0;
 
     if (method === "card") {
@@ -133,13 +142,21 @@ document.addEventListener("DOMContentLoaded", () => {
   function handlePaymentSelection(method) {
     let remaining = getRemainingAmount();
 
+    let pwywAmountInput = document.querySelector(".pwyw-amount");
+    // console.log("la value", pwywAmountInput.value);
+
     if (remaining > 0) {
-      addPaymentInput(remaining, method);
+      if (pwywAmountInput) {
+        let total = remaining + Number(pwywAmountInput.value);
+        console.log("total du remaininge + pwyw", total);
+        addPaymentInput(total, method);
+      } else {
+        addPaymentInput(remaining, method);
+      }
     }
   }
 
   function createWarningMessageRemainingAmount() {
-    console.log("message montant restant à définir");
     const warningMessageElement = document.createElement("p");
 
     warningMessageElement.classList.add("error-remaining-amount");
@@ -150,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function createWarningMessageOpenPricingAmount() {
-    console.log("message keep change à définir");
     const warningMessageElement = document.createElement("p");
 
     warningMessageElement.classList.add("error-pwyw-amount");
@@ -186,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!document.querySelector(".error-pwyw-amount")) {
           warningMessage = createWarningMessageOpenPricingAmount();
-          console.log("Message d'avertissement créé :", warningMessage);
           paymentForm.appendChild(warningMessage);
         }
       }
@@ -208,46 +223,54 @@ document.addEventListener("DOMContentLoaded", () => {
     salesItems.forEach((item) => {
       const category = item.dataset.category;
       const weight = item.dataset.weight;
-      let price = item.dataset.price;
+      // let price = item.dataset.price;
+      // console.log("price", price);
 
       if (category === "Vêtements vrac" || category === "Autres articles vrac") {
         totalWeight += Number(weight);
-        price = "0";
+        console.log("le total weight", totalWeight);
+        if (totalWeight < 1) {
+          const label = document.createElement("label");
+          label.setAttribute("for", "pwyw_amount");
+          label.textContent = "Le poids des articles en vrac fait moins de 1kg. Montant à payer en prix libre:";
+
+          const pwywAmountInput = document.createElement("input");
+          pwywAmountInput.type = "text";
+          pwywAmountInput.name = "pwyw_amount";
+          pwywAmountInput.classList.add("pwyw-amount");
+          pwywAmountInput.placeholder = "Entrez un montant";
+          // console.log(pwywAmountInput);
+
+          pwywAmountInput.addEventListener("input", () => {
+            formatInputValue(pwywAmountInput);
+
+            let remainingAmount = getRemainingAmount();
+            console.log("le reminaing Amount", remainingAmount);
+            const pwywAmount = Number(pwywAmountInput.value);
+            remainingAmount += pwywAmount;
+            remainingAmountElement.textContent = remainingAmount;
+            console.log("le reminaing Amount après", remainingAmount);
+            // remainingAmountElement.textContent += pwywAmount;
+
+            console.log("le pwyw amount", pwywAmount);
+            if (pwywAmount >= remainingAmount) {
+              // remainingAmountElement.dataset.initial = "0";
+            } else {
+              //
+            }
+          });
+
+          paymentForm.appendChild(label);
+          paymentForm.appendChild(pwywAmountInput);
+        }
       }
     });
-
-    if (totalWeight < 1) {
-      const label = document.createElement("label");
-      label.setAttribute("for", "pwyw_amount");
-      label.textContent = "Le poids des articles en vrac fait moins de 1kg. Montant à payer en prix libre:";
-
-      const pwywAmountInput = document.createElement("input");
-      pwywAmountInput.type = "text";
-      pwywAmountInput.name = "pwyw_amount";
-      pwywAmountInput.classList.add("pwyw-amount");
-      pwywAmountInput.placeholder = "Entrez un montant";
-      console.log(pwywAmountInput);
-
-      pwywAmountInput.addEventListener("input", () => {
-        formatInputValue(pwywAmountInput);
-        const remainingAmount = getRemainingAmount();
-        const enteredAmount = Number(pwywAmountInput.value);
-
-        if (enteredAmount >= remainingAmount) {
-          remainingAmountElement.textContent = "0,00";
-          // remainingAmountElement.dataset.initial = "0";
-        } // else à continuer pour réafficher le prix initial
-      });
-
-      paymentForm.appendChild(label);
-      paymentForm.appendChild(pwywAmountInput);
-    }
   }
 
   function handleKeepChange() {
     if (remainingTitle.textContent === "Retour Monnaie : ") {
       const keepChangeAmount = Math.abs(getRemainingAmount());
-      console.log(keepChangeAmount);
+      // console.log(keepChangeAmount);
       keepChangeInput.value = keepChangeAmount;
       const messageElement = document.createElement("p");
       messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;

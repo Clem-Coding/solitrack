@@ -62,7 +62,7 @@ class PriceManagement
 
 
 
-    public function getTotal(): float
+    public function getCartTotal(): float
     {
         $session = $this->requestStack->getSession();
         $shoppingCart = $session->get('shopping_cart', []);

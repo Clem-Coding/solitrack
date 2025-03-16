@@ -28,9 +28,11 @@ export function formatNumberFromString(numString) {
  */
 export function formatInputValue(input) {
   input.value = input.value
+    .replace(/,/g, ".") // Replace commas with dots to standardize the decimal separator
     .replace(/[^\d.]/g, "") // Keep only digits and the decimal point
     .replace(/(\..*)\./g, "$1") // Ensure only one decimal point exists
-    .replace(/(\.[\d]{2})./g, "$1"); // Limit to 2 digits after the decimal point
+    .replace(/(\.[\d]{2})./g, "$1") // Limit to 2 digits after the decimal point
+    .replace(".", ","); // Replace the dot with a comma for display
 }
 
 export function clearLocalStorage(item) {

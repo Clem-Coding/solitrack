@@ -8,7 +8,7 @@
     <select id="filter-movement">
       <option value="incoming">Articles Entrants</option>
       <option value="outgoing">Articles Sortants</option>
-      <option value="outgoing">Entrants et Sortants</option>
+      <option value="both">Entrants et Sortants</option>
     </select>
 
     <select id="filter-period">
@@ -23,18 +23,6 @@
   </div>
 
   <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
-
-  {# <div><canvas id="myChart"></canvas></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, { type: 'bar', data: { labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], datasets: [{
-    label: '# of Votes', data: [12, 19, 3, 5, 2, 3], borderWidth: 1 }] }, options: { scales: { y: { beginAtZero: true }
-    } } }); #}
-  </script>
 {% endblock %}
 
 {% block javascripts %}

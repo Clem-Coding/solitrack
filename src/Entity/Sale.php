@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Table(name: "sales")]
@@ -37,6 +38,10 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $tip = null;
 
+
+    #[Assert\Length(
+        exactly: 5,
+    )]
     #[ORM\Column(length: 12, nullable: true)]
     private ?string $zipcodeCustomer = null;
 
@@ -47,10 +52,10 @@ class Sale
     private Collection $salesItems;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $keep_change = null;
+    private ?string $keepChange = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $PWYW_amount = null;
+    private ?string $pwywAmount = null;
 
     public function __construct()
     {
@@ -180,24 +185,24 @@ class Sale
 
     public function getKeepChange(): ?string
     {
-        return $this->keep_change;
+        return $this->keepChange;
     }
 
-    public function setKeepChange(?string $keep_change): static
+    public function setKeepChange(?string $keepChange): static
     {
-        $this->keep_change = $keep_change;
+        $this->keepChange = $keepChange;
 
         return $this;
     }
 
-    public function getPWYWAmount(): ?string
+    public function getPwywAmount(): ?string
     {
-        return $this->PWYW_amount;
+        return $this->pwywAmount;
     }
 
-    public function setPWYWAmount(?string $PWYW_amount): static
+    public function setPwywAmount(?string $pwywAmount): static
     {
-        $this->PWYW_amount = $PWYW_amount;
+        $this->pwywAmount = $pwywAmount;
 
         return $this;
     }

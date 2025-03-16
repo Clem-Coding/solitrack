@@ -60,8 +60,12 @@
           <button class="keep-change-button" type="button">Garder la monnaie</button>
           <input type="hidden" class="keep-change-input" name="keep_change" />
           <button type="button">Générer un reçu</button>
+             {{ form_start(form) }}
+          {{ form_row(form.zipcodeCustomer) }}
+             {{ form_end(form) }}
 
           <button type="submit" class="register-sale-button">Finaliser la transaction</button>
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}">
         </div>
       </form>
     </section>

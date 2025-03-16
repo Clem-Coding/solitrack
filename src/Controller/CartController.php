@@ -24,7 +24,7 @@ final class CartController extends AbstractController
 {
 
     #[Route('/cart/remove-item', name: 'app_cart_remove-item', methods: ['POST'])]
-    public function removeItem(Request $request, SessionInterface $session)
+    public function removeItem(Request $request, SessionInterface $session, PriceManagement $priceManagement)
     {
         try {
 
@@ -50,9 +50,14 @@ final class CartController extends AbstractController
 
             $shoppingCart = array_values($shoppingCart); // Réindexation
             $session->set('shopping_cart', $shoppingCart);
+            $total = $priceManagement->getCartTotal();
 
 
-            return $this->json(['status' => 'success', 'cart' => $shoppingCart]);
+            return $this->json([
+                'status' => 'success',
+                'cart' => $shoppingCart,
+                'total' => $total
+            ]);
         } catch (\Exception $e) {
 
             return $this->json(['status' => 'error', 'message' => 'Erreur interne du serveur: ' . $e->getMessage()]);
@@ -66,13 +71,22 @@ final class CartController extends AbstractController
 
 
     #[Route('/cart/clear', name: 'app_cart_clear')]
-    public function clearCart(SessionInterface $session): JsonResponse
+    public function clearCart(SessionInterface $session)
     {
         if ($session->has('shopping_cart')) {
             $session->remove('shopping_cart');
-            return new JsonResponse(['status' => 'success', 'message' => 'Panier vidé avec succès']);
+
+
+
+            return $this->json([
+                'status' => 'success',
+                'message' => 'Panier vidé avec succès',
+
+            ]);
         }
 
-        return new JsonResponse(['status' => 'error', 'message' => 'Le panier était déjà vide']);
+
+
+        return $this->json(['status' => 'error', 'message' => 'Le panier était déjà vide']);
     }
 }

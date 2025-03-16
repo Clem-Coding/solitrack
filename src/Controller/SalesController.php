@@ -55,9 +55,11 @@ final class SalesController extends AbstractController
 
             //à revoir XmLhttpRequest , supprimer?
             if ($request->isXmlHttpRequest()) {
+                $total = $priceManagement->getCartTotal();
                 return $this->json([
                     'status' => 'success',
                     'cart' => $shoppingCart ?? [],
+                    'total' => $total,
                 ]);
             }
 
@@ -68,6 +70,7 @@ final class SalesController extends AbstractController
 
         return $this->render('sales/index.html.twig', [
             'form' => $form,
+            'total' => $priceManagement->getCartTotal()
         ]);
     }
 }

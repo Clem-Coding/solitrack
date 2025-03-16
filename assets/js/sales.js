@@ -1,4 +1,4 @@
-import { formatInputValue, formatNumberFromString, clearLocalStorage } from "./utils.js";
+import { formatInputValue, formatNumberFromString } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   //CONSTANTS
@@ -9,8 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartContainer = document.getElementById("cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
-  const clearLocalStorageElement = document.getElementById("clear-local-storage");
-  console.log(clearLocalStorageElement);
+  const totalElement = document.querySelector("#total-price");
+
+  console.log("le button", clearCartButton);
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
@@ -104,8 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
+          updateTotalDisplay(data.total);
           localStorage.setItem("cart", JSON.stringify(data.cart));
           console.log("Article ajouté au panier:", data.cart);
+          console.log("le total:", data.total);
         } else {
           console.error("Échec de l'ajout au panier:", data.message);
         }
@@ -166,6 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function updateTotalDisplay(total) {
+    console.log("coucou j'update!!");
+    if (totalElement) {
+      totalElement.textContent = total;
+    }
+  }
+
   function handleDeleteItem(event) {
     const uniqueId = event.target.getAttribute("data-id");
 
@@ -174,15 +184,22 @@ document.addEventListener("DOMContentLoaded", () => {
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({ id: uniqueId }),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        return response;
+        console.log("Réponse brute:", response);
+        return response.json();
       })
 
+      .then((data) => {
+        if (data.status === "success") {
+          updateCartDisplay(data.cart);
+          updateTotalDisplay(data.total);
+          localStorage.setItem("cart", JSON.stringify(data.cart));
+        } else {
+          console.error("Échec de la suppression de l'article:", data.message);
+        }
+      })
       .catch((error) => {
         console.error("Erreur lors de la suppression de l'article:", error);
       });
@@ -198,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          clearLocalStorage("cart");
+          localStorage.removeItem("cart");
 
           const cartContainer = document.getElementById("cart-container");
           if (cartContainer) {
@@ -226,19 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const clearLocalStorageAndResetDisplay = () => {
-    if (clearLocalStorageElement && clearLocalStorageElement.dataset.clearLocalStorage === "true") {
-      clearLocalStorage("cart");
-      sessionStorage.removeItem("clearLocalStorage");
-    }
-
-    const savedCart = JSON.parse(localStorage.getItem("cart"));
-    if (savedCart && Array.isArray(savedCart)) {
-      updateCartDisplay(savedCart);
-    }
-  };
-
-  clearLocalStorageAndResetDisplay();
+  if (savedCart && Array.isArray(savedCart)) {
+    updateCartDisplay(savedCart);
+  }
 
   clearCartButton.addEventListener("click", handleClearCart);
 });
