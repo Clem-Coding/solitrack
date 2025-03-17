@@ -12,8 +12,10 @@ class StatsTest
         private DonationRepository $donationRepository,
     ) {}
 
-    public function getDonationStatistics($period, $year = null, $date = null)
+    public function getDonationStatistics($period, $year = null, $month = null)
     {
+
+        $donationsData = [];
 
 
         switch ($period) {
@@ -32,16 +34,14 @@ class StatsTest
                 return $this->donationRepository->findTotalWeightDonationsByYear();
 
             case 'daily':
-                if ($date) {
-                    dump("la date dans le service", $date);
-                    $donationsData = $this->donationRepository->findTotalWeightDonationsByDay($date);
-                } else {
-                    $donationsData = $this->donationRepository->findTotalWeightDonationsByDay(new DateTime());
+                if ($month) {
+                    dump("la month dans le service", $month);
+                    $donationsData = $this->donationRepository->getTotalWeightByDayForMonth($month);
                 }
 
                 return $donationsData;;
             default:
-                return ['error' => "Invalid period: chat"]; // Fournir plus de contexte dans le message d'erreur
+                return ['error' => "Invalid period: chat"];
         }
     }
 }

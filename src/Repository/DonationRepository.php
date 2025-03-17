@@ -46,6 +46,15 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
+    public function findAvailableMonths(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->select("DISTINCT SUBSTRING(d.createdAt, 1, 7) AS month") // YYYY-MM
+            ->orderBy('month', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 
@@ -64,7 +73,7 @@ class DonationRepository extends ServiceEntityRepository
             ->groupBy('month')
             ->orderBy('month', 'ASC');
 
-        // Si une année est fournie, ajouter une condition pour l'année
+
         if ($year) {
             $qb->andWhere('YEAR(d.createdAt) = :year')
                 ->setParameter('year', $year);
@@ -74,36 +83,36 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
-    // SELECT DATE(created_at) AS date, SUM(weight) AS totalWeight
-    // FROM donations
-    // WHERE DATE(created_at) = ?;
-    public function findTotalWeightDonationsByDay($date)
-    {
-        // Vérifier si $date est une chaîne de caractères
-        if (is_string($date)) {
-            $date = new \DateTime($date);
-        }
+    // // SELECT DATE(created_at) AS date, SUM(weight) AS totalWeight
+    // // FROM donations
+    // // WHERE DATE(created_at) = ?;
+    // public function findTotalWeightDonationsByDay($date)
+    // {
+    //     // Vérifier si $date est une chaîne de caractères
+    //     if (is_string($date)) {
+    //         $date = new \DateTime($date);
+    //     }
 
-        // Vérifier si c'est maintenant un objet DateTime
-        if ($date instanceof \DateTime) {
-            // Convertir la date en format 'Y-m-d' (par exemple '2025-02-12')
-            $startDate = $date->format('Y-m-d') . ' 00:00:00';
-            $endDate = $date->format('Y-m-d') . ' 23:59:59';
-        } else {
-            // Si ce n'est pas un objet DateTime, retourner une erreur ou effectuer une autre logique
-            throw new \InvalidArgumentException("La date fournie n'est pas un objet DateTime valide.");
-        }
+    //     // Vérifier si c'est maintenant un objet DateTime
+    //     if ($date instanceof \DateTime) {
+    //         // Convertir la date en format 'Y-m-d' (par exemple '2025-02-12')
+    //         $startDate = $date->format('Y-m-d') . ' 00:00:00';
+    //         $endDate = $date->format('Y-m-d') . ' 23:59:59';
+    //     } else {
+    //         // Si ce n'est pas un objet DateTime, retourner une erreur ou effectuer une autre logique
+    //         throw new \InvalidArgumentException("La date fournie n'est pas un objet DateTime valide.");
+    //     }
 
-        // Utiliser QueryBuilder pour calculer la somme du poids total sur la journée
-        return $this->createQueryBuilder('d')
-            ->select('SUM(d.weight) AS totalWeight') // Sum des poids
-            ->where('d.createdAt >= :startDate')
-            ->andWhere('d.createdAt <= :endDate')
-            ->setParameter('startDate', $startDate)
-            ->setParameter('endDate', $endDate)
-            ->getQuery()
-            ->getSingleResult(); // Utiliser getSingleResult() pour obtenir une seule ligne avec le total
-    }
+    //     // Utiliser QueryBuilder pour calculer la somme du poids total sur la journée
+    //     return $this->createQueryBuilder('d')
+    //         ->select('SUM(d.weight) AS totalWeight') // Sum des poids
+    //         ->where('d.createdAt >= :startDate')
+    //         ->andWhere('d.createdAt <= :endDate')
+    //         ->setParameter('startDate', $startDate)
+    //         ->setParameter('endDate', $endDate)
+    //         ->getQuery()
+    //         ->getSingleResult(); // Utiliser getSingleResult() pour obtenir une seule ligne avec le total
+    // }
 
 
 
@@ -125,6 +134,30 @@ class DonationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+
+    // SELECT DAY(created_at) AS day, SUM(weight) AS totalWeight
+    // FROM donations
+    // WHERE DATE_FORMAT(created_at, '%Y-%m') = '2023-06' 
+    // GROUP BY DAY(created_at)
+    // ORDER BY day ASC;
+
+    public function getTotalWeightByDayForMonth($month)
+    {
+        // Crée un QueryBuilder avec l'alias 'd' pour la table Donation
+        $queryBuilder = $this->createQueryBuilder('d');
+
+        $queryBuilder
+            ->select('DAY(d.createdAt) as day', 'SUM(d.weight) as totalWeight')
+            ->where('DATE_FORMAT(d.createdAt, \'%Y-%m\') = :month')
+            ->groupBy('day')
+            ->setParameter('month', $month)
+            ->orderBy('day', 'ASC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 
 
     //    /**

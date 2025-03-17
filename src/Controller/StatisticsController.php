@@ -10,7 +10,7 @@ use App\Service\StatsTest;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use App\Repository\DonationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,19 +18,45 @@ use Symfony\Component\HttpFoundation\Response;
 class StatisticsController extends AbstractController
 {
     #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics', defaults: ['category' => 'all-items'])]
-    public function index(string $category): Response
+    public function index(string $category, DonationRepository $donationRepository): Response
     {
-
-        $currentYear = (int) date('Y');;
+        $currentYear = (int) date('Y');
         $years = range($currentYear, $currentYear - 5);
-        // dump($category);
 
 
+        $rawMonths = $donationRepository->findAvailableMonths();
+
+        $monthsInFrench = [
+            'January' => 'janvier',
+            'February' => 'février',
+            'March' => 'mars',
+            'April' => 'avril',
+            'May' => 'mai',
+            'June' => 'juin',
+            'July' => 'juillet',
+            'August' => 'août',
+            'September' => 'septembre',
+            'October' => 'octobre',
+            'November' => 'novembre',
+            'December' => 'décembre'
+        ];
+
+        $months = array_map(function ($item) use ($monthsInFrench) {
+            $date = \DateTime::createFromFormat('Y-m', $item['month']);
+            $monthName = $date->format('F');
+            $monthNameInFrench = $monthsInFrench[$monthName];
+
+            return [
+                'value' => $item['month'],
+                'label' => $monthNameInFrench . ' ' . $date->format('Y')
+            ];
+        }, $rawMonths);
 
         return $this->render('dashboard/statistics.html.twig', [
             'category' => $category,
             'years' => $years,
             'current_year' => $currentYear,
+            'months' => $months,
         ]);
     }
 
@@ -42,8 +68,8 @@ class StatisticsController extends AbstractController
         $category = $request->query->get('category');
         $type = $request->query->get("type");
         $year = $request->query->get("year");
-        $date = $request->query->get("date");
-        dump("la date dans le controller", $date);
+        $month = $request->query->get("date");
+        dump("le mois dans le controller", $month);
 
 
         $statistics = [];
@@ -53,16 +79,16 @@ class StatisticsController extends AbstractController
 
         switch ($category) {
             case 'articles':
-                // Appel du service pour la catégorie "articles"
+
                 if ($type === 'incoming') {
-                    $statistics = $statsTest->getDonationStatistics($period, $year, $date);
+                    $statistics = $statsTest->getDonationStatistics($period, $year, $month);
                 } elseif ($type === 'outgoing') {
                     // $statistics = $statisticsService->getSalesStatistics($period);
                 }
                 break;
 
             case 'ventes':
-                // Appel du service pour la catégorie "ventes"
+
                 // $statistics = $statisticsService->getSalesStatistics($period);
                 break;
 

@@ -13,6 +13,8 @@ doctrine:
       datetime_functions:
         MONTH: DoctrineExtensions\Query\Mysql\Month
         YEAR: DoctrineExtensions\Query\Mysql\Year
+        DAY: DoctrineExtensions\Query\Mysql\Day
+        DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
 
     auto_generate_proxy_classes: true
     enable_lazy_ghost_objects: true

@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   const filterPeriod = document.getElementById("filter-period");
   const filterType = document.getElementById("filter-type");
 
-  const datePicker = document.querySelector("#date-picker");
+  const monthPicker = document.querySelector("#month-picker");
   const yearPicker = document.querySelector("#year-picker");
-  const dateInput = document.querySelector("#date");
+  const monthSelect = document.querySelector("#month");
   const yearInput = document.querySelector("#year");
 
   const apiUrl = "/api/statistiques/";
@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await response.json();
 
       // Appel de la fonction pour créer ou mettre à jour le graphique
-      createGraph(data.data);
-      console.log("data", data);
+      // createGraph(data.data);
+      console.log("data", data.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -70,11 +70,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
-  function handleDateChange() {
-    datePicker.addEventListener("change", () => {
-      const selectedDate = dateInput.value;
-      console.log("Selected date:", selectedDate);
-      sendToAPI(filterPeriod.value, filterType.value, null, selectedDate);
+  function handleMonthChange() {
+    monthPicker.addEventListener("change", () => {
+      const selectedMonth = monthSelect.value;
+      console.log("Selected month:", selectedMonth);
+      sendToAPI(filterPeriod.value, filterType.value, null, selectedMonth);
     });
   }
 
@@ -91,8 +91,17 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   function togglePeriodView(period) {
     console.log("coucou le toggle");
-    datePicker.style.display = period === "daily" ? "block" : "none";
-    yearPicker.style.display = period === "monthly" ? "block" : "none";
+
+    if (period === "daily") {
+      monthPicker.style.display = "block";
+      yearPicker.style.display = "none";
+    } else if (period === "monthly") {
+      monthPicker.style.display = "none";
+      yearPicker.style.display = "block";
+    } else {
+      monthPicker.style.display = "none";
+      yearPicker.style.display = "none";
+    }
   }
 
   function getCategoryFromPath() {
@@ -174,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     handleTypeFilterChange();
     sendToAPI();
     handleYearChange();
-    handleDateChange();
+    handleMonthChange();
   }
 
   initializePage();

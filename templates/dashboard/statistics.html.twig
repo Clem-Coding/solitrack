@@ -29,21 +29,21 @@
   {# PREMIER FILTRE #}
 
   {% if category == 'articles' %}
-    <label for="filter-type">Sélectionner une catégorie</label>
+    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
     <select id="filter-type" name="item">
       <option value="incoming">Articles entrants</option>
       <option value="outgoing">Articles sortants</option>
       <option value="Entrants et sortants">Articles entrants et sortants</option>
     </select>
   {% elseif category == 'vetements' %}
-    <label for="filter-type">Sélectionner une catégorie</label>
+    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
     <select id="filter-type" name="clothing">
       <option value="chat">Vêtements entrants</option>
       <option value="chient">Vêtements sortants</option>
       <option value="oiseau">Vêtements entrants et sortants</option>
     </select>
   {% elseif category == 'ventes' %}
-    <label for="filter-type">Sélectionner une catégorie</label>
+    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
     <select id="filter-type" name="sale">
       <option value="ventes">Chiffre des ventes</option>
       <option value="bar">Chiffre du bar</option>
@@ -56,19 +56,23 @@
   <label for="filter-period" class="hidden">Sélectionner une période</label>
   <select id="filter-period">
     <option value="monthly">Total mensuel sur un an</option>
-    <option value="daily">Total journalier</option>
+    <option value="daily">Total journalier sur un mois</option>
     <option value="yearly">Total annuel</option>
   </select>
 
   {# TROISIEME FILTRE #}
 
-  <div id="date-picker" style="display: none;">
-    <label for="date" class="hidden">Sélectionner une date</label>
-    <input type="date" id="date" />
+  <div id="month-picker" style="display: none;">
+    <label for="month" class="hidden">Sélectionner un mois</label>
+    <select id="month">
+      {% for month in months %}
+        <option value="{{ month.value }}">{{ month.label }}</option>
+      {% endfor %}
+    </select>
   </div>
 
-  <div id="year-picker">
-    <label for="year">Sélectionner une année</label>
+  <div id="year-picker" style="display: none;">
+    <label for="year" class="hidden">Sélectionner une année</label>
     <select id="year">
       {% for year in years %}
         <option value="{{ year }}">{{ year }}</option>
