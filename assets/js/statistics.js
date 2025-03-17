@@ -3,19 +3,21 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 🟡 VARIABLES
   // ==========================
   const filterPeriod = document.getElementById("filter-period");
+  const filterType = document.getElementById("filter-type");
+
   const datePicker = document.getElementById("date-picker");
   const yearPicker = document.getElementById("month-picker");
 
   const apiUrl = "/api/statistiques/";
-  let chartInstance = null; // Instance du graphique, utile pour le mettre à jour
+  let chartInstance = null;
 
   // ==========================
   // 🟢 FETCH API (Fetching data)
   // ==========================
-  async function fetchData(period, category) {
+  async function fetchData(category, type, period) {
+    console.log(`Fetching data with period: ${period}, category: ${category}, and type: ${type}`);
     try {
-      const response = await fetch(`${apiUrl}?period=${period}&category=${category}`);
-      console.log(response);
+      const response = await fetch(`${apiUrl}?period=${period}&category=${category}&type=${type}`);
       const data = await response.json();
       console.log("Data fetched:", data);
 
@@ -30,30 +32,48 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 🔧 HANDLE FILTER CHANGES
   // ==========================
   function handlePeriodFilterChange() {
-    console.log("coucou la fonction");
     filterPeriod.addEventListener("change", () => {
       const selectedPeriod = filterPeriod.value;
-      // const selectedCategory = getSelectedCategory();
-
-      togglePeriodView(selectedPeriod);
-      fetchData(selectedPeriod);
+      console.log("Selected period:", selectedPeriod);
+      sendToAPI(selectedPeriod);
     });
+  }
+
+  function handleTypeFilterChange() {
+    filterType.addEventListener("change", () => {
+      const selectedType = filterType.value;
+      console.log("Selected type:", selectedType);
+      sendToAPI(null, selectedType); // Pass null for period to keep the current value
+    });
+  }
+
+  // Envoie les données à l'API avec les filtres sélectionnés
+  function sendToAPI(period = filterPeriod.value, type = filterType.value) {
+    let category = getCategoryFromPath();
+    console.log(`Sending to API with category: ${category}, type: ${type}, period: ${period}`);
+    fetchData(category, type, period);
   }
 
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
-
   function togglePeriodView(period) {
     datePicker.style.display = period === "daily" ? "block" : "none";
     yearPicker.style.display = period === "monthly" ? "block" : "none";
+  }
+
+  function getCategoryFromPath() {
+    const path = window.location.pathname;
+    const parts = path.split("/");
+    // Supposons que la catégorie est toujours le dernier segment de l'URL
+    return parts[parts.length - 1];
   }
 
   // ==========================
   // 📊 FUNCTION TO CREATE GRAPH
   // ==========================
   function createGraph(data) {
-    const donationsFormatted = data.donations.map((donation) => donation.toFixed(2));
+    // const donationsFormatted = data.donations.map((donation) => donation.toFixed(2));
 
     // Si une instance de graphique existe déjà, on la détruit pour la mettre à jour
     if (chartInstance) {
@@ -100,6 +120,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   function initializePage() {
     handlePeriodFilterChange();
+    handleTypeFilterChange();
+    sendToAPI();
   }
 
   initializePage();

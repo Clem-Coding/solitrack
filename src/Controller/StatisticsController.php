@@ -25,7 +25,7 @@ class StatisticsController extends AbstractController
         return $this->render('dashboard/statistics.html.twig', [
             'category' => $category,
             'years' => $years,
-            'current_year' => $currentYear, // Passe l'année actuelle à Twig
+            'current_year' => $currentYear,
         ]);
     }
 
@@ -35,7 +35,8 @@ class StatisticsController extends AbstractController
 
         $period = $request->query->get('period');
         $category = $request->query->get('category');
-        dump($category);
+        $type = $request->query->get("type");
+        dump($category, $type, $period);
 
 
         // $statistics = [];
@@ -61,10 +62,10 @@ class StatisticsController extends AbstractController
 
 
         return $this->json([
-            'message' => $message,
-            // 'months' => $months,
-            // 'donations' => $donationData,
-            // 'salesWeights' => $salesWeightData,
+            'categorie' => $category,
+            'type' => $type,
+            'periode' => $period,
+
         ]);
     }
 }

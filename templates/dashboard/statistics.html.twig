@@ -5,7 +5,7 @@
 
   {# prettier-ignore-start #}
   <ul class="sidebar">
-    <li><a href="{{ path('app_dashboard_statistics', {'category': 'all-items'}) }}">Articles</a></li>
+    <li><a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">Articles</a></li>
     <li><a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}">Vêtements</a></li>
     <li><a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}">Ventes</a></li>
     <li><a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}">Visiteurs</a></li>
@@ -14,45 +14,40 @@
 
   <section class="content">
     {% block category_graph %}
-      <!-- Afficher le graphique ici en fonction de la catégorie -->
-      {% if category == 'all-items' %}
+      {% if category == 'articles' %}
         <h2>Tous les articles</h2>
-        <!-- Graphique spécifique aux articles -->
       {% elseif category == 'vetements' %}
         <h2>Les vêtements</h2>
-        <!-- Graphique spécifique aux vêtements -->
       {% elseif category == 'ventes' %}
         <h2>Les ventes</h2>
-        <!-- Graphique spécifique aux ventes -->
       {% elseif category == 'visiteurs' %}
         <h2>Les visiteurs</h2>
-        <!-- Graphique spécifique aux visiteurs -->
       {% endif %}
     {% endblock %}
   </section>
 
   {# PREMIER FILTRE #}
 
-  {% if category == 'all-items' %}
-    <label for="select-items">Sélectionner une catégorie</label>
-    <select id="select-items" name="item">
-      <option value="item1">Articles entrants</option>
-      <option value="item2">Articles sortants</option>
-      <option value="item3">Articles entrants et sortants</option>
+  {% if category == 'articles' %}
+    <label for="filter-type">Sélectionner une catégorie</label>
+    <select id="filter-type" name="item">
+      <option value="Articles entrants">Articles entrants</option>
+      <option value="Articles sortants">Articles sortants</option>
+      <option value="Entrants et sortants">Articles entrants et sortants</option>
     </select>
   {% elseif category == 'vetements' %}
-    <label for="select-clothing">Sélectionner une catégorie</label>
-    <select id="select-clothing" name="clothing">
-      <option value="clothing1">Vêtements entrants</option>
-      <option value="clothing2">Vêtements sortants</option>
-      <option value="clothing3">Vêtements entrants et sortants</option>
+    <label for="filter-type">Sélectionner une catégorie</label>
+    <select id="filter-type" name="clothing">
+      <option value="chat">Vêtements entrants</option>
+      <option value="chient">Vêtements sortants</option>
+      <option value="oiseau">Vêtements entrants et sortants</option>
     </select>
   {% elseif category == 'ventes' %}
-    <label for="select-sales">Sélectionner une catégorie</label>
-    <select id="select-sales" name="sale">
-      <option value="sale1">Chiffre des ventes</option>
-      <option value="sale2">Chiffre du bar</option>
-      <option value="sale3">Chiffre des montants prix libre</option>
+    <label for="filter-type">Sélectionner une catégorie</label>
+    <select id="filter-type" name="sale">
+      <option value="ventes">Chiffre des ventes</option>
+      <option value="bar">Chiffre du bar</option>
+      <option value="prix libre">Chiffre des montants prix libre</option>
     </select>
   {% endif %}
 
