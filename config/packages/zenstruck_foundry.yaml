@@ -1,0 +1,4 @@
+zenstruck_foundry:
+  faker:
+    locale: fr_FR
+  # autres options que tu souhaites configurer

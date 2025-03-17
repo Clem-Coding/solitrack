@@ -29,7 +29,7 @@ class Statistics
             case 'yearly':
                 return $this->donationRepository->findTotalWeightDonationsByYear();
             default:
-                return ['error' => 'Invalid period'];
+                return ['error' => 'Invalid period chien'];
         }
     }
 }

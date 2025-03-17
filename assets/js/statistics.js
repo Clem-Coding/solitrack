@@ -5,25 +5,40 @@ document.addEventListener("DOMContentLoaded", async function () {
   const filterPeriod = document.getElementById("filter-period");
   const filterType = document.getElementById("filter-type");
 
-  const datePicker = document.getElementById("date-picker");
-  const yearPicker = document.getElementById("month-picker");
+  const datePicker = document.querySelector("#date-picker");
+  const yearPicker = document.querySelector("#year-picker");
+  const dateInput = document.querySelector("#date");
+  const yearInput = document.querySelector("#year");
 
   const apiUrl = "/api/statistiques/";
   let chartInstance = null;
 
   // ==========================
-  // 🟢 FETCH API (Fetching data)
+  // 🟢 FETCH API
   // ==========================
-  async function fetchData(category, type, period) {
-    console.log(`Fetching data with period: ${period}, category: ${category}, and type: ${type}`);
+  // ==========================
+  async function fetchData(category, type, period, year = null, date = null) {
+    console.log(
+      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, date: ${date}`
+    );
+
     try {
-      const response = await fetch(`${apiUrl}?period=${period}&category=${category}&type=${type}`);
-      console.log(response);
+      let url = `${apiUrl}?period=${period}&category=${category}&type=${type}`;
+
+      if (year) {
+        url += `&year=${year}`;
+      }
+
+      if (date) {
+        url += `&date=${date}`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
-      console.log("Data fetched:", data.data);
 
       // Appel de la fonction pour créer ou mettre à jour le graphique
       createGraph(data.data);
+      console.log("data", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -35,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handlePeriodFilterChange() {
     filterPeriod.addEventListener("change", () => {
       const selectedPeriod = filterPeriod.value;
-      console.log("Selected period:", selectedPeriod);
+      togglePeriodView(selectedPeriod);
       sendToAPI(selectedPeriod);
     });
   }
@@ -43,22 +58,39 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleTypeFilterChange() {
     filterType.addEventListener("change", () => {
       const selectedType = filterType.value;
-      console.log("Selected type:", selectedType);
       sendToAPI(null, selectedType); // Pass null for period to keep the current value
     });
   }
 
-  // Envoie les données à l'API avec les filtres sélectionnés
-  function sendToAPI(period = filterPeriod.value, type = filterType.value) {
+  function handleYearChange() {
+    yearPicker.addEventListener("change", () => {
+      const selectedYear = yearInput.value;
+      console.log("Selected year:", selectedYear);
+      sendToAPI(filterPeriod.value, filterType.value, selectedYear);
+    });
+  }
+
+  function handleDateChange() {
+    datePicker.addEventListener("change", () => {
+      const selectedDate = dateInput.value;
+      console.log("Selected date:", selectedDate);
+      sendToAPI(filterPeriod.value, filterType.value, null, selectedDate);
+    });
+  }
+
+  function sendToAPI(period = filterPeriod.value, type = filterType.value, year = null, date = null) {
     let category = getCategoryFromPath();
-    console.log(`Sending to API with category: ${category}, type: ${type}, period: ${period}`);
-    fetchData(category, type, period);
+    console.log(
+      `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, date: ${date}`
+    );
+    fetchData(category, type, period, year, date);
   }
 
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
   function togglePeriodView(period) {
+    console.log("coucou le toggle");
     datePicker.style.display = period === "daily" ? "block" : "none";
     yearPicker.style.display = period === "monthly" ? "block" : "none";
   }
@@ -89,8 +121,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       "Décembre",
     ];
 
+    const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+
     console.log("les datas!!", data);
-    // const donationsFormatted = data.donations.map((donation) => donation.toFixed(2));
+    const formattedData = data.map((data) => data.toFixed(2));
 
     // Si une instance de graphique existe déjà, on la détruit pour la mettre à jour
     if (chartInstance) {
@@ -105,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         datasets: [
           {
             label: "Total des poids entrants sur un an",
-            data: data,
+            data: formattedData,
             backgroundColor: "#EB5A47",
             borderColor: "#080222",
             borderWidth: 2,
@@ -139,6 +173,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     handlePeriodFilterChange();
     handleTypeFilterChange();
     sendToAPI();
+    handleYearChange();
+    handleDateChange();
   }
 
   initializePage();
