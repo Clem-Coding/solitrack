@@ -31,8 +31,8 @@
   {% if category == 'articles' %}
     <label for="filter-type">Sélectionner une catégorie</label>
     <select id="filter-type" name="item">
-      <option value="Articles entrants">Articles entrants</option>
-      <option value="Articles sortants">Articles sortants</option>
+      <option value="incoming">Articles entrants</option>
+      <option value="outgoing">Articles sortants</option>
       <option value="Entrants et sortants">Articles entrants et sortants</option>
     </select>
   {% elseif category == 'vetements' %}
@@ -76,28 +76,7 @@
     </select>
   </div>
 
-  {# <div style="width: 800px;"><canvas id="acquisitions"></canvas></div> #}
-
-  <!-- Filtres -->
-  {# <div>
-    <select id="filter-movement">
-      <option value="incoming">Articles Entrants</option>
-      <option value="outgoing">Articles Sortants</option>
-      <option value="both">Entrants et Sortants</option>
-    </select>
-
-    <select id="filter-period">
-      <option value="daily">Journalier</option>
-      <option value="monthly">Mensuel</option>
-      <option value="yearly">Annuel</option>
-    </select>
-
-    <input type="date" id="filter-date" />
-    <input type="month" id="filter-month" style="display: none;" />
-    <input type="number" id="filter-year" min="2020" max="2030" style="display: none;" />
-  </div>
-
-  <div style="width: 800px;"><canvas id="acquisitions"></canvas></div> #}
+  <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
 {% endblock %}
 
 {% block javascripts %}

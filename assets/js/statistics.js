@@ -18,11 +18,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.log(`Fetching data with period: ${period}, category: ${category}, and type: ${type}`);
     try {
       const response = await fetch(`${apiUrl}?period=${period}&category=${category}&type=${type}`);
+      console.log(response);
       const data = await response.json();
-      console.log("Data fetched:", data);
+      console.log("Data fetched:", data.data);
 
       // Appel de la fonction pour créer ou mettre à jour le graphique
-      // createGraph(data);
+      createGraph(data.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -73,6 +74,22 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 📊 FUNCTION TO CREATE GRAPH
   // ==========================
   function createGraph(data) {
+    const months = [
+      "Janvier",
+      "Février",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Août",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Décembre",
+    ];
+
+    console.log("les datas!!", data);
     // const donationsFormatted = data.donations.map((donation) => donation.toFixed(2));
 
     // Si une instance de graphique existe déjà, on la détruit pour la mettre à jour
@@ -84,11 +101,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     chartInstance = new Chart(document.getElementById("acquisitions"), {
       type: "bar",
       data: {
-        labels: data.months,
+        labels: months,
         datasets: [
           {
             label: "Total des poids entrants sur un an",
-            data: donationsFormatted,
+            data: data,
             backgroundColor: "#EB5A47",
             borderColor: "#080222",
             borderWidth: 2,

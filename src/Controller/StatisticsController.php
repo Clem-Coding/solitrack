@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
-use App\Repository\DonationRepository;
-use App\Repository\SalesItemRepository;
+
+use App\Service\StatsTest;
+// use App\Repository\DonationRepository;
+// use App\Repository\SalesItemRepository;
+// use App\Service\StatisticsService;
+
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -30,42 +35,44 @@ class StatisticsController extends AbstractController
     }
 
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
-    public function getStatisticsData(Request $request)
+    public function getStatisticsData(Request $request, StatsTest $statsTest)
     {
 
         $period = $request->query->get('period');
         $category = $request->query->get('category');
         $type = $request->query->get("type");
-        dump($category, $type, $period);
 
 
-        // $statistics = [];
+        $statistics = [];
 
 
-        $message = "coucou, je suis un message que j'envoie depuis l'API!!";
+        switch ($category) {
+            case 'articles':
+                // Appel du service pour la catégorie "articles"
+                if ($type === 'incoming') {
+                    $statistics = $statsTest->getDonationStatistics($period);
+                } elseif ($type === 'outgoing') {
+                    // $statistics = $statisticsService->getSalesStatistics($period);
+                }
+                break;
 
-        // switch ($category) {
-        //     case 'all-items':
-        //         $statistics = $statisticsService->getStatisticsByPeriod($period, $item);
-        //         break;
-        //     case 'vetements':
-        //         $statistics = $statisticsService->getStatisticsByPeriod($period, $item, 'clothing');
-        //         break;
-        //     case 'ventes':
-        //         $statistics = $statisticsService->getSalesStatistics($period);
-        //         break;
-        //     case 'visiteurs':
-        //         $statistics = $statisticsService->getVisitorStatistics($period);
-        //         break;
-        // }
+            case 'ventes':
+                // Appel du service pour la catégorie "ventes"
+                // $statistics = $statisticsService->getSalesStatistics($period);
+                break;
 
+            default:
+                $statistics = ['error' => 'Invalid category'];
+                break;
+        }
+
+
+
+        dump($statistics);
 
 
         return $this->json([
-            'categorie' => $category,
-            'type' => $type,
-            'periode' => $period,
-
+            'data' => $statistics,
         ]);
     }
 }
