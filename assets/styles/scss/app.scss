@@ -1,8 +1,7 @@
 @import "abstracts/variables";
+@import "base/reset", "base/typography", "base/base";
 
-body {
-  background-color: skyblue;
-}
+@import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation";
 
 .hidden {
   display: none;

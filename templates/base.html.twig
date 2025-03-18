@@ -20,7 +20,7 @@
   </head>
 
   <body>
-    <header>
+    <header class="header">
       <a href="{{ app.user ? path('app_user_homepage') : path('app_homepage') }}" aria-label="Accueil">
         <h1>Soli'Track</h1>
       </a>
@@ -42,7 +42,7 @@
               <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
               <li class="dropdown">
                 <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a>
-                <nav class="dropdown-content">
+                <nav class="dropdown-menu">
                   <a href="{{ path('app_dashboard_statistics') }}">Les statistiques</a>
                   <a href="{{ path('app_dashboard_cash_reconciliation') }}">Contrôle de Caisse</a>
                   <a href="{{ path('app_dashboard_user_management') }}">Gestion des utilisateurs</a>
@@ -55,10 +55,10 @@
       {% endif %}
     </header>
 
-    {% block body %}{% endblock %}
+    <main class="content">{% block content %}{% endblock %}</main>
 
     {% block footer %}
-      <footer>
+      <footer class="footer">
         <p>Mentions légales</p>
         <p>2025 Clem-Coding</p>
       </footer>

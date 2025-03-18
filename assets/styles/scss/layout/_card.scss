@@ -1,0 +1,9 @@
+.card {
+  border: 2px solid $ink-night;
+  padding: 1.5em 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 7px;
+  background-color: $cloud;
+}

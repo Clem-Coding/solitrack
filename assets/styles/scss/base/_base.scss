@@ -1,0 +1,33 @@
+// @import "../abstracts/variables";
+// @import "../base/typography";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: $f18;
+  line-height: 1.6;
+  font-family: $font-primary;
+  background-color: $light-beige;
+  color: $ink-night;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: $font-secondary;
+}
+
+h1 {
+  font-size: $f32;
+  text-align: center;
+}
+
+h2 {
+  font-size: $f28;
+}
