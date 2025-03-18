@@ -35,11 +35,30 @@ class StatsTest
 
             case 'daily':
                 if ($month) {
-                    dump("la month dans le service", $month);
-                    $donationsData = $this->donationRepository->getTotalWeightByDayForMonth($month);
+
+                    [$year, $month] = explode('-', $month);
+                    $year = (int) $year;
+                    $month = (int) $month;
+
+
+                    $donationsData = $this->donationRepository->getTotalWeightByDayForMonth($year, $month);
+
+
+                    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+                    //On initialise le tableau avec la bonne taille de jours dans le mois
+                    $dailyWeightData = array_fill(1, $daysInMonth, 0);
+
+                    // on remplit le tableau avec les données
+                    foreach ($donationsData as $data) {
+                        $dayIndex = (int) $data['day']; // Jour du mois (ex: 1, 2, 3...)
+                        $dailyWeightData[$dayIndex] = $data['totalWeight'];
+                    }
+
+                    return array_values($dailyWeightData); // S'assurer que l'index commence bien à 0
                 }
 
-                return $donationsData;;
+                return [];
             default:
                 return ['error' => "Invalid period: chat"];
         }

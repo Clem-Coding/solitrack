@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await response.json();
 
       // Appel de la fonction pour créer ou mettre à jour le graphique
-      // createGraph(data.data);
+      createGraph(data.data);
       console.log("data", data.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
@@ -111,6 +111,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     return parts[parts.length - 1];
   }
 
+  function getDaysInMonth(year, month) {
+    const daysInMonth = new Date(year, month, 0).getDate();
+    return Array.from({ length: daysInMonth }, (_, i) => i + 1);
+  }
+
   // ==========================
   // 📊 FUNCTION TO CREATE GRAPH
   // ==========================
@@ -129,13 +134,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       "Novembre",
       "Décembre",
     ];
+    const period = filterPeriod.value;
 
-    const days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
+    const [year, month] = monthSelect.value.split("-");
+    const days = getDaysInMonth(year, month);
 
     console.log("les datas!!", data);
     const formattedData = data.map((data) => data.toFixed(2));
 
-    // Si une instance de graphique existe déjà, on la détruit pour la mettre à jour
     if (chartInstance) {
       chartInstance.destroy();
     }
@@ -144,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     chartInstance = new Chart(document.getElementById("acquisitions"), {
       type: "bar",
       data: {
-        labels: months,
+        labels: period === "monthly" ? months : days,
         datasets: [
           {
             label: "Total des poids entrants sur un an",

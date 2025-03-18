@@ -83,6 +83,83 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
+
+
+    // SELECT YEAR(created_at) AS year, SUM(weight) AS totalWeight
+    // FROM donations
+    // GROUP BY YEAR(created_at)
+    // ORDER BY year ASC;
+
+    // ex : 
+    // year  	totalWeight 	
+    // 2025 	683.24999999
+
+    public function findTotalWeightDonationsByYear()
+    {
+        return $this->createQueryBuilder('d')
+            ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalWeight')
+            ->groupBy('year')
+            ->orderBy('year', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    //     SELECT 
+    //     DAY(d.created_at) AS day, 
+    //     SUM(d.weight) AS totalWeight
+    // FROM donations d
+    // WHERE YEAR(d.created_at) = 2025
+    // AND MONTH(d.created_at) = 02
+    // GROUP BY day
+    // ORDER BY day ASC;
+
+    public function getTotalWeightByDayForMonth($year, $month)
+    {
+
+
+        return $this->createQueryBuilder('d')
+            ->select('DAY(d.createdAt) as day', 'SUM(d.weight) as totalWeight')
+            ->where('YEAR(d.createdAt) = :year')
+            ->andWhere('MONTH(d.createdAt) = :month')
+            ->groupBy('day')
+            ->orderBy('day', 'ASC')
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    //    /**
+    //     * @return Donation[] Returns an array of Donation objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('d')
+    //            ->andWhere('d.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('d.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Donation
+    //    {
+    //        return $this->createQueryBuilder('d')
+    //            ->andWhere('d.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+
+
+
     // // SELECT DATE(created_at) AS date, SUM(weight) AS totalWeight
     // // FROM donations
     // // WHERE DATE(created_at) = ?;
@@ -115,73 +192,4 @@ class DonationRepository extends ServiceEntityRepository
     // }
 
 
-
-    // SELECT YEAR(created_at) AS year, SUM(weight) AS totalWeight
-    // FROM donations
-    // GROUP BY YEAR(created_at)
-    // ORDER BY year ASC;
-
-    // ex : 
-    // year  	totalWeight 	
-    // 2025 	683.24999999
-
-    public function findTotalWeightDonationsByYear()
-    {
-        return $this->createQueryBuilder('d')
-            ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalWeight')
-            ->groupBy('year')
-            ->orderBy('year', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
-
-
-    // SELECT DAY(created_at) AS day, SUM(weight) AS totalWeight
-    // FROM donations
-    // WHERE DATE_FORMAT(created_at, '%Y-%m') = '2023-06' 
-    // GROUP BY DAY(created_at)
-    // ORDER BY day ASC;
-
-    public function getTotalWeightByDayForMonth($month)
-    {
-        // Crée un QueryBuilder avec l'alias 'd' pour la table Donation
-        $queryBuilder = $this->createQueryBuilder('d');
-
-        $queryBuilder
-            ->select('DAY(d.createdAt) as day', 'SUM(d.weight) as totalWeight')
-            ->where('DATE_FORMAT(d.createdAt, \'%Y-%m\') = :month')
-            ->groupBy('day')
-            ->setParameter('month', $month)
-            ->orderBy('day', 'ASC');
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-
-
-    //    /**
-    //     * @return Donation[] Returns an array of Donation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('d.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Donation
-    //    {
-    //        return $this->createQueryBuilder('d')
-    //            ->andWhere('d.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

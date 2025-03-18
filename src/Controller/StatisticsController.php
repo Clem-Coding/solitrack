@@ -69,7 +69,7 @@ class StatisticsController extends AbstractController
         $type = $request->query->get("type");
         $year = $request->query->get("year");
         $month = $request->query->get("date");
-        dump("le mois dans le controller", $month);
+
 
 
         $statistics = [];
