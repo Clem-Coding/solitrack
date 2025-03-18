@@ -22,7 +22,7 @@ class SalesItem
 
     #[ORM\ManyToOne(inversedBy: 'salesItems')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?sale $sale = null;
+    private ?Sale $sale = null;
 
     // #[Assert\NotBlank(groups: ['category_1', "category_2", "category_3"])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]

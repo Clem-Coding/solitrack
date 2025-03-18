@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const days = getDaysInMonth(year, month);
 
     console.log("les datas!!", data);
-    const formattedData = data.map((data) => data.toFixed(2));
+    const formattedData = data.map((data) => Number(data).toFixed(2));
 
     if (chartInstance) {
       chartInstance.destroy();

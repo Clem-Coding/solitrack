@@ -28,16 +28,22 @@ class SalesItemRepository extends ServiceEntityRepository
     // month 	totalWeight 	
     // 3 	    666.21
 
-    public function findMonthlySalesItems()
+    public function findTotalSalesByMonth($year = null)
     {
-        return $this->createQueryBuilder('si')
+        $qb = $this->createQueryBuilder('si')
             ->select('MONTH(s.createdAt) AS month', 'SUM(si.weight) AS totalWeight')
-            ->leftJoin('si.sale', 's') // Joindre l'entité Sales
+            ->innerJoin('si.sale', 's')  // Jointure avec la table sale
             ->groupBy('month')
-            // ->orderBy('month', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('month', 'ASC');
+
+        if ($year) {
+            $qb->andWhere('YEAR(s.createdAt) = :year')
+                ->setParameter('year', $year);
+        }
+
+        return $qb->getQuery()->getResult();
     }
+
 
     //    /**
     //     * @return SalesItem[] Returns an array of SalesItem objects
