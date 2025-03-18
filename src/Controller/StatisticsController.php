@@ -68,7 +68,7 @@ class StatisticsController extends AbstractController
         $category = $request->query->get('category');
         $type = $request->query->get("type");
         $year = $request->query->get("year");
-        $month = $request->query->get("date");
+        $month = $request->query->get("month");
 
 
 
@@ -83,6 +83,7 @@ class StatisticsController extends AbstractController
                 if ($type === 'incoming') {
                     $statistics = $statsTest->getDonationStatistics($period, $year, $month);
                 } elseif ($type === 'outgoing') {
+                    dump("oui oui outgoing");
                     $statistics = $statsTest->getSalesStatistics($period, $year, $month);
                 }
                 break;

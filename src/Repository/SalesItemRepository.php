@@ -28,7 +28,7 @@ class SalesItemRepository extends ServiceEntityRepository
     // month 	totalWeight 	
     // 3 	    666.21
 
-    public function findTotalSalesByMonth($year = null)
+    public function findTotalWeightByMonth($year = null)
     {
         $qb = $this->createQueryBuilder('si')
             ->select('MONTH(s.createdAt) AS month', 'SUM(si.weight) AS totalWeight')
@@ -43,6 +43,39 @@ class SalesItemRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+
+
+
+    public function findTotalWeightByDayForMonth($year, $month)
+    {
+        return $this->createQueryBuilder('si')
+            ->select('DAY(s.createdAt) as day', 'SUM(si.weight) as totalWeight')
+            ->innerJoin('si.sale', 's') // Joindre la table Sale (assurez-vous que "sale" est le bon nom de relation dans l'entité SalesItem)
+            ->where('YEAR(s.createdAt) = :year')
+            ->andWhere('MONTH(s.createdAt) = :month')
+            ->groupBy('day')
+            ->orderBy('day', 'ASC')
+            ->setParameter('year', $year)
+            ->setParameter('month', $month)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    public function findTotalWeightByYear()
+    {
+        return $this->createQueryBuilder('si')
+            ->select('YEAR(s.createdAt) AS year', 'SUM(si.weight) AS totalWeight')
+            ->innerJoin('si.sale', 's')
+            ->groupBy('year')
+            ->orderBy('year', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
 
     //    /**

@@ -1,4 +1,4 @@
-datedocument.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // 🟡 VARIABLES
   // ==========================
@@ -38,7 +38,7 @@ datedocument.addEventListener("DOMContentLoaded", async function () {
 
       // Appel de la fonction pour créer ou mettre à jour le graphique
       createGraph(data.data);
-      console.log("data", data.data);
+      console.log("data", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -94,8 +94,6 @@ datedocument.addEventListener("DOMContentLoaded", async function () {
   // 🔍 UTILITY FUNCTIONS
   // ==========================
   function togglePeriodView(period) {
-    console.log("coucou le toggle");
-
     if (period === "daily") {
       monthPicker.style.display = "block";
       yearPicker.style.display = "none";
@@ -138,13 +136,26 @@ datedocument.addEventListener("DOMContentLoaded", async function () {
       "Novembre",
       "Décembre",
     ];
+
     const period = filterPeriod.value;
 
     const [year, month] = monthSelect.value.split("-");
-    const days = getDaysInMonth(year, month);
+    console.log("l'année", year);
 
-    console.log("les datas!!", data);
-    const formattedData = data.map((data) => Number(data).toFixed(2));
+    const days = getDaysInMonth(year, month);
+    console.log("jours du mois", days);
+
+    console.log("les datas!!", data.totalWeight);
+
+    const formattedData = data.map((item) => {
+      if (period === "yearly") {
+        return Number(item.totalWeight).toFixed(2);
+      } else {
+        return Number(item).toFixed(2);
+      }
+    });
+
+    console.log("LES DONNEES FORMATEES!!!!", formattedData);
 
     if (chartInstance) {
       chartInstance.destroy();
@@ -154,10 +165,10 @@ datedocument.addEventListener("DOMContentLoaded", async function () {
     chartInstance = new Chart(document.getElementById("acquisitions"), {
       type: "bar",
       data: {
-        labels: period === "monthly" ? months : days,
+        labels: period === "yearly" ? data.map((item) => item.year) : period === "monthly" ? months : days,
         datasets: [
           {
-            label: "Total des poids entrants sur un an",
+            label: "Total des poids entrants",
             data: formattedData,
             backgroundColor: "#EB5A47",
             borderColor: "#080222",
@@ -170,9 +181,12 @@ datedocument.addEventListener("DOMContentLoaded", async function () {
           tooltip: {
             callbacks: {
               title: function (context) {
-                const month = context[0].label;
-                const year = new Date().getFullYear();
-                return `${month} ${year}`;
+                const label = context[0].label;
+                return period === "yearly"
+                  ? `Année ${label}`
+                  : period === "monthly"
+                  ? `${label} ${year}`
+                  : `Jour ${label}`;
               },
               label: function (context) {
                 const weightInKg = context.raw;

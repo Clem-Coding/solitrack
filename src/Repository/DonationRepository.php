@@ -66,7 +66,7 @@ class DonationRepository extends ServiceEntityRepository
     // ex : 
     // month 	totalWeight 	
     // 3 	    672.905
-    public function findTotalWeightDonationsByMonth($year = null)
+    public function findTotalWeightByMonth($year = null)
     {
         $qb = $this->createQueryBuilder('d')
             ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalWeight')
@@ -94,7 +94,7 @@ class DonationRepository extends ServiceEntityRepository
     // year  	totalWeight 	
     // 2025 	683.24999999
 
-    public function findTotalWeightDonationsByYear()
+    public function findTotalWeightByYear()
     {
         return $this->createQueryBuilder('d')
             ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalWeight')
@@ -115,7 +115,7 @@ class DonationRepository extends ServiceEntityRepository
     // GROUP BY day
     // ORDER BY day ASC;
 
-    public function getTotalWeightByDayForMonth($year, $month)
+    public function findTotalWeightByDayForMonth($year, $month)
     {
 
 
