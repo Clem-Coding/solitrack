@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function () {
+datedocument.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // 🟡 VARIABLES
   // ==========================
@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 🟢 FETCH API
   // ==========================
   // ==========================
-  async function fetchData(category, type, period, year = null, date = null) {
+  async function fetchData(category, type, period, year = null, month = null) {
     console.log(
-      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, date: ${date}`
+      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
     );
 
     try {
@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         url += `&year=${year}`;
       }
 
-      if (date) {
-        url += `&date=${date}`;
+      if (month) {
+        url += `&month=${month}`;
       }
 
       const response = await fetch(url);
@@ -78,12 +78,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
-  function sendToAPI(period = filterPeriod.value, type = filterType.value, year = null, date = null) {
+  function sendToAPI() {
+    const period = filterPeriod.value;
+    const type = filterType.value;
+    const year = yearInput.value;
+    const month = monthSelect.value;
     let category = getCategoryFromPath();
     console.log(
-      `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, date: ${date}`
+      `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, month: ${month}`
     );
-    fetchData(category, type, period, year, date);
+    fetchData(category, type, period, year, month);
   }
 
   // ==========================
