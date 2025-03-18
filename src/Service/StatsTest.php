@@ -67,6 +67,17 @@ class StatsTest
         return $this->getStatisticsByPeriod($this->salesItemRepository, $period, $year, $month);
     }
 
+
+    public function getIncomingClothingStats($period, $year = null, $month = null)
+    {
+        return $this->donationRepository->findTotalWeightOfClothingByPeriod($period, $year, $month);
+    }
+
+    public function getOutgoingClothingStats($period, $year = null, $month = null)
+    {
+        return $this->salesItemRepository->findTotalWeightOfClothingByPeriod($period, $year, $month);
+    }
+
     // // Exemple pour ajouter un calcul pour les visiteurs (similaire aux autres)
     // public function getVisitorStatistics($period, $year = null, $month = null)
     // {

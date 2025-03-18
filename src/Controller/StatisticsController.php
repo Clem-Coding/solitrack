@@ -83,12 +83,17 @@ class StatisticsController extends AbstractController
                 if ($type === 'incoming') {
                     $statistics = $statsTest->getDonationStatistics($period, $year, $month);
                 } elseif ($type === 'outgoing') {
-                    dump("oui oui outgoing");
                     $statistics = $statsTest->getSalesStatistics($period, $year, $month);
                 }
                 break;
 
-            case 'ventes':
+            case 'vetements':
+
+                if ($type === 'incoming') {
+                    $statistics = $statsTest->getIncomingClothingStats($period, $year, $month);
+                } elseif ($type === 'outgoing') {
+                    $statistics = $statsTest->getOutgoingClothingStats($period, $year, $month);
+                }
 
                 // $statistics = $statisticsService->getSalesStatistics($period);
                 break;

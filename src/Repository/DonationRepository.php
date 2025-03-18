@@ -3,8 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Donation;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection as CollectionsArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Parameter;
+
 
 /**
  * @extends ServiceEntityRepository<Donation>
@@ -132,6 +137,40 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
+
+    public function findTotalWeightOfClothingByPeriod($period, $year = null, $month = null): Collection
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('SUM(d.weight) as totalWeight')
+            ->join('d.category', 'c')
+            ->where('c.id = :categoryId')
+            ->setParameter('categoryId', 1);
+
+        if ($period === 'monthly') {
+            $qb->addSelect('MONTH(d.createdAt) as month')
+                ->andWhere('YEAR(d.createdAt) = :year')
+                ->setParameter('year', $year)
+                ->groupBy('month');
+        } elseif ($period === 'yearly') {
+            $qb->addSelect('YEAR(d.createdAt) as year')
+                ->groupBy('year');
+        } elseif ($period === 'daily') {
+            $qb->addSelect('DAY(d.createdAt) as day')
+                ->andWhere('YEAR(d.createdAt) = :year AND MONTH(d.createdAt) = :month')
+                ->setParameters(new ArrayCollection([
+                    new Parameter('year', $year),
+                    new Parameter('month', $month)
+                ]))
+                ->groupBy('day');
+        }
+
+        $result = $qb->getQuery()->getResult();
+
+        return new ArrayCollection($result);
+    }
+}
+
+
     //    /**
     //     * @return Donation[] Returns an array of Donation objects
     //     */
@@ -156,11 +195,3 @@ class DonationRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-
-
-
-
-
-
-
-}
