@@ -1,33 +1,12 @@
-@import "abstracts/variables";
+@import "abstracts/variables", "abstracts/utilities", "abstracts/mixins";
 @import "base/reset", "base/typography", "base/base";
-@import "components/buttons";
+@import "components/buttons", "components/flash-messages";
 @import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation";
+@import "pages/entries";
 
-.hidden {
-  display: none;
-}
-
-.flash-success {
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  display: inline-block;
-  // animation: fadeOut 0.2s ease-out forwards;
-}
-
-.flash-error {
-  background-color: #dc3545;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  display: inline-block;
-  // animation: fadeInOut 3s ease-out forwards; /* Animation avec une durée de 2.5s */
-}
+// .hidden {
+//   display: none;
+// }
 
 // @keyframes fadeInOut {
 //   0% {

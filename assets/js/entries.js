@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🟡 VARIABLES
   // ==========================
-  const buttons = document.querySelectorAll("#entry-section .category-button");
+  const buttons = document.querySelectorAll(".category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
   const form = document.querySelector("form");
   const weightInput = document.getElementById("donation_form_weight");
@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   weightInput.value = "";
 
-  // FUNCTIONS
+  // ==========================
+  // 🔍 UTILITY FUNCTIONS
+  // ==========================
   function setCategory(category) {
     categoryInput.value = category;
   }
@@ -24,15 +26,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function showError() {
+    errorMessage.classList.remove("hide");
+    errorMessage.classList.add("show");
+  }
+
+  function hideError() {
+    errorMessage.classList.remove("show");
+    errorMessage.classList.add("hide");
+  }
+
   // ==========================
   // 🔧 HANDLE FILTER CHANGES
   // ==========================
 
-  function handleButtonClick(e) {
-    const clickedButton = e.currentTarget;
-    console.log("je clique");
+  function handleButtonClick(event) {
+    const clickedButton = event.currentTarget;
 
-    if (errorMessage.style.display !== "block") {
+    if (!errorMessage.classList.contains("show")) {
       weightInput.value = "";
     }
 
@@ -46,9 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleFormSubmit(event) {
     if (!categoryInput.value) {
       event.preventDefault();
-      errorMessage.style.display = "block";
+
+      showError();
     } else {
-      errorMessage.style.display = "none";
+      hideError();
     }
   }
 
@@ -57,7 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   buttons.forEach((button) => {
-    button.addEventListener("click", handleButtonClick);
+    button.addEventListener("click", (event) => {
+      handleButtonClick(event);
+      hideError();
+    });
   });
 
   form.addEventListener("submit", handleFormSubmit);

@@ -1,0 +1,43 @@
+.flash-success {
+  background-color: $success-bg;
+  color: $success-text;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-weight: normal;
+  font-size: 14px;
+  border: 1px solid #c3e6cb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &.hide {
+    display: none;
+    transform: translateY(-5px);
+  }
+}
+
+.flash-error {
+  background-color: $error-bg;
+  color: $error-text;
+  padding: 12px 20px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-weight: normal;
+  font-size: 14px;
+  border: 1px solid #f5c6cb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+
+  &.show {
+    display: block;
+  }
+
+  &.hide {
+    display: none;
+  }
+}

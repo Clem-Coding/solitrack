@@ -2,6 +2,8 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>
       {% block title %}
         Soli'Track
@@ -54,8 +56,7 @@
         {% endblock %}
       {% endif %}
     </header>
-
-    <main class="content">{% block content %}{% endblock %}</main>
+    <div class="main-container"><main class="content">{% block content %}{% endblock %}</main></div>
 
     {% block footer %}
       <footer class="footer">

@@ -6,7 +6,7 @@ button {
 }
 
 .button-primary {
-  background-color: $emerald-sea;
+  background-color: $ink-night;
   color: $cloud;
   font-weight: 600;
 }
@@ -39,7 +39,7 @@ button {
   font-size: $f14;
 
   &:hover {
-    background-color: $bright-yellow;
+    background-color: darken($light-beige, 5%);
   }
 
   & img {
