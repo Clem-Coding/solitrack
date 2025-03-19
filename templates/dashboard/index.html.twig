@@ -4,21 +4,19 @@
   Les entrées
 {% endblock %}
 
-{% block body %}
-  <main>
-    <h1>Le tableau de bord</h1>
-    <section>
-      <h2>Nombre de visiteurs</h2>
+{% block content %}
+  <h1>Le tableau de bord</h1>
+  <section>
+    <h2>Nombre de visiteurs</h2>
 
-      {{ form_start(form) }}
-      {{ form_errors(form) }}
-      {{ form_row(form.date) }}
-      {{ form_row(form.count) }}
-      <button type="submit">Valider</button>
-      {{ form_end(form) }}
-      <div>{% include 'partials/flash.html.twig' %}</div>
-    </section>
-  </main>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.count) }}
+    <button type="submit">Valider</button>
+    {{ form_end(form) }}
+    <div>{% include 'partials/flash.html.twig' %}</div>
+  </section>
 {% endblock %}
 
 {# {% block javascripts %}

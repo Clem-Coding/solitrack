@@ -1,7 +1,9 @@
 import { formatInputValue } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // CONSTANTS
+  // ==========================
+  // 🟡 VARIABLES
+  // ==========================
   const buttons = document.querySelectorAll("#entry-section .category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
   const form = document.querySelector("form");
@@ -15,22 +17,30 @@ document.addEventListener("DOMContentLoaded", () => {
     categoryInput.value = category;
   }
 
-  function resetButtonColors(buttons) {
+  function resetButtonStates(buttons) {
     buttons.forEach((button) => {
-      button.style.backgroundColor = "";
+      button.classList.remove("active");
+      button.setAttribute("aria-selected", "false");
     });
   }
 
+  // ==========================
+  // 🔧 HANDLE FILTER CHANGES
+  // ==========================
+
   function handleButtonClick(e) {
-    const clickedButton = e.target;
+    const clickedButton = e.currentTarget;
+    console.log("je clique");
+
     if (errorMessage.style.display !== "block") {
       weightInput.value = "";
     }
 
     setCategory(clickedButton.getAttribute("data-category"));
-    resetButtonColors(buttons);
+    resetButtonStates(buttons);
 
-    clickedButton.style.backgroundColor = "#FFA500";
+    clickedButton.classList.add("active");
+    clickedButton.setAttribute("aria-selected", "true");
   }
 
   function handleFormSubmit(event) {
@@ -42,18 +52,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // EVENT LISTENERS
+  // ==========================
+  // 🖱️ EVENT LISTENERS
+  // ==========================
+
   buttons.forEach((button) => {
     button.addEventListener("click", handleButtonClick);
   });
 
   form.addEventListener("submit", handleFormSubmit);
 
-  weightInput.addEventListener("input", (event) => {
+  weightInput.addEventListener("input", () => {
     formatInputValue(weightInput);
   });
-  // LOGS
 });
-
-//A faire plus tard avec des classes .active en css
-// + set attribute aria-selected : false/true

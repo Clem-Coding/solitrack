@@ -8,8 +8,16 @@
   <h1>Les Entrées</h1>
   <section class="card" id="entry-section">
     <p>Quel article souhaitez-vous enregistrer ?</p>
-    <button class="category-button" data-category="1">Vêtements</button>
-    <button class="category-button" data-category="2">Autres articles</button>
+    <div class="buttons-container">
+      <button class="category-button" data-category="1">
+        <img
+          src="{{ asset('images/buttons/clothing-icon.svg') }}"
+          alt="icone avec deux t-shirts suspendus sur des cintres"
+        />
+        Vêtements
+      </button>
+      <button class="category-button" data-category="2">Autres articles</button>
+    </div>
   </section>
 
   <section class="card">
@@ -17,7 +25,7 @@
     {{ form_start(form) }}
     {{ form_row(form.weight) }}
     {{ form_row(form.categoryId) }}
-    <button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+    <button type="submit" class="button-primary">Enregistrer</button>
     <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
     {# attention virer le style display:none pour le mettre en scss à part #}
     {# <div>{% include 'partials/flash.html.twig' %}</div> #}
@@ -36,7 +44,7 @@
         <form action="{{ path('app_entry_delete_last') }}" method="post">
           <input type="hidden" name="_method" value="DELETE" />
           <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
-          <button type="submit">Supprimer la ligne</button>
+          <button type="submit" class="button-primary">Supprimer la ligne</button>
         </form>
       {% else %}
         {% if app.flashes('success') %}

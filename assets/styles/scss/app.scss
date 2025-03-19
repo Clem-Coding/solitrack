@@ -1,6 +1,6 @@
 @import "abstracts/variables";
 @import "base/reset", "base/typography", "base/base";
-
+@import "components/buttons";
 @import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation";
 
 .hidden {
