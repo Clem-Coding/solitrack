@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartContainer = document.getElementById("cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
+  const checkoutButton = document.querySelector(".checkout-button");
+
   const cartStatus = document.querySelector("#cart-status");
   const addCartButton = document.getElementById("add-cart-button");
   const salesForm = document.querySelector(".sales-form");
-  console.log(salesForm);
 
   salesForm.classList.remove("card");
 
@@ -23,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     price: document.getElementById("price-input"),
     quantity: document.getElementById("quantity-input"),
   };
-  console.log(document.getElementById("quantity-input"));
 
   const inputs = {
     weight: inputWrappers.weight.querySelector("input"),
@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseButton = quantityWrapper.querySelector(".quantity-increase");
 
   const quantityInput = inputs.quantity;
-
   let quantity = Number(quantityInput.value);
 
   // ==========================
@@ -84,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
           if (data.cart.length === 0) {
-            cartStatus.innerHTML = "Votre panier est vide.";
+            handleEmptyCart();
           } else {
             updateTotalDisplay(data.total);
           }
@@ -109,7 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          cartStatus.innerHTML = "Votre panier est vide";
+          // cartStatus.innerHTML = "Votre panier est vide";
+          handleEmptyCart();
 
           localStorage.removeItem("cart");
           cartContainer.innerHTML = "";
@@ -126,12 +126,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔍 UTILITY FUNCTIONS
   // ==========================
 
-  // function getTotalFromResponse(data) {
-  //   if (data && data.total) {
-  //     return data.total;
-  //   }
-  //   return 0;
-  // }
+  function handleEmptyCart() {
+    cartStatus.innerHTML = "Votre panier est vide.";
+    clearCartButton.classList.add("hidden");
+    checkoutButton.classList.add("hidden");
+  }
+
+  function handleNonEmptyCart() {
+    clearCartButton.classList.remove("hidden");
+    checkoutButton.classList.remove("hidden");
+  }
 
   function setCategory(category) {
     categoryInput.value = category;
@@ -169,7 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCartDisplay(cart) {
     // const cartStatus = document.getElementById("total-price");
     if (cart.length === 0) {
-      cartStatus.innerHTML = "Votre panier est vide.";
+      handleEmptyCart;
+    } else {
+      handleNonEmptyCart();
     }
 
     cartContainer.innerHTML = "";
