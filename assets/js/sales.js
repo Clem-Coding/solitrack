@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryInput = document.getElementById("sales_item_categoryId");
   // const categoryErrorMessage = document.getElementById("error-message");
   const form = document.querySelector("form");
-  const cartContainer = document.getElementById("cart-container");
+  const cartContainer = document.querySelector(".cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
   const checkoutButton = document.querySelector(".checkout-button");
@@ -192,27 +192,36 @@ document.addEventListener("DOMContentLoaded", () => {
       categoryElement.textContent = item.category;
       articleElement.appendChild(categoryElement);
 
+      const detailsWrapper = document.createElement("div");
+      detailsWrapper.classList.add("details-wrapper");
+
       if (item.quantity !== null) {
         const quantityElement = document.createElement("p");
+
         quantityElement.innerHTML = `Quantité : <span>${item.quantity}</span>`;
-        articleElement.appendChild(quantityElement);
+        console.log(quantityElement);
+        detailsWrapper.appendChild(quantityElement);
       }
 
       if (item.weight !== null) {
         const weightElement = document.createElement("p");
-        weightElement.innerHTML = `Poids : <span>${item.weight}kg</span>`;
-        articleElement.appendChild(weightElement);
+        weightElement.innerHTML = `${item.weight}kg`;
+        detailsWrapper.appendChild(weightElement);
+      }
+
+      if (detailsWrapper.childNodes.length > 0) {
+        articleElement.appendChild(detailsWrapper); // Ajout du wrapper uniquement s'il contient des éléments
       }
 
       if (item.price !== null) {
         const formattedPrice = formatNumberFromString(item.price);
         const priceElement = document.createElement("p");
-        priceElement.innerHTML = `Prix : <span>${formattedPrice}€</span>`;
-        articleElement.appendChild(priceElement);
+        priceElement.innerHTML = `${formattedPrice}€`;
+        detailsWrapper.appendChild(priceElement);
       }
 
       const deleteButton = document.createElement("button");
-      deleteButton.textContent = "Supprimer";
+      deleteButton.innerHTML = '<i class="ph ph-x-circle"></i>';
       deleteButton.setAttribute("data-id", uniqueId);
       deleteButton.addEventListener("click", () => removeItemFromCart(uniqueId));
       articleElement.appendChild(deleteButton);
