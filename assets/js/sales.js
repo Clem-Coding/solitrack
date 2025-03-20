@@ -12,12 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
   const totalElement = document.querySelector("#total-price");
+  const addCartButton = document.getElementById("add-cart-button");
+  const salesForm = document.querySelector(".sales-form");
+  console.log(salesForm);
+
+  salesForm.classList.remove("card");
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
     price: document.getElementById("price-input"),
     quantity: document.getElementById("quantity-input"),
   };
+  console.log(document.getElementById("quantity-input"));
 
   const inputs = {
     weight: inputWrappers.weight.querySelector("input"),
@@ -25,7 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     quantity: inputWrappers.quantity.querySelector("input"),
   };
 
-  const addCartButton = document.getElementById("add-cart-button");
+  const quantityWrapper = document.getElementById("quantity-input");
+  const decreaseButton = quantityWrapper.querySelector(".quantity-decrease");
+  const increaseButton = quantityWrapper.querySelector(".quantity-increase");
+
+  const quantityInput = inputs.quantity;
+
+  let quantity = Number(quantityInput.value);
 
   // ==========================
   // 🟢 FETCH API
@@ -124,13 +136,21 @@ document.addEventListener("DOMContentLoaded", () => {
       inputs[key].value = "";
       inputs[key].removeAttribute("required");
       inputWrappers[key].classList.add("hidden");
+      inputWrappers[key].classList.remove("flex");
     }
     addCartButton.classList.remove("hidden");
   }
 
   function showInput(input, wrapper) {
     input.setAttribute("required", "true");
+    salesForm.classList.add("show");
+    salesForm.classList.add("card");
     wrapper.classList.remove("hidden");
+    wrapper.classList.add("flex");
+  }
+
+  function updateQuantityDisplay(newQuantity) {
+    quantityInput.value = newQuantity;
   }
 
   function updateCartDisplay(cart) {
@@ -232,6 +252,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🖱️ EVENT LISTENERS
   // ==========================
+
+  decreaseButton.addEventListener("click", () => {
+    if (quantity > 1) {
+      console.log("-");
+      // Limite la quantité à 1 minimum
+      quantity--;
+      updateQuantityDisplay(quantity);
+    }
+  });
+
+  increaseButton.addEventListener("click", () => {
+    console.log("+");
+    quantity++;
+    updateQuantityDisplay(quantity);
+  });
+
   buttons.forEach((button) => button.addEventListener("click", handleButtonClick));
   form.addEventListener("submit", handleFormSubmit);
 

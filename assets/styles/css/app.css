@@ -76,6 +76,25 @@ button {
   display: inline-block;
 }
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Chrome */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Opéra*/
+input::-o-inner-spin-button,
+input::-o-outer-spin-button {
+  -o-appearance: none;
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -465,4 +484,25 @@ button {
   .sections-container > section:nth-child(2) .sections-container > section:nth-child(4) {
     grid-area: area-4;
   }
+}
+.input-quantity-wrapper.flex {
+  display: flex;
+  align-items: center;
+  padding: 0.2em;
+  background-color: #eb5a47;
+  border-radius: 2em;
+}
+
+.sales-form {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.sales-form.show {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
 }/*# sourceMappingURL=app.css.map */

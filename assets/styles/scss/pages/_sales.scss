@@ -1,0 +1,29 @@
+.input-quantity-wrapper.flex {
+  display: flex;
+  align-items: center;
+  padding: 0.2em;
+  background-color: $coral;
+  border-radius: 2em;
+}
+
+.sales-form {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.sales-form.show {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+}
+
+// .sales-form.flex {
+//   display: flex;
+// }
+
+// .input-quantity-wrapper.hidden {
+//   display: none !important;
+// }

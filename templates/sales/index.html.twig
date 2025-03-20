@@ -39,14 +39,18 @@
           </button>
         </div>
       </section>
-      <section class="card">
+      <section class="card sales-form">
         <h2 class="sr-only">Formulaire de Saisie</h2>
         {{ form_errors(form) }}
         {{ form_start(form) }}
         {{ form_row(form.weight) }}
         {{ form_row(form.categoryId) }}
         {{ form_row(form.price) }}
-        {{ form_row(form.quantity) }}
+        <div id="quantity-input" class="input-quantity-wrapper hidden">
+          <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
+          {{ form_widget(form.quantity) }}
+          <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
+        </div>
         <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
         <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
         {# attention virer le style display:none pour le mettre en scss à part #}
