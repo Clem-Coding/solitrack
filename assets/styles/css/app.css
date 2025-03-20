@@ -494,15 +494,9 @@ button {
 }
 
 .sales-form {
-  opacity: 0;
-  visibility: hidden;
-  height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+  display: none;
 }
 
 .sales-form.show {
-  opacity: 1;
-  visibility: visible;
-  height: auto;
+  display: flex;
 }/*# sourceMappingURL=app.css.map */

@@ -58,10 +58,14 @@
         {{ form_end(form) }}
       </section>
       <section class="card" aria-labelledby="cart-heading">
-        <div>{% include 'partials/flash.html.twig' %}</div>
         <h2 id="cart-heading">Panier</h2>
+        {# <div id="flash-message-container"></div> #}
         <ul id="cart-container"></ul>
-        <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p>
+
+        {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
+        {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
+        <p id="cart-status">Votre panier est vide.</p>
+
         <button class="clear-cart-button button-secondary"><i class="ph ph-trash"></i>Vider le panier</button>
         <form action="{{ path('app_sale_checkout') }}" method="post">
           <button type="submit" class="button-primary">Passer à la caisse</button>

@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   const buttons = document.querySelectorAll("#sales-section .category-button");
   const categoryInput = document.getElementById("sales_item_categoryId");
-  const errorMessage = document.getElementById("error-message");
+  // const categoryErrorMessage = document.getElementById("error-message");
   const form = document.querySelector("form");
   const cartContainer = document.getElementById("cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
-  const totalElement = document.querySelector("#total-price");
+  const cartStatus = document.querySelector("#cart-status");
   const addCartButton = document.getElementById("add-cart-button");
   const salesForm = document.querySelector(".sales-form");
   console.log(salesForm);
@@ -52,8 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("le total", data.total);
         if (data.status === "success") {
           updateCartDisplay(data.cart);
+
           updateTotalDisplay(data.total);
           localStorage.setItem("cart", JSON.stringify(data.cart));
         } else {
@@ -81,7 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.status === "success") {
           updateCartDisplay(data.cart);
-          updateTotalDisplay(data.total);
+          if (data.cart.length === 0) {
+            cartStatus.innerHTML = "Votre panier est vide.";
+          } else {
+            updateTotalDisplay(data.total);
+          }
+
           localStorage.setItem("cart", JSON.stringify(data.cart));
         } else {
           console.error("Échec de la suppression de l'article:", data.message);
@@ -102,6 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
+          cartStatus.innerHTML = "Votre panier est vide";
+
           localStorage.removeItem("cart");
           cartContainer.innerHTML = "";
         } else {
@@ -116,13 +125,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
+
+  // function getTotalFromResponse(data) {
+  //   if (data && data.total) {
+  //     return data.total;
+  //   }
+  //   return 0;
+  // }
+
   function setCategory(category) {
     categoryInput.value = category;
   }
-
-  // function resetButtonColors() {
-  //   buttons.forEach((button) => (button.style.backgroundColor = ""));
-  // }
 
   function resetButtonStates(buttons) {
     buttons.forEach((button) => {
@@ -154,6 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateCartDisplay(cart) {
+    // const cartStatus = document.getElementById("total-price");
+    if (cart.length === 0) {
+      cartStatus.innerHTML = "Votre panier est vide.";
+    }
+
     cartContainer.innerHTML = "";
 
     cart.forEach((item) => {
@@ -196,8 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateTotalDisplay(total) {
-    if (totalElement) {
-      totalElement.textContent = total;
+    if (cartStatus) {
+      cartStatus.innerHTML = `Total : <span class="data-price">${total} €</span>`;
     }
   }
 
@@ -208,8 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleButtonClick(event) {
     const clickedButton = event.target;
     setCategory(clickedButton.getAttribute("data-category"));
-    // resetButtonColors();
-    // clickedButton.style.backgroundColor = "#FFA500";
+
     resetButtonStates(buttons);
     clickedButton.classList.add("active");
     clickedButton.setAttribute("aria-selected", "true");
@@ -238,12 +255,23 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    if (!categoryInput.value) {
-      errorMessage.style.display = "block";
-      return;
+    // if (!categoryInput.value) {
+    //   categoryErrorMessage.style.display = "block";
+    //   return;
+    // }
+
+    // categoryErrorMessage.style.display = "none";
+
+    const errorflashMessage = document.querySelector(".flash-error");
+    const succesflashMessage = document.querySelector(".flash-success");
+
+    if (errorflashMessage) {
+      errorflashMessage.remove();
     }
 
-    errorMessage.style.display = "none";
+    if (succesflashMessage) {
+      succesflashMessage.remove();
+    }
 
     const formData = new FormData(form);
     addItemToCart(formData);

@@ -77,7 +77,6 @@ final class CartController extends AbstractController
             $session->remove('shopping_cart');
 
 
-
             return $this->json([
                 'status' => 'success',
                 'message' => 'Panier vidé avec succès',
