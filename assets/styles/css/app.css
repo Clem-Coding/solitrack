@@ -299,24 +299,39 @@ button {
 .sections-container {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 5em;
+  gap: 2em;
+  grid-auto-rows: minmax(200px, auto);
 }
 
 @media (min-width: 768px) {
   .sections-container {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: "area-1 araa-2" "area-3 area-4";
   }
-  .sections-container > section:nth-child(1) {
+  .sections-container.three-sections > section:nth-child(1),
+  .sections-container.three-sections > section:nth-child(2) {
+    grid-column: 1/2;
+    align-self: start;
+  }
+  .sections-container.three-sections > section:nth-child(3) {
+    grid-column: 2/3;
+    grid-row: 1/span 2;
+    align-self: start;
+    min-height: 100px;
+    transition: height 0.3s ease;
+  }
+  .sections-container.four-sections {
+    grid-template-areas: "area-1 area-2" "area-3 area-4";
+  }
+  .sections-container.four-sections > section:nth-child(1) {
     grid-area: area-1;
   }
-  .sections-container > section:nth-child(2) {
+  .sections-container.four-sections > section:nth-child(2) {
     grid-area: area-3;
   }
-  .sections-container > section:nth-child(2) .sections-container > section:nth-child(3) {
+  .sections-container.four-sections > section:nth-child(3) {
     grid-area: area-2;
   }
-  .sections-container > section:nth-child(2) .sections-container > section:nth-child(4) {
+  .sections-container.four-sections > section:nth-child(4) {
     grid-area: area-4;
   }
 }
@@ -461,30 +476,6 @@ button {
   font-weight: 600;
 }
 
-.sections-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 5em;
-}
-
-@media (min-width: 768px) {
-  .sections-container {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: "area-1 araa-2" "area-3 area-4";
-  }
-  .sections-container > section:nth-child(1) {
-    grid-area: area-1;
-  }
-  .sections-container > section:nth-child(2) {
-    grid-area: area-3;
-  }
-  .sections-container > section:nth-child(2) .sections-container > section:nth-child(3) {
-    grid-area: area-2;
-  }
-  .sections-container > section:nth-child(2) .sections-container > section:nth-child(4) {
-    grid-area: area-4;
-  }
-}
 .input-quantity-wrapper.flex {
   display: flex;
   align-items: center;

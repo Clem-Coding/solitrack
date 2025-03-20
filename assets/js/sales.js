@@ -177,8 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       handleNonEmptyCart();
     }
+    inputs.weight.value = "";
+    inputs.price.value = "";
+    inputs.quantity.value = "";
 
-    cartContainer.innerHTML = "";
+    // cartContainer.innerHTML = "";
 
     cart.forEach((item) => {
       const uniqueId = item.uuid;

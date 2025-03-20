@@ -15,44 +15,15 @@
   }
 }
 
-// @mixin grid-layout($sections) {
+// @mixin grid-layout($columns, $areas, $placements: ()) {
 //   display: grid;
-//   gap: 5em;
+//   grid-template-columns: repeat($columns, 1fr);
+//   grid-template-areas: #{$areas};
 
-//   // Cas où il y a 1 section
-//   @if $sections == 1 {
-//     grid-template-columns: 1fr;
-//   }
-
-//   // Cas où il y a 2 sections
-//   @else if $sections == 2 {
-//     grid-template-columns: repeat(2, 1fr);
-//     grid-template-areas: "area-1 area-2";
-//   }
-
-//   // Cas où il y a 3 ou plus de sections
-//   @else {
-//     grid-template-columns: repeat(2, 1fr);
-//     grid-template-areas:
-//       "area-1 area-2"
-//       "area-3 area-4";
-//   }
-
-//   // Règles dynamiques pour chaque section
-//   > section:nth-child(1) {
-//     grid-area: area-1;
-//   }
-//   > section:nth-child(2) {
-//     grid-area: area-2;
-//   }
-//   @if $sections > 2 {
-//     > section:nth-child(3) {
-//       grid-area: area-3;
-//     }
-//   }
-//   @if $sections > 3 {
-//     > section:nth-child(4) {
-//       grid-area: area-4;
+//   // On parcourt les placements pour affecter les bonnes zones aux bonnes sections
+//   @each $index, $area in $placements {
+//     & > section:nth-child(#{$index}) {
+//       grid-area: $area;
 //     }
 //   }
 // }

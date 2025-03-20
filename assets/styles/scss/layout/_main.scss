@@ -7,31 +7,51 @@
 
 .sections-container {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 5em;
+  grid-template-columns: 1fr; // One column by default (for smaller screens)
+  gap: 2em;
+  grid-auto-rows: minmax(200px, auto);
 }
 
 @media (min-width: 768px) {
   .sections-container {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas:
-      "area-1 araa-2"
-      "area-3 area-4";
-  }
 
-  .sections-container > section:nth-child(1) {
-    grid-area: area-1;
-  }
+    &.three-sections {
+      > section:nth-child(1),
+      > section:nth-child(2) {
+        grid-column: 1 / 2; // Colonne gauche
+        align-self: start; // Empêche de grandir avec le panier
+      }
 
-  .sections-container > section:nth-child(2) {
-    grid-area: area-3;
-
-    .sections-container > section:nth-child(3) {
-      grid-area: area-2;
+      > section:nth-child(3) {
+        grid-column: 2 / 3; // Colonne droite (panier)
+        grid-row: 1 / span 2; // Fixe la position en haut de la colonne
+        align-self: start;
+        min-height: 100px; // Hauteur initiale du panier
+        transition: height 0.3s ease; // Animation fluide
+      }
     }
 
-    .sections-container > section:nth-child(4) {
-      grid-area: area-4;
+    &.four-sections {
+      grid-template-areas:
+        "area-1 area-2"
+        "area-3 area-4";
+
+      > section:nth-child(1) {
+        grid-area: area-1;
+      }
+
+      > section:nth-child(2) {
+        grid-area: area-3;
+      }
+
+      > section:nth-child(3) {
+        grid-area: area-2;
+      }
+
+      > section:nth-child(4) {
+        grid-area: area-4;
+      }
     }
   }
 }

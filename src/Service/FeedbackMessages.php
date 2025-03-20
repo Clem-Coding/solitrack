@@ -17,8 +17,8 @@ class FeedbackMessages
     {
         $totalWeightToday = $this->donationRepository->getTotalWeightForToday();
         $recordWeight = $this->donationRepository->getRecordWeightDay();
-        dump("le record", $recordWeight);
-        dump("le poids total du jour", $totalWeightToday);
+        // dump("le record", $recordWeight);
+        // dump("le poids total du jour", $totalWeightToday);
 
         if ($totalWeightToday >= $recordWeight['totalWeight']) {
             $messages = [

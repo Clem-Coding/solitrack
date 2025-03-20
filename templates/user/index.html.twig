@@ -5,21 +5,23 @@
 {% endblock %}
 
 {% block content %}
-  <section class="card">
-    <h2>Hello {{ app.user.firstName }}!</h2>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur omnis nobis aliquid quaerat praesentium
-      laborum assumenda numquam quibusdam? Aliquam, sequi nulla perferendis voluptatem blanditiis quo aliquid velit
-      illum expedita odio.
-    </p>
-  </section>
+  <div class="sections-container two-sections">
+    <section class="card">
+      <h2>Hello {{ app.user.firstName }}!</h2>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur omnis nobis aliquid quaerat praesentium
+        laborum assumenda numquam quibusdam? Aliquam, sequi nulla perferendis voluptatem blanditiis quo aliquid velit
+        illum expedita odio.
+      </p>
+    </section>
 
-  <section class="card">
-    <h2>Les statistiques du mois de février</h2>
-    <p>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatibus, voluptatum quos deleniti, numquam
-      culpa soluta natus, assumenda explicabo officia quidem eius laborum repudiandae iusto nemo corrupti rerum incidunt
-      molestiae.
-    </p>
-  </section>
+    <section class="card">
+      <h2>Les statistiques du mois de février</h2>
+      <p>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatibus, voluptatum quos deleniti, numquam
+        culpa soluta natus, assumenda explicabo officia quidem eius laborum repudiandae iusto nemo corrupti rerum
+        incidunt molestiae.
+      </p>
+    </section>
+  </div>
 {% endblock %}
