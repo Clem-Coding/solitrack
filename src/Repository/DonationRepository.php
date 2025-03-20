@@ -110,6 +110,24 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
+    // SELECT DATE(created_at) AS day, SUM(weight) AS totalWeight
+    // FROM donations
+    // GROUP BY day
+    // ORDER BY totalWeight DESC
+    // LIMIT 1;
+    public function getRecordWeightDay()
+    {
+        $sql = "
+            SELECT DATE(d.created_at) AS day, SUM(d.weight) AS totalWeight
+            FROM donations d
+            GROUP BY day
+            ORDER BY totalWeight DESC
+            LIMIT 1
+        ";
+
+        return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
+    }
+
 
     //     SELECT 
     //     DAY(d.created_at) AS day, 

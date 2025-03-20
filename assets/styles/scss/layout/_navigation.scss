@@ -2,3 +2,122 @@
   display: flex;
   flex-direction: column;
 }
+
+///////////////////////
+///
+///
+///
+
+.navbar {
+  position: relative;
+  background-color: #333;
+  padding: 1rem;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li {
+  position: relative;
+}
+
+.navbar-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+/* Cacher le sous-menu en mobile */
+.submenu {
+  background-color: pink;
+  display: none;
+}
+
+/* Menu burger pour mobile */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-toggle-icon {
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  position: relative;
+  top: 6px;
+}
+
+.navbar-toggle-icon::before,
+.navbar-toggle-icon::after {
+  content: "";
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+}
+
+.navbar-toggle-icon::before {
+  top: -8px;
+}
+
+.navbar-toggle-icon::after {
+  top: 8px;
+}
+
+@media (max-width: 768px) {
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+  }
+
+  .navbar-menu li {
+    width: 100%;
+  }
+
+  .navbar-menu.active {
+    display: flex;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+
+  .submenu {
+    display: block;
+    padding-left: 20px;
+  }
+
+  .submenu li {
+    padding: 0.5rem 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-menu {
+    display: flex;
+  }
+
+  .dropdown:hover .submenu {
+    display: block;
+  }
+
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    min-width: 200px;
+  }
+
+  .submenu li {
+    padding: 0.5rem;
+  }
+}

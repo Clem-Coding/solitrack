@@ -7,64 +7,64 @@
 {% block content %}
   <main>
     <h1>Les ventes</h1>
-    <section class="card" id="sales-section">
-      <h2>Ajout des articles</h2>
-      <p>Quel article souhaitez-vous ajouter?</p>
-    <div class="buttons-container">
-      <button class="category-button" data-category="1">
-        <img
-          src="{{ asset('images/buttons/clothing-icon.svg') }}"
-          alt="icone avec deux t-shirts suspendus sur des cintres"
-        />
-        Vêtements
-      </button>
-      <button class="category-button" data-category="2">
-        <img
-          src="{{ asset('images/buttons/clothing-icon.svg') }}"
-          alt="icone avec deux t-shirts suspendus sur des cintres"
-        />
-        Autres articles
-      </button>
+    <div class="sections-container">
+      <section class="card" id="sales-section">
+        <h2 class="sr-only">Ajout des articles</h2>
+        <p>Quel article souhaitez-vous ajouter?</p>
+        <div class="buttons-container">
+          <button class="category-button" data-category="1">
+            <img
+              src="{{ asset('images/buttons/clothing-icon.svg') }}"
+              alt="icone avec deux t-shirts suspendus sur des cintres"
+            />
+            Vêtements
+          </button>
+          <button class="category-button" data-category="2">
+            <img
+              src="{{ asset('images/buttons/clothing-icon.svg') }}"
+              alt="icone avec deux t-shirts suspendus sur des cintres"
+            />
+            Autres articles
+          </button>
+          <button class="category-button" data-category="3">
+            <img
+              src="{{ asset('images/buttons/tag-icon.svg') }}"
+              alt="icone représentant une étiuquette avec le symbole de l'euro"
+            />
+            Article étiqueté
+          </button>
+          <button class="category-button" data-category="4">
+            <img src="{{ asset('images/buttons/tea-icon.svg') }}" alt="icone représentant une tasse de thé" />
+            Boisson
+          </button>
+        </div>
+      </section>
+      <section class="card">
+        <h2 class="sr-only">Formulaire de Saisie</h2>
+        {{ form_errors(form) }}
+        {{ form_start(form) }}
+        {{ form_row(form.weight) }}
+        {{ form_row(form.categoryId) }}
+        {{ form_row(form.price) }}
+        {{ form_row(form.quantity) }}
+        <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
+        <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
+        {# attention virer le style display:none pour le mettre en scss à part #}
+        {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+        {{ form_end(form) }}
+      </section>
+      <section class="card" aria-labelledby="cart-heading">
+        <div>{% include 'partials/flash.html.twig' %}</div>
+        <h2 id="cart-heading">Panier</h2>
+        <ul id="cart-container"></ul>
+        <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p>
+        <button class="clear-cart-button">Vider le panier</button>
+        <form action="{{ path('app_sale_checkout') }}" method="post">
+          <button type="submit" class="button-primary">Passer à la caisse</button>
+        </form>
+      </section>
+    </div>
 
-      <button class="category-button" data-category="3">
-        <img
-          src="{{ asset('images/buttons/tag-icon.svg') }}"
-          alt="icone représentant une étiuquette avec le symbole de l'euro"
-        />
-        Article étiqueté
-      </button>
-      <div>
-
-      <button class="category-button" data-category="4">
-        <img src="{{ asset('images/buttons/tea-icon.svg') }}" alt="icone représentant une tasse de thé" />
-        Boisson
-      </button>
-    </section>
-    <section class="card">
-      <h2>Formulaire de Saisie</h2>
-      {{ form_errors(form) }}
-      {{ form_start(form) }}
-      {{ form_row(form.weight) }}
-      {{ form_row(form.categoryId) }}
-      {{ form_row(form.price) }}
-      {{ form_row(form.quantity) }}
-      <button id="add-cart-button" type="submit" class="hidden">Ajouter au panier</button>
-      <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
-      {# attention virer le style display:none pour le mettre en scss à part #}
-      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
-      {{ form_end(form) }}
-    </section>
-
-    <section class="card" aria-labelledby="cart-heading">
-      <div>{% include 'partials/flash.html.twig' %}</div>
-      <h2 id="cart-heading">Panier</h2>
-      <ul id="cart-container"></ul>
-      <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p>
-      <button class="clear-cart-button">Vider le panier</button>
-      <form action="{{ path('app_sale_checkout') }}" method="post">
-        <button type="submit">Passer à la caisse</button>
-      </form>
-    </section>
     {% if app.request.get('clear_local_storage') %}
       <div id="clear-local-storage" data-clear-local-storage="true"></div>
     {% endif %}

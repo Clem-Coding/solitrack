@@ -18,6 +18,7 @@
       {% block importmap %}
         {{ importmap('app') }}
       {% endblock %}
+      <script src="{{ asset('js/navigation.js') }}"></script>
     {% endblock %}
   </head>
 
@@ -37,19 +38,22 @@
 
       {% if app.user %}
         {% block navbar %}
-          <nav>
-            <ul>
+          <nav class="navbar">
+            <button class="navbar-toggle" aria-label="Toggle menu">
+              <span class="navbar-toggle-icon"></span>button
+            </button>
+            <ul class="navbar-menu">
               <li><a href="{{ path('app_user_homepage') }}" aria-label="Retour à l'accueil">Accueil</a></li>
               <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
               <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
               <li class="dropdown">
                 <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a>
-                <nav class="dropdown-menu">
-                  <a href="{{ path('app_dashboard_statistics') }}">Les statistiques</a>
-                  <a href="{{ path('app_dashboard_cash_reconciliation') }}">Contrôle de Caisse</a>
-                  <a href="{{ path('app_dashboard_user_management') }}">Gestion des utilisateurs</a>
-                  <a href="{{ path('app_dashboard_settings') }}">Paramètres</a>
-                </nav>
+                <ul class="submenu">
+                  <li><a href="{{ path('app_dashboard_statistics') }}">Les statistiques</a></li>
+                  <li><a href="{{ path('app_dashboard_cash_reconciliation') }}">Contrôle de Caisse</a></li>
+                  <li><a href="{{ path('app_dashboard_user_management') }}">Gestion des utilisateurs</a></li>
+                  <li><a href="{{ path('app_dashboard_settings') }}">Paramètres</a></li>
+                </ul>
               </li>
             </ul>
           </nav>

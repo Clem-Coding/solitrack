@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
   flashMessages.forEach((flashMessage) => {
     setTimeout(() => {
       flashMessage.classList.add("fade-out");
-    }, 2000);
+    }, 3000);
 
     setTimeout(() => {
       flashMessage.remove();
-    }, 3000);
+    }, 4000);
   });
 });

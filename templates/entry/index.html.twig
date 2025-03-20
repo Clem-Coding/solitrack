@@ -27,11 +27,15 @@
       <h2 class="sr-only">Saisir un poids</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
-      {{ form_row(form.weight) }}
+      <div class="input-container">
+        {{ form_label(form.weight) }}
+        {{ form_widget(form.weight) }}
+        <span class="unit">kg</span>
+      </div>
+
       {{ form_row(form.categoryId) }}
       <button type="submit" class="button-primary">Enregistrer</button>
       <p id="error-message" class="flash-error hide">Veuillez sélectionner une catégorie.</p>
-      {# attention virer le style display:none pour le mettre en scss à part #}
       {# <div>{% include 'partials/flash.html.twig' %}</div> #}
       {{ form_end(form) }}
     </section>
@@ -43,8 +47,8 @@
         <p class="flash-success">Votre dernière entrée a bien été supprimée.</p>
       {% else %}
         {% if lastEntryName is not null %}
-          <p>Catégorie : {{ lastEntryName }}</p>
-          <p>Poids : {{ lastEntryWeight }} kg</p>
+          <p>{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
+
           <form action="{{ path('app_entry_delete_last') }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
             <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
@@ -66,7 +70,7 @@
         {% if totalWeightToday is null %}
           Pas de données à l'horizon... mais ça ne va pas durer longtemps !
         {% else %}
-          {{ feedbackMessage }}
+          {{ feedbackMessage|raw }}
         {% endif %}
       </p>
     </section>
