@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // 🟢 FETCH API
   // ==========================
-  // ==========================
+
   async function fetchData(category, type, period, year = null, month = null) {
     console.log(
       `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`

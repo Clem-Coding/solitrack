@@ -153,6 +153,13 @@ button {
   font-weight: 600;
 }
 
+.button-secondary {
+  background-color: #ffffff;
+  color: #080222;
+  border: 2px solid #080222;
+  font-weight: 600;
+}
+
 .buttons-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

@@ -58,7 +58,7 @@
         <h2 id="cart-heading">Panier</h2>
         <ul id="cart-container"></ul>
         <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p>
-        <button class="clear-cart-button">Vider le panier</button>
+        <button class="clear-cart-button button-secondary"><i class="ph ph-trash"></i>Vider le panier</button>
         <form action="{{ path('app_sale_checkout') }}" method="post">
           <button type="submit" class="button-primary">Passer à la caisse</button>
         </form>
