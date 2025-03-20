@@ -17,21 +17,27 @@
     grid-template-columns: repeat(2, 1fr);
 
     &.three-sections {
-      > section:nth-child(1),
+      > section:nth-child(1) {
+        grid-column: 1 / 2;
+        align-self: start;
+      }
+
       > section:nth-child(2) {
-        grid-column: 1 / 2; // Colonne gauche
-        align-self: start; // Empêche de grandir avec le panier
+        grid-column: 1 / 2;
+        align-self: start;
+        position: relative;
       }
 
       > section:nth-child(3) {
-        grid-column: 2 / 3; // Colonne droite (panier)
-        grid-row: 1 / span 2; // Fixe la position en haut de la colonne
+        grid-column: 2 / 3;
+        grid-row: 1 / span 2;
         align-self: start;
-        min-height: 100px; // Hauteur initiale du panier
-        transition: height 0.3s ease; // Animation fluide
+        min-height: 100px;
+        transition: height 0.3s ease;
+        overflow-y: auto;
+        max-height: 90vh;
       }
     }
-
     &.four-sections {
       grid-template-areas:
         "area-1 area-2"

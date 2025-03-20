@@ -17,8 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const addCartButton = document.getElementById("add-cart-button");
   const salesForm = document.querySelector(".sales-form");
 
-  salesForm.classList.remove("card");
-
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
     price: document.getElementById("price-input"),
@@ -38,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const quantityInput = inputs.quantity;
   let quantity = Number(quantityInput.value);
 
+  salesForm.classList.remove("card");
+
   // ==========================
   // 🟢 FETCH API
   // ==========================
@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("le total", data.total);
         if (data.status === "success") {
           updateCartDisplay(data.cart);
-
           updateTotalDisplay(data.total);
           localStorage.setItem("cart", JSON.stringify(data.cart));
         } else {
@@ -181,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputs.price.value = "";
     inputs.quantity.value = "";
 
-    // cartContainer.innerHTML = "";
+    cartContainer.innerHTML = "";
 
     cart.forEach((item) => {
       const uniqueId = item.uuid;
@@ -314,9 +313,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  if (savedCart && Array.isArray(savedCart)) {
-    updateCartDisplay(savedCart);
-  }
+  // if (savedCart && Array.isArray(savedCart)) {
+  //   updateCartDisplay(savedCart);
+  // }
 
   clearCartButton.addEventListener("click", () => clearCart());
 });
