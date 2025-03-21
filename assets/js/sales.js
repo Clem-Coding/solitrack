@@ -1,4 +1,4 @@
-import { formatInputValue, formatNumberFromString } from "./utils.js";
+import { formatNumber, formatInputValue, formatNumberFromString } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ==========================
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const clearCartButton = document.querySelector(".clear-cart-button");
   const checkoutButton = document.querySelector(".checkout-button");
 
-  const cartStatus = document.querySelector("#cart-status");
+  const cartStatus = document.querySelector(".cart-status");
   const addCartButton = document.getElementById("add-cart-button");
   const salesForm = document.querySelector(".sales-form");
 
@@ -34,9 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseButton = quantityWrapper.querySelector(".quantity-increase");
 
   const quantityInput = inputs.quantity;
+
   let quantity = Number(quantityInput.value);
 
   salesForm.classList.remove("card");
+
+  // let totalAmount = 0;
 
   // ==========================
   // 🟢 FETCH API
@@ -51,10 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("le total", data.total);
         if (data.status === "success") {
-          updateCartDisplay(data.cart);
-          updateTotalDisplay(data.total);
+          updateCartDisplay(data.cart, data.total);
+          // updateTotalDisplay(data.total);
+          localStorage.setItem("totalAmount", data.total);
           localStorage.setItem("cart", JSON.stringify(data.cart));
         } else {
           console.error("Échec de l'ajout au panier:", data.message);
@@ -80,14 +83,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
-          updateCartDisplay(data.cart);
-          if (data.cart.length === 0) {
-            handleEmptyCart();
-          } else {
-            updateTotalDisplay(data.total);
-          }
+          // console.log("le data total quand je remove un item", data.total);
+
+          // } else {
+          //   updateTotalDisplay(data.total);
+          // }
 
           localStorage.setItem("cart", JSON.stringify(data.cart));
+
+          localStorage.setItem("totalAmount", JSON.stringify(data.total));
+
+          updateCartDisplay(data.cart, data.total);
+          if (data.cart.length === 0) {
+            handleEmptyCart();
+          }
         } else {
           console.error("Échec de la suppression de l'article:", data.message);
         }
@@ -127,12 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleEmptyCart() {
     cartStatus.innerHTML = "Votre panier est vide.";
+    clearCartButton.classList.remove("show");
     clearCartButton.classList.add("hidden");
     checkoutButton.classList.add("hidden");
   }
 
   function handleNonEmptyCart() {
+    clearCartButton.classList.add("show");
     clearCartButton.classList.remove("hidden");
+    console.log(document.querySelector(".clear-cart-button").classList);
+
     checkoutButton.classList.remove("hidden");
   }
 
@@ -149,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetInputs() {
     for (const key in inputs) {
-      inputs[key].value = "";
+      // inputs[key].value = "";
       inputs[key].removeAttribute("required");
       inputWrappers[key].classList.add("hidden");
       inputWrappers[key].classList.remove("flex");
@@ -169,7 +182,13 @@ document.addEventListener("DOMContentLoaded", () => {
     quantityInput.value = newQuantity;
   }
 
-  function updateCartDisplay(cart) {
+  function updateCartDisplay(cart, total) {
+    console.log("le total j'update", total);
+    if (total > 0) {
+      cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
+    } else {
+      cartStatus.innerHTML = "Votre panier est vide.";
+    }
     // const cartStatus = document.getElementById("total-price");
     if (cart.length === 0) {
       handleEmptyCart;
@@ -178,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     inputs.weight.value = "";
     inputs.price.value = "";
-    inputs.quantity.value = "";
+    inputs.quantity.value = 1;
 
     cartContainer.innerHTML = "";
 
@@ -199,7 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const quantityElement = document.createElement("p");
 
         quantityElement.innerHTML = `Quantité : <span>${item.quantity}</span>`;
-        console.log(quantityElement);
         detailsWrapper.appendChild(quantityElement);
       }
 
@@ -210,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (detailsWrapper.childNodes.length > 0) {
-        articleElement.appendChild(detailsWrapper); // Ajout du wrapper uniquement s'il contient des éléments
+        articleElement.appendChild(detailsWrapper);
       }
 
       if (item.price !== null) {
@@ -230,11 +248,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function updateTotalDisplay(total) {
-    if (cartStatus) {
-      cartStatus.innerHTML = `Total : <span class="data-price">${total} €</span>`;
-    }
-  }
+  // function updateTotalDisplay(total) {
+  //   if (cartStatus) {
+  //     console.log(formatNumber(total));
+  //     cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
+  //   }
+  // }
 
   // ==========================
   // 🔧 HANDLE FILTER CHANGES
@@ -298,23 +317,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🖱️ EVENT LISTENERS
   // ==========================
 
+  buttons.forEach((button) => button.addEventListener("click", handleButtonClick));
+
+  form.addEventListener("submit", handleFormSubmit);
+
   decreaseButton.addEventListener("click", () => {
     if (quantity > 1) {
-      console.log("-");
-      // Limite la quantité à 1 minimum
       quantity--;
       updateQuantityDisplay(quantity);
     }
   });
 
   increaseButton.addEventListener("click", () => {
-    console.log("+");
     quantity++;
     updateQuantityDisplay(quantity);
   });
-
-  buttons.forEach((button) => button.addEventListener("click", handleButtonClick));
-  form.addEventListener("submit", handleFormSubmit);
 
   Object.values(inputs).forEach((input) => {
     input.addEventListener("input", () => {
@@ -322,9 +339,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // if (savedCart && Array.isArray(savedCart)) {
-  //   updateCartDisplay(savedCart);
-  // }
+  if (savedCart && Array.isArray(savedCart)) {
+    let totalAmount = Number(localStorage.getItem("totalAmount"));
+    updateCartDisplay(savedCart, totalAmount);
+  } else {
+    cartStatus.innerHTML = "Votre panier est vide.";
+  }
 
   clearCartButton.addEventListener("click", () => clearCart());
 });

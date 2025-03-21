@@ -64,7 +64,7 @@
 
         {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
         {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
-        <p id="cart-status">Votre panier est vide.</p>
+        <p class="cart-status"></p>
 
         <button class="clear-cart-button button-secondary hidden"><i class="ph ph-trash"></i>Vider le panier</button>
         <form action="{{ path('app_sale_checkout') }}" method="post">

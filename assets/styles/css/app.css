@@ -76,23 +76,17 @@ button {
   display: inline-block;
 }
 
-/* Firefox */
+/* Réinitialiser l'apparence de l'input pour tous les navigateurs modernes */
 input[type=number] {
+  appearance: none;
   -moz-appearance: textfield;
-}
-
-/* Chrome */
-input::-webkit-inner-spin-button,
-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Opéra*/
-input::-o-inner-spin-button,
-input::-o-outer-spin-button {
   -o-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
   margin: 0;
+  outline: none;
 }
 
 * {
@@ -130,6 +124,11 @@ h1 {
 h2 {
   font-size: 1.75rem;
 }
+@media (min-width: 1200px) {
+  h2 {
+    font-size: 2rem;
+  }
+}
 
 input {
   border-radius: 4px;
@@ -166,14 +165,14 @@ select {
 button {
   text-align: center;
   border-radius: 4px;
-  padding: 0.5em 2em;
   width: 100%;
 }
 
 .button-primary {
   background-color: #080222;
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 700;
+  padding: 0.5em 2em;
 }
 .button-primary:hover {
   background-color: #eb5a47;
@@ -183,7 +182,8 @@ button {
   background-color: #ffffff;
   color: #080222;
   border: 3px solid #080222;
-  font-weight: 600;
+  font-weight: 700;
+  padding: 0.5em 2em;
 }
 
 .buttons-container {
@@ -229,21 +229,6 @@ button {
   background-color: #ffcb52;
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
   transform: translateY(4px);
-}
-
-.clear-cart-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-}
-.clear-cart-button:hover {
-  border-color: #eb5a47;
-}
-
-.clear-cart-button i {
-  margin-right: 0.5rem;
 }
 
 .flash-success {
@@ -507,17 +492,35 @@ button {
 .input-quantity-wrapper.flex {
   display: flex;
   align-items: center;
-  padding: 0.2em;
+  padding: 0.3em;
   background-color: #eb5a47;
   border-radius: 2em;
+}
+.input-quantity-wrapper.flex input,
+.input-quantity-wrapper.flex button {
+  color: #ffffff;
 }
 
 .sales-form {
   display: none;
 }
-
 .sales-form.show {
+  display: block;
+}
+.sales-form form {
   display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+.sales-form form label {
+  font-weight: 600;
+}
+.sales-form input[type=number] {
+  text-align: center;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  font-weight: 500;
 }
 
 .details-wrapper {
@@ -558,4 +561,22 @@ button {
 }
 .cart-container > li > article button:hover {
   color: #eb5a47;
+}
+
+.clear-cart-button {
+  align-items: center;
+  justify-content: center;
+}
+.clear-cart-button.show {
+  display: flex;
+}
+.clear-cart-button:hover {
+  border-color: #eb5a47;
+}
+.clear-cart-button i {
+  margin-right: 1em;
+}
+
+.cart-status {
+  font-weight: 600;
 }/*# sourceMappingURL=app.css.map */

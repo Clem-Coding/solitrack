@@ -1,14 +1,15 @@
 button {
   text-align: center;
   border-radius: 4px;
-  padding: 0.5em 2em;
+
   width: 100%;
 }
 
 .button-primary {
   background-color: $ink-night;
   color: $cloud;
-  font-weight: 600;
+  font-weight: $bold;
+  padding: 0.5em 2em;
 
   &:hover {
     background-color: $coral;
@@ -19,7 +20,8 @@ button {
   background-color: $cloud;
   color: $ink-night;
   border: 3px solid $ink-night;
-  font-weight: 600;
+  font-weight: $bold;
+  padding: 0.5em 2em;
 }
 
 .buttons-container {
@@ -66,20 +68,4 @@ button {
   background-color: $bright-yellow;
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
   transform: translateY(4px);
-}
-
-.clear-cart-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-
-  &:hover {
-    border-color: $coral;
-  }
-}
-
-.clear-cart-button i {
-  margin-right: 0.5rem;
 }

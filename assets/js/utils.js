@@ -33,6 +33,9 @@ export function formatInputValue(input) {
     .replace(/(\..*)\./g, "$1") // Ensure only one decimal point exists
     .replace(/(\.[\d]{2})./g, "$1") // Limit to 2 digits after the decimal point
     .replace(".", ","); // Replace the dot with a comma for display
+  if (input.value.startsWith(",")) {
+    input.value = "0" + input.value;
+  }
 }
 
 export function clearLocalStorage(item) {
