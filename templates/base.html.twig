@@ -45,12 +45,24 @@
               <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
               <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
               <li class="dropdown">
-                <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord">Le tableau de bord</a>
+                <a href="{{ path('app_dashboard_index') }}" aria-label="Le tableau de bord" class="dashboard-link">
+                  Le tableau de bord <i class="ph ph-caret-down"></i>
+                </a>
                 <ul class="submenu">
-                  <li><a href="{{ path('app_dashboard_statistics') }}">Les statistiques</a></li>
-                  <li><a href="{{ path('app_dashboard_cash_reconciliation') }}">Contrôle de Caisse</a></li>
-                  <li><a href="{{ path('app_dashboard_user_management') }}">Gestion des utilisateurs</a></li>
-                  <li><a href="{{ path('app_dashboard_settings') }}">Paramètres</a></li>
+                  <li>
+                    <a href="{{ path('app_dashboard_statistics') }}"><i class="ph ph-chart-bar"></i>Les statistiques</a>
+                  </li>
+                  <li>
+                    <a href="{{ path('app_dashboard_cash_reconciliation') }}">
+                      <i class="ph ph-storefront"></i> Contrôle de Caisse
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ path('app_dashboard_user_management') }}">
+                      <i class="ph ph-users-three"></i>Gestion des utilisateurs
+                    </a>
+                  </li>
+                  <li><a href="{{ path('app_dashboard_settings') }}"><i class="ph ph-gear"></i>Paramètres</a></li>
                 </ul>
               </li>
             </ul>
@@ -58,9 +70,13 @@
         {% endblock %}
       {% endif %}
 
-      <a href="{{ app.user ? path('app_user_homepage') : path('app_login') }}" aria-label="Se connecter">
+      <a
+        href="{{ app.user ? path('app_user_homepage') : path('app_login') }}"
+        aria-label="Se connecter"
+        class="user-link"
+      >
         {% if app.user %}
-          <i class="ph ph-user-circle-check"></i> Bienvenue
+          <i class="ph ph-user-circle-gear"></i>
         {% else %}
           <i class="ph ph-user-circle"></i> Se connecter
         {% endif %}

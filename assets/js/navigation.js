@@ -29,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const toggleButton = document.querySelector(".navbar-toggle");
   const navbar = document.querySelector(".navbar");
   const menuIcon = document.querySelector("#menuIcon");
+  const dropdown = document.querySelector(".dropdown");
+  const submenu = dropdown.querySelector(".submenu");
+  const caretIcon = dropdown.querySelector("i");
 
   toggleButton.addEventListener("click", () => {
     navbar.classList.toggle("visible");
@@ -53,7 +56,24 @@ document.addEventListener("DOMContentLoaded", function () {
       mainContainer.style.zIndex = "-10";
     }
   });
-});
 
-// menuIcon.classList.remove("ph-list");
-//       menuIcon.classList.add("ph-x");
+  dropdown.addEventListener("click", function (e) {
+    e.preventDefault(); // Empêche le comportement par défaut du lien
+    submenu.classList.toggle("visible"); // Affiche/masque le sous-menu
+
+    // Basculer l'icône entre ph-caret-down et ph-caret-up
+    if (submenu.classList.contains("visible")) {
+      caretIcon.classList.replace("ph-caret-down", "ph-caret-up");
+    } else {
+      caretIcon.classList.replace("ph-caret-up", "ph-caret-down");
+    }
+  });
+
+  // Ferme le menu burger si on clique en dehors de la navbar
+  // document.addEventListener("click", (e) => {
+  //   if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
+  //     navbar.classList.remove("visible");
+  //     menuIcon.classList.replace("ph-x", "ph-list");
+  //   }
+  // });
+});

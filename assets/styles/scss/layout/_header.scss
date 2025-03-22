@@ -1,10 +1,23 @@
-// .header {
-//   background-color: $light-beige;
-//   border-bottom: 3px solid $ink-night;
-//   display: flex;
-//   // flex-direction: row;
-//   justify-content: space-between;
-//   align-items: center;
-//   padding: 2em;
-//   position: relative;
-// }
+.header {
+  position: relative;
+  background-color: #f9f5f2;
+  color: white;
+  padding: 1.25em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* border-bottom: 2px solid black; */
+  flex-direction: row; /* S'assurer que les éléments sont en ligne */
+  /* width: 100%; */
+}
+
+.logo-container h1 {
+  margin: 0;
+  color: black;
+  background-color: pink;
+}
+
+.user-link {
+  color: $ink-night;
+  font-size: 3em;
+}
