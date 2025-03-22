@@ -39,6 +39,5 @@ export function formatInputValue(input) {
 }
 
 export function clearLocalStorage(item) {
-  console.log("oui c'est clear");
   localStorage.removeItem(item);
 }

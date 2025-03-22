@@ -20,7 +20,7 @@ class StatsTest
         switch ($period) {
             case 'monthly':
                 $data = $repository->findTotalWeightByMonth($year);
-                dump('les data pour monthly', $data);
+                // dump('les data pour monthly', $data);
 
                 $monthlyData = array_fill(0, 12, 0);
                 foreach ($data as $entry) {
@@ -34,12 +34,12 @@ class StatsTest
 
             case 'daily':
                 if ($month) {
-                    dump("le moids,", $month);
+                    // dump("le moids,", $month);
                     [$year, $month] = explode('-', $month);
                     $year = (int) $year;
                     $month = (int) $month;
                     $data = $repository->findTotalWeightByDayForMonth($year, $month);
-                    dump('les data pour daily', $data);
+                    // dump('les data pour daily', $data);
 
                     $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
                     $dailyData = array_fill(1, $daysInMonth, 0);

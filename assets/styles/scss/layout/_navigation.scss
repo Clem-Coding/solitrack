@@ -5,8 +5,8 @@
   left: 0;
   right: 0;
   margin: auto;
-  margin-top: 3em;
-  background-color: skyblue;
+  margin-top: 0.5em;
+  background-color: $bright-yellow;
   transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
@@ -58,6 +58,10 @@
   }
 }
 
+.dropdown i {
+  font-size: $f14;
+}
+
 .submenu {
   display: none;
   max-height: 0;
@@ -84,7 +88,6 @@
   align-items: center;
 
   i {
-    background-color: $coral;
     margin-left: 0.5em;
   }
 }
@@ -94,14 +97,19 @@
     position: static;
     transform: none;
     transition: none;
-    z-index: 50;
+    // z-index: 50;
     background-color: #f9f5f2;
     border: none;
     width: auto;
     margin-top: 0;
+    margin: 0;
 
     &:not(.visible) {
       transform: none;
+    }
+
+    &.zindex-hidden {
+      z-index: initial;
     }
 
     ul {
@@ -110,28 +118,66 @@
       padding: 0;
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
+      // justify-content: flex-end;
+      align-items: center;
       gap: 2em;
       white-space: nowrap;
     }
 
     li {
-      padding: 10px;
+      // padding: 0;
     }
 
     li a {
       color: black;
       padding: 0.5em 1em;
+      border-radius: 6.25em;
+      border: 2px solid black;
+      font-weight: $medium;
     }
 
     li a:hover {
-      border: 2px solid black;
-      border-radius: 20px;
-      background-color: skyblue;
+      background-color: $bright-yellow;
+      box-shadow: 3px 3px 0 0 $ink-night;
     }
   }
 
   .navbar-toggle {
     display: none;
+  }
+
+  .dropdown {
+    position: relative;
+    // padding: 0;
+  }
+
+  .submenu {
+    display: none;
+    background-color: pink;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    // max-height: 0;
+
+    width: 20em;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+
+    &.visible {
+      display: block;
+      max-height: 20em;
+      padding: 2em;
+
+      li a {
+        display: flex;
+        align-items: center;
+
+        i {
+          margin-right: 0.5em;
+        }
+      }
+    }
   }
 }

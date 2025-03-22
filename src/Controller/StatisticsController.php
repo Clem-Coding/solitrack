@@ -105,7 +105,7 @@ class StatisticsController extends AbstractController
 
 
 
-        dump("les statistiques", $statistics);
+        // dump("les statistiques", $statistics);
 
 
         return $this->json([

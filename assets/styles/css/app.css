@@ -375,8 +375,8 @@ button {
   left: 0;
   right: 0;
   margin: auto;
-  margin-top: 3em;
-  background-color: skyblue;
+  margin-top: 0.5em;
+  background-color: #ffcb52;
   transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
@@ -420,6 +420,10 @@ button {
   z-index: 1;
 }
 
+.dropdown i {
+  font-size: 0.875rem;
+}
+
 .submenu {
   display: none;
   max-height: 0;
@@ -443,7 +447,6 @@ button {
   align-items: center;
 }
 .dashboard-link i {
-  background-color: #eb5a47;
   margin-left: 0.5em;
 }
 
@@ -452,14 +455,17 @@ button {
     position: static;
     transform: none;
     transition: none;
-    z-index: 50;
     background-color: #f9f5f2;
     border: none;
     width: auto;
     margin-top: 0;
+    margin: 0;
   }
   .navbar:not(.visible) {
     transform: none;
+  }
+  .navbar.zindex-hidden {
+    z-index: initial;
   }
   .navbar ul {
     list-style: none;
@@ -467,24 +473,50 @@ button {
     padding: 0;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    align-items: center;
     gap: 2em;
     white-space: nowrap;
-  }
-  .navbar li {
-    padding: 10px;
   }
   .navbar li a {
     color: black;
     padding: 0.5em 1em;
+    border-radius: 6.25em;
+    border: 2px solid black;
+    font-weight: 500;
   }
   .navbar li a:hover {
-    border: 2px solid black;
-    border-radius: 20px;
-    background-color: skyblue;
+    background-color: #ffcb52;
+    box-shadow: 3px 3px 0 0 #080222;
   }
   .navbar-toggle {
     display: none;
+  }
+  .dropdown {
+    position: relative;
+  }
+  .submenu {
+    display: none;
+    background-color: pink;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    width: 20em;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  .submenu.visible {
+    display: block;
+    max-height: 20em;
+    padding: 2em;
+  }
+  .submenu.visible li a {
+    display: flex;
+    align-items: center;
+  }
+  .submenu.visible li a i {
+    margin-right: 0.5em;
   }
 }
 .category-selector p {
