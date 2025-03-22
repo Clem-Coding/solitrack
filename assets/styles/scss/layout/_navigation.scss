@@ -1,9 +1,3 @@
-// body {
-//   margin: 0;
-//   font-family: Arial, sans-serif;
-//   background-color: #f9f5f2;
-// }
-
 .navbar {
   position: absolute;
   width: calc(100% - 2.5em);
@@ -11,46 +5,57 @@
   left: 0;
   right: 0;
   margin: auto;
-  margin-top: 3em; /* Ajoute une marge au-dessus de la navbar */
+  margin-top: 3em;
   background-color: skyblue;
-  transform: translateY(0); /* Déplace la navbar juste en dessous */
+  transform: translateY(0);
   transition: transform 0.7s ease;
-  // z-index: -1;
   border: 2px solid black;
   border-radius: 7px;
+
+  &.zindex-hidden {
+    z-index: -1;
+  }
+  &.zindex-visible {
+    z-index: 1;
+  }
+
+  &.visible {
+    transform: translateY(0);
+  }
+
+  &:not(.visible) {
+    transform: translateY(-200%);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  li {
+    padding: 0.75em;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
 }
 
 .main-container {
   position: relative;
   // z-index: -10;
-}
+  &.zindex-hidden {
+    z-index: -10;
+  }
 
-.navbar.visible {
-  transform: translateY(0);
-  /* La navbar est visible, donc elle reste sous le header */
-}
-
-.navbar:not(.visible) {
-  transform: translateY(-200%);
-}
-
-.navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  // align-items: center;
-  justify-content: space-around;
-}
-
-.navbar li {
-  padding: 0.75em;
-}
-
-.navbar a {
-  color: black;
-  text-decoration: none;
+  &.zindex-visible {
+    z-index: 1;
+  }
 }
 
 .submenu {
@@ -58,19 +63,18 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-}
 
-/* Quand le sous-menu est visible */
-.submenu.visible {
-  display: block;
-  max-height: 500px; /* Tu peux ajuster cette valeur selon la hauteur de ton sous-menu */
+  &.visible {
+    display: block;
+    max-height: 20em;
 
-  & li a {
-    display: flex;
-    align-items: center;
+    li a {
+      display: flex;
+      align-items: center;
 
-    & i {
-      margin-right: 0.5em;
+      i {
+        margin-right: 0.5em;
+      }
     }
   }
 }
@@ -79,20 +83,13 @@
   display: flex;
   align-items: center;
 
-  & i {
+  i {
     background-color: $coral;
     margin-left: 0.5em;
   }
 }
 
 @media (min-width: 768px) {
-  // #headerContent {
-  //   position: relative;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   width: 100%;
-  // }
-
   .navbar {
     position: static;
     transform: none;
@@ -102,40 +99,37 @@
     border: none;
     width: auto;
     margin-top: 0;
-  }
-  .navbar:not(.visible) {
-    transform: none;
-  }
 
-  .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 2em;
-    white-space: nowrap;
-  }
+    &:not(.visible) {
+      transform: none;
+    }
 
-  .navbar li {
-    padding: 10px;
-  }
-  .navbar li a {
-    color: black;
-    padding: 0.5em 1em;
-  }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: 2em;
+      white-space: nowrap;
+    }
 
-  .navbar li a:hover {
-    border: 2px solid black;
-    border-radius: 20px;
-    background-color: skyblue;
-  }
+    li {
+      padding: 10px;
+    }
 
-  // .navbar a {
-  //   color: white;
-  //   text-decoration: none;
-  // }
+    li a {
+      color: black;
+      padding: 0.5em 1em;
+    }
+
+    li a:hover {
+      border: 2px solid black;
+      border-radius: 20px;
+      background-color: skyblue;
+    }
+  }
 
   .navbar-toggle {
     display: none;

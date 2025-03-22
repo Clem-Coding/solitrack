@@ -1,26 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   const toggleButton = document.getElementById("toggleMenu");
-//   const menuIcon = document.getElementById("menuIcon");
-//   const navbarMenu = document.querySelector(".navbar");
-
-//   let showLinks = false;
-
-//   toggleButton.addEventListener("click", () => {
-//     showLinks = !showLinks;
-
-//     // Changer l'icône (menu ou croix)
-//     if (showLinks) {
-//       menuIcon.classList.remove("ph-list");
-//       menuIcon.classList.add("ph-x");
-//       navbarMenu.classList.add("show");
-//     } else {
-//       menuIcon.classList.remove("ph-x");
-//       menuIcon.classList.add("ph-list");
-//       navbarMenu.classList.remove("show");
-//     }
-//   });
-// });
-
 document.addEventListener("DOMContentLoaded", function () {
   console.log("coucou la page");
 
@@ -35,11 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleButton.addEventListener("click", () => {
     navbar.classList.toggle("visible");
+    navbar.classList.remove("zindex-visible");
+    navbar.classList.add("zindex-hidden");
+    mainContainer.classList.remove("zindex-visible");
+    mainContainer.classList.add("zindex-hidden");
 
-    navbar.style.zIndex = "-1";
-    mainContainer.style.zIndex = "-10";
-
-    // Basculer l'icône entre "ph-list" et "ph-x"
     if (menuIcon.classList.contains("ph-list")) {
       menuIcon.classList.replace("ph-list", "ph-x");
     } else {
@@ -49,19 +26,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   navbar.addEventListener("transitionend", () => {
     if (!navbar.classList.contains("visible")) {
-      mainContainer.style.zIndex = "1";
-      navbar.style.zIndex = "-1";
+      navbar.classList.remove("zindex-visible");
+      navbar.classList.add("zindex-hidden");
+
+      mainContainer.classList.remove("zindex-hidden");
+      mainContainer.classList.add("zindex-visible");
     } else {
-      navbar.style.zIndex = "1";
-      mainContainer.style.zIndex = "-10";
+      navbar.classList.remove("zindex-hidden");
+      navbar.classList.add("zindex-visible");
+
+      mainContainer.classList.remove("zindex-visible");
+      mainContainer.classList.add("zindex-hidden");
     }
   });
 
   dropdown.addEventListener("click", function (e) {
-    e.preventDefault(); // Empêche le comportement par défaut du lien
-    submenu.classList.toggle("visible"); // Affiche/masque le sous-menu
+    e.preventDefault();
+    submenu.classList.toggle("visible");
 
-    // Basculer l'icône entre ph-caret-down et ph-caret-up
     if (submenu.classList.contains("visible")) {
       caretIcon.classList.replace("ph-caret-down", "ph-caret-up");
     } else {
@@ -69,11 +51,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Ferme le menu burger si on clique en dehors de la navbar
-  // document.addEventListener("click", (e) => {
-  //   if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
-  //     navbar.classList.remove("visible");
-  //     menuIcon.classList.replace("ph-x", "ph-list");
-  //   }
-  // });
+  document.addEventListener("click", (e) => {
+    console.log("je clique n'importe où");
+    if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
+      navbar.classList.toggle("visible");
+      navbar.classList.remove("zindex-visible");
+      navbar.classList.add("zindex-hidden");
+      navbar.classList.remove("visible");
+      menuIcon.classList.replace("ph-x", "ph-list");
+    }
+  });
 });

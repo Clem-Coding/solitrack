@@ -375,27 +375,25 @@ button {
   left: 0;
   right: 0;
   margin: auto;
-  margin-top: 3em; /* Ajoute une marge au-dessus de la navbar */
+  margin-top: 3em;
   background-color: skyblue;
-  transform: translateY(0); /* Déplace la navbar juste en dessous */
+  transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
   border-radius: 7px;
 }
-
-.main-container {
-  position: relative;
+.navbar.zindex-hidden {
+  z-index: -1;
 }
-
+.navbar.zindex-visible {
+  z-index: 1;
+}
 .navbar.visible {
   transform: translateY(0);
-  /* La navbar est visible, donc elle reste sous le header */
 }
-
 .navbar:not(.visible) {
   transform: translateY(-200%);
 }
-
 .navbar ul {
   list-style: none;
   margin: 0;
@@ -404,14 +402,22 @@ button {
   flex-direction: column;
   justify-content: space-around;
 }
-
 .navbar li {
   padding: 0.75em;
 }
-
 .navbar a {
   color: black;
   text-decoration: none;
+}
+
+.main-container {
+  position: relative;
+}
+.main-container.zindex-hidden {
+  z-index: -10;
+}
+.main-container.zindex-visible {
+  z-index: 1;
 }
 
 .submenu {
@@ -420,11 +426,9 @@ button {
   overflow: hidden;
   transition: max-height 0.3s ease-out;
 }
-
-/* Quand le sous-menu est visible */
 .submenu.visible {
   display: block;
-  max-height: 500px; /* Tu peux ajuster cette valeur selon la hauteur de ton sous-menu */
+  max-height: 20em;
 }
 .submenu.visible li a {
   display: flex;
