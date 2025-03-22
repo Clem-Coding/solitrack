@@ -50,7 +50,12 @@ button {
   display: inline-block;
 }
 
-/* Réinitialiser l'apparence de l'input pour tous les navigateurs modernes */
+input {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+}
+
 input[type="number"] {
   appearance: none;
   -moz-appearance: textfield;

@@ -93,21 +93,17 @@ document.addEventListener("DOMContentLoaded", () => {
     inputGroup.classList.add("payment-group");
     console.log("l'amount", amount);
 
+    const paymentDetailsContainer = document.createElement("div");
+    paymentDetailsContainer.classList.add("payment-details-container");
+
     const label = document.createElement("label");
     label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
 
     const paymentInput = document.createElement("input");
     paymentInput.type = "text";
-    // paymentInput.inputMode = "numeric";
     paymentInput.classList.add("payment-input");
-
-    // console.log("l'input avant : ", paymentInput);
-    // console.log("Type de amount : ", typeof amount);
     const amountAsNumber = Number(amount);
-    // console.log("Après conversion : ", amountAsNumber);
     paymentInput.value = amountAsNumber;
-    // console.log(paymentInput.value);
-    // console.log("l'input après : ", paymentInput);
     paymentInput.min = 0;
 
     if (method === "card") {
@@ -116,24 +112,28 @@ document.addEventListener("DOMContentLoaded", () => {
       paymentInput.name = "cash_amount"; // Pas de crochets []
     }
     const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Supprimer";
+    deleteButton.innerHTML = '<i class="ph ph-x-circle"></i>';
+
     deleteButton.classList.add("delete-button");
 
     deleteButton.addEventListener("click", () => {
       inputGroup.remove();
       updateAmounts();
-      // updateRemainingText();
     });
 
     paymentInput.addEventListener("input", (event) => {
       formatInputValue(paymentInput);
       updateAmounts();
-      // updateRemainingText();
     });
 
-    inputGroup.appendChild(label);
-    inputGroup.appendChild(paymentInput);
+    paymentDetailsContainer.appendChild(label);
+    paymentDetailsContainer.appendChild(paymentInput);
+
+    // Ajout de la div "payment-details-container" et du bouton dans le groupe
+    inputGroup.appendChild(paymentDetailsContainer);
     inputGroup.appendChild(deleteButton);
+
+    // Ajout de l'inputGroup à la liste des paiements
     paymentsList.appendChild(inputGroup);
 
     updateAmounts();

@@ -76,7 +76,12 @@ button {
   display: inline-block;
 }
 
-/* Réinitialiser l'apparence de l'input pour tous les navigateurs modernes */
+input {
+  font-family: inherit;
+  font-size: inherit;
+  background: transparent;
+}
+
 input[type=number] {
   appearance: none;
   -moz-appearance: textfield;
@@ -133,7 +138,7 @@ h2 {
 input {
   border-radius: 4px;
   border: 1px solid #080222;
-  padding: 0.75em;
+  text-align: center;
   width: 100%;
   box-sizing: border-box;
 }
@@ -165,7 +170,6 @@ select {
 button {
   text-align: center;
   border-radius: 4px;
-  width: 100%;
 }
 
 .button-primary {
@@ -271,15 +275,6 @@ button {
   display: none;
 }
 
-.header {
-  background-color: #00857a;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2em;
-}
-
 .footer {
   background-color: #00857a;
   padding: 2em;
@@ -300,7 +295,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  padding: 2em;
+  padding: 0 1.25em 0 1.15em;
+  min-height: 100vh;
 }
 
 .sections-container {
@@ -348,113 +344,137 @@ button {
     grid-area: area-4;
   }
 }
-.dropdown-menu {
+.header {
+  position: relative;
+  background-color: #f9f5f2;
+  color: white;
+  padding: 1.25em;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  /* border-bottom: 2px solid black; */
+  flex-direction: row; /* S'assurer que les éléments sont en ligne */
+  /* width: 100%; */
+}
+
+.logo-container h1 {
+  margin: 0;
+  color: black;
+  background-color: pink;
 }
 
 .navbar {
-  position: relative;
-  background-color: #333;
-  padding: 1rem;
+  position: absolute;
+  width: calc(100% - 2.5em);
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  margin-top: 3em; /* Ajoute une marge au-dessus de la navbar */
+  background-color: skyblue;
+  transform: translateY(0); /* Déplace la navbar juste en dessous */
+  transition: transform 0.7s ease;
+  border: 2px solid black;
+  border-radius: 7px;
 }
 
-.navbar-menu {
+.main-container {
+  position: relative;
+}
+
+.navbar.visible {
+  transform: translateY(0);
+  /* La navbar est visible, donc elle reste sous le header */
+}
+
+.navbar:not(.visible) {
+  transform: translateY(-150%);
+}
+
+.navbar ul {
   list-style: none;
-  display: flex;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.navbar-menu li {
-  position: relative;
+.navbar li {
+  padding: 10px;
 }
 
-.navbar-menu a {
-  color: white;
+#navbar a {
+  color: black;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  display: block;
 }
 
-/* Cacher le sous-menu en mobile */
-.submenu {
-  background-color: pink;
-  display: none;
-}
-
-/* Menu burger pour mobile */
 .navbar-toggle {
-  display: none;
-  background: none;
   border: none;
+  padding: 10px;
+}
+
+.connect {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
   cursor: pointer;
 }
 
-.navbar-toggle-icon {
-  width: 30px;
-  height: 3px;
-  background-color: white;
-  position: relative;
-  top: 6px;
+.connect:hover {
+  background-color: #555;
 }
 
-.navbar-toggle-icon::before,
-.navbar-toggle-icon::after {
-  content: "";
-  width: 30px;
-  height: 3px;
-  background-color: white;
-  position: absolute;
-  left: 0;
-}
-
-.navbar-toggle-icon::before {
-  top: -8px;
-}
-
-.navbar-toggle-icon::after {
-  top: 8px;
-}
-
-@media (max-width: 768px) {
-  .navbar-menu {
-    display: none;
-    flex-direction: column;
-  }
-  .navbar-menu li {
+@media (min-width: 768px) {
+  #headerContent {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
   }
-  .navbar-menu.active {
-    display: flex;
+  #navbar {
+    position: static; /* Enlève la position absolue */
+    transform: none; /* Enlève le transform utilisé pour les petites tailles */
+    transition: none; /* Pas de transition */
+    z-index: 50;
+    background-color: #f9f5f2;
+    border: none;
+    width: auto; /* On enlève la largeur 80% pour qu'il s'étende sur toute la largeur */
+    margin-top: 0;
   }
-  .navbar-toggle {
-    display: block;
+  #navbar:not(.visible) {
+    transform: none;
   }
-  .submenu {
-    display: block;
-    padding-left: 20px;
+  #navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Flex en ligne */
+    flex-direction: row; /* Les éléments du menu sont en ligne */
+    justify-content: flex-end; /* Aligne les éléments à droite */
+    gap: 2em;
+    white-space: nowrap;
   }
-  .submenu li {
-    padding: 0.5rem 0;
+  #navbar li {
+    padding: 10px;
   }
-}
-@media (min-width: 768px) {
-  .navbar-menu {
-    display: flex;
+  #navbar li a {
+    color: black;
+    padding: 0.5em 1em;
   }
-  .dropdown:hover .submenu {
-    display: block;
+  #navbar li a:hover {
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: skyblue;
   }
-  .submenu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #444;
-    min-width: 200px;
+  #navbar a {
+    color: white; /* Changer la couleur des liens pour qu'ils soient visibles sur un fond sombre */
+    text-decoration: none;
   }
-  .submenu li {
-    padding: 0.5rem;
+  #menuToggle {
+    display: none; /* Cache le bouton du menu toggle en mode desktop */
   }
 }
 .category-selector p {
@@ -579,4 +599,48 @@ button {
 
 .cart-status {
   font-weight: 600;
+}
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.buttons-wrapper button {
+  border: 2px solid #080222;
+  padding: 0.5em;
+}
+
+.payment-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #080222;
+  padding: 0.5em 0 0.5em 0.5em;
+}
+.payment-group .payment-details-container {
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+}
+.payment-group .payment-details-container label {
+  display: inline-block;
+  width: 6em;
+}
+.payment-group .payment-details-container input {
+  border: none;
+  padding: 0.2em 0.5em;
+  width: 5em;
+}
+.payment-group button {
+  width: auto;
+}
+
+.payment-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.payment-button i {
+  margin-right: 1em;
 }/*# sourceMappingURL=app.css.map */

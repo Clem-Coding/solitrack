@@ -38,15 +38,20 @@
         <h2>Paiement</h2>
 
         <div role="group" aria-labelledby="payment-method-heading">
-          <h3 id="payment-method-heading" class="">Méthode de paiement</h3>
-          <button type="button" class="payment-button" data-method="card">Carte</button>
-          <button type="button" class="payment-button" data-method="cash">Espèce</button>
+          <h3 id="payment-method-heading" class="sr-only">Méthode de paiement</h3>
+          <div class="buttons-wrapper">
+            <button type="button" class="payment-button" data-method="card">
+              <i class="ph ph-credit-card"></i> Carte
+            </button>
+
+            <button type="button" class="payment-button" data-method="cash"><i class="ph ph-coins"></i>Espèce</button>
+          </div>
         </div>
 
         {# !mettre un token sur le formulaire! #}
         <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
           <div role="region" aria-labelledby="payments-list-heading">
-            <h3 id="payments-list-heading" class="">Paiements effectués</h3>
+            <h3 id="payments-list-heading" class="sr-only">Paiements effectués</h3>
             <ul class="payments-list"></ul>
           </div>
 
@@ -56,7 +61,7 @@
           </div>
 
           <div>
-            <h3 id="remaining-amount-heading" class="">Boutons d'action</h3>
+            <h3 id="remaining-amount-heading" class="sr-only">Options de la transaction</h3>
             <button class="keep-change-button" type="button">Garder la monnaie</button>
             <input type="hidden" class="keep-change-input" name="keep_change" />
             <button type="button">Générer un reçu</button>

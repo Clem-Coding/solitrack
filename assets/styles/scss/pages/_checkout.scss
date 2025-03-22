@@ -1,0 +1,50 @@
+.buttons-wrapper {
+  display: flex;
+  justify-content: space-between; // espace entre le label/input et le bouton
+  align-items: center;
+  // alignement vertical des éléments
+
+  & button {
+    border: 2px solid $ink-night;
+    padding: 0.5em;
+  }
+}
+
+.payment-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $ink-night;
+  padding: 0.5em 0 0.5em 0.5em;
+
+  .payment-details-container {
+    flex: 1;
+    justify-content: flex-start;
+    align-items: center;
+
+    label {
+      display: inline-block;
+      width: 6em;
+    }
+
+    input {
+      border: none;
+      padding: 0.2em 0.5em;
+      width: 5em;
+    }
+  }
+
+  button {
+    width: auto;
+  }
+}
+
+.payment-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    margin-right: 1em;
+  }
+}
