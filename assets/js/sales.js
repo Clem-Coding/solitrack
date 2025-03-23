@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll("#sales-section .category-button");
   const categoryInput = document.getElementById("sales_item_categoryId");
   // const categoryErrorMessage = document.getElementById("error-message");
-  const form = document.querySelector("form");
+  const form = document.querySelector(".sales-form");
+  console.log("le form", form);
   const cartContainer = document.querySelector(".cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
@@ -15,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cartStatus = document.querySelector(".cart-status");
   const addCartButton = document.getElementById("add-cart-button");
-  const salesForm = document.querySelector(".sales-form");
+  // const addItemscard = document.querySelector(".sales-card");
+  const addItemsCard = document.querySelector(".card.sales-card");
+  console.log("le sales form", addItemsCard);
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
@@ -37,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let quantity = Number(quantityInput.value);
 
-  salesForm.classList.remove("card");
+  addItemsCard.classList.remove("card");
 
   // let totalAmount = 0;
 
@@ -172,8 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showInput(input, wrapper) {
     input.setAttribute("required", "true");
-    salesForm.classList.add("show");
-    salesForm.classList.add("card");
+    addItemsCard.classList.add("show");
+    addItemsCard.classList.add("card");
     wrapper.classList.remove("hidden");
     wrapper.classList.add("flex");
   }

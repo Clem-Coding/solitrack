@@ -13,6 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const caretIcon = dropdown.querySelector("i");
 
   // ==========================
+  // 🎯 USER MENU VARIABLES
+  // ==========================
+  const userIcon = document.querySelector("#user-icon");
+  const userMenu = document.querySelector(".user-menu");
+
+  // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
   function toggleVisibility(element, visibleClass, hiddenClass) {
@@ -56,13 +62,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   dropdown.addEventListener("click", function (e) {
-    // Si on clique sur le lien "Tableau de bord" (l'élément li contenant ce lien), on ne veut pas qu'il recharge la page
     if (e.target.tagName === "A" && !e.target.closest(".submenu")) {
-      e.preventDefault(); // Empêche la redirection pour ce lien particulier
-      submenu.classList.toggle("visible"); // Toggles le sous-menu
-      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up"); // Change l'icône
+      e.preventDefault();
+      submenu.classList.toggle("visible");
+      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
     } else if (e.target.tagName !== "A") {
-      // Si ce n'est pas un lien, toggle le sous-menu
       e.preventDefault();
       submenu.classList.toggle("visible");
       toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
@@ -75,6 +79,24 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
         toggleIconClass(menuIcon, "ph-x", "ph-list");
       }
+    }
+  });
+
+  // ==========================
+  // 🎯 USER MENU
+  // ==========================
+
+  function toggleUserMenu() {
+    userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
+  }
+
+  if (userIcon) {
+    userIcon.addEventListener("click", toggleUserMenu);
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
+      userMenu.style.display = "none";
     }
   });
 });

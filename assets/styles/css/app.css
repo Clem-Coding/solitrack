@@ -101,7 +101,7 @@ input[type=number] {
 body {
   margin: 0;
   padding: 0;
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.6;
   font-family: "Inter";
   background-color: #f9f5f2;
@@ -138,9 +138,37 @@ h2 {
 input {
   border-radius: 4px;
   border: 1px solid #080222;
-  text-align: center;
+  padding: 0.5em;
   width: 100%;
   box-sizing: border-box;
+}
+
+form {
+  display: flex;
+  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
+  gap: 1.5em; /* Espace entre les groupes label + input */
+}
+
+form label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Style pour les inputs */
+form input,
+form select,
+form textarea {
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border: 3px solid #00857a;
+  outline: none;
 }
 
 select {
@@ -187,7 +215,8 @@ button {
   background-color: #080222;
   color: #ffffff;
   font-weight: 700;
-  padding: 0.5em 2em;
+  padding: 0.7em;
+  width: 100%;
 }
 .button-primary:hover {
   background-color: #eb5a47;
@@ -217,22 +246,20 @@ button {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 7px;
-  border: 3px solid #080222;
+  border: 2px solid #080222;
   border-radius: 7px;
   width: 100%;
   aspect-ratio: 1/1;
   background-color: #f9f5f2;
   transition: background-color 0.3s ease-in-out;
-  box-shadow: 5px 5px #080222;
-  font-weight: 400;
+  box-shadow: 5px 5px 0 #080222;
   font-size: 0.875rem;
 }
 .category-button:hover {
   background-color: #f1e8e1;
 }
 .category-button img {
-  width: 60px;
+  width: 8em;
   height: auto;
   max-height: 50%;
   -o-object-fit: contain;
@@ -287,29 +314,31 @@ button {
 }
 
 .header {
-  background-color: pink;
-  color: white;
-  /* width: 100%; */
+  /* Permet au header de rester en haut */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* Ajoute un fond */
+  width: 100%; /* Assure que le header occupe toute la largeur */
+  /* Responsiveness */
 }
 .header .container {
-  border: 4px solid green;
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* border-bottom: 2px solid black; */
   flex-direction: row;
+  background-color: #009e91;
 }
 @media (min-width: 1200px) {
-  .header .container .navbar {
-    margin-left: auto; /* Fait en sorte que la navbar et le bouton se déplacent à droite */
+  .header .navbar {
+    margin-left: auto; /* Fait en sorte que la navbar se déplace à droite sur les grands écrans */
   }
 }
 
 .logo-container h1 {
   margin: 0;
-  color: black;
-  background-color: pink;
+  color: #080222;
 }
 
 .user-link {
@@ -317,20 +346,29 @@ button {
   font-size: 3em;
 }
 
+.user-action a {
+  display: flex;
+  align-items: center;
+}
+
 .footer {
   background-color: #00857a;
   padding: 2em;
 }
 
-.card {
+.card, .card-shadow {
   border: 2px solid #080222;
   padding: 1.5em 2em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 15px;
-  border-radius: 7px;
+  border-radius: 6px;
   background-color: #ffffff;
+}
+
+.card-shadow {
+  box-shadow: 6px 6px 0 #ffcb52;
 }
 
 main.container {
@@ -393,11 +431,12 @@ main.container {
   right: 0;
   margin: auto;
   margin-top: 0.5em;
-  background-color: #ffcb52;
+  background-color: #ffffff;
   transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
-  border-radius: 7px;
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 0 #080222;
 }
 .navbar.zindex-hidden {
   z-index: -1;
@@ -421,7 +460,6 @@ main.container {
 }
 .navbar li {
   padding: 0.75em;
-  border: 3px solid red;
 }
 .navbar a {
   color: black;
@@ -468,16 +506,44 @@ main.container.zindex-visible {
   margin-left: 0.5em;
 }
 
+.user-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  z-index: 100;
+}
+.user-menu li a {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.user-menu li a:hover {
+  color: #00857a;
+}
+
+.user-action {
+  position: relative;
+}
+.user-action i {
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .navbar {
     position: static;
     transform: none;
     transition: none;
-    background-color: #f9f5f2;
+    background-color: #009e91;
     border: none;
     width: auto;
     margin-top: 0;
     margin: 0;
+    box-shadow: none;
   }
   .navbar:not(.visible) {
     transform: none;
@@ -518,13 +584,11 @@ main.container.zindex-visible {
   }
   .submenu {
     display: none;
-    background-color: pink;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     z-index: 2;
-    border: 3px solid red;
     width: 25em;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
@@ -586,21 +650,21 @@ main.container.zindex-visible {
   color: #ffffff;
 }
 
-.sales-form {
+.sales-card {
   display: none;
 }
-.sales-form.show {
+.sales-card.show {
   display: block;
 }
-.sales-form form {
+.sales-card form {
   display: flex;
   flex-direction: column;
   gap: 1.5em;
 }
-.sales-form form label {
+.sales-card form label {
   font-weight: 600;
 }
-.sales-form input[type=number] {
+.sales-card input[type=number] {
   text-align: center;
   font-family: inherit;
   font-size: inherit;
@@ -708,4 +772,15 @@ main.container.zindex-visible {
 }
 .payment-button i {
   margin-right: 1em;
+}
+
+.card-shadow.login {
+  margin-top: 3em;
+}
+@media (min-width: 1200px) {
+  .card-shadow.login {
+    width: 70%; /* Ajuste la largeur du formulaire */
+    margin-left: auto; /* Centre à gauche */
+    margin-right: auto; /* Centre à droite */
+  }
 }/*# sourceMappingURL=app.css.map */

@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-size: $f18;
+  font-size: $f16;
   line-height: 1.6;
   font-family: $font-primary;
   background-color: $light-beige;
@@ -43,11 +43,44 @@ h2 {
 input {
   border-radius: 4px;
   border: 1px solid $ink-night;
-  text-align: center;
-  // padding: 0.75em;
+  // text-align: center;
+  padding: 0.5em;
   width: 100%;
   box-sizing: border-box;
 }
+
+//________________ FORM
+
+form {
+  display: flex;
+  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
+  gap: 1.5em; /* Espace entre les groupes label + input */
+}
+
+form label {
+  font-size: 1rem;
+  font-weight: bold;
+  // margin-bottom: 0.5em;
+}
+
+/* Style pour les inputs */
+form input,
+form select,
+form textarea {
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border: 3px solid $emerald-sea;
+  outline: none;
+}
+
+// __________________________________________________________________________________
 
 select {
   border-radius: 4px;

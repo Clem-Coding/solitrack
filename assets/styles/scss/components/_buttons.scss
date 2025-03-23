@@ -1,15 +1,14 @@
 button {
   text-align: center;
   border-radius: 4px;
-
-  // width: 100%;
 }
 
 .button-primary {
   background-color: $ink-night;
   color: $cloud;
   font-weight: $bold;
-  padding: 0.5em 2em;
+  padding: 0.7em;
+  width: 100%;
 
   &:hover {
     background-color: $coral;
@@ -40,15 +39,16 @@ button {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 7px;
-  border: 3px solid $ink-night;
+  // padding: 0.3em;
+  border: 2px solid $ink-night;
   border-radius: 7px;
   width: 100%;
   aspect-ratio: 1 / 1;
   background-color: $light-beige;
   transition: background-color 0.3s ease-in-out;
-  box-shadow: 5px 5px $ink-night;
-  font-weight: 400;
+  box-shadow: 5px 5px 0 $ink-night;
+
+  // font-weight: $medium;
   font-size: $f14;
 
   &:hover {
@@ -56,7 +56,7 @@ button {
   }
 
   & img {
-    width: 60px;
+    width: 8em;
     height: auto;
     max-height: 50%;
     object-fit: contain;

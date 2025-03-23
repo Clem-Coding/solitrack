@@ -6,11 +6,13 @@
   right: 0;
   margin: auto;
   margin-top: 0.5em;
-  background-color: $bright-yellow;
+  // background-color: $bright-yellow;
+  background-color: $cloud;
   transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
-  border-radius: 7px;
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 0 $ink-night;
 
   &.zindex-hidden {
     z-index: -1;
@@ -26,7 +28,6 @@
   &:not(.visible) {
     transform: translateY(-200%);
   }
-
   ul {
     list-style: none;
     margin: 0;
@@ -38,7 +39,7 @@
 
   li {
     padding: 0.75em;
-    border: 3px solid red;
+    // border: 3px solid red;
   }
 
   a {
@@ -46,6 +47,27 @@
     text-decoration: none;
   }
 }
+
+// .navbar {
+//   position: absolute;
+//   width: calc(100% - 2.5em);
+//   top: 100%;
+//   left: 0;
+//   right: 0;
+//   margin: auto;
+//   background-color: $cloud;
+//   transform: translateY(-200%);
+//   transition: transform 4s ease, z-index 0s ease 4s;
+//   border: 2px solid black;
+//   border-radius: 7px;
+//   z-index: -1;
+
+//   &.visible {
+//     transform: translateY(0);
+//     z-index: 11; // Passe au-dessus du header après l'animation
+//     transition: transform 0.7s ease, z-index 0s; // Annule le délai du z-index pour l'affichage
+//   }
+// }
 
 main.container {
   position: relative;
@@ -93,17 +115,52 @@ main.container {
   }
 }
 
+.user-menu {
+  // border: 3px solid blue;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1em;
+  z-index: 100;
+
+  li {
+    a {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+
+      &:hover {
+        color: $emerald-sea;
+      }
+    }
+  }
+}
+
+.user-action {
+  position: relative;
+
+  i {
+    cursor: pointer;
+  }
+}
+
 @media (min-width: 768px) {
   .navbar {
     position: static;
     transform: none;
     transition: none;
     // z-index: 50;
-    background-color: #f9f5f2;
+    // background-color: #f9f5f2;
+    background-color: #009e91;
     border: none;
     width: auto;
     margin-top: 0;
     margin: 0;
+    box-shadow: none;
 
     &:not(.visible) {
       transform: none;
@@ -155,13 +212,13 @@ main.container {
 
   .submenu {
     display: none;
-    background-color: pink;
+    // background-color: pink;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
     z-index: 2;
-    border: 3px solid red;
+    // border: 3px solid red;
     // max-height: 0;
 
     width: 25em;

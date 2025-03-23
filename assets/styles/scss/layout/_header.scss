@@ -1,34 +1,42 @@
 .header {
-  // background-color: #f9f5f2;
-  background-color: pink;
-  color: white;
+  /* Permet au header de rester en haut */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 
-  /* width: 100%; */
+  /* Ajoute un fond */
+
+  width: 100%; /* Assure que le header occupe toute la largeur */
 
   & .container {
-    border: 4px solid green;
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* border-bottom: 2px solid black; */
     flex-direction: row;
+    background-color: #009e91;
+  }
 
-    @include respond-to(desktop) {
-      .navbar {
-        margin-left: auto; /* Fait en sorte que la navbar et le bouton se déplacent à droite */
-      }
+  /* Responsiveness */
+  @include respond-to(desktop) {
+    .navbar {
+      margin-left: auto; /* Fait en sorte que la navbar se déplace à droite sur les grands écrans */
     }
   }
 }
 
 .logo-container h1 {
   margin: 0;
-  color: black;
-  background-color: pink;
+  color: $ink-night;
+  // background-color: pink;
 }
 
 .user-link {
   color: $ink-night;
   font-size: 3em;
+}
+
+.user-action a {
+  display: flex;
+  align-items: center;
 }

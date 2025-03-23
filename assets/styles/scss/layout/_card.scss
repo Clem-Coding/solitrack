@@ -5,6 +5,11 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 15px;
-  border-radius: 7px;
+  border-radius: 6px;
   background-color: $cloud;
+}
+
+.card-shadow {
+  @extend .card;
+  box-shadow: 6px 6px 0 $bright-yellow;
 }

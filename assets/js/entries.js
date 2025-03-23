@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   const buttons = document.querySelectorAll(".category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
-  const form = document.querySelector("form");
+  const form = document.querySelector(".donation-form");
   const weightInput = document.getElementById("donation_form_weight");
   const errorMessage = document.getElementById("error-message");
 
@@ -55,11 +55,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handleFormSubmit(event) {
+    console.log("je clique le form");
     if (!categoryInput.value) {
       event.preventDefault();
+      console.log("test");
 
       showError();
     } else {
+      console.log("pas de valeur");
       hideError();
     }
   }
@@ -70,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
+      console.log("je clique");
       handleButtonClick(event);
       hideError();
     });

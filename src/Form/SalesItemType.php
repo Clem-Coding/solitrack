@@ -50,6 +50,9 @@ class SalesItemType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SalesItem::class,
+            'attr' => [
+                'class' => 'sales-form',
+            ]
         ]);
     }
 }

@@ -28,9 +28,11 @@
   <body>
     <header class="header">
       <div class="container">
-        <button class="navbar-toggle" id="toggleMenu" aria-label="Toggle menu">
-          <i id="menuIcon" class="ph ph-list"></i>
-        </button>
+        {% if app.user %}
+          <button class="navbar-toggle" id="toggleMenu" aria-label="Toggle menu">
+            <i id="menuIcon" class="ph ph-list"></i>
+          </button>
+        {% endif %}
 
         <div class="logo-container">
           <a href="{{ app.user ? path('app_user_homepage') : path('app_homepage') }}" aria-label="Accueil" class="logo">
@@ -76,17 +78,32 @@
           {% endblock %}
         {% endif %}
 
-        <a
+        {# <a
           href="{{ app.user ? path('app_user_homepage') : path('app_login') }}"
           aria-label="Se connecter"
           class="user-link"
-        >
-          {% if app.user %}
-            <i class="ph ph-user-circle-gear"></i>
-          {% else %}
-            <i class="ph ph-user-circle"></i> Se connecter
-          {% endif %}
-        </a>
+        > #}
+        {% if app.user %}
+          <div class="user-action">
+            <i class="ph ph-user-circle" id="user-icon"></i>
+            <ul class="user-menu">
+              <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
+              <li>
+                <a
+                  href="{{ path('app_logout') }}"
+                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                >
+                  <i class="ph ph-sign-out"></i> Se déconnecter
+                </a>
+                <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;"></form>
+              </li>
+            </ul>
+          </div>
+        {% else %}
+          <div class="user-action">
+            <a href="{{ path('app_login') }}"><i class="ph ph-user-circle"></i> Se connecter</a>
+          </div>
+        {% endif %}
       </div>
     </header>
 
