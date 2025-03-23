@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // ==========================
   const menuIcon = document.querySelector("#menuIcon");
   const toggleButton = document.querySelector(".navbar-toggle");
-  const mainContainer = document.querySelector(".main-container");
+  const mainContainer = document.querySelector("main.container");
+  console.log(mainContainer);
+
   const navbar = document.querySelector(".navbar");
   const dropdown = document.querySelector(".dropdown");
   const submenu = dropdown.querySelector(".submenu");
@@ -54,11 +56,18 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   dropdown.addEventListener("click", function (e) {
-    e.preventDefault();
-    submenu.classList.toggle("visible");
-    toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+    // Si on clique sur le lien "Tableau de bord" (l'élément li contenant ce lien), on ne veut pas qu'il recharge la page
+    if (e.target.tagName === "A" && !e.target.closest(".submenu")) {
+      e.preventDefault(); // Empêche la redirection pour ce lien particulier
+      submenu.classList.toggle("visible"); // Toggles le sous-menu
+      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up"); // Change l'icône
+    } else if (e.target.tagName !== "A") {
+      // Si ce n'est pas un lien, toggle le sous-menu
+      e.preventDefault();
+      submenu.classList.toggle("visible");
+      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+    }
   });
-
   document.addEventListener("click", (e) => {
     if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
       if (navbar.classList.contains("visible")) {

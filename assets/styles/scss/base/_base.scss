@@ -66,9 +66,18 @@ select {
   font-size: 2rem;
 }
 
-.container {
+.main-container {
   @include respond-to(desktop) {
-    max-width: 1200px;
+    max-width: $layout-max-width;
     margin: auto;
+  }
+}
+
+.container {
+  padding: 1.25em;
+  @include respond-to(desktop) {
+    max-width: $layout-max-width;
+    margin: auto;
+    padding: 1.25em 0;
   }
 }

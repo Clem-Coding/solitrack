@@ -1,14 +1,13 @@
-.content {
+main.container {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  padding: 0 1.25em 0 1.25em;
   min-height: 100vh;
 }
 
 .sections-container {
   display: grid;
-  grid-template-columns: 1fr; // One column by default (for smaller screens)
+  grid-template-columns: 1fr;
   gap: 2em;
   grid-auto-rows: minmax(200px, auto);
 }

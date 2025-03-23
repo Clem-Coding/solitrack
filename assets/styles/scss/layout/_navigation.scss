@@ -47,7 +47,7 @@
   }
 }
 
-.main-container {
+main.container {
   position: relative;
   // z-index: -10;
   &.zindex-hidden {
@@ -171,7 +171,7 @@
     &.visible {
       display: block;
       max-height: 25em;
-      padding: 2em;
+      padding: 1em 0;
 
       li a {
         display: flex;

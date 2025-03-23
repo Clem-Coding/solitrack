@@ -161,9 +161,20 @@ select {
 }
 
 @media (min-width: 1200px) {
-  .container {
-    max-width: 1200px;
+  .main-container {
+    max-width: 1280px;
     margin: auto;
+  }
+}
+
+.container {
+  padding: 1.25em;
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1280px;
+    margin: auto;
+    padding: 1.25em 0;
   }
 }
 
@@ -276,16 +287,23 @@ button {
 }
 
 .header {
-  position: relative;
   background-color: pink;
   color: white;
-  padding: 1.25em;
+  /* width: 100%; */
+}
+.header .container {
+  border: 4px solid green;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   /* border-bottom: 2px solid black; */
-  flex-direction: row; /* S'assurer que les éléments sont en ligne */
-  /* width: 100%; */
+  flex-direction: row;
+}
+@media (min-width: 1200px) {
+  .header .container .navbar {
+    margin-left: auto; /* Fait en sorte que la navbar et le bouton se déplacent à droite */
+  }
 }
 
 .logo-container h1 {
@@ -315,11 +333,10 @@ button {
   background-color: #ffffff;
 }
 
-.content {
+main.container {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  padding: 0 1.25em 0 1.25em;
   min-height: 100vh;
 }
 
@@ -411,13 +428,13 @@ button {
   text-decoration: none;
 }
 
-.main-container {
+main.container {
   position: relative;
 }
-.main-container.zindex-hidden {
+main.container.zindex-hidden {
   z-index: -10;
 }
-.main-container.zindex-visible {
+main.container.zindex-visible {
   z-index: 1;
 }
 
@@ -515,7 +532,7 @@ button {
   .submenu.visible {
     display: block;
     max-height: 25em;
-    padding: 2em;
+    padding: 1em 0;
   }
   .submenu.visible li a {
     display: flex;
