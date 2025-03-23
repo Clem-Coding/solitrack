@@ -25,7 +25,9 @@ class SaleType extends AbstractType
             //     'label' => 'Carte Bleue',
             //     'attr' => ['class' => 'card-input']
             // ])
-            ->add('zipcodeCustomer')
+            ->add('zipcodeCustomer', null, [
+                'label' => "Code-postal"
+            ])
             // ->add('keepChange')
             // ->add('pwywAmount')
 

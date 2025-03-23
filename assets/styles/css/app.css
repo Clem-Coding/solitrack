@@ -161,7 +161,7 @@ select {
 }
 
 @media (min-width: 1200px) {
-  .main-container {
+  .container {
     max-width: 1200px;
     margin: auto;
   }
@@ -277,7 +277,7 @@ button {
 
 .header {
   position: relative;
-  background-color: #f9f5f2;
+  background-color: pink;
   color: white;
   padding: 1.25em;
   display: flex;
@@ -319,7 +319,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  padding: 0 1.25em 0 1.15em;
+  padding: 0 1.25em 0 1.25em;
   min-height: 100vh;
 }
 
@@ -404,6 +404,7 @@ button {
 }
 .navbar li {
   padding: 0.75em;
+  border: 3px solid red;
 }
 .navbar a {
   color: black;
@@ -421,7 +422,7 @@ button {
 }
 
 .dropdown i {
-  font-size: 0.875rem;
+  font-size: 1.25rem;
 }
 
 .submenu {
@@ -477,6 +478,10 @@ button {
     gap: 2em;
     white-space: nowrap;
   }
+  .navbar li {
+    display: flex;
+    align-items: center;
+  }
   .navbar li a {
     color: black;
     padding: 0.5em 1em;
@@ -502,13 +507,14 @@ button {
     left: 0;
     right: 0;
     z-index: 2;
-    width: 20em;
+    border: 3px solid red;
+    width: 25em;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
   }
   .submenu.visible {
     display: block;
-    max-height: 20em;
+    max-height: 25em;
     padding: 2em;
   }
   .submenu.visible li a {
