@@ -18,14 +18,18 @@ class UserAccountType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-
-            ->add('email', EmailType::class)
+            ->add('firstName', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Adresse email',
+            ])
             ->add('newPassword', RepeatedType::class, [
                 'type' =>  PasswordType::class,
                 'mapped' => false,
-
                 'required' => false,
                 'constraints' => [
                     new Regex([
@@ -38,12 +42,12 @@ class UserAccountType extends AbstractType
                 ],
                 'first_options' => [
                     'hash_property_path' => 'password',
-                    'label' => 'label.new_password',
+                    'label' => 'Nouveau mot de passe',
                     'attr' => ['autocomplete' => 'new-password'],
                 ],
                 'mapped' => false,
                 'second_options' => [
-                    'label' => 'label.new_password_confirm',
+                    'label' => 'Confirmer le mot de passe',
                 ],
             ]);
     }

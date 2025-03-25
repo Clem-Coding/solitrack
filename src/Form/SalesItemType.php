@@ -22,6 +22,7 @@ class SalesItemType extends AbstractType
                     "class" => "hidden",
                     "id" => "weight-input"
                 ],
+
             ])
             ->add('price', null, [
                 'label' => 'Prix',

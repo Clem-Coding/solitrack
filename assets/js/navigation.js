@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleIconClass(menuIcon, "ph-x", "ph-list");
       }
     }
+
+    if (!dropdown.contains(e.target) && !submenu.contains(e.target)) {
+      submenu.classList.remove("visible");
+      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up"); // Restaurer l'icône
+    }
   });
 
   // ==========================

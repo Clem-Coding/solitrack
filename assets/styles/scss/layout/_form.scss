@@ -1,0 +1,44 @@
+form {
+  display: flex;
+  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
+  gap: 1.5em; /* Espace entre les groupes label + input */
+}
+
+form label {
+  font-size: 1rem;
+  font-weight: bold;
+  // margin-bottom: 0.5em;
+}
+
+/* Style pour les inputs */
+form input,
+form select,
+form textarea {
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border: 3px solid $emerald-sea;
+  outline: none;
+}
+
+.input-container {
+  position: relative;
+
+  & input {
+    margin-top: 1.5em;
+  }
+
+  & .unit {
+    position: absolute;
+    top: 50%;
+    right: 1em;
+    transform: translateY(50%);
+    color: $grey;
+  }
+}

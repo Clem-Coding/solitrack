@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (item.weight !== null) {
         const weightElement = document.createElement("p");
-        weightElement.innerHTML = `${item.weight}kg`;
+        weightElement.innerHTML = `${formatNumberFromString(item.weight)}kg`;
         detailsWrapper.appendChild(weightElement);
       }
 

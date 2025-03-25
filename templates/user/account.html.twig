@@ -1,44 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon compte
+{% block title %}
+  Mon compte
 {% endblock %}
 
 {% block content %}
+  <h1>Mon compte</h1>
 
-	<h1>Mon compte</h1>
+  <section id="about">
+    {{ form_start(form) }}
+    {{ form_row(form.firstName) }}
+    {{ form_row(form.lastName) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.newPassword) }}
+    <button type="submit" class="button-primary">Modifier mes informations</button>
+    {{ form_errors(form) }}
+    {{ form_end(form) }}
+  </section>
 
-
-
-
-
-
-	<section id="about">
-		<div class="container mt-5">
-			<div class="row justify-content-center">
-
-				<div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
-
-					{{ form_errors(form) }}
-
-					{{ form_start(form, {attr: {'novalidate': 'novalidate'}}) }}
-
-					{{ form_row(form.firstName, {label: 'Prénom', attr: {'class': 'form-control'}}) }}
-
-					{{ form_row(form.lastName, {label: 'Nom', attr: {'class': 'form-control'}}) }}
-
-					{{ form_row(form.email, {label: 'Adresse email', attr: {'class': 'form-control'}}) }}
-
-					{{ form_row(form.newPassword, {label: 'Modifier mon mot de passe', attr: {'class': 'form-control'}}) }}
-
-
-					<button type="submit" class="btn btn-outline-primary">Enregistrer mes informations</button>
-
-					{{ form_end(form) }}
-
-				</div>
-
-			<div>{% include 'partials/flash.html.twig'%} </div>
-			</div>
-		</div>
-	</section>
+  {% include 'partials/flash.html.twig' %}
 {% endblock %}

@@ -29,9 +29,8 @@
     transform: translateY(-200%);
   }
   ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    // margin: 0;
+    // padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -93,7 +92,7 @@ main.container {
 
   &.visible {
     display: block;
-    max-height: 20em;
+    max-height: 25em;
 
     li a {
       display: flex;
@@ -153,13 +152,10 @@ main.container {
     position: static;
     transform: none;
     transition: none;
-    // z-index: 50;
-    // background-color: #f9f5f2;
-    background-color: #009e91;
+    background-color: $light-beige;
     border: none;
     width: auto;
-    margin-top: 0;
-    margin: 0;
+    margin: 0; // important à laisser pour caler la navbar près du bouton connecté
     box-shadow: none;
 
     &:not(.visible) {
@@ -171,15 +167,17 @@ main.container {
     }
 
     ul {
-      list-style: none;
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: row;
-      // justify-content: flex-end;
       align-items: center;
       gap: 2em;
       white-space: nowrap;
+
+      .dropdown {
+        flex-direction: column;
+      }
     }
 
     li {
@@ -207,37 +205,32 @@ main.container {
 
   .dropdown {
     position: relative;
-    // padding: 0;
   }
 
   .submenu {
     display: none;
-    // background-color: pink;
+    background-color: pink;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    z-index: 2;
-    // border: 3px solid red;
-    // max-height: 0;
+    min-width: max-content;
 
-    width: 25em;
+    z-index: 2;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+
+    //transition à revoir
+    // transition: max-height 0.5s ease-out, padding 0.5s ease-out, visibility 0.5s ease-out;
 
     &.visible {
-      display: block;
-      max-height: 25em;
-      padding: 1em 0;
+      visibility: visible;
+    }
 
-      li a {
-        display: flex;
-        align-items: center;
-
-        i {
-          margin-right: 0.5em;
-        }
-      }
+    &:not(.visible) {
+      visibility: hidden;
+      opacity: 0;
+      max-height: 0;
+      display: none;
     }
   }
 }

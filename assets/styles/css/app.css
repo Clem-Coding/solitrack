@@ -143,34 +143,6 @@ input {
   box-sizing: border-box;
 }
 
-form {
-  display: flex;
-  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
-  gap: 1.5em; /* Espace entre les groupes label + input */
-}
-
-form label {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-/* Style pour les inputs */
-form input,
-form select,
-form textarea {
-  padding: 0.75em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-form input:focus,
-form select:focus,
-form textarea:focus {
-  border: 3px solid #00857a;
-  outline: none;
-}
-
 select {
   border-radius: 4px;
   border: 1px solid #080222;
@@ -314,13 +286,10 @@ button {
 }
 
 .header {
-  /* Permet au header de rester en haut */
   position: sticky;
   top: 0;
   z-index: 10;
-  /* Ajoute un fond */
-  width: 100%; /* Assure que le header occupe toute la largeur */
-  /* Responsiveness */
+  width: 100%;
 }
 .header .container {
   position: relative;
@@ -328,11 +297,11 @@ button {
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  background-color: #009e91;
+  background-color: #f9f5f2;
 }
 @media (min-width: 1200px) {
   .header .navbar {
-    margin-left: auto; /* Fait en sorte que la navbar se déplace à droite sur les grands écrans */
+    margin-left: auto;
   }
 }
 
@@ -451,9 +420,6 @@ main.container {
   transform: translateY(-200%);
 }
 .navbar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -488,7 +454,7 @@ main.container.zindex-visible {
 }
 .submenu.visible {
   display: block;
-  max-height: 20em;
+  max-height: 25em;
 }
 .submenu.visible li a {
   display: flex;
@@ -538,10 +504,9 @@ main.container.zindex-visible {
     position: static;
     transform: none;
     transition: none;
-    background-color: #009e91;
+    background-color: #f9f5f2;
     border: none;
     width: auto;
-    margin-top: 0;
     margin: 0;
     box-shadow: none;
   }
@@ -552,7 +517,6 @@ main.container.zindex-visible {
     z-index: initial;
   }
   .navbar ul {
-    list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
@@ -560,6 +524,9 @@ main.container.zindex-visible {
     align-items: center;
     gap: 2em;
     white-space: nowrap;
+  }
+  .navbar ul .dropdown {
+    flex-direction: column;
   }
   .navbar li {
     display: flex;
@@ -584,28 +551,68 @@ main.container.zindex-visible {
   }
   .submenu {
     display: none;
+    background-color: pink;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
+    min-width: -moz-max-content;
+    min-width: max-content;
     z-index: 2;
-    width: 25em;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
   }
   .submenu.visible {
-    display: block;
-    max-height: 25em;
-    padding: 1em 0;
+    visibility: visible;
   }
-  .submenu.visible li a {
-    display: flex;
-    align-items: center;
-  }
-  .submenu.visible li a i {
-    margin-right: 0.5em;
+  .submenu:not(.visible) {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    display: none;
   }
 }
+form {
+  display: flex;
+  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
+  gap: 1.5em; /* Espace entre les groupes label + input */
+}
+
+form label {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Style pour les inputs */
+form input,
+form select,
+form textarea {
+  padding: 0.75em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border: 3px solid #00857a;
+  outline: none;
+}
+
+.input-container {
+  position: relative;
+}
+.input-container input {
+  margin-top: 1.5em;
+}
+.input-container .unit {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  transform: translateY(50%);
+  color: #757575;
+}
+
 .category-selector p {
   text-align: center;
   margin-bottom: 1.5em;
@@ -618,19 +625,6 @@ main.container.zindex-visible {
 }
 .donation-form label {
   font-weight: 700;
-}
-.donation-form .input-container {
-  position: relative;
-}
-.donation-form .input-container input {
-  margin-top: 1.5em;
-}
-.donation-form .input-container .unit {
-  position: absolute;
-  top: 50%;
-  right: 1em;
-  transform: translateY(25%);
-  color: #757575;
 }
 
 .feedback-message {

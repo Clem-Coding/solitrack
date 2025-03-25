@@ -43,9 +43,19 @@
         <h2 class="sr-only">Formulaire de Saisie</h2>
         {{ form_errors(form) }}
         {{ form_start(form) }}
-        {{ form_row(form.weight) }}
+        {# {{ form_row(form.weight) }} #}
+        <div class="input-container" id="weight-input">
+          {{ form_label(form.weight) }}
+          {{ form_widget(form.weight) }}
+          <span class="unit">kg</span>
+        </div>
         {{ form_row(form.categoryId) }}
-        {{ form_row(form.price) }}
+        <div class="input-container" id="price-input">
+          {{ form_label(form.price) }}
+          {{ form_widget(form.price) }}
+          <span class="unit">€</span>
+        </div>
+        {# {{ form_row(form.price) }} #}
         <div id="quantity-input" class="input-quantity-wrapper hidden">
           <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
           {{ form_widget(form.quantity) }}

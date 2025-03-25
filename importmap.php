@@ -26,7 +26,7 @@ return [
         'version' => '7.3.0',
     ],
     'phosphor-icons' => [
-        'version' => '1.4.2',
+        'version' => '2.1.0',
     ],
     '@kurkle/color' => [
         'version' => '0.3.4',

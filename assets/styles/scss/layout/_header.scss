@@ -1,12 +1,9 @@
 .header {
-  /* Permet au header de rester en haut */
   position: sticky;
   top: 0;
   z-index: 10;
 
-  /* Ajoute un fond */
-
-  width: 100%; /* Assure que le header occupe toute la largeur */
+  width: 100%;
 
   & .container {
     position: relative;
@@ -14,13 +11,12 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    background-color: #009e91;
+    background-color: $light-beige;
   }
 
-  /* Responsiveness */
   @include respond-to(desktop) {
     .navbar {
-      margin-left: auto; /* Fait en sorte que la navbar se déplace à droite sur les grands écrans */
+      margin-left: auto;
     }
   }
 }

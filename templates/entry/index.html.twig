@@ -44,10 +44,10 @@
       <h2>Dernière entrée</h2>
 
       {% if app.flashes('success') %}
-        <p class="flash-success">Votre dernière entrée a bien été supprimée.</p>
+        <p class="flash-success" role="note">Votre dernière entrée a bien été supprimée.</p>
       {% else %}
         {% if lastEntryName is not null %}
-          <p>{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
+          <p class="last-entry-info">{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
 
           <form action="{{ path('app_entry_delete_last') }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />

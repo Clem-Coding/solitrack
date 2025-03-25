@@ -1,7 +1,7 @@
 @import "abstracts/variables", "abstracts/utilities", "abstracts/mixins";
 @import "base/reset", "base/typography", "base/base";
 @import "components/buttons", "components/flash-messages";
-@import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation";
+@import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation", "layout/form";
 @import "pages/entries", "pages/sales", "pages/checkout", "pages/login";
 
 // .hidden {

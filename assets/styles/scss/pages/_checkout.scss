@@ -1,8 +1,7 @@
 .buttons-wrapper {
   display: flex;
-  justify-content: space-between; // espace entre le label/input et le bouton
+  justify-content: space-between;
   align-items: center;
-  // alignement vertical des éléments
 
   & button {
     border: 2px solid $ink-night;

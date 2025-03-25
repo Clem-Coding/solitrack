@@ -12,21 +12,21 @@
     font-weight: $bold;
   }
 
-  & .input-container {
-    position: relative;
+  // & .input-container {
+  //   position: relative;
 
-    & input {
-      margin-top: 1.5em;
-    }
+  //   & input {
+  //     margin-top: 1.5em;
+  //   }
 
-    & .unit {
-      position: absolute;
-      top: 50%;
-      right: 1em;
-      transform: translateY(25%);
-      color: $grey;
-    }
-  }
+  //   & .unit {
+  //     position: absolute;
+  //     top: 50%;
+  //     right: 1em;
+  //     transform: translateY(50%);
+  //     color: $grey;
+  //   }
+  // }
 }
 
 .feedback-message {

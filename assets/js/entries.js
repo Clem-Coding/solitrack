@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".donation-form");
   const weightInput = document.getElementById("donation_form_weight");
   const errorMessage = document.getElementById("error-message");
+  const lastEntryInfo = document.querySelector(".last-entry-info");
+  console.log("le dernier", lastEntryInfo);
 
   weightInput.value = "";
 
@@ -34,6 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function hideError() {
     errorMessage.classList.remove("show");
     errorMessage.classList.add("hide");
+  }
+
+  function updateEntryMessage(entryName, entryWeight) {
+    if (entryName && entryWeight) {
+      entryMessage.textContent = `${entryName} | ${entryWeight} kg`;
+    } else {
+      entryMessage.textContent = "Aucune entrée à supprimer";
+    }
   }
 
   // ==========================
