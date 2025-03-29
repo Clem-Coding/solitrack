@@ -38,9 +38,12 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $tip = null;
 
-
     #[Assert\Length(
         exactly: 5,
+    )]
+    #[Assert\Regex(
+        pattern: "/^\d{5}$/",
+        message: "Le code postal doit contenir exactement 5 chiffres."
     )]
     #[ORM\Column(length: 12, nullable: true)]
     private ?string $zipcodeCustomer = null;
