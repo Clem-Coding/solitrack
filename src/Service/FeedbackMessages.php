@@ -28,7 +28,7 @@ class FeedbackMessages
             ];
         } elseif ($totalWeightToday > 400) {
             $messages = [
-                "💪 Woah ! Déjà <span class='highlighted'>$totalWeightToday kg</span> collectés ! On va manquer de place 😆 !",
+                "Woah ! Déjà <span class='highlighted'>$totalWeightToday kg</span> collectés ! On va manquer de place 😆 !",
                 "Les stocks explosent ! <span class='highlighted'>$totalWeightToday kg</span> aujourd’hui, vous êtes incroyables !",
                 "🔥 Une collecte MASSIVE de <span class='highlighted'>$totalWeightToday kg</span> en une journée !",
             ];

@@ -62,7 +62,7 @@
 
   {# TROISIEME FILTRE #}
 
-  <div id="month-picker" style="display: none;">
+  <div id="month-picker" class="hidden">
     <label for="month" class="hidden">Sélectionner un mois</label>
     <select id="month">
       {% for month in months %}
@@ -71,7 +71,7 @@
     </select>
   </div>
 
-  <div id="year-picker" style="display: none;">
+  <div id="year-picker">
     <label for="year" class="hidden">Sélectionner une année</label>
     <select id="year">
       {% for year in years %}

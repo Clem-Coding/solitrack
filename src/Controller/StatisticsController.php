@@ -17,41 +17,44 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StatisticsController extends AbstractController
 {
-    #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics', defaults: ['category' => 'all-items'])]
+    #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics')]
     public function index(string $category, DonationRepository $donationRepository): Response
     {
         $currentYear = (int) date('Y');
         $years = range($currentYear, $currentYear - 5);
-
-
-        $rawMonths = $donationRepository->findAvailableMonths();
+    
+        $monthYearData = $donationRepository->getMonthsSinceCreation();
 
         $monthsInFrench = [
-            'January' => 'janvier',
-            'February' => 'février',
-            'March' => 'mars',
-            'April' => 'avril',
-            'May' => 'mai',
-            'June' => 'juin',
-            'July' => 'juillet',
-            'August' => 'août',
-            'September' => 'septembre',
-            'October' => 'octobre',
-            'November' => 'novembre',
-            'December' => 'décembre'
+            '01' => 'Janvier',
+            '02' => 'Février',
+            '03' => 'Mars',
+            '04' => 'Avril',
+            '05' => 'Mai',
+            '06' => 'Juin',
+            '07' => 'Juillet',
+            '08' => 'Août',
+            '09' => 'Septembre',
+            '10' => 'Octobre',
+            '11' => 'Novembre',
+            '12' => 'Décembre'
         ];
-
-        $months = array_map(function ($item) use ($monthsInFrench) {
-            $date = \DateTime::createFromFormat('Y-m', $item['month']);
-            $monthName = $date->format('F');
-            $monthNameInFrench = $monthsInFrench[$monthName];
-
-            return [
-                'value' => $item['month'],
-                'label' => $monthNameInFrench . ' ' . $date->format('Y')
-            ];
-        }, $rawMonths);
-
+    
+        $months = [];
+        foreach ($monthYearData as $month) {
+            $parts = explode('-', $month['month']);
+            if (count($parts) === 2) {
+                $year = $parts[0];
+                $monthNumber = $parts[1];
+                $frenchMonth = $monthsInFrench[$monthNumber] ;
+    
+                $months[] = [
+                    'value' => $month['month'],
+                    'label' => $frenchMonth . ' ' . $year
+                ];
+            }
+        }
+    
         return $this->render('dashboard/statistics.html.twig', [
             'category' => $category,
             'years' => $years,
@@ -59,6 +62,8 @@ class StatisticsController extends AbstractController
             'months' => $months,
         ]);
     }
+    
+    
 
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
     public function getStatisticsData(Request $request, StatsTest $statsTest)
@@ -74,16 +79,13 @@ class StatisticsController extends AbstractController
 
         $statistics = [];
 
-
-
-
         switch ($category) {
             case 'articles':
 
                 if ($type === 'incoming') {
                     $statistics = $statsTest->getDonationStatistics($period, $year, $month);
                 } elseif ($type === 'outgoing') {
-                    $statistics = $statsTest->getSalesStatistics($period, $year, $month);
+                    $statistics = $statsTest->getSalesStatistics($period, $year, $month); 
                 }
                 break;
 
@@ -102,11 +104,6 @@ class StatisticsController extends AbstractController
                 $statistics = ['error' => 'Invalid category'];
                 break;
         }
-
-
-
-        // dump("les statistiques", $statistics);
-
 
         return $this->json([
             'data' => $statistics,

@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const menuIcon = document.querySelector("#menuIcon");
   const toggleButton = document.querySelector(".navbar-toggle");
   const mainContainer = document.querySelector("main.container");
-  console.log(mainContainer);
-
   const navbar = document.querySelector(".navbar");
   const dropdown = document.querySelector(".dropdown");
   const submenu = dropdown.querySelector(".submenu");

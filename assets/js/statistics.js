@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   const filterPeriod = document.getElementById("filter-period");
   const filterType = document.getElementById("filter-type");
-
   const monthPicker = document.querySelector("#month-picker");
   const yearPicker = document.querySelector("#year-picker");
   const monthSelect = document.querySelector("#month");
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const response = await fetch(url);
       const data = await response.json();
 
-      // Appel de la fonction pour créer ou mettre à jour le graphique
       createGraph(data.data);
       console.log("data", data);
     } catch (error) {
@@ -95,14 +93,14 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   function togglePeriodView(period) {
     if (period === "daily") {
-      monthPicker.style.display = "block";
-      yearPicker.style.display = "none";
+      monthPicker.classList.remove("hidden");
+      yearPicker.classList.add("hidden");
     } else if (period === "monthly") {
-      monthPicker.style.display = "none";
-      yearPicker.style.display = "block";
+      yearPicker.classList.remove("hidden");
+      monthPicker.classList.add("hidden");
     } else {
-      monthPicker.style.display = "none";
-      yearPicker.style.display = "none";
+      monthPicker.classList.add("hidden");
+      yearPicker.classList.add("hidden");
     }
   }
 
@@ -140,12 +138,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const period = filterPeriod.value;
 
     const [year, month] = monthSelect.value.split("-");
-    console.log("l'année", year);
 
     const days = getDaysInMonth(year, month);
-    console.log("jours du mois", days);
-
-    console.log("les datas!!", data.totalWeight);
 
     const formattedData = data.map((item) => {
       if (period === "yearly") {
@@ -161,7 +155,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       chartInstance.destroy();
     }
 
-    // Créer un nouveau graphique
     chartInstance = new Chart(document.getElementById("acquisitions"), {
       type: "bar",
       data: {
@@ -203,6 +196,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 🚀 INITIALIZATION
   // ==========================
   function initializePage() {
+    // const selectedPeriod = filterPeriod.value;
+    // console.log("selected period", selectedPeriod);
+    // togglePeriodView(selectedPeriod);
     handlePeriodFilterChange();
     handleTypeFilterChange();
     sendToAPI();

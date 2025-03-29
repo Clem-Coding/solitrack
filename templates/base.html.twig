@@ -56,7 +56,16 @@
                       <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
                     </li>
                     <li>
-                      <a href="{{ path('app_dashboard_statistics') }}">
+                      <a
+                        href="{{
+                        path(
+                          'app_dashboard_statistics',
+                          {
+                            category: 'articles'
+                          }
+                        )
+                        }}"
+                      >
                         <i class="ph ph-chart-bar"></i>Les statistiques
                       </a>
                     </li>

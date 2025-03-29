@@ -51,14 +51,42 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
-    public function findAvailableMonths(): array
+    // public function findAvailableMonths(): array
+    // {
+    //     return $this->createQueryBuilder('d')
+    //         ->select("DISTINCT SUBSTRING(d.createdAt, 1, 7) AS month") // YYYY-MM
+    //         ->orderBy('month', 'DESC')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+    public function getMonthsSinceCreation(): array
     {
-        return $this->createQueryBuilder('d')
-            ->select("DISTINCT SUBSTRING(d.createdAt, 1, 7) AS month") // YYYY-MM
-            ->orderBy('month', 'DESC')
-            ->getQuery()
-            ->getResult();
+        $sql = "WITH RECURSIVE month_sequence AS (
+            SELECT DATE_FORMAT(MIN(created_at), '%Y-%m-01') AS month
+            FROM donations
+            WHERE created_at IS NOT NULL
+            UNION ALL
+            SELECT DATE_FORMAT(DATE_ADD(month, INTERVAL 1 MONTH), '%Y-%m-01')
+            FROM month_sequence
+            WHERE DATE_ADD(month, INTERVAL 1 MONTH) <= CURDATE()
+        )
+        SELECT DATE_FORMAT(month, '%Y-%m') AS month
+        FROM month_sequence
+        ORDER BY month DESC;
+        ";
+    
+        $connection = $this->getEntityManager()->getConnection();
+        $stmt = $connection->executeQuery($sql);
+    
+        return $stmt->fetchAllAssociative();
     }
+    
+    
+    
+    
+    
+
 
 
 
@@ -140,6 +168,8 @@ class DonationRepository extends ServiceEntityRepository
 
     public function findTotalWeightByDayForMonth($year, $month)
     {
+
+      
 
 
         return $this->createQueryBuilder('d')
