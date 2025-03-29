@@ -45,9 +45,14 @@
   {% elseif category == 'ventes' %}
     <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
     <select id="filter-type" name="sale">
-      <option value="ventes">Chiffre des ventes</option>
+      <option value="total_ventes">Chiffre des ventes</option>
       <option value="bar">Chiffre du bar</option>
-      <option value="prix libre">Chiffre des montants prix libre</option>
+      <option value="prix_libre">Chiffre des montants prix libre</option>
+    </select>
+  {% elseif category == 'visiteurs' %}
+    <label for="filter-type" class="hidden">Sélectionner un type</label>
+    <select id="filter-type" name="visitor" class="hidden">
+      <option value="default">Type par défaut pour visiteurs</option>
     </select>
   {% endif %}
 

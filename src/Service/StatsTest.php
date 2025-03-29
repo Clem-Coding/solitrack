@@ -8,79 +8,83 @@ use App\Repository\SalesItemRepository;
 
 class StatsTest
 {
-    public function __construct(
-        private DonationRepository $donationRepository,
-        private SalesItemRepository $salesItemRepository,
-    ) {}
+    // public function __construct(
+    //     private DonationRepository $donationRepository,
+    //     private SalesItemRepository $salesItemRepository,
+    // ) {}
 
 
-    private function getStatisticsByPeriod($repository, $period, $year = null, $month = null)
+    public function getStatisticsByPeriod($repository, $period, $category, $year, $month) : array
     {
         $data = [];
+
         switch ($period) {
             case 'monthly':
-                $data = $repository->findTotalWeightByMonth($year);
-
-                $monthlyData = array_fill(0, 12, 0);
-                foreach ($data as $entry) {
-                    $monthIndex = $entry['month'] - 1;
-                    $monthlyData[$monthIndex] = $entry['totalWeight'];
-                }
-                return $monthlyData;
-
+                $data = $this->getMonthlyData($repository, $category, $year);
+                break;
+    
             case 'yearly':
-                return $repository->findTotalWeightByYear();
-
-                case 'daily':
-                    if ($month) {
-                        // dump("le moids,", $month);
-                        [$year, $month] = explode('-', $month);
-                        $year = (int) $year;
-                        $month = (int) $month;
-                        $data = $repository->findTotalWeightByDayForMonth($year, $month);
-                        // dump('les data pour daily', $data);
+                $data = $this->getYearlyData($repository, $category);
+                break;
     
-                        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-                        $dailyData = array_fill(1, $daysInMonth, 0);
+            case 'daily':
+                $data = $this->getDailyData($repository, $category, $year, $month);
+                break;
     
-                        foreach ($data as $entry) {
-                            $dayIndex = (int) $entry['day'];
-                            $dailyData[$dayIndex] = $entry['totalWeight'];
-                        }
-    
-                        return array_values($dailyData);
-                    }
-                    return [];
-                default:
-                    return ['error' => "Invalid period: {$period}"];
-            }
+            default:
+                return ['error' => "Invalid period: {$period}"];
         }
     
-
-    public function getDonationStatistics($period, $year = null, $month = null)
-    {
-        return $this->getStatisticsByPeriod($this->donationRepository, $period, $year, $month);
+        return $data;
     }
+    
 
-    public function getSalesStatistics($period, $year = null, $month = null)
+    private function getMonthlyData($repository, $category, $year) : array
     {
-        return $this->getStatisticsByPeriod($this->salesItemRepository, $period, $year, $month);
+
+        $data = $repository->findTotalDataByMonth($repository, $category, $year);
+    
+        $monthlyData = array_fill(0, 12, 0); 
+        
+        foreach ($data as $entry) {
+    
+            $monthIndex = $entry['month'] - 1;
+            $monthlyData[$monthIndex] = $entry['totalData'];  
+        }
+
+        return $monthlyData;
     }
+    
 
-
-    public function getIncomingClothingStats($period, $year = null, $month = null)
+    private function getYearlyData($repository, $category) : array
     {
-        return $this->donationRepository->findTotalWeightOfClothingByPeriod($period, $year, $month);
+        return $repository->findTotalDataByYear($repository,$category);
     }
-
-    public function getOutgoingClothingStats($period, $year = null, $month = null)
+    
+    private function getDailyData($repository, $category, $year, $month)
     {
-        return $this->salesItemRepository->findTotalWeightOfClothingByPeriod($period, $year, $month);
+        if ($month) {
+    
+            [$year, $month] = explode('-', $month);
+            $year = (int) $year;
+            $month = (int) $month;
+    
+            $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month);
+    
+        
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $dailyData = array_fill(1, $daysInMonth, 0);
+    
+            foreach ($data as $entry) {
+                $dayIndex = (int) $entry['day'];
+                $dailyData[$dayIndex] = $entry['totalData']; 
+            }
+    
+            return array_values($dailyData); 
+        }
+    
+        return []; 
     }
-
-    // // Exemple pour ajouter un calcul pour les visiteurs (similaire aux autres)
-    // public function getVisitorStatistics($period, $year = null, $month = null)
-    // {
-    //     return $this->getStatisticsByPeriod($this->visitorRepository, $period, $year, $month);
-    // }
+    
 }
+

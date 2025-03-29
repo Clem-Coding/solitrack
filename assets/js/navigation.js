@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!dropdown.contains(e.target) && !submenu.contains(e.target)) {
       submenu.classList.remove("visible");
-      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up"); // Restaurer l'icône
+      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
     }
   });
 

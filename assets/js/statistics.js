@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const formattedData = data.map((item) => {
       if (period === "yearly") {
-        return Number(item.totalWeight).toFixed(2);
+        return Number(item.totalData).toFixed(2);
       } else {
         return Number(item).toFixed(2);
       }
