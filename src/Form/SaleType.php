@@ -26,7 +26,12 @@ class SaleType extends AbstractType
             //     'attr' => ['class' => 'card-input']
             // ])
             ->add('zipcodeCustomer', null, [
-                'label' => "Code-postal"
+                'label' => "Code postal",
+                'attr' => [
+                    'pattern' => '\d{5}',
+                    'oninvalid' => "this.setCustomValidity('Le code postal doit contenir exactement 5 chiffres.')",
+                    'oninput' => "this.setCustomValidity('')" 
+                ]
             ])
             // ->add('keepChange')
             // ->add('pwywAmount')
