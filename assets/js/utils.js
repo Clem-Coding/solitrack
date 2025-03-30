@@ -41,3 +41,28 @@ export function formatInputValue(input) {
 export function clearLocalStorage(item) {
   localStorage.removeItem(item);
 }
+
+/**
+ * Returns the French name of a month based on its number.
+ * @param {number|string} month - The month number (1-12) as a number or string.
+ * @returns {string} The full French name of the month.
+ */
+export function getFrenchMonthName(month) {
+  const monthNames = [
+    "janvier",
+    "février",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "août",
+    "septembre",
+    "octobre",
+    "novembre",
+    "décembre",
+  ];
+
+  const monthIndex = Number(month) - 1;
+  return monthNames[monthIndex] || "Mois invalide";
+}

@@ -1,3 +1,5 @@
+import { getFrenchMonthName } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
   // 🟡 VARIABLES
@@ -17,9 +19,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
 
   async function fetchData(category, type, period, year = null, month = null) {
-    console.log(
-      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
-    );
+    // console.log(
+    //   `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
+    // );
 
     try {
       let url = `${apiUrl}?period=${period}&category=${category}&type=${type}`;
@@ -36,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await response.json();
 
       createGraph(data.data);
-      console.log("data", data);
+      // console.log("data", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -71,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleMonthChange() {
     monthPicker.addEventListener("change", () => {
       const selectedMonth = monthSelect.value;
-      console.log("Selected month:", selectedMonth);
+      // console.log("Selected month:", selectedMonth);
       sendToAPI(filterPeriod.value, filterType.value, null, selectedMonth);
     });
   }
@@ -82,9 +84,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const year = yearInput.value;
     const month = monthSelect.value;
     let category = getCategoryFromPath();
-    console.log(
-      `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, month: ${month}`
-    );
+    // console.log(
+    //   `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, month: ${month}`
+    // );
     fetchData(category, type, period, year, month);
   }
 
@@ -135,21 +137,26 @@ document.addEventListener("DOMContentLoaded", async function () {
       "Décembre",
     ];
 
+    const category = getCategoryFromPath();
+    console.log("la category :", category);
+
     const period = filterPeriod.value;
-
     const [year, month] = monthSelect.value.split("-");
-
     const days = getDaysInMonth(year, month);
 
     const formattedData = data.map((item) => {
-      if (period === "yearly") {
+      if (category === "visiteurs" && period === "yearly") {
+        return Number(item.totalData);
+      } else if (category === "visiteurs") {
+        return Number(item);
+      } else if (period === "yearly") {
         return Number(item.totalData).toFixed(2);
       } else {
         return Number(item).toFixed(2);
       }
     });
 
-    console.log("LES DONNEES FORMATEES!!!!", formattedData);
+    // console.log("LES DONNEES FORMATEES!!!!", formattedData);
 
     if (chartInstance) {
       chartInstance.destroy();
@@ -161,11 +168,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         labels: period === "yearly" ? data.map((item) => item.year) : period === "monthly" ? months : days,
         datasets: [
           {
-            label: "Total des poids entrants",
+            // label: "Total des poids entrants",
             data: formattedData,
             backgroundColor: "#EB5A47",
-            borderColor: "#080222",
-            borderWidth: 2,
+            // borderColor: "#080222",
+            // borderWidth: 2,
           },
         ],
       },
@@ -175,15 +182,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             callbacks: {
               title: function (context) {
                 const label = context[0].label;
-                return period === "yearly"
-                  ? `Année ${label}`
-                  : period === "monthly"
-                  ? `${label} ${year}`
-                  : `Jour ${label}`;
+                if (period === "monthly") {
+                  return `${label} ${year}`;
+                }
+                if (period === "yearly") {
+                  return `Année ${label}`;
+                }
+                if (period === "daily") {
+                  return `${label} ${getFrenchMonthName(month)} ${year}`;
+                }
               },
               label: function (context) {
-                const weightInKg = context.raw;
-                return `${weightInKg} kg`;
+                const rawValue = context.raw;
+                if (category === "ventes") {
+                  return `${rawValue} ${"€"}`;
+                } else if (category === "visiteurs") {
+                  return `${rawValue} ${" visiteurs"}`;
+                } else {
+                  return `${rawValue} ${"kg"}`;
+                }
               },
             },
           },
