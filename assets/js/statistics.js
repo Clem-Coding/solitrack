@@ -19,9 +19,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
 
   async function fetchData(category, type, period, year = null, month = null) {
-    // console.log(
-    //   `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
-    // );
+    console.log(
+      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
+    );
 
     try {
       let url = `${apiUrl}?period=${period}&category=${category}&type=${type}`;
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleYearChange() {
     yearPicker.addEventListener("change", () => {
       const selectedYear = yearInput.value;
-      console.log("Selected year:", selectedYear);
+      // console.log("Selected year:", selectedYear);
       sendToAPI(filterPeriod.value, filterType.value, selectedYear);
     });
   }
@@ -138,7 +138,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     ];
 
     const category = getCategoryFromPath();
-    console.log("la category :", category);
+
+    let yearFromMonthlySlection = yearInput.value;
 
     const period = filterPeriod.value;
     const [year, month] = monthSelect.value.split("-");
@@ -183,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async function () {
               title: function (context) {
                 const label = context[0].label;
                 if (period === "monthly") {
-                  return `${label} ${year}`;
+                  return `${label} ${yearFromMonthlySlection}`;
                 }
                 if (period === "yearly") {
                   return `Année ${label}`;
@@ -213,9 +214,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 🚀 INITIALIZATION
   // ==========================
   function initializePage() {
-    // const selectedPeriod = filterPeriod.value;
-    // console.log("selected period", selectedPeriod);
-    // togglePeriodView(selectedPeriod);
+    filterType.selectedIndex = 0;
+    filterPeriod.selectedIndex = 0;
+    yearInput.selectedIndex = 0;
+
     handlePeriodFilterChange();
     handleTypeFilterChange();
     sendToAPI();
