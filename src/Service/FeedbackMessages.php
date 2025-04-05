@@ -20,7 +20,7 @@ class FeedbackMessages
         // dump("le record", $recordWeight);
         // dump("le poids total du jour", $totalWeightToday);
 
-        if ($totalWeightToday >= $recordWeight['totalWeight']) {
+        if ($totalWeightToday >= $recordWeight['total_weight']) {
             $messages = [
                 "Vous avez pulvérisé le record ! <span class='highlighted'>$totalWeightToday kg</span> collectés aujourd’hui ! 🎉",
                 "Incroyable ! <span class='highlighted'>$totalWeightToday kg</span> aujourd’hui : un nouveau record 🚀 !",

@@ -5,88 +5,86 @@
 {% endblock %}
 
 {% block content %}
-  <main>
-    <h1>Les ventes</h1>
-    <div class="sections-container three-sections">
-      <section class="card" id="sales-section">
-        <h2 class="sr-only">Ajout des articles</h2>
-        <p>Quel article souhaitez-vous ajouter?</p>
-        <div class="buttons-container">
-          <button class="category-button" data-category="1">
-            <img
-              src="{{ asset('images/buttons/clothing-icon.svg') }}"
-              alt="icone avec deux t-shirts suspendus sur des cintres"
-            />
-            Vêtements
-          </button>
-          <button class="category-button" data-category="2">
-            <img
-              src="{{ asset('images/buttons/clothing-icon.svg') }}"
-              alt="icone avec deux t-shirts suspendus sur des cintres"
-            />
-            Autres articles
-          </button>
-          <button class="category-button" data-category="3">
-            <img
-              src="{{ asset('images/buttons/tag-icon.svg') }}"
-              alt="icone représentant une étiuquette avec le symbole de l'euro"
-            />
-            Article étiqueté
-          </button>
-          <button class="category-button" data-category="4">
-            <img src="{{ asset('images/buttons/tea-icon.svg') }}" alt="icone représentant une tasse de thé" />
-            Boisson
-          </button>
-        </div>
-      </section>
-      <section class="card sales-card">
-        <h2 class="sr-only">Formulaire de Saisie</h2>
-        {{ form_errors(form) }}
-        {{ form_start(form) }}
-        {# {{ form_row(form.weight) }} #}
-        <div class="input-container" id="weight-input">
-          {{ form_label(form.weight) }}
-          {{ form_widget(form.weight) }}
-          <span class="unit">kg</span>
-        </div>
-        {{ form_row(form.categoryId) }}
-        <div class="input-container" id="price-input">
-          {{ form_label(form.price) }}
-          {{ form_widget(form.price) }}
-          <span class="unit">€</span>
-        </div>
-        {# {{ form_row(form.price) }} #}
-        <div id="quantity-input" class="input-quantity-wrapper hidden">
-          <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
-          {{ form_widget(form.quantity) }}
-          <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
-        </div>
-        <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
-        <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
-        {# attention virer le style display:none pour le mettre en scss à part #}
-        {# <div>{% include 'partials/flash.html.twig' %}</div> #}
-        {{ form_end(form) }}
-      </section>
-      <section class="card" aria-labelledby="cart-heading">
-        <h2 id="cart-heading">Panier</h2>
-        {# <div id="flash-message-container"></div> #}
-        <ul class="cart-container"></ul>
+  <h1>Les ventes</h1>
+  <div class="sections-container three-sections">
+    <section class="card" id="sales-section">
+      <h2 class="sr-only">Ajout des articles</h2>
+      <p>Quel article souhaitez-vous ajouter?</p>
+      <div class="buttons-container">
+        <button class="category-button" data-category="1">
+          <img
+            src="{{ asset('images/buttons/clothing-icon.svg') }}"
+            alt="icone avec deux t-shirts suspendus sur des cintres"
+          />
+          Vêtements
+        </button>
+        <button class="category-button" data-category="2">
+          <img
+            src="{{ asset('images/buttons/clothing-icon.svg') }}"
+            alt="icone avec deux t-shirts suspendus sur des cintres"
+          />
+          Autres articles
+        </button>
+        <button class="category-button" data-category="3">
+          <img
+            src="{{ asset('images/buttons/tag-icon.svg') }}"
+            alt="icone représentant une étiuquette avec le symbole de l'euro"
+          />
+          Article étiqueté
+        </button>
+        <button class="category-button" data-category="4">
+          <img src="{{ asset('images/buttons/tea-icon.svg') }}" alt="icone représentant une tasse de thé" />
+          Boisson
+        </button>
+      </div>
+    </section>
+    <section class="card sales-card">
+      <h2 class="sr-only">Formulaire de Saisie</h2>
+      {{ form_errors(form) }}
+      {{ form_start(form) }}
+      {# {{ form_row(form.weight) }} #}
+      <div class="input-container" id="weight-input">
+        {{ form_label(form.weight) }}
+        {{ form_widget(form.weight) }}
+        <span class="unit">kg</span>
+      </div>
+      {{ form_row(form.categoryId) }}
+      <div class="input-container" id="price-input">
+        {{ form_label(form.price) }}
+        {{ form_widget(form.price) }}
+        <span class="unit">€</span>
+      </div>
+      {# {{ form_row(form.price) }} #}
+      <div id="quantity-input" class="input-quantity-wrapper hidden">
+        <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
+        {{ form_widget(form.quantity) }}
+        <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
+      </div>
+      <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
+      <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
+      {# attention virer le style display:none pour le mettre en scss à part #}
+      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+      {{ form_end(form) }}
+    </section>
+    <section class="card" aria-labelledby="cart-heading">
+      <h2 id="cart-heading">Panier</h2>
+      {# <div id="flash-message-container"></div> #}
+      <ul class="cart-container"></ul>
 
-        {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
-        {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
-        <p class="cart-status"></p>
+      {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
+      {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
+      <p class="cart-status"></p>
 
-        <button class="clear-cart-button button-secondary hidden"><i class="ph ph-trash"></i>Vider le panier</button>
-        <form action="{{ path('app_sale_checkout') }}" method="post">
-          <button type="submit" class="checkout-button button-primary hidden">Passer à la caisse</button>
-        </form>
-      </section>
-    </div>
+      <button class="clear-cart-button button-secondary hidden"><i class="ph ph-trash"></i>Vider le panier</button>
+      <form action="{{ path('app_sale_checkout') }}" method="post">
+        <button type="submit" class="checkout-button button-primary hidden">Passer à la caisse</button>
+      </form>
+    </section>
+  </div>
 
-    {% if app.request.get('clear_local_storage') %}
-      <div id="clear-local-storage" data-clear-local-storage="true"></div>
-    {% endif %}
-  </main>
+  {% if app.request.get('clear_local_storage') %}
+    <div id="clear-local-storage" data-clear-local-storage="true"></div>
+  {% endif %}
 {% endblock %}
 
 {% block javascripts %}

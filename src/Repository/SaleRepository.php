@@ -123,6 +123,28 @@ class SaleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    // SET lc_time_names = 'fr_FR';
+    // SELECT DATE_FORMAT(s.created_at, "%W %d %M %Y") AS day, SUM(s.total_price) AS total_price
+    // FROM sales s
+    // GROUP BY day
+    // ORDER BY total_price DESC
+    // LIMIT 1;
+    public function getRecordWeightDay()
+    {
+        $this->getEntityManager()->getConnection()->executeStatement("SET lc_time_names = 'fr_FR';");
+
+        $sql = 'SELECT DATE_FORMAT(s.created_at, "%W %d %M %Y") AS day, SUM(s.total_price) AS total_price
+            FROM sales s
+            GROUP BY day
+            ORDER BY total_price DESC
+            LIMIT 1;';
+
+        return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
+    }
+
+
+
     //    /**
     //     * @return Sale[] Returns an array of Sale objects
     //     */

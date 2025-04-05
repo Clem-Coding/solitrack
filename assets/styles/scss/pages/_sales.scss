@@ -1,9 +1,11 @@
 .input-quantity-wrapper.flex {
   display: flex;
+  // justify-content: center;
   align-items: center;
   padding: 0.3em;
   background-color: $coral;
   border-radius: 2em;
+  width: 10em;
 
   & input,
   button {
@@ -30,10 +32,8 @@
 
   & input[type="number"] {
     text-align: center;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 0;
     font-weight: $medium;
+    border: none;
   }
 }
 
@@ -102,4 +102,5 @@
 
 .cart-status {
   font-weight: $semi-bold;
+  text-align: center;
 }

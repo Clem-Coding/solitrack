@@ -1,34 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register
+{% block title %}
+  S'enregistrer
 {% endblock %}
 
-{% block body %}
-	<h1 class="text-center my-4">S'enregistrer</h1>
+{% block content %}
+  <h1>S'enregistrer</h1>
 
-	<section id="about">
-		<div class="container mt-5">
-			<div
-				class="row justify-content-center">
-				<!-- Colonne de taille fixée pour garder de l'espace sur les côtés -->
-				<div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+  <section class="card-shadow auth" id="about">
+    {{ form_start(registrationForm) }}
 
-					{{ form_errors(registrationForm) }}
+    <div class="form-group">
+      {{ form_label(registrationForm.firstname) }}
+      {{ form_widget(registrationForm.firstname) }}
+      {% for error in registrationForm.firstname.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
+    </div>
 
-					{{ form_start(registrationForm) }}
-			        {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
-					{{ form_row(registrationForm.firstname, {label: "Prénom", attr: {"class": "form-control"}}) }}
-					{{ form_row(registrationForm.lastname, {label: 'Nom', attr: {'class': 'form-control'}}) }}
-					{{ form_row(registrationForm.email, {label: 'Adresse email', attr: {'class': 'form-control'}}) }}
-					{{ form_row(registrationForm.plainPassword, {label: 'Mot de passe', attr: {'class': 'form-control'}}) }}
+    <div class="form-group">
+      {{ form_label(registrationForm.lastname) }}
+      {{ form_widget(registrationForm.lastname) }}
+      {% for error in registrationForm.lastname.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
+    </div>
 
+    <div class="form-group">
+      {{ form_label(registrationForm.email) }}
+      {{ form_widget(registrationForm.email) }}
+      {% for error in registrationForm.email.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
+    </div>
 
-					<button type="submit" class="btn btn-outline-primary">Enregistrer</button>
+    <div class="form-group">
+      {{ form_label(registrationForm.plainPassword) }}
+      {{ form_widget(registrationForm.plainPassword) }}
+      {% for error in registrationForm.plainPassword.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
+    </div>
 
-					{{ form_end(registrationForm) }}
+    <button type="submit" class="button-primary">Enregistrer</button>
 
-				</div>
-			</div>
-		</div>
-	</section>
+    {{ form_end(registrationForm) }}
+  </section>
+
+  {% include 'partials/flash.html.twig' %}
 {% endblock %}

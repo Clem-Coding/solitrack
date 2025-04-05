@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\VisitorType;
+use App\Repository\DonationRepository;
 use App\Repository\SaleRepository;
+use App\Repository\SalesItemRepository;
+use App\Repository\VisitorRepository;
 use App\Service\GeocoderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -21,7 +24,7 @@ final class DashboardController extends AbstractController
 {
 
     #[Route('', name: 'app_dashboard_index', methods: ['GET', 'POST'])]
-    public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, SaleRepository $saleRepository, GeocoderService $geocoderService): Response
+    public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, SaleRepository $saleRepository, GeocoderService $geocoderService, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository, VisitorRepository $visitorRepository): Response
     {
 
 
@@ -42,6 +45,13 @@ final class DashboardController extends AbstractController
             return $this->redirectToRoute('app_dashboard_index');
         }
 
+
+        $recordsData = [];
+        $recordsData['entry'] = $donationRepository->getRecordWeightDay();
+        $recordsData['sales'] = $salesItemRepository->getRecordWeightDay();
+        $recordsData['visitors'] = $visitorRepository->getRecordWeightDay();
+        $recordsData['sales_revenue'] = $saleRepository->getRecordWeightDay();
+        // dd($recordsData);
 
 
         $zipcodeData = $saleRepository->countVisitorsByZipcode();
@@ -70,6 +80,7 @@ final class DashboardController extends AbstractController
 
             'form' => $form,
             'points' => $points,
+            'recordsData' => $recordsData
         ]);
     }
 

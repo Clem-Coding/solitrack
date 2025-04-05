@@ -5,77 +5,75 @@
 {% endblock %}
 
 {% block content %}
-  <main>
-    <h1>La caisse</h1>
-    <div class="sections-container two-sections">
-      <section class="card">
-        <h2>Récapitulatif</h2>
-        {% for item in shopping_cart %}
-          <article
-            data-category="{{ item.category }}"
-            data-weight="{{ item.weight }}"
-            data-quantity="{{ item.quantity }}"
-            data-price="{{ item.price }}"
-          >
-            {% if item.category %}
-              <h3>{{ item.category }}</h3>
-            {% endif %}
-            {% if item.weight %}
-              <p>Poids : {{ item.weight }} kg</p>
-            {% endif %}
-            {% if item.quantity %}
-              <p>Quantité : {{ item.quantity }}</p>
-            {% endif %}
-            <p>Prix : <span class="data-price">{{ item.price ?? 0 }}</span> €</p>
-          </article>
-        {% else %}
-          <p>Le panier est vide.</p>
-        {% endfor %}
-        <p>Total : <span class="data-price">{{ total }}</span> €</p>
-        <button onclick="window.history.back()">Revenir en arrière</button>
-      </section>
-      <section class="card">
-        <h2>Paiement</h2>
+  <h1>La caisse</h1>
+  <div class="sections-container two-sections">
+    <section class="card">
+      <h2>Récapitulatif</h2>
+      {% for item in shopping_cart %}
+        <article
+          data-category="{{ item.category }}"
+          data-weight="{{ item.weight }}"
+          data-quantity="{{ item.quantity }}"
+          data-price="{{ item.price }}"
+        >
+          {% if item.category %}
+            <h3>{{ item.category }}</h3>
+          {% endif %}
+          {% if item.weight %}
+            <p>Poids : {{ item.weight }} kg</p>
+          {% endif %}
+          {% if item.quantity %}
+            <p>Quantité : {{ item.quantity }}</p>
+          {% endif %}
+          <p>Prix : <span class="data-price">{{ item.price ?? 0 }}</span> €</p>
+        </article>
+      {% else %}
+        <p>Le panier est vide.</p>
+      {% endfor %}
+      <p>Total : <span class="data-price">{{ total }}</span> €</p>
+      <button onclick="window.history.back()">Revenir en arrière</button>
+    </section>
+    <section class="card">
+      <h2>Paiement</h2>
 
-        <div role="group" aria-labelledby="payment-method-heading">
-          <h3 id="payment-method-heading" class="sr-only">Méthode de paiement</h3>
-          <div class="buttons-wrapper">
-            <button type="button" class="payment-button" data-method="card">
-              <i class="ph ph-credit-card"></i> Carte
-            </button>
+      <div role="group" aria-labelledby="payment-method-heading">
+        <h3 id="payment-method-heading" class="sr-only">Méthode de paiement</h3>
+        <div class="buttons-wrapper">
+          <button type="button" class="payment-button" data-method="card">
+            <i class="ph ph-credit-card"></i> Carte
+          </button>
 
-            <button type="button" class="payment-button" data-method="cash"><i class="ph ph-coins"></i>Espèce</button>
-          </div>
+          <button type="button" class="payment-button" data-method="cash"><i class="ph ph-coins"></i>Espèce</button>
+        </div>
+      </div>
+
+      {# !mettre un token sur le formulaire! #}
+      <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
+        <div role="region" aria-labelledby="payments-list-heading">
+          <h3 id="payments-list-heading" class="sr-only">Paiements effectués</h3>
+          <ul class="payments-list"></ul>
         </div>
 
-        {# !mettre un token sur le formulaire! #}
-        <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
-          <div role="region" aria-labelledby="payments-list-heading">
-            <h3 id="payments-list-heading" class="sr-only">Paiements effectués</h3>
-            <ul class="payments-list"></ul>
-          </div>
+        <div role="region" aria-labelledby="remaining-amount-heading">
+          <h3 class="remaining-title">Restant à payer</h3>
+          <p><span class="data-price remaining">{{ total }}</span> €</p>
+        </div>
 
-          <div role="region" aria-labelledby="remaining-amount-heading">
-            <h3 class="remaining-title">Restant à payer</h3>
-            <p><span class="data-price remaining">{{ total }}</span> €</p>
-          </div>
+        <div>
+          <h3 id="remaining-amount-heading" class="sr-only">Options de la transaction</h3>
+          <button class="keep-change-button button-secondary" type="button">Garder la monnaie</button>
+          <input type="hidden" class="keep-change-input" name="keep_change" />
+          <button type="button" class="button-secondary">Générer un reçu</button>
+          {{ form_start(form) }}
+          {{ form_row(form.zipcodeCustomer) }}
+          {{ form_end(form) }}
 
-          <div>
-            <h3 id="remaining-amount-heading" class="sr-only">Options de la transaction</h3>
-            <button class="keep-change-button button-secondary" type="button">Garder la monnaie</button>
-            <input type="hidden" class="keep-change-input" name="keep_change" />
-            <button type="button" class="button-secondary">Générer un reçu</button>
-            {{ form_start(form) }}
-            {{ form_row(form.zipcodeCustomer) }}
-            {{ form_end(form) }}
-
-            <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
-          </div>
-        </form>
-      </section>
-    </div>
-  </main>
+          <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
+        </div>
+      </form>
+    </section>
+  </div>
 {% endblock %}
 
 {% block javascripts %}

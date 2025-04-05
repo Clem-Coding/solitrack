@@ -1,9 +1,8 @@
-.card-shadow.login {
-  margin-top: 3em;
-
+.card-shadow.auth {
   @include respond-to(desktop) {
-    width: 70%; /* Ajuste la largeur du formulaire */
-    margin-left: auto; /* Centre à gauche */
-    margin-right: auto; /* Centre à droite */
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4em 2em;
   }
 }

@@ -1,7 +1,8 @@
 .buttons-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 2em;
 
   & button {
     border: 2px solid $ink-night;
@@ -39,11 +40,19 @@
 }
 
 .payment-button {
+  background-color: $light-beige;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  &:hover {
+    background-color: darken($light-beige, 5%);
+    // background-color: $emerald-sea;
+    // color: $cloud;
+    box-shadow: 4px 4px 0 $ink-night;
+  }
+
   i {
-    margin-right: 1em;
+    margin-right: 0.5em;
   }
 }

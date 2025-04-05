@@ -41,11 +41,10 @@ class UserAccountType extends AbstractType
                     ]),
                 ],
                 'first_options' => [
-                    'hash_property_path' => 'password',
                     'label' => 'Nouveau mot de passe',
+                    'hash_property_path' => 'password',
                     'attr' => ['autocomplete' => 'new-password'],
                 ],
-                'mapped' => false,
                 'second_options' => [
                     'label' => 'Confirmer le mot de passe',
                 ],

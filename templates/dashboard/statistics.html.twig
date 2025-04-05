@@ -4,7 +4,7 @@
   <h1>Statistiques</h1>
 
   {# prettier-ignore-start #}
- <ul class="sidebar">
+<ul class="sidebar">
     <li class="{% if category == 'articles' %}active{% endif %}">
         <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}"><i class="ph ph-handbag"></i>Articles</a>
     </li>
@@ -33,7 +33,7 @@
         <h2>Les visiteurs</h2>
       {% endif %}
     {% endblock %}
- 
+
 
 <div class="select-container">
   {# PREMIER FILTRE #}

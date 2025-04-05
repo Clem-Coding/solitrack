@@ -94,7 +94,7 @@
         > #}
         {% if app.user %}
           <div class="user-action">
-            <i class="ph ph-user-check" id="user-icon"></i>
+            <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
               <li>
@@ -110,7 +110,7 @@
           </div>
         {% else %}
           <div class="user-action">
-            <a href="{{ path('app_login') }}"><i class="ph ph-user-circle"></i> Se connecter</a>
+            <a href="{{ path('app_login') }}"><i class="ph-light ph-user-circle"></i> Se connecter</a>
           </div>
         {% endif %}
       </div>

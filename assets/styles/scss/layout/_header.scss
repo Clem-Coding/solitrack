@@ -2,6 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  justify-content: flex;
+  align-items: center;
 
   width: 100%;
 
@@ -32,7 +34,7 @@
   font-size: 3em;
 }
 
-.user-action a {
-  display: flex;
-  align-items: center;
-}
+// .user-action a {
+//   display: flex;
+//   align-items: center;
+// }

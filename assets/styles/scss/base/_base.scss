@@ -8,11 +8,14 @@
 body {
   margin: 0;
   padding: 0;
-  font-size: $f16;
   line-height: 1.6;
   font-family: $font-primary;
   background-color: $light-beige;
   color: $ink-night;
+  font-size: $f16;
+  @include respond-to(desktop) {
+    font-size: $f18;
+  }
 }
 
 h1,

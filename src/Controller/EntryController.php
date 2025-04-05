@@ -52,6 +52,10 @@ final class EntryController extends AbstractController
             $donation->setUser($user);
             $donation->setCreatedAt(new \DateTimeImmutable());
 
+
+            //example MySql query equivalence
+            // INSERT INTO donations (weight, created_at, user_id, category_id) VALUES(?, ?, ?, ?)
+
             $entityManager->persist($donation);
             $entityManager->flush();
 
@@ -77,6 +81,12 @@ final class EntryController extends AbstractController
     }
 
 
+
+    // In Symfony, Doctrine ORM manages the deletion of entities via the EntityManager. 
+    // This ensures the proper removal of objects from the database, handling relationships and entity state automatically.
+
+    // an equivalent MySQL query would be:
+    // DELETE FROM donations WHERE id = {lastEntryId};
 
     #[Route('/entrees/delete-last', name: 'app_entry_delete_last', methods: ['DELETE'])]
     public function deleteLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): Response

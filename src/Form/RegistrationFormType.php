@@ -18,10 +18,17 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('firstname', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => 'Adresse email',
+            ])
             ->add('plainPassword', PasswordType::class, [
+                'label' => 'Mot de passe',
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -36,11 +43,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre.',
                     ]),
                 ],
-
-                'mapped' => false,
-
             ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {

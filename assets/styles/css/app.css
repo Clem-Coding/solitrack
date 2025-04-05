@@ -82,16 +82,14 @@ input {
   background: transparent;
 }
 
-input[type=number] {
-  appearance: none;
-  -moz-appearance: textfield;
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  -o-appearance: none;
-  border: none;
-  background: transparent;
-  padding: 0;
   margin: 0;
-  outline: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 * {
@@ -101,11 +99,16 @@ input[type=number] {
 body {
   margin: 0;
   padding: 0;
-  font-size: 1rem;
   line-height: 1.6;
   font-family: "Inter";
   background-color: #f9f5f2;
   color: #080222;
+  font-size: 1rem;
+}
+@media (min-width: 1200px) {
+  body {
+    font-size: 1.125rem;
+  }
 }
 
 h1,
@@ -189,15 +192,22 @@ button {
   width: 100%;
 }
 .button-primary:hover {
-  background-color: #eb5a47;
+  background-color: #00857a;
+  color: #ffffff;
+  border: 2px solid #080222;
+  box-shadow: 6px 6px 0 #080222;
 }
 
 .button-secondary {
   background-color: #ffffff;
   color: #080222;
-  border: 3px solid #080222;
+  border: 2px solid #080222;
   font-weight: 700;
   padding: 0.5em 2em;
+}
+.button-secondary:hover {
+  border-color: #00857a;
+  background-color: #f9f5f2;
 }
 
 .buttons-container {
@@ -246,11 +256,11 @@ button {
 .flash-success {
   background-color: #d4edda;
   color: #145222;
-  padding: 12px 20px;
+  padding: 0.75em 1.25em;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin: 1em 0;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid #c3e6cb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
@@ -267,11 +277,11 @@ button {
 .flash-error {
   background-color: #f8d7da;
   color: #721c24;
-  padding: 12px 20px;
+  padding: 0.75em 1.25em;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin: 1em 0;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 0.875rem;
   border: 1px solid #f5c6cb;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: opacity 0.3s ease-out, transform 0.3s ease-out;
@@ -287,6 +297,8 @@ button {
   position: sticky;
   top: 0;
   z-index: 10;
+  justify-content: flex;
+  align-items: center;
   width: 100%;
 }
 .header .container {
@@ -313,11 +325,6 @@ button {
   font-size: 3em;
 }
 
-.user-action a {
-  display: flex;
-  align-items: center;
-}
-
 .footer {
   background-color: #00857a;
   padding: 2em;
@@ -328,14 +335,26 @@ button {
   padding: 1.5em 2em;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 15px;
+  gap: 1em;
   border-radius: 6px;
   background-color: #ffffff;
 }
 
 .card-shadow {
-  box-shadow: 6px 6px 0 #ffcb52;
+  position: relative;
+  /* Carte principale avec ombre */
+}
+.card-shadow::before {
+  content: "";
+  position: absolute;
+  top: 12px; /* Décalage vers le bas */
+  left: 12px; /* Décalage vers la droite */
+  right: -14px; /* Décalage à droite */
+  bottom: -14px; /* Décalage vers le bas */
+  background-color: #ffcb52;
+  border: 2px solid #080222;
+  border-radius: 6px;
+  z-index: -1;
 }
 
 main.container {
@@ -492,9 +511,26 @@ main.container.zindex-visible {
 
 .user-action {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+.user-action :hover {
+  color: #00857a;
+}
+.user-action a {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 600;
 }
 .user-action i {
   cursor: pointer;
+  font-size: 3rem;
+}
+@media (min-width: 1200px) {
+  .user-action i {
+    margin-left: 2rem;
+  }
 }
 
 .sidebar {
@@ -557,6 +593,7 @@ main.container.zindex-visible {
   .navbar li {
     display: flex;
     align-items: center;
+    padding: 0;
   }
   .navbar li a {
     color: black;
@@ -636,7 +673,7 @@ form textarea {
 form input:focus,
 form select:focus,
 form textarea:focus {
-  border: 3px solid #00857a;
+  border: 2.5px solid #00857a;
   outline: none;
 }
 
@@ -679,6 +716,7 @@ form textarea:focus {
   padding: 0.3em;
   background-color: #eb5a47;
   border-radius: 2em;
+  width: 10em;
 }
 .input-quantity-wrapper.flex input,
 .input-quantity-wrapper.flex button {
@@ -701,10 +739,8 @@ form textarea:focus {
 }
 .sales-card input[type=number] {
   text-align: center;
-  font-family: inherit;
-  font-size: inherit;
-  padding: 0;
   font-weight: 500;
+  border: none;
 }
 
 .details-wrapper {
@@ -763,12 +799,14 @@ form textarea:focus {
 
 .cart-status {
   font-weight: 600;
+  text-align: center;
 }
 
 .buttons-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 2em;
 }
 .buttons-wrapper button {
   border: 2px solid #080222;
@@ -801,22 +839,25 @@ form textarea:focus {
 }
 
 .payment-button {
+  background-color: #f9f5f2;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.payment-button:hover {
+  background-color: #f1e8e1;
+  box-shadow: 4px 4px 0 #080222;
+}
 .payment-button i {
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 
-.card-shadow.login {
-  margin-top: 3em;
-}
 @media (min-width: 1200px) {
-  .card-shadow.login {
-    width: 70%; /* Ajuste la largeur du formulaire */
-    margin-left: auto; /* Centre à gauche */
-    margin-right: auto; /* Centre à droite */
+  .card-shadow.auth {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4em 2em;
   }
 }
 

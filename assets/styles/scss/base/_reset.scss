@@ -56,16 +56,12 @@ input {
   background: transparent;
 }
 
-input[type="number"] {
-  appearance: none;
-  -moz-appearance: textfield;
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  -o-appearance: none;
-
-  border: none;
-  background: transparent;
-  padding: 0;
   margin: 0;
-  // color: inherit;
-  outline: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

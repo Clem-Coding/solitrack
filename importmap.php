@@ -25,17 +25,13 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
-    'phosphor-icons' => [
-        'version' => '2.1.0',
-    ],
     '@kurkle/color' => [
         'version' => '0.3.4',
     ],
     'canvas-confetti' => [
         'version' => '1.9.3',
     ],
-    // 'leaflet/dist/leaflet.min.css' => [
-    //     'version' => '1.9.4',
-    //     'type' => 'css',
-    // ],
+    '@phosphor-icons/web' => [
+        'version' => '2.1.2',
+    ],
 ];

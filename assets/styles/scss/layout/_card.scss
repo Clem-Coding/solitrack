@@ -3,13 +3,32 @@
   padding: 1.5em 2em;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 15px;
+  // justify-content: space-between;
+  gap: 1em;
   border-radius: 6px;
   background-color: $cloud;
 }
 
 .card-shadow {
   @extend .card;
-  box-shadow: 6px 6px 0 $bright-yellow;
+  position: relative;
+
+  /* Carte principale avec ombre */
+  input {
+    // border: 2px solid $ink-night;
+    // background-color: $light-beige;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 12px; /* Décalage vers le bas */
+    left: 12px; /* Décalage vers la droite */
+    right: -14px; /* Décalage à droite */
+    bottom: -14px; /* Décalage vers le bas */
+    background-color: $bright-yellow;
+    border: 2px solid $ink-night;
+    border-radius: 6px;
+    z-index: -1;
+  }
 }

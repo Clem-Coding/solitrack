@@ -14,7 +14,7 @@
 }
 
 .feedback-message {
-  font-size: 28px;
+  /* font-size: $f28; */
 }
 
 .sections-container {
@@ -28,4 +28,4 @@
   .sections-container {
     grid-template-columns: repeat(2, 1fr);
   }
-}/*# sourceMappingURL=entries.css.map */
+} /*# sourceMappingURL=entries.css.map */

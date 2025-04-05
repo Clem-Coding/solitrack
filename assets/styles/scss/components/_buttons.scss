@@ -11,16 +11,24 @@ button {
   width: 100%;
 
   &:hover {
-    background-color: $coral;
+    background-color: $emerald-sea;
+    color: $cloud;
+    border: 2px solid $ink-night;
+    box-shadow: 6px 6px 0 $ink-night;
   }
 }
 
 .button-secondary {
   background-color: $cloud;
   color: $ink-night;
-  border: 3px solid $ink-night;
+  border: 2px solid $ink-night;
   font-weight: $bold;
   padding: 0.5em 2em;
+
+  &:hover {
+    border-color: $emerald-sea;
+    background-color: $light-beige;
+  }
 }
 
 .buttons-container {

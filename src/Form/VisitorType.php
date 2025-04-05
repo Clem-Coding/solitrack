@@ -16,10 +16,11 @@ class VisitorType extends AbstractType
     {
         $builder
             ->add('count', NumberType::class, [
+                'label' => 'Nombre',
                 'html5' => true,
                 'attr' => [
                     'min' => 0,
-                    'step' => 1 // Pour éviter les décimaux
+                    'step' => 1
                 ],
             ])
             ->add('date', null, [

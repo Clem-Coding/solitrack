@@ -273,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // console.log(keepChangeAmount);
       keepChangeInput.value = keepChangeAmount;
       const messageElement = document.createElement("p");
+      messageElement.classList.add("flash-success");
       messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;
       paymentForm.appendChild(messageElement);
       remainingTitle.textContent = "Restant à payer :";

@@ -75,163 +75,166 @@ class DonationRepository extends ServiceEntityRepository
         FROM month_sequence
         ORDER BY month DESC;
         ";
-    
+
         $connection = $this->getEntityManager()->getConnection();
         $stmt = $connection->executeQuery($sql);
-    
+
         return $stmt->fetchAllAssociative();
     }
-    
-    
-/**
- * Here are examples of MySQL native query adaptations to retrieve the total donation weight:
- * 
- * 1. Retrieve the total weight of all donations for March 2025:
- * 
- *    SELECT SUM(d.weight) AS totalData
- *    FROM donations d
- *    WHERE MONTH(d.created_at) = 3
- *      AND YEAR(d.created_at) = 2025;
- * 
- * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) for March 2025:
- * 
- *    SELECT SUM(d.weight) AS totalData
- *    FROM donations d
- *    JOIN categories c ON d.category_id = c.id
- *    WHERE c.id = 1
- *      AND MONTH(d.created_at) = 3
- *      AND YEAR(d.created_at) = 2025;
- */
+
+
+    /**
+     * Here are examples of MySQL native query adaptations to retrieve the total donation weight:
+     * 
+     * 1. Retrieve the total weight of all donations for March 2025:
+     * 
+     *    SELECT SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    WHERE MONTH(d.created_at) = 3
+     *      AND YEAR(d.created_at) = 2025;
+     * 
+     * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) for March 2025:
+     * 
+     *    SELECT SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    JOIN categories c ON d.category_id = c.id
+     *    WHERE c.id = 1
+     *      AND MONTH(d.created_at) = 3
+     *      AND YEAR(d.created_at) = 2025;
+     */
 
 
     public function findTotalDataByMonth($repository, $category, $year)
-{
+    {
 
-    $qb = $repository->createQueryBuilder('d')
-        ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalData')
-        ->groupBy('month')
-        ->orderBy('month', 'ASC');
+        $qb = $repository->createQueryBuilder('d')
+            ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalData')
+            ->groupBy('month')
+            ->orderBy('month', 'ASC');
 
-    if ($year) {
-        $qb->andWhere('YEAR(d.createdAt) = :year')
-            ->setParameter('year', $year);
+        if ($year) {
+            $qb->andWhere('YEAR(d.createdAt) = :year')
+                ->setParameter('year', $year);
+        }
+
+        // Si un paramètre category est passé, on fait une jointure sur la table Category
+        if ($category === "vetements") {
+            $qb->leftJoin('d.category', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', 1);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
-    // Si un paramètre category est passé, on fait une jointure sur la table Category
-    if ($category === "vetements") {
-        $qb->leftJoin('d.category', 'c')
-            ->andWhere('c.id = :categoryId')
-            ->setParameter('categoryId', 1);  
+
+    /**
+     * Here are examples of MySQL native query adaptations to retrieve the total donation weight per day for a specific month:
+     * 
+     * 1. Retrieve the total weight of all donations per day for March 2025:
+     * 
+     *    SELECT DAY(d.created_at) AS day, SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    WHERE MONTH(d.created_at) = 3
+     *      AND YEAR(d.created_at) = 2025
+     *    GROUP BY day
+     *    ORDER BY day ASC;
+     * 
+     * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) per day for March 2025:
+     * 
+     *    SELECT DAY(d.created_at) AS day, SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    JOIN categories c ON d.category_id = c.id
+     *    WHERE c.id = 1
+     *      AND MONTH(d.created_at) = 3
+     *      AND YEAR(d.created_at) = 2025
+     *    GROUP BY day
+     *    ORDER BY day ASC;
+     */
+    public function findTotalDataByDayForMonth($repository, $category = null, $year = null, $month = null)
+    {
+        $qb = $repository->createQueryBuilder('d')
+            ->select('DAY(d.createdAt) AS day', 'SUM(d.weight) AS totalData')
+            ->groupBy('day')
+            ->orderBy('day', 'ASC');
+
+        // Si un paramètre year et month est passé, on filtre par année et mois
+        if ($year) {
+            $qb->andWhere('YEAR(d.createdAt) = :year')
+                ->setParameter('year', $year);
+        }
+        if ($month) {
+            $qb->andWhere('MONTH(d.createdAt) = :month')
+                ->setParameter('month', $month);
+        }
+
+        // Si un paramètre category est passé, on fait une jointure sur la table Category
+        if ($category === "vetements") {
+            $qb->leftJoin('d.category', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', 1);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
-    return $qb->getQuery()->getResult();
-}
 
+    /**
+     * Here are examples of MySQL native query adaptations to retrieve the total donation weight per year:
+     * 
+     * 1. Retrieve the total weight of all donations per year:
+     * 
+     *    SELECT YEAR(d.created_at) AS year, SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    GROUP BY year
+     *    ORDER BY year ASC;
+     * 
+     * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) per year:
+     * 
+     *    SELECT YEAR(d.created_at) AS year, SUM(d.weight) AS totalData
+     *    FROM donations d
+     *    JOIN categories c ON d.category_id = c.id
+     *    WHERE c.id = 1
+     *    GROUP BY year
+     *    ORDER BY year ASC;
+     */
+    public function findTotalDataByYear($repository, $category = null)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalData')
+            ->groupBy('year')
+            ->orderBy('year', 'ASC');
 
-/**
- * Here are examples of MySQL native query adaptations to retrieve the total donation weight per day for a specific month:
- * 
- * 1. Retrieve the total weight of all donations per day for March 2025:
- * 
- *    SELECT DAY(d.created_at) AS day, SUM(d.weight) AS totalData
- *    FROM donations d
- *    WHERE MONTH(d.created_at) = 3
- *      AND YEAR(d.created_at) = 2025
- *    GROUP BY day
- *    ORDER BY day ASC;
- * 
- * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) per day for March 2025:
- * 
- *    SELECT DAY(d.created_at) AS day, SUM(d.weight) AS totalData
- *    FROM donations d
- *    JOIN categories c ON d.category_id = c.id
- *    WHERE c.id = 1
- *      AND MONTH(d.created_at) = 3
- *      AND YEAR(d.created_at) = 2025
- *    GROUP BY day
- *    ORDER BY day ASC;
- */
-public function findTotalDataByDayForMonth($repository, $category = null, $year = null, $month = null)
-{
-    $qb = $repository->createQueryBuilder('d')
-        ->select('DAY(d.createdAt) AS day', 'SUM(d.weight) AS totalData')
-        ->groupBy('day')
-        ->orderBy('day', 'ASC');
+        if ($category === "vetements") {
+            $qb->leftJoin('d.category', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', 1);
+        }
 
-    // Si un paramètre year et month est passé, on filtre par année et mois
-    if ($year) {
-        $qb->andWhere('YEAR(d.createdAt) = :year')
-            ->setParameter('year', $year);
-    }
-    if ($month) {
-        $qb->andWhere('MONTH(d.createdAt) = :month')
-            ->setParameter('month', $month);
+        return $qb->getQuery()->getResult();
     }
 
-    // Si un paramètre category est passé, on fait une jointure sur la table Category
-    if ($category === "vetements") {
-        $qb->leftJoin('d.category', 'c')
-            ->andWhere('c.id = :categoryId')
-            ->setParameter('categoryId', 1);
-    }
 
-    return $qb->getQuery()->getResult();
-}
-
-
-/**
- * Here are examples of MySQL native query adaptations to retrieve the total donation weight per year:
- * 
- * 1. Retrieve the total weight of all donations per year:
- * 
- *    SELECT YEAR(d.created_at) AS year, SUM(d.weight) AS totalData
- *    FROM donations d
- *    GROUP BY year
- *    ORDER BY year ASC;
- * 
- * 2. Retrieve the total weight of donations for the "clothing" category (id = 1) per year:
- * 
- *    SELECT YEAR(d.created_at) AS year, SUM(d.weight) AS totalData
- *    FROM donations d
- *    JOIN categories c ON d.category_id = c.id
- *    WHERE c.id = 1
- *    GROUP BY year
- *    ORDER BY year ASC;
- */
-public function findTotalDataByYear($repository, $category = null)
-{
-    $qb = $this->createQueryBuilder('d')
-        ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalData')
-        ->groupBy('year')
-        ->orderBy('year', 'ASC');
-
-    if ($category === "vetements") {
-        $qb->leftJoin('d.category', 'c')
-            ->andWhere('c.id = :categoryId')
-            ->setParameter('categoryId', 1);
-    }
-
-    return $qb->getQuery()->getResult();
-}
-
-
-    // SELECT DATE(created_at) AS day, SUM(weight) AS totalWeight
-    // FROM donations
+    // SET lc_time_names = 'fr_FR';
+    // SELECT DATE(s.created_at) AS day, SUM(weight) AS total_weight
+    // FROM sales_items si
+    // JOIN sales s ON si.sale_id = s.id
     // GROUP BY day
-    // ORDER BY totalWeight DESC
+    // ORDER BY total_weight DESC
     // LIMIT 1;
     public function getRecordWeightDay()
     {
-        $sql = "
-            SELECT DATE(d.created_at) AS day, SUM(d.weight) AS totalWeight
+        $this->getEntityManager()->getConnection()->executeStatement("SET lc_time_names = 'fr_FR';");
+
+        $sql = 'SELECT DATE_FORMAT(d.created_at, "%W %d %M %Y") AS day, SUM(d.weight) AS total_weight
             FROM donations d
             GROUP BY day
-            ORDER BY totalWeight DESC
-            LIMIT 1
-        ";
+            ORDER BY total_weight DESC
+            LIMIT 1;';
 
         return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
     }
+
 
 
 

@@ -141,9 +141,27 @@ main.container {
 
 .user-action {
   position: relative;
+  display: flex;
+  align-items: center;
+
+  :hover {
+    color: $emerald-sea;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-weight: $semi-bold;
+  }
 
   i {
     cursor: pointer;
+
+    font-size: 3rem;
+    @include respond-to(desktop) {
+      margin-left: 2rem;
+    }
   }
 }
 
@@ -216,6 +234,7 @@ main.container {
     li {
       display: flex;
       align-items: center;
+      padding: 0;
     }
 
     li a {
