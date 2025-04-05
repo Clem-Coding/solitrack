@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\VisitorType;
-
+use App\Repository\SaleRepository;
+use App\Service\GeocoderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -20,13 +21,15 @@ final class DashboardController extends AbstractController
 {
 
     #[Route('', name: 'app_dashboard_index', methods: ['GET', 'POST'])]
-    public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
+    public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, SaleRepository $saleRepository, GeocoderService $geocoderService): Response
     {
 
 
         $visitor = new Visitor;
         $form = $this->createForm(VisitorType::class, $visitor);
         $form->handleRequest($request);
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $visitor->setUser($user);
@@ -39,9 +42,34 @@ final class DashboardController extends AbstractController
             return $this->redirectToRoute('app_dashboard_index');
         }
 
+
+
+        $zipcodeData = $saleRepository->countVisitorsByZipcode();
+
+        $points = [];
+
+        foreach ($zipcodeData as $entry) {
+            $zipcode = $entry['zipcode'];
+
+            $coords = $geocoderService->geocodeByPostalCode($zipcode);
+
+            if ($coords) {
+                $points[] = [
+                    'lat' => $coords['lat'],
+                    'lon' => $coords['lon'],
+                    'zipcode' => $zipcode,
+                    'city' => $coords['city'],
+                    'visitorCount' => $entry['visitorCount']
+                ];
+            }
+        }
+
+
+
         return $this->render('dashboard/index.html.twig', [
 
-            'form' => $form
+            'form' => $form,
+            'points' => $points,
         ]);
     }
 

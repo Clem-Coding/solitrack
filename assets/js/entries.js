@@ -83,7 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      console.log("je clique");
       handleButtonClick(event);
       hideError();
     });

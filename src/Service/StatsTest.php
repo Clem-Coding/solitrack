@@ -14,21 +14,21 @@ class StatsTest
     // ) {}
 
 
-    public function getStatisticsByPeriod($repository, $period, $category, $year, $month) : array
+    public function getStatisticsByPeriod($repository, $period, $category, $year, $month, $type) : array
     {
         $data = [];
 
         switch ($period) {
             case 'monthly':
-                $data = $this->getMonthlyData($repository, $category, $year);
+                $data = $this->getMonthlyData($repository, $category, $year, $type);
                 break;
     
             case 'yearly':
-                $data = $this->getYearlyData($repository, $category);
+                $data = $this->getYearlyData($repository, $category, $type);
                 break;
     
             case 'daily':
-                $data = $this->getDailyData($repository, $category, $year, $month);
+                $data = $this->getDailyData($repository, $category, $year, $month, $type);
                 break;
     
             default:
@@ -39,10 +39,10 @@ class StatsTest
     }
     
 
-    private function getMonthlyData($repository, $category, $year) : array
+    private function getMonthlyData($repository, $category, $year, $type) : array
     {
 
-        $data = $repository->findTotalDataByMonth($repository, $category, $year);
+        $data = $repository->findTotalDataByMonth($repository, $category, $year, $type);
     
         $monthlyData = array_fill(0, 12, 0); 
         
@@ -56,12 +56,12 @@ class StatsTest
     }
     
 
-    private function getYearlyData($repository, $category) : array
+    private function getYearlyData($repository, $category, $type) : array
     {
-        return $repository->findTotalDataByYear($repository,$category);
+        return $repository->findTotalDataByYear($repository,$category, $type);
     }
     
-    private function getDailyData($repository, $category, $year, $month)
+    private function getDailyData($repository, $category, $year, $month, $type)
     {
         if ($month) {
     
@@ -69,7 +69,7 @@ class StatsTest
             $year = (int) $year;
             $month = (int) $month;
     
-            $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month);
+            $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month, $type);
     
         
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);

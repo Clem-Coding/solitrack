@@ -128,6 +128,7 @@ h1 {
 
 h2 {
   font-size: 1.75rem;
+  text-align: center;
 }
 @media (min-width: 1200px) {
   h2 {
@@ -147,12 +148,9 @@ select {
   border-radius: 4px;
   border: 1px solid #080222;
   padding: 0.75em;
-  width: 100%;
-  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
   background-color: white;
-  appearance: none; /* Pour enlever l'apparence par défaut du navigateur */
-  -webkit-appearance: none; /* Pour les navigateurs WebKit (Safari, Chrome) */
-  -moz-appearance: none; /* Pour Firefox */
   cursor: pointer;
 }
 
@@ -499,7 +497,35 @@ main.container.zindex-visible {
   cursor: pointer;
 }
 
-@media (min-width: 768px) {
+.sidebar {
+  display: flex;
+  justify-content: space-around;
+}
+.sidebar li {
+  padding: 0.5em 1em;
+  border: 2px solid #080222;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 #080222;
+  font-weight: 500;
+}
+.sidebar li.active {
+  background-color: #00857a;
+  color: #ffffff;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+  transform: translateY(4px);
+}
+.sidebar li:hover {
+  background-color: #f1e8e1;
+}
+.sidebar li a {
+  display: flex;
+  align-items: center;
+}
+.sidebar li a i {
+  margin-right: 0.5em;
+}
+
+@media (min-width: 1024px) {
   .navbar {
     position: static;
     transform: none;
@@ -569,6 +595,21 @@ main.container.zindex-visible {
     opacity: 0;
     max-height: 0;
     display: none;
+  }
+  .sidebar {
+    width: 15em;
+    background-color: #080222;
+    padding: 1em;
+    position: fixed;
+    left: 0;
+    top: 10em;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sidebar li {
+    background-color: #ffffff;
   }
 }
 form {
@@ -777,4 +818,33 @@ form textarea:focus {
     margin-left: auto; /* Centre à gauche */
     margin-right: auto; /* Centre à droite */
   }
+}
+
+.map-viewer {
+  height: 31.25rem;
+  z-index: 2;
+}
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.select-container select {
+  width: 100%;
+}
+@media (min-width: 1200px) {
+  .select-container select {
+    width: auto;
+  }
+}
+@media (min-width: 1200px) {
+  .select-container {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.graph-container h2 {
+  text-align: center;
 }/*# sourceMappingURL=app.css.map */

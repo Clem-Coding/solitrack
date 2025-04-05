@@ -34,4 +34,8 @@ return [
     'canvas-confetti' => [
         'version' => '1.9.3',
     ],
+    // 'leaflet/dist/leaflet.min.css' => [
+    //     'version' => '1.9.4',
+    //     'type' => 'css',
+    // ],
 ];

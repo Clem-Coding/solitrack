@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Les entrées
+  Le Tableau de bord
 {% endblock %}
 
 {% block content %}
@@ -19,11 +19,10 @@
       {{ form_end(form) }}
       <div>{% include 'partials/flash.html.twig' %}</div>
     </section>
-
     <section class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, laudantium asperiores iure suscipit facere
-      deserunt non, in magnam commodi distinctio voluptatibus officia molestias aut mollitia molestiae autem nostrum
-      assumenda quasi!
+      <h2>Carte des visiteurs</h2>
+      <div id="map" class="map-viewer"></div>
+      <div id="points-data" style="display: none;">{{ points|json_encode|raw }}</div>
     </section>
     <section class="card">
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, laudantium asperiores iure suscipit facere
@@ -33,6 +32,17 @@
   </div>
 {% endblock %}
 
-{# {% block javascripts %}
+{% block javascripts %}
   {{ parent() }}
-{% endblock %} #}
+  <script src="{{ asset('js/visitors-map.js') }}"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}

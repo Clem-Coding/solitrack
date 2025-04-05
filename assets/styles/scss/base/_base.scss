@@ -34,6 +34,7 @@ h1 {
 
 h2 {
   font-size: $f28;
+  text-align: center;
 
   @include respond-to(desktop) {
     font-size: $f32;
@@ -53,12 +54,11 @@ select {
   border-radius: 4px;
   border: 1px solid $ink-night;
   padding: 0.75em;
-  width: 100%;
-  box-sizing: border-box;
+  // width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+
   background-color: white;
-  appearance: none; /* Pour enlever l'apparence par défaut du navigateur */
-  -webkit-appearance: none; /* Pour les navigateurs WebKit (Safari, Chrome) */
-  -moz-appearance: none; /* Pour Firefox */
   cursor: pointer;
 }
 

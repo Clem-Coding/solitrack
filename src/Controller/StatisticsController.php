@@ -95,7 +95,8 @@ class StatisticsController extends AbstractController
             $period,
             $category,
             $year,
-            $month
+            $month,
+            $type
         );
 
 

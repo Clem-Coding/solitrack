@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const yearPicker = document.querySelector("#year-picker");
   const monthSelect = document.querySelector("#month");
   const yearInput = document.querySelector("#year");
+  const sidebarButtons = document.querySelectorAll(".sidebar li");
+  console.log(sidebarButtons);
 
   const apiUrl = "/api/statistiques/";
   let chartInstance = null;
@@ -210,9 +212,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
+  // sidebarButtons.forEach((button) => {
+  //   button.addEventListener("click", (event) => {
+  //     console.log("jeclique");
+  //     setActiveSidebarButton(event);
+  //   });
+  // });
+
   // ==========================
   // 🚀 INITIALIZATION
   // ==========================
+
+  // setActiveSidebarButton(event);
   function initializePage() {
     filterType.selectedIndex = 0;
     filterPeriod.selectedIndex = 0;

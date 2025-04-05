@@ -4,15 +4,24 @@
   <h1>Statistiques</h1>
 
   {# prettier-ignore-start #}
-  <ul class="sidebar">
-    <li><a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">Articles</a></li>
-    <li><a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}">Vêtements</a></li>
-    <li><a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}">Ventes</a></li>
-    <li><a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}">Visiteurs</a></li>
-  </ul>
+ <ul class="sidebar">
+    <li class="{% if category == 'articles' %}active{% endif %}">
+        <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}"><i class="ph ph-handbag"></i>Articles</a>
+    </li>
+    <li class="{% if category == 'vetements' %}active{% endif %}">
+        <a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}"><i class="ph ph-t-shirt"></i>Vêtements</a>
+    </li>
+    <li class="{% if category == 'ventes' %}active{% endif %}">
+        <a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}"><i class="ph ph-coins"></i>Ventes</a>
+    </li>
+    <li class="{% if category == 'visiteurs' %}active{% endif %}">
+        <a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}"><i class="ph ph-users-four"></i>Visiteurs</a>
+    </li>
+</ul>
+
   {# prettier-ignore-end #}
 
-  <section class="">
+  <section class="card graph-container">
     {% block category_graph %}
       {% if category == 'articles' %}
         <h2>Tous les articles</h2>
@@ -24,10 +33,10 @@
         <h2>Les visiteurs</h2>
       {% endif %}
     {% endblock %}
-  </section>
+ 
 
+<div class="select-container">
   {# PREMIER FILTRE #}
-
   {% if category == 'articles' %}
     <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
     <select id="filter-type" name="item">
@@ -57,7 +66,6 @@
   {% endif %}
 
   {# DEUXIEME FILTRE #}
-
   <label for="filter-period" class="hidden">Sélectionner une période</label>
   <select id="filter-period">
     <option value="monthly">Total mensuel sur un an</option>
@@ -66,7 +74,6 @@
   </select>
 
   {# TROISIEME FILTRE #}
-
   <div id="month-picker" class="hidden">
     <label for="month" class="hidden">Sélectionner un mois</label>
     <select id="month">
@@ -84,8 +91,11 @@
       {% endfor %}
     </select>
   </div>
+  </div>
 
-  <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+  <div class="graph"><canvas id="acquisitions"></canvas></div>
+  </section>
+
 {% endblock %}
 
 {% block javascripts %}

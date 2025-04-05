@@ -1,0 +1,21 @@
+.select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  select {
+    width: 100%;
+    @include respond-to(desktop) {
+      width: auto;
+    }
+  }
+
+  @include respond-to(desktop) {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.graph-container h2 {
+  text-align: center;
+}
