@@ -102,4 +102,20 @@ document.addEventListener("DOMContentLoaded", function () {
       userMenu.style.display = "none";
     }
   });
+
+  // ==========================
+  // ICONS FOOTER
+  // ==========================
+
+  const icons = document.querySelectorAll(".icons-container i");
+  const links = document.querySelectorAll(".icons-container a");
+  links.forEach((link, index) => {
+    link.addEventListener("mouseenter", () => {
+      icons[index].classList.add("ph-duotone");
+    });
+
+    link.addEventListener("mouseleave", () => {
+      icons[index].classList.remove("ph-duotone");
+    });
+  });
 });

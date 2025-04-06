@@ -5,6 +5,7 @@ button {
 
 .button-primary {
   background-color: $ink-night;
+  border: 2px solid $ink-night;
   color: $cloud;
   font-weight: $bold;
   padding: 0.7em;
@@ -12,9 +13,9 @@ button {
 
   &:hover {
     background-color: $emerald-sea;
-    color: $cloud;
+    color: $light-beige;
     border: 2px solid $ink-night;
-    box-shadow: 6px 6px 0 $ink-night;
+    // box-shadow: 6px 6px 0 $ink-night;
   }
 }
 

@@ -35,7 +35,11 @@
         {% endif %}
 
         <div class="logo-container">
-          <a href="{{ app.user ? path('app_user_homepage') : path('app_homepage') }}" aria-label="Accueil" class="logo">
+          <a
+            href="{{ app.user ? path('app_user_homepage') : path('app_homepage') }}"
+            aria-label="Retour à l'accueil Soli'Track"
+            class="logo"
+          >
             <h1>Soli'Track</h1>
           </a>
         </div>
@@ -44,13 +48,11 @@
           {% block navbar %}
             <nav class="navbar">
               <ul class="navbar-menu">
-                <li><a href="{{ path('app_user_homepage') }}" aria-label="Retour à l'accueil">Accueil</a></li>
-                <li><a href="{{ path('app_entry') }}" aria-label="Les entrées">Les entrées</a></li>
-                <li><a href="{{ path('app_sales') }}" aria-label="Les ventes">Les ventes</a></li>
-                <li class="dropdown">
-                  <a href="" aria-label="Le tableau de bord" class="dashboard-link">
-                    Le tableau de bord <i class="ph ph-caret-down"></i>
-                  </a>
+                <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
+                <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
+                <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
+                <li class="dropdown" aria-label="Ouvrir le sous-menu">
+                  <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a>
                   <ul class="submenu">
                     <li>
                       <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
@@ -120,8 +122,68 @@
 
     {% block footer %}
       <footer class="footer">
-        <p>Mentions légales</p>
-        <p>2025 Clem-Coding</p>
+        <div class="container">
+          {% if app.user %}
+            <section class="socials">
+              <h3>Les fourmis sur les réseaux</h3>
+              <div class="icons-container" aria-label="test">
+                <a
+                  href="https://www.instagram.com/lesfourmissoliterre/"
+                  target="_blank"
+                  aria-label="Instagram (nouvel onglet)"
+                  title="Instagram (nouvel onglet)"
+                >
+                  <i class="ph ph-instagram-logo"></i>
+                </a>
+                <a
+                  href="https://www.facebook.com/p/Les-Fourmis-SoliTerre-100064740156911/"
+                  target="_blank"
+                  aria-label="Facebook (nouvel onglet)"
+                  title="Facebook (nouvel onglet)"
+                >
+                  <i class="ph ph-facebook-logo"></i>
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/les-fourmis-soli-terre/"
+                  target="_blank"
+                  aria-label="Linkedin (nouvel onglet)"
+                  title="Linkedin (nouvel onglet)"
+                >
+                  <i class="ph ph-linkedin-logo"></i>
+                </a>
+                <a
+                  href="https://www.youtube.com/@lesfourmissoliterre6699"
+                  target="_blank"
+                  aria-label="Youtube (nouvel onglet)"
+                  title="Youtube (nouvel onglet)"
+                >
+                  <i class="ph ph-youtube-logo"></i>
+                </a>
+                <a
+                  href="https://discord.gg/vC2Pc8AE"
+                  target="_blank"
+                  aria-label="Discord (nouvel onglet)"
+                  title="Discord (nouvel onglet)"
+                >
+                  <i class="ph ph-discord-logo"></i>
+                </a>
+                <a
+                  href="https://www.tiktok.com/@lesfourmissoli.terre?lang=fr"
+                  target="_blank"
+                  aria-label="TikTok (nouvel onglet)"
+                  title="TikTok (nouvel onglet)"
+                >
+                  <i class="ph ph-tiktok-logo"></i>
+                </a>
+              </div>
+            </section>
+          {% endif %}
+
+          <section class="site-infos">
+            <p>Mentions légales</p>
+            <p>&copy; 2025 Clem-Coding</p>
+          </section>
+        </div>
       </footer>
     {% endblock %}
 

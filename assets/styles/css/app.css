@@ -186,6 +186,7 @@ button {
 
 .button-primary {
   background-color: #080222;
+  border: 2px solid #080222;
   color: #ffffff;
   font-weight: 700;
   padding: 0.7em;
@@ -193,9 +194,8 @@ button {
 }
 .button-primary:hover {
   background-color: #00857a;
-  color: #ffffff;
+  color: #f9f5f2;
   border: 2px solid #080222;
-  box-shadow: 6px 6px 0 #080222;
 }
 
 .button-secondary {
@@ -326,8 +326,43 @@ button {
 }
 
 .footer {
-  background-color: #00857a;
+  border-top: 2px solid #080222;
   padding: 2em;
+}
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2em;
+  padding: 0;
+}
+@media (max-width: 1024px) {
+  .footer .container {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+@media (min-width: 1200px) {
+  .footer .container {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+.footer .socials h3 {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.footer .socials .icons-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5em;
+}
+.footer .socials .icons-container i.ph-fill {
+  color: #6e6d7a;
+}
+.footer .site-infos {
+  color: #6e6d7a;
+  text-align: center;
 }
 
 .card, .card-shadow {
@@ -688,7 +723,7 @@ form textarea:focus {
   top: 50%;
   right: 1em;
   transform: translateY(50%);
-  color: #757575;
+  color: #6e6d7a;
 }
 
 .category-selector p {
