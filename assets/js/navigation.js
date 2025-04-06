@@ -7,14 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainContainer = document.querySelector("main.container");
   const navbar = document.querySelector(".navbar");
   const dropdown = document.querySelector(".dropdown");
-  const submenu = dropdown.querySelector(".submenu");
-  const caretIcon = dropdown.querySelector("i");
-
-  // ==========================
-  // 🎯 USER MENU VARIABLES
-  // ==========================
-  const userIcon = document.querySelector("#user-icon");
-  const userMenu = document.querySelector(".user-menu");
 
   // ==========================
   // 🔍 UTILITY FUNCTIONS
@@ -38,84 +30,103 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function toggleIconClassOnHover(icon, className) {
+    icon.addEventListener("mouseenter", () => {
+      icon.classList.add(className);
+    });
+
+    icon.addEventListener("mouseleave", () => {
+      icon.classList.remove(className);
+    });
+  }
+
   // ==========================
   // 🖱️ EVENT LISTENERS
   // ==========================
-
-  toggleButton.addEventListener("click", () => {
-    toggleVisibility(navbar, "visible");
-    toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-    toggleZIndex(mainContainer, "zindex-visible", "zindex-hidden");
-    toggleIconClass(menuIcon, "ph-list", "ph-x");
-  });
-
-  navbar.addEventListener("transitionend", () => {
-    if (!navbar.classList.contains("visible")) {
+  if (toggleButton) {
+    toggleButton.addEventListener("click", () => {
+      toggleVisibility(navbar, "visible");
       toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-      toggleZIndex(mainContainer, "zindex-hidden", "zindex-visible");
-    } else {
-      toggleZIndex(navbar, "zindex-hidden", "zindex-visible");
       toggleZIndex(mainContainer, "zindex-visible", "zindex-hidden");
-    }
-  });
+      toggleIconClass(menuIcon, "ph-list", "ph-x");
+    });
+  }
 
-  dropdown.addEventListener("click", function (e) {
-    if (e.target.tagName === "A" && !e.target.closest(".submenu")) {
-      e.preventDefault();
-      submenu.classList.toggle("visible");
-      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
-    } else if (e.target.tagName !== "A") {
-      e.preventDefault();
-      submenu.classList.toggle("visible");
-      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
-    }
-  });
-  document.addEventListener("click", (e) => {
-    if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
-      if (navbar.classList.contains("visible")) {
-        navbar.classList.remove("visible");
+  if (navbar) {
+    navbar.addEventListener("transitionend", () => {
+      if (!navbar.classList.contains("visible")) {
         toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-        toggleIconClass(menuIcon, "ph-x", "ph-list");
+        toggleZIndex(mainContainer, "zindex-hidden", "zindex-visible");
+      } else {
+        toggleZIndex(navbar, "zindex-hidden", "zindex-visible");
+        toggleZIndex(mainContainer, "zindex-visible", "zindex-hidden");
       }
-    }
+    });
+  }
 
-    if (!dropdown.contains(e.target) && !submenu.contains(e.target)) {
-      submenu.classList.remove("visible");
-      toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+  if (dropdown) {
+    const submenu = dropdown.querySelector(".submenu");
+    const caretIcon = dropdown.querySelector("i");
+    dropdown.addEventListener("click", function (e) {
+      if (e.target.tagName === "A" && !e.target.closest(".submenu")) {
+        e.preventDefault();
+        submenu.classList.toggle("visible");
+        toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+      } else if (e.target.tagName !== "A") {
+        e.preventDefault();
+        submenu.classList.toggle("visible");
+        toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+      }
+    });
+
+    if (navbar) {
+      document.addEventListener("click", (e) => {
+        const submenu = dropdown.querySelector(".submenu");
+        if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
+          if (navbar.classList.contains("visible")) {
+            navbar.classList.remove("visible");
+            toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
+            toggleIconClass(menuIcon, "ph-x", "ph-list");
+          }
+        }
+
+        if (!dropdown.contains(e.target) && !submenu.contains(e.target)) {
+          submenu.classList.remove("visible");
+          toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
+        }
+      });
     }
-  });
+  }
 
   // ==========================
-  // 🎯 USER MENU
+  // USER MENU NAV
   // ==========================
+
+  const userIcon = document.querySelector("#user-icon");
+  const userMenu = document.querySelector(".user-menu");
 
   function toggleUserMenu() {
     userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
   }
 
   if (userIcon) {
+    toggleIconClassOnHover(userIcon, "ph-duotone");
     userIcon.addEventListener("click", toggleUserMenu);
-  }
 
-  document.addEventListener("click", (e) => {
-    if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
-      userMenu.style.display = "none";
-    }
-  });
+    document.addEventListener("click", (e) => {
+      if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
+        userMenu.style.display = "none";
+      }
+    });
+  }
 
   // ==========================
   // ICONS FOOTER
   // ==========================
+  const footerIcons = document.querySelectorAll(".icons-container i");
+  const footerLinks = document.querySelectorAll(".icons-container a");
 
-  const icons = document.querySelectorAll(".icons-container i");
-  const links = document.querySelectorAll(".icons-container a");
-  links.forEach((link, index) => {
-    link.addEventListener("mouseenter", () => {
-      icons[index].classList.add("ph-duotone");
-    });
-
-    link.addEventListener("mouseleave", () => {
-      icons[index].classList.remove("ph-duotone");
-    });
+  footerLinks.forEach((_, index) => {
+    toggleIconClassOnHover(footerIcons[index], "ph-duotone");
   });
 });

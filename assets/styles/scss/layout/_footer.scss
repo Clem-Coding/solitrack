@@ -30,8 +30,9 @@
       justify-content: center;
       gap: 0.5em;
 
-      i.ph-fill {
-        color: #6e6d7a;
+      i.ph-duotone {
+        color: $ink-night;
+        // fill: $bright-yellow;
       }
     }
   }

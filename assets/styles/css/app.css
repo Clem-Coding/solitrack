@@ -357,8 +357,8 @@ button {
   justify-content: center;
   gap: 0.5em;
 }
-.footer .socials .icons-container i.ph-fill {
-  color: #6e6d7a;
+.footer .socials .icons-container i.ph-duotone {
+  color: #080222;
 }
 .footer .site-infos {
   color: #6e6d7a;
@@ -544,13 +544,14 @@ main.container.zindex-visible {
   color: #00857a;
 }
 
+.user-icon-home {
+  font-size: 3rem;
+}
+
 .user-action {
   position: relative;
   display: flex;
   align-items: center;
-}
-.user-action :hover {
-  color: #00857a;
 }
 .user-action a {
   display: flex;
@@ -558,12 +559,12 @@ main.container.zindex-visible {
   gap: 0.5em;
   font-weight: 600;
 }
-.user-action i {
-  cursor: pointer;
+.user-action i:not(a > i) {
   font-size: 3rem;
+  cursor: pointer;
 }
 @media (min-width: 1200px) {
-  .user-action i {
+  .user-action i:not(a > i) {
     margin-left: 2rem;
   }
 }

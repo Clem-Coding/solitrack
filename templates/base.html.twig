@@ -112,7 +112,9 @@
           </div>
         {% else %}
           <div class="user-action">
-            <a href="{{ path('app_login') }}"><i class="ph-light ph-user-circle"></i> Se connecter</a>
+            <a href="{{ path('app_login') }}">
+              <i class="ph-light ph-user-circle user-icon-home" id="user-icon"></i> Se connecter
+            </a>
           </div>
         {% endif %}
       </div>
@@ -180,6 +182,7 @@
           {% endif %}
 
           <section class="site-infos">
+            <h3 class="sr-only">Copyright et mentions légales</h3>
             <p>Mentions légales</p>
             <p>&copy; 2025 Clem-Coding</p>
           </section>

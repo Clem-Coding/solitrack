@@ -139,26 +139,30 @@ main.container {
   }
 }
 
+.user-icon-home {
+  font-size: 3rem;
+}
+
 .user-action {
   position: relative;
   display: flex;
   align-items: center;
-
-  :hover {
-    color: $emerald-sea;
-  }
 
   a {
     display: flex;
     align-items: center;
     gap: 0.5em;
     font-weight: $semi-bold;
+
+    // i {
+    //   margin-left: 0;
+    // }
   }
 
-  i {
+  i:not(a > i) {
+    font-size: 3rem;
     cursor: pointer;
 
-    font-size: 3rem;
     @include respond-to(desktop) {
       margin-left: 2rem;
     }
