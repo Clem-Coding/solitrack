@@ -23,6 +23,10 @@
   font-weight: bold;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 /* abstracts/_mixins.scss */
 a {
   text-decoration: none;
@@ -182,6 +186,7 @@ select {
 button {
   text-align: center;
   border-radius: 4px;
+  padding: 0.7em;
 }
 
 .button-primary {
@@ -189,12 +194,11 @@ button {
   border: 2px solid #080222;
   color: #ffffff;
   font-weight: 700;
-  padding: 0.7em;
   width: 100%;
 }
 .button-primary:hover {
-  background-color: #00857a;
-  color: #f9f5f2;
+  background-color: #ffcb52;
+  color: #080222;
   border: 2px solid #080222;
 }
 
@@ -203,9 +207,19 @@ button {
   color: #080222;
   border: 2px solid #080222;
   font-weight: 700;
-  padding: 0.5em 2em;
 }
 .button-secondary:hover {
+  border-color: #00857a;
+  background-color: #f9f5f2;
+}
+
+.button-rounded {
+  border-radius: 25px;
+  background-color: #ffffff;
+  color: #080222;
+  border: 2px solid #080222;
+}
+.button-rounded:hover {
   border-color: #00857a;
   background-color: #f9f5f2;
 }
@@ -860,7 +874,7 @@ form textarea:focus {
   justify-content: center;
   align-items: center;
   border: 1px solid #080222;
-  padding: 0.5em 0 0.5em 0.5em;
+  padding: 0.5em;
 }
 .payment-group .payment-details-container {
   flex: 1;
@@ -876,8 +890,9 @@ form textarea:focus {
   padding: 0.2em 0.5em;
   width: 5em;
 }
-.payment-group button {
+.payment-group .delete-button {
   width: auto;
+  padding: 0;
 }
 
 .payment-button {
