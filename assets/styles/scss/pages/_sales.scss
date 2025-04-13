@@ -1,15 +1,20 @@
+
+
 .input-quantity-wrapper.flex {
   display: flex;
-  // justify-content: center;
   align-items: center;
   padding: 0.3em;
   background-color: $coral;
   border-radius: 2em;
-  width: 10em;
+  width: 100%;
 
   & input,
   button {
     color: $cloud;
+  }
+
+  @include respond-to(desktop) {
+    width : auto; // A revoir
   }
 }
 
@@ -23,6 +28,7 @@
   & form {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5em;
 
     & label {

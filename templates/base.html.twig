@@ -21,7 +21,6 @@
       {% block importmap %}
         {{ importmap('app') }}
       {% endblock %}
-      <script src="{{ asset('js/navigation.js') }}"></script>
     {% endblock %}
   </head>
 
@@ -99,7 +98,7 @@
             <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
-              <li>
+              {# <li>
                 <a
                   href="{{ path('app_logout') }}"
                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -107,6 +106,12 @@
                   <i class="ph ph-sign-out"></i> Se déconnecter
                 </a>
                 <form id="logout-form" action="{{ path('app_logout') }}" method="post"></form>
+              </li> #}
+              <li>
+                <a href="{{ path('app_logout') }}" id="logout-link"><i class="ph ph-sign-out"></i> Se déconnecter</a>
+                <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;">
+                  {{ csrf_token('logout') }}
+                </form>
               </li>
             </ul>
           </div>

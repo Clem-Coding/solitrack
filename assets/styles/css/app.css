@@ -752,11 +752,16 @@ form textarea:focus {
   padding: 0.3em;
   background-color: #eb5a47;
   border-radius: 2em;
-  width: 10em;
+  width: 100%;
 }
 .input-quantity-wrapper.flex input,
 .input-quantity-wrapper.flex button {
   color: #ffffff;
+}
+@media (min-width: 1200px) {
+  .input-quantity-wrapper.flex {
+    width: auto;
+  }
 }
 
 .sales-card {
@@ -768,6 +773,7 @@ form textarea:focus {
 .sales-card form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.5em;
 }
 .sales-card form label {
