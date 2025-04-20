@@ -23,3 +23,11 @@
 .bold {
   font-weight: bold;
 }
+
+.alert {
+  color: $alert-red;
+}
+
+.state-ok {
+  color: $state-ok-green;
+}

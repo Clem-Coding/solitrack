@@ -50,8 +50,11 @@
                 <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
                 <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
-                <li class="dropdown" aria-label="Ouvrir le sous-menu">
-                  <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a>
+                <li class="dropdown">
+                  <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
+                    Le tableau de bord <i class="ph ph-caret-down"></i>
+                  </button>
+                  {# <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a> #}
                   <ul class="submenu">
                     <li>
                       <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
@@ -133,7 +136,7 @@
           {% if app.user %}
             <section class="socials">
               <h3>Les fourmis sur les réseaux</h3>
-              <div class="icons-container" aria-label="test">
+              <div class="icons-container">
                 <a
                   href="https://www.instagram.com/lesfourmissoliterre/"
                   target="_blank"

@@ -1,7 +1,7 @@
 form {
   display: flex;
-  flex-direction: column; /* Pour que les éléments soient empilés verticalement */
-  gap: 1.5em; /* Espace entre les groupes label + input */
+  flex-direction: column;
+  gap: 2em;
 }
 
 form label {
@@ -10,14 +10,17 @@ form label {
   // margin-bottom: 0.5em;
 }
 
-/* Style pour les inputs */
 form input,
 form select,
 form textarea {
   padding: 0.75em;
-  border: 1px solid #ccc;
+  border: 1px solid $grey-velvet;
   border-radius: 4px;
   font-size: 1rem;
+
+  @include respond-to(desktop) {
+    font-size: $f18;
+  }
 }
 
 form input:focus,
@@ -41,4 +44,10 @@ form textarea:focus {
     transform: translateY(50%);
     color: $grey-velvet;
   }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }

@@ -1,21 +1,29 @@
 .buttons-wrapper {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 2em;
+  justify-content: space-between;
+  gap: 2.5em;
 
   & button {
     border: 2px solid $ink-night;
-    padding: 0.5em;
+    padding: 0.7em;
+    width: 100%;
   }
+}
+
+.payments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .payment-group {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid $ink-night;
-  padding: 0.5em;
+  border: 1px solid $grey-velvet;
+  border-radius: 4px;
+  padding: 0.7em;
 
   .payment-details-container {
     flex: 1;
@@ -40,7 +48,7 @@
   }
 }
 
-.payment-button {
+.cart-button {
   background-color: $light-beige;
   display: flex;
   align-items: center;
@@ -56,4 +64,11 @@
   i {
     margin-right: 0.5em;
   }
+}
+
+.transaction-options-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-top: 2em;
 }

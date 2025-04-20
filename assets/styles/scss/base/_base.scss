@@ -58,7 +58,6 @@ select {
   border: 1px solid $ink-night;
   padding: 0.75em;
   // width: 100%;
-  font-family: inherit;
   font-size: inherit;
 
   background-color: white;
@@ -69,18 +68,26 @@ select {
   font-size: 2rem;
 }
 
-.main-container {
-  @include respond-to(desktop) {
-    max-width: $layout-max-width;
-    margin: auto;
-  }
-}
+// main.container {
+//   @include respond-to(tablet) {
+//     margin: 0 8em;
+//   }
+
+//   @include respond-to(desktop) {
+//     margin: auto;
+//   }
+// }
 
 .container {
   padding: 1.25em;
+
+  @include respond-to(tablet) {
+    margin: 0 8em;
+    padding: 1.25em 0;
+  }
+
   @include respond-to(desktop) {
     max-width: $layout-max-width;
     margin: auto;
-    padding: 1.25em 0;
   }
 }

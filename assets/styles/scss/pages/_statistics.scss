@@ -4,7 +4,18 @@
   gap: 1em;
 
   select {
+    // transform: none;
+    // zoom: 1;
     width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: "Inter", sans-serif;
+    padding-right: 2.5em;
+    background-image: url("../../images/icons/caret-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 0.8em center;
+    background-size: 1em;
     @include respond-to(desktop) {
       width: auto;
     }
@@ -18,4 +29,19 @@
 
 .graph-container h2 {
   text-align: center;
+}
+
+.graph canvas {
+  position: relative;
+  width: 100%;
+
+  height: 260px;
+
+  @include respond-to(tablet) {
+    height: 30vh;
+  }
+
+  @include respond-to(desktop) {
+    height: 45vh;
+  }
 }

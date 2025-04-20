@@ -6,18 +6,31 @@
   {# prettier-ignore-start #}
 <ul class="sidebar">
     <li class="{% if category == 'articles' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}"><i class="ph ph-handbag"></i>Articles</a>
+        <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">
+            <i class="ph ph-handbag"></i>
+            <span class="menu-text">Articles</span>
+        </a>
     </li>
     <li class="{% if category == 'vetements' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}"><i class="ph ph-t-shirt"></i>Vêtements</a>
+        <a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}">
+            <i class="ph ph-t-shirt"></i>
+            <span class="menu-text">Vêtements</span>
+        </a>
     </li>
     <li class="{% if category == 'ventes' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}"><i class="ph ph-coins"></i>Ventes</a>
+        <a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}">
+            <i class="ph ph-coins"></i>
+            <span class="menu-text">Ventes</span>
+        </a>
     </li>
     <li class="{% if category == 'visiteurs' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}"><i class="ph ph-users-four"></i>Visiteurs</a>
+        <a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}">
+            <i class="ph ph-users-four"></i>
+            <span class="menu-text">Visiteurs</span>
+        </a>
     </li>
 </ul>
+
 
   {# prettier-ignore-end #}
 

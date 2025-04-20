@@ -7,7 +7,7 @@
 {% block content %}
   <h1>La caisse</h1>
   <div class="sections-container two-sections">
-    <section class="card">
+    <section class="card contained">
       <h2>Récapitulatif</h2>
       {% for item in shopping_cart %}
         <article
@@ -33,44 +33,49 @@
       <p class="bold">Total : <span class="data-price">{{ total }}</span> €</p>
       <button onclick="window.history.back()" class="button-rounded">Revenir en arrière</button>
     </section>
-    <section class="card">
+    <section class="card contained">
       <h2>Paiement</h2>
-
-      <div role="group" aria-labelledby="payment-method-heading">
-        <h3 id="payment-method-heading" class="sr-only">Méthode de paiement</h3>
-        <div class="buttons-wrapper">
-          <button type="button" class="payment-button" data-method="card">
-            <i class="ph ph-credit-card"></i> Carte
-          </button>
-
-          <button type="button" class="payment-button" data-method="cash"><i class="ph ph-coins"></i>Espèce</button>
-        </div>
-      </div>
 
       {# !mettre un token sur le formulaire! #}
       <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
-        <div role="region" aria-labelledby="payments-list-heading">
-          <h3 id="payments-list-heading" class="sr-only">Paiements effectués</h3>
+        <fieldset role="group">
+          <legend id="payment-method-heading" class="sr-only">Méthode de paiement</legend>
+          <div class="buttons-wrapper">
+            <button type="button" class="payment-button cart-button" data-method="card">
+              <i class="ph ph-credit-card"></i> Carte
+            </button>
+            <button type="button" class="payment-button cart-button" data-method="cash">
+              <i class="ph ph-coins"></i>Espèce
+            </button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend id="payments-list-heading" class="sr-only">Paiements effectués</legend>
           <ul class="payments-list"></ul>
-        </div>
+        </fieldset>
 
-        <div role="region" aria-labelledby="remaining-amount-heading">
+        <fieldset>
           <h3 class="remaining-title">Restant à payer</h3>
-          <p><span class="data-price remaining">{{ total }}</span> €</p>
-        </div>
+          <p class="remaining-price"><span class="data-price remaining">{{ total }}</span> €</p>
+        </fieldset>
 
-        <div>
-          <h3 id="remaining-amount-heading" class="sr-only">Options de la transaction</h3>
-          <button class="keep-change-button button-secondary" type="button">Garder la monnaie</button>
-          <input type="hidden" class="keep-change-input" name="keep_change" />
-          <button type="button" class="button-secondary">Générer un reçu</button>
-          {{ form_start(form) }}
-          {{ form_row(form.zipcodeCustomer) }}
-          {{ form_end(form) }}
-
-          <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>
+        <fieldset class="transaction-options-fieldset">
+          <legend id="remaining-amount-heading" class="sr-only">Options de la transaction</legend>
+          <div class="buttons-wrapper">
+            <button class="keep-change-button cart-button" type="button">
+              <i class="ph ph-gift"></i>Garder la monnaie
+            </button>
+            <button type="button" class="cart-button"><i class="ph ph-receipt"></i>Générer un reçu</button>
+          </div>
+          <label for="keep-change" class="sr-only">Garder la monnaie</label>
+          <input type="hidden" id="keep-change" class="keep-change-input" name="keep_change" />
+          <div class="form-group">
+            {{ form_label(form.zipcodeCustomer) }}
+            {{ form_widget(form.zipcodeCustomer) }}
+          </div>
           <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
-        </div>
+        </fieldset>
+        <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>
       </form>
     </section>
   </div>

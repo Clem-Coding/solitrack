@@ -3,7 +3,7 @@ import { formatNumber, formatInputValue } from "./utils.js";
 document.addEventListener("DOMContentLoaded", () => {
   // CONSTANTES
   const dataPrice = document.querySelectorAll(".data-price");
-  const remainingAmountElement = document.querySelector(".remaining");
+  const remainingNumberElement = document.querySelector(".remaining");
   const paymentButtons = document.querySelectorAll(".payment-button");
   const paymentsList = document.querySelector(".payments-list");
   const registerSaleButton = document.querySelector(".register-sale-button");
@@ -12,12 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const remainingTitle = document.querySelector(".remaining-title");
   const keepChangeButton = document.querySelector(".keep-change-button");
   const keepChangeInput = document.querySelector(".keep-change-input");
+  const remainingPriceElement = document.querySelector(".remaining-price");
+  console.log(remainingPriceElement);
 
   //INITIALIZE
   // ici on attribue au dataset initial -> la valeur total du panier
-  remainingAmountElement.dataset.initial = remainingAmountElement.textContent;
-  remainingTitle.style.color = "red";
-  remainingAmountElement.style.color = "red";
+  remainingNumberElement.dataset.initial = remainingNumberElement.textContent;
+  // remainingTitle.style.color = "red";
+  // remainingNumberElement.style.color = "red";
+  remainingTitle.classList.add("alert");
+  remainingPriceElement.classList.add("alert");
 
   // FONCTIONS
 
@@ -30,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // function getRemainingAmount() {
-  //   return Number(remainingAmountElement.textContent.replace(",", "."));
+  //   return Number(remainingNumberElement.textContent.replace(",", "."));
   // }
 
   // function formatRemainingAmount(amount) {
-  //   remainingAmountElement.textContent = formatNumber(amount);
+  //   remainingNumberElement.textContent = formatNumber(amount);
   // }
 
   //RECUPERER LE TOTAL PAYÉ
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //________________________RECUPERER LE MONTANT RESTANT A  PAYER_______________________________________________________
   function getRemainingAmount() {
     const totalPaid = getTotalPaid();
-    const initialTotal = Number(remainingAmountElement.dataset.initial);
+    const initialTotal = Number(remainingNumberElement.dataset.initial);
 
     //le total restant sera négatif si le prix payé est supérieur on montant initial
     const remaining = initialTotal - totalPaid;
@@ -69,18 +73,21 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("le montant à rendre ou restant", balance);
     const text = isOverpaid ? "Retour Monnaie : " : "Restant à payer : ";
 
-    let color = "red";
+    let statusClass = "alert";
     if (remaining === 0) {
-      color = "green";
+      statusClass = "state-ok";
     } else if (isOverpaid) {
-      color = "green";
+      statusClass = "state-ok";
     }
 
-    remainingAmountElement.textContent = balance;
+    remainingTitle.classList.remove("alert", "state-ok");
+    remainingPriceElement.classList.remove("alert", "state-ok");
+
+    remainingNumberElement.textContent = balance;
     remainingTitle.textContent = text;
-    remainingAmountElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
-    remainingTitle.style.color = color;
-    remainingAmountElement.style.color = color;
+    remainingNumberElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
+    remainingTitle.classList.add(statusClass);
+    remainingPriceElement.classList.add(statusClass);
   }
 
   function updateAmounts() {
@@ -248,13 +255,13 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("le reminaing Amount", remainingAmount);
             const pwywAmount = Number(pwywAmountInput.value);
             remainingAmount += pwywAmount;
-            remainingAmountElement.textContent = remainingAmount;
+            remainingNumberElement.textContent = remainingAmount;
             console.log("le reminaing Amount après", remainingAmount);
-            // remainingAmountElement.textContent += pwywAmount;
+            // remainingNumberElement.textContent += pwywAmount;
 
             console.log("le pwyw amount", pwywAmount);
             if (pwywAmount >= remainingAmount) {
-              // remainingAmountElement.dataset.initial = "0";
+              // remainingNumberElement.dataset.initial = "0";
             } else {
               //
             }
@@ -277,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
       messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;
       paymentForm.appendChild(messageElement);
       remainingTitle.textContent = "Restant à payer :";
-      remainingAmountElement.textContent = 0;
+      remainingNumberElement.textContent = 0;
     } else {
       console.log("non non");
     }

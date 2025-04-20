@@ -27,6 +27,10 @@ button {
   font-weight: $bold;
   // padding: 0.5em 2em;
 
+  i {
+    font-size: $f18;
+  }
+
   &:hover {
     border-color: $emerald-sea;
     background-color: $light-beige;

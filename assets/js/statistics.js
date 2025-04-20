@@ -180,6 +180,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           tooltip: {
             callbacks: {
@@ -206,6 +208,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
               },
             },
+          },
+          legend: {
+            display: false, // affichage du carré de couleur légende
           },
         },
       },

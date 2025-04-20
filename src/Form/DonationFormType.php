@@ -29,10 +29,6 @@ class DonationFormType extends AbstractType
             'attr' => [
                 'class' => 'donation-form',
             ],
-          
-            'csrf_protection' => true,                 
-            'csrf_field_name' => '_token',             
-            // 'csrf_token_id'   => 'unique_donation_form'  
         ]);
     }
 }
