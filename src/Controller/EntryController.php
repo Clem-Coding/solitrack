@@ -25,6 +25,9 @@ final class EntryController extends AbstractController
     public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, DonationRepository $donationRepository, FeedbackMessages $feedbackMessage): Response
     {
 
+
+
+
         $donation = new Donation();
 
         $form = $this->createForm(DonationFormType::class, $donation);

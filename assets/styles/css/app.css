@@ -27,7 +27,6 @@
   font-weight: bold;
 }
 
-/* abstracts/_mixins.scss */
 a {
   text-decoration: none;
   color: inherit;
@@ -109,7 +108,7 @@ body {
   color: #080222;
   font-size: 1rem;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   body {
     font-size: 1.125rem;
   }
@@ -127,7 +126,7 @@ h1 {
   font-size: 2rem;
   text-align: center;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   h1 {
     font-size: 3rem;
   }
@@ -137,7 +136,7 @@ h2 {
   font-size: 1.75rem;
   text-align: center;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   h2 {
     font-size: 2rem;
   }
@@ -165,7 +164,7 @@ select {
   font-size: 2rem;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .main-container {
     max-width: 1280px;
     margin: auto;
@@ -175,7 +174,7 @@ select {
 .container {
   padding: 1.25em;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .container {
     max-width: 1280px;
     margin: auto;
@@ -323,7 +322,7 @@ button {
   flex-direction: row;
   background-color: #f9f5f2;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .header .navbar {
     margin-left: auto;
   }
@@ -350,13 +349,13 @@ button {
   gap: 2em;
   padding: 0;
 }
-@media (max-width: 1024px) {
+@media (min-width: 768px) {
   .footer .container {
     flex-direction: row;
     justify-content: space-around;
   }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .footer .container {
     flex-direction: row;
     justify-content: space-around;
@@ -577,7 +576,7 @@ main.container.zindex-visible {
   font-size: 3rem;
   cursor: pointer;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .user-action i:not(a > i) {
     margin-left: 2rem;
   }
@@ -772,7 +771,7 @@ form textarea:focus {
 .input-quantity-wrapper.flex button {
   color: #ffffff;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .input-quantity-wrapper.flex {
     width: auto;
   }
@@ -909,7 +908,7 @@ form textarea:focus {
   margin-right: 0.5em;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .card-shadow.auth {
     width: 60%;
     margin-left: auto;
@@ -931,12 +930,12 @@ form textarea:focus {
 .select-container select {
   width: 100%;
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .select-container select {
     width: auto;
   }
 }
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .select-container {
     flex-direction: row;
     justify-content: center;
