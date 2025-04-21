@@ -236,6 +236,23 @@ class DonationRepository extends ServiceEntityRepository
     }
 
 
+    public function findTotalWeightForCurrentMonth()
+    {
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+
+        $qb = $this->createQueryBuilder('d')
+            ->select('SUM(d.weight) AS totalWeight')
+            ->where('MONTH(d.createdAt) = :currentMonth')
+            ->andWhere('YEAR(d.createdAt) = :currentYear')
+            ->setParameter('currentMonth', $currentMonth)
+            ->setParameter('currentYear', $currentYear);
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+
+
 
 
 

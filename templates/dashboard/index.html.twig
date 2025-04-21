@@ -12,8 +12,14 @@
       <h2>Nombre de visiteurs</h2>
       {{ form_start(form) }}
       {{ form_errors(form) }}
-      {{ form_row(form.date) }}
-      {{ form_row(form.count) }}
+      <div class="form-group">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+      </div>
+      <div class="form-group">
+        {{ form_label(form.count) }}
+        {{ form_widget(form.count) }}
+      </div>
       <button type="submit" class="button-primary">Valider</button>
       {{ form_end(form) }}
       <div>{% include 'partials/flash.html.twig' %}</div>
@@ -22,17 +28,27 @@
     <section class="card">
       <h2>Les records</h2>
       <p>
-        Entrées : <span class="highlighted">{{ recordsData['entry']['total_weight'] }} kg</span>, le {{ recordsData['entry']['day'] }}
+        <span class="semi-bold">Entrées</span> : <span class="highlighted">
+          {{ recordsData['entry']['total_weight'] }} kg
+        </span>, le {{ recordsData['entry']['day'] }}
       </p>
 
       <p>
-        Sorties : <span class="highlighted">{{ recordsData['sales']['total_weight'] }} kg</span>, le {{ recordsData['sales']['day'] }}
+        <span class="semi-bold">Sorties</span> : <span class="highlighted">
+          {{ recordsData['sales']['total_weight'] }} kg
+        </span>, le {{ recordsData['sales']['day'] }}
       </p>
+
       <p>
-        Visiteurs : <span class="highlighted">{{ recordsData['visitors']['count'] }}</span>, le {{ recordsData['visitors']['day'] }}
+        <span class="semi-bold">Visiteurs</span> : <span class="highlighted">
+          {{ recordsData['visitors']['count'] }}
+        </span>, le {{ recordsData['visitors']['day'] }}
       </p>
+
       <p>
-        Chiffre des ventes : <span class="highlighted">{{ recordsData['sales_revenue']['total_price'] }} €</span>, le {{ recordsData['sales_revenue']['day'] }}
+        <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">
+          {{ recordsData['sales_revenue']['total_price'] }} €
+        </span>, le {{ recordsData['sales_revenue']['day'] }}
       </p>
     </section>
     <section class="card">

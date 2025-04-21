@@ -107,6 +107,14 @@ main.container {
   }
 }
 
+.caret-icon {
+  transition: transform 0.3s ease;
+}
+
+.caret-icon.rotate {
+  transform: rotate(180deg);
+}
+
 .dashboard-link {
   display: flex;
   align-items: center;

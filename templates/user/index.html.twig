@@ -22,11 +22,23 @@
 
     <section class="card">
       <h2>{{ stats_title }}</h2>
-      <p>
+      {# <p>
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatibus, voluptatum quos deleniti, numquam
         culpa soluta natus, assumenda explicabo officia quidem eius laborum repudiandae iusto nemo corrupti rerum
         incidunt molestiae.
-      </p>
+      </p> #}
+
+      <canvas id="myPieChart"></canvas>
+
+      <!-- On passe les données à JavaScript via des data-attributes -->
+      <div id="inWeight" data-value="{{ entry_weight }}"></div>
+      <div id="outWeight" data-value="{{ out_weight }}"></div>
     </section>
   </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ asset('js/user-homepage.js') }}" type="module"></script>
 {% endblock %}

@@ -21,6 +21,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\UserType;
+use App\Repository\DonationRepository;
+use App\Repository\SalesItemRepository;
 use App\Service\MonthService;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -28,9 +30,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class UserController extends AbstractController
 {
     #[Route('/accueil', name: 'app_user_homepage')]
-    public function index(MonthService $monthService): Response
+    public function index(MonthService $monthService, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): Response
     {
 
+
+        $entryWeight = $donationRepository->findTotalWeightForCurrentMonth();
+        $outWeight = $salesItemRepository->findTotalWeightForCurrentMonth();
 
         $currentMonth = date('n');
         $statsTitle = $monthService->getMonthStatsTitle($currentMonth);
@@ -38,6 +43,8 @@ final class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserHomepageController',
             'stats_title' => $statsTitle,
+            'entry_weight' => $entryWeight,
+            'out_weight' => $outWeight,
         ]);
     }
 

@@ -17,11 +17,19 @@
 
 .highlighted {
   color: $emerald-sea;
-  font-weight: bold;
+  font-weight: $bold;
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: $semi-bold;
+}
+
+.semi-bold {
+  font-weight: $semi-bold;
+}
+
+.medium {
+  font-weight: $medium;
 }
 
 .alert {
@@ -30,12 +38,4 @@
 
 .state-ok {
   color: $state-ok-green;
-}
-
-.caret-icon {
-  transition: transform 0.3s ease;
-}
-
-.caret-icon.rotate {
-  transform: rotate(180deg);
 }
