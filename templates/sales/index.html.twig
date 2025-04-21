@@ -7,7 +7,7 @@
 {% block content %}
   <h1>Les ventes</h1>
   <div class="sections-container three-sections">
-    <section class="card" id="sales-section">
+    <section class="card category-selector" id="sales-section">
       <h2 class="sr-only">Ajout des articles</h2>
       <p>Quel article souhaitez-vous ajouter?</p>
       <div class="buttons-container">
@@ -35,7 +35,7 @@
         </button>
       </div>
     </section>
-    <section class="card sales-card">
+    <section class="card sales-card contained">
       <h2 class="sr-only">Formulaire de Saisie</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
@@ -60,10 +60,10 @@
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
       <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
       {# attention virer le style display:none pour le mettre en scss à part #}
-      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+
       {{ form_end(form) }}
     </section>
-    <section class="card" aria-labelledby="cart-heading">
+    <section class="card contained" aria-labelledby="cart-heading">
       <h2 id="cart-heading">Panier</h2>
       {# <div id="flash-message-container"></div> #}
       <ul class="cart-container"></ul>
@@ -71,6 +71,7 @@
       {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
       {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
       <p class="cart-status"></p>
+      <div>{% include 'partials/flash.html.twig' %}</div>
 
       <button class="clear-cart-button button-secondary hidden"><i class="ph ph-trash"></i>Vider le panier</button>
       <form action="{{ path('app_sale_checkout') }}" method="post">

@@ -21,16 +21,23 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\UserType;
+use App\Service\MonthService;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('IS_AUTHENTICATED')]
 final class UserController extends AbstractController
 {
     #[Route('/accueil', name: 'app_user_homepage')]
-    public function index(): Response
+    public function index(MonthService $monthService): Response
     {
+
+
+        $currentMonth = date('n');
+        $statsTitle = $monthService->getMonthStatsTitle($currentMonth);
+
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserHomepageController',
+            'stats_title' => $statsTitle,
         ]);
     }
 

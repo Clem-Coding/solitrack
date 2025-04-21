@@ -1,26 +1,17 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function (e) {
   // ==========================
   // 🟡 VARIABLES
   // ==========================
   const menuIcon = document.querySelector("#menuIcon");
   const toggleButton = document.querySelector(".navbar-toggle");
-  const mainContainer = document.querySelector("main.container");
   const navbar = document.querySelector(".navbar");
   const dropdown = document.querySelector(".dropdown");
+
+  navbar.classList.add("zindex-hidden");
 
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
-  function toggleVisibility(element, visibleClass, hiddenClass) {
-    element.classList.toggle(visibleClass);
-    element.classList.remove(hiddenClass);
-    element.classList.add(hiddenClass);
-  }
-
-  function toggleZIndex(element, visibleClass, hiddenClass) {
-    element.classList.remove(visibleClass);
-    element.classList.add(hiddenClass);
-  }
 
   function toggleIconClass(icon, class1, class2) {
     if (icon.classList.contains(class1)) {
@@ -41,61 +32,50 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ==========================
-  // 🖱️ EVENT LISTENERS
+  // MAIN NAV
   // ==========================
   if (toggleButton) {
     toggleButton.addEventListener("click", () => {
-      toggleVisibility(navbar, "visible");
-      toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-      toggleZIndex(mainContainer, "zindex-visible", "zindex-hidden");
+      navbar.classList.toggle("visible");
       toggleIconClass(menuIcon, "ph-list", "ph-x");
     });
   }
 
+  //Ferme le menu principal si je clique n'importe où
   if (navbar) {
-    navbar.addEventListener("transitionend", () => {
-      if (!navbar.classList.contains("visible")) {
-        toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-        toggleZIndex(mainContainer, "zindex-hidden", "zindex-visible");
-      } else {
-        toggleZIndex(navbar, "zindex-hidden", "zindex-visible");
-        toggleZIndex(mainContainer, "zindex-visible", "zindex-hidden");
+    document.addEventListener("click", function (e) {
+      //Vérifie que je ne clique ni sur la navbar ni sur le button toggle
+      if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
+        if (navbar.classList.contains("visible")) {
+          navbar.classList.remove("visible");
+          toggleIconClass(menuIcon, "ph-x", "ph-list");
+        }
       }
     });
   }
 
+  // ==========================
+  // DROPDOWN MENU
+  // ==========================
+
+  // Ouvre le sous menu au clic sur l'encoche et rotate l'encoche
   if (dropdown) {
     const submenu = dropdown.querySelector(".submenu");
-    const caretIcon = dropdown.querySelector("i");
-    dropdown.addEventListener("click", function (e) {
-      if (e.target.tagName === "A" && !e.target.closest(".submenu")) {
-        e.preventDefault();
-        submenu.classList.toggle("visible");
-        toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
-      } else if (e.target.tagName !== "A") {
-        e.preventDefault();
-        submenu.classList.toggle("visible");
-        toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
-      }
+    const caretIcon = dropdown.querySelector(".caret-icon");
+    const toggleDropdownButton = dropdown.querySelector("button");
+
+    toggleDropdownButton.addEventListener("click", function (e) {
+      submenu.classList.toggle("visible");
+      caretIcon.classList.toggle("rotate");
     });
 
-    if (navbar) {
-      document.addEventListener("click", (e) => {
-        const submenu = dropdown.querySelector(".submenu");
-        if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
-          if (navbar.classList.contains("visible")) {
-            navbar.classList.remove("visible");
-            toggleZIndex(navbar, "zindex-visible", "zindex-hidden");
-            toggleIconClass(menuIcon, "ph-x", "ph-list");
-          }
-        }
-
-        if (!dropdown.contains(e.target) && !submenu.contains(e.target)) {
-          submenu.classList.remove("visible");
-          toggleIconClass(caretIcon, "ph-caret-down", "ph-caret-up");
-        }
-      });
-    }
+    // Ferme le sous-menu si je clique n'importe où
+    document.addEventListener("click", function (e) {
+      if (!dropdown.contains(e.target)) {
+        submenu.classList.remove("visible");
+        caretIcon.classList.remove("rotate");
+      }
+    });
   }
 
   // ==========================

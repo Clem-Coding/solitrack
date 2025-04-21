@@ -25,7 +25,7 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card contained">
       <h2 class="sr-only">Saisir un poids</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
@@ -42,20 +42,21 @@
       {{ form_end(form) }}
     </section>
 
-    <section class="card">
+    <section class="card contained">
       <h2>Dernière entrée</h2>
 
       {% if app.flashes('success') %}
         <p class="flash-success" role="note">Votre dernière entrée a bien été supprimée.</p>
       {% else %}
         {% if lastEntryName is not null %}
-          <p class="last-entry-info">{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
-
-          <form action="{{ path('app_entry_delete_last') }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
-            <button type="submit" class="button-primary">Supprimer l'entrée</button>
-          </form>
+          <div class="last-entry-container">
+            <p class="last-entry-info">{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
+            <form action="{{ path('app_entry_delete_last') }}" method="post">
+              <input type="hidden" name="_method" value="DELETE" />
+              <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
+              <button type="submit" class="btn-cross-delete"><i class="ph ph-x-circle"></i></button>
+            </form>
+          </div>
         {% else %}
           {% if app.flashes('success') %}
             <p class="flash-success">Votre dernière entrée a bien été supprimée.</p>
@@ -66,7 +67,7 @@
       {% endif %}
     </section>
 
-    <section class="card">
+    <section class="card contained">
       <h2 class="sr-only">Suivi du poids quotidien</h2>
       <p class="feedback-message">
         {% if totalWeightToday is null %}

@@ -6,6 +6,7 @@
 
   & button {
     border: 2px solid $ink-night;
+    // background-color: $coral;
     padding: 0.7em;
     width: 100%;
   }
@@ -23,7 +24,7 @@
   align-items: center;
   border: 1px solid $grey-velvet;
   border-radius: 4px;
-  padding: 0.7em;
+  padding: 0.5em 1em;
 
   .payment-details-container {
     flex: 1;

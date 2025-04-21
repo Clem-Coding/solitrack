@@ -5,18 +5,19 @@ button {
 }
 
 .button-primary {
-  background-color: $ink-night;
+  background-color: $emerald-sea;
   border: 2px solid $ink-night;
-  color: $cloud;
-  font-weight: $bold;
+  color: $ink-night;
+  font-weight: $semi-bold;
+  // box-shadow: 4px 4px 0 $ink-night;
 
   width: 100%;
 
   &:hover {
-    background-color: $bright-yellow;
-    color: $ink-night;
-    border: 2px solid $ink-night;
-    // box-shadow: 6px 6px 0 $ink-night;
+    // background-color: $ink-night;
+    // color: $cloud;
+    // border: 2px solid $ink-night;
+    box-shadow: 6px 6px 0 $ink-night;
   }
 }
 
@@ -94,4 +95,11 @@ button {
   background-color: $bright-yellow;
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
   transform: translateY(4px);
+}
+
+.btn-cross-delete {
+  padding: 0;
+  &:hover {
+    color: $coral;
+  }
 }

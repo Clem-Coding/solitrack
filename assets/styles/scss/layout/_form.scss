@@ -32,14 +32,15 @@ form textarea:focus {
 
 .input-container {
   position: relative;
+  width: 100%;
 
   & input {
-    margin-top: 1.5em;
+    margin-top: 0.5em;
   }
 
   & .unit {
     position: absolute;
-    top: 50%;
+    top: 40%;
     right: 1em;
     transform: translateY(50%);
     color: $grey-velvet;

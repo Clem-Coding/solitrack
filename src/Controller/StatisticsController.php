@@ -9,6 +9,7 @@ use App\Repository\DonationRepository;
 use App\Repository\VisitorRepository;
 use App\Repository\SaleRepository;
 use App\Repository\SalesItemRepository;
+use App\Service\MonthService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,50 +23,20 @@ class StatisticsController extends AbstractController
         private SalesItemRepository $salesItemRepository,
         private VisitorRepository $visitorRepository,
         private SaleRepository $saleRepository
-    )
-    {
-    }
+    ) {}
 
 
     #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics')]
-    public function index(string $category, DonationRepository $donationRepository): Response
+    public function index(string $category, DonationRepository $donationRepository, MonthService $monthService): Response
     {
 
         $currentYear = (int) date('Y');
         $years = range($currentYear, $currentYear - 5);
-    
-        $monthYearData = $this->donationRepository->getMonthsSinceCreation(); 
 
-        $monthsInFrench = [
-            '01' => 'Janvier',
-            '02' => 'Février',
-            '03' => 'Mars',
-            '04' => 'Avril',
-            '05' => 'Mai',
-            '06' => 'Juin',
-            '07' => 'Juillet',
-            '08' => 'Août',
-            '09' => 'Septembre',
-            '10' => 'Octobre',
-            '11' => 'Novembre',
-            '12' => 'Décembre'
-        ];
-    
-        $months = [];
-        foreach ($monthYearData as $month) {
-            $parts = explode('-', $month['month']);
-            if (count($parts) === 2) {
-                $year = $parts[0];
-                $monthNumber = $parts[1];
-                $frenchMonth = $monthsInFrench[$monthNumber] ;
-    
-                $months[] = [
-                    'value' => $month['month'],
-                    'label' => $frenchMonth . ' ' . $year
-                ];
-            }
-        }
-    
+        $monthYearData = $this->donationRepository->getMonthsSinceCreation();
+
+        $months = $monthService->getMonthsInFrench($monthYearData);
+
         return $this->render('dashboard/statistics.html.twig', [
             'category' => $category,
             'years' => $years,
@@ -73,8 +44,8 @@ class StatisticsController extends AbstractController
             'months' => $months,
         ]);
     }
-    
-    
+
+
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
     public function getStatisticsData(Request $request, StatsTest $statsTest)
     {
@@ -88,7 +59,7 @@ class StatisticsController extends AbstractController
         $repository = $this->getRepositoryForCategory($category, $type);
 
         $statistics = [];
-        
+
 
         $statistics = $statsTest->getStatisticsByPeriod(
             $repository,
@@ -112,25 +83,23 @@ class StatisticsController extends AbstractController
             case 'articles':
             case 'vetements':
                 if ($type === 'incoming') {
-                    return $this->donationRepository; 
+                    return $this->donationRepository;
                 }
                 if ($type === 'outgoing') {
-                    return $this->salesItemRepository;  
+                    return $this->salesItemRepository;
                 }
                 break;
-        
+
             case 'ventes':
-                return $this->saleRepository;  
-        
+                return $this->saleRepository;
+
             case 'visiteurs':
-                return $this->visitorRepository;  
-        
+                return $this->visitorRepository;
+
             default:
                 throw new \InvalidArgumentException("Catégorie inconnue : " . $category);
         }
-    
+
         throw new \InvalidArgumentException("Type inconnu : " . $type);
     }
-    
-    
 }

@@ -243,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const deleteButton = document.createElement("button");
       deleteButton.innerHTML = '<i class="ph ph-x-circle"></i>';
+      deleteButton.classList.add("btn-cross-delete");
       deleteButton.setAttribute("data-id", uniqueId);
       deleteButton.addEventListener("click", () => removeItemFromCart(uniqueId));
       articleElement.appendChild(deleteButton);

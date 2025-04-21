@@ -31,3 +31,11 @@
 .state-ok {
   color: $state-ok-green;
 }
+
+.caret-icon {
+  transition: transform 0.3s ease;
+}
+
+.caret-icon.rotate {
+  transform: rotate(180deg);
+}
