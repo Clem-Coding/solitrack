@@ -1,3 +1,9 @@
+.statistics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
 .select-container {
   display: flex;
   flex-direction: column;
@@ -43,5 +49,32 @@
 
   @include respond-to(desktop) {
     height: 45vh;
+  }
+}
+
+.user-graph-container {
+  @include respond-to(tablet) {
+    padding: 2em 4em;
+  }
+
+  @include respond-to(desktop) {
+    padding: 2em 5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2em;
+    flex-shrink: 0;
+  }
+  .statistics-container {
+    flex-direction: row;
+  }
+
+  .graph-container {
+    flex: 1;
   }
 }

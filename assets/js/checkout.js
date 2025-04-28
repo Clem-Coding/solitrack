@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const keepChangeButton = document.querySelector(".keep-change-button");
   const keepChangeInput = document.querySelector(".keep-change-input");
   const remainingPriceElement = document.querySelector(".remaining-price");
-  console.log(remainingPriceElement);
+  // const emailInput = document.querySelector("#email");
 
   //INITIALIZE
   // ici on attribue au dataset initial -> la valeur total du panier

@@ -2,36 +2,34 @@
 
 {% block content %}
   <h1>Statistiques</h1>
-
-  {# prettier-ignore-start #}
-<ul class="sidebar">
-    <li class="{% if category == 'articles' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">
-            <i class="ph ph-handbag"></i>
-            <span class="menu-text">Articles</span>
-        </a>
-    </li>
-    <li class="{% if category == 'vetements' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}">
-            <i class="ph ph-t-shirt"></i>
-            <span class="menu-text">Vêtements</span>
-        </a>
-    </li>
-    <li class="{% if category == 'ventes' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}">
-            <i class="ph ph-coins"></i>
-            <span class="menu-text">Ventes</span>
-        </a>
-    </li>
-    <li class="{% if category == 'visiteurs' %}active{% endif %}">
-        <a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}">
-            <i class="ph ph-users-four"></i>
-            <span class="menu-text">Visiteurs</span>
-        </a>
-    </li>
-</ul>
-
-
+<div class="statistics-container">
+    {# prettier-ignore-start #}
+    <ul class="sidebar">
+      <li class="{% if category == 'articles' %}active{% endif %}">
+          <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">
+              <i class="ph ph-handbag"></i>
+              <span class="menu-text">Articles</span>
+          </a>
+      </li>
+      <li class="{% if category == 'vetements' %}active{% endif %}">
+          <a href="{{ path('app_dashboard_statistics', {'category': 'vetements'}) }}">
+              <i class="ph ph-t-shirt"></i>
+              <span class="menu-text">Vêtements</span>
+          </a>
+      </li>
+      <li class="{% if category == 'ventes' %}active{% endif %}">
+          <a href="{{ path('app_dashboard_statistics', {'category': 'ventes'}) }}">
+              <i class="ph ph-coins"></i>
+              <span class="menu-text">Ventes</span>
+          </a>
+      </li>
+      <li class="{% if category == 'visiteurs' %}active{% endif %}">
+          <a href="{{ path('app_dashboard_statistics', {'category': 'visiteurs'}) }}">
+              <i class="ph ph-users-four"></i>
+              <span class="menu-text">Visiteurs</span>
+          </a>
+      </li>
+    </ul>
   {# prettier-ignore-end #}
 
   <section class="card graph-container">
@@ -47,68 +45,67 @@
       {% endif %}
     {% endblock %}
 
+    <div class="select-container">
+      {# PREMIER FILTRE #}
+      {% if category == 'articles' %}
+        <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
+        <select id="filter-type" name="item">
+          <option value="incoming">Articles entrants</option>
+          <option value="outgoing">Articles sortants</option>
+          <option value="Entrants et sortants">Articles entrants et sortants</option>
+        </select>
+      {% elseif category == 'vetements' %}
+        <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
+        <select id="filter-type" name="clothing">
+          <option value="incoming">Vêtements entrants</option>
+          <option value="outgoing">Vêtements sortants</option>
+          <option value="oiseau">Vêtements entrants et sortants</option>
+        </select>
+      {% elseif category == 'ventes' %}
+        <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
+        <select id="filter-type" name="sale">
+          <option value="total_ventes">Chiffre des ventes</option>
+          <option value="bar">Chiffre du bar</option>
+          <option value="prix_libre">Chiffre des montants prix libre</option>
+        </select>
+      {% elseif category == 'visiteurs' %}
+        <label for="filter-type" class="hidden">Sélectionner un type</label>
+        <select id="filter-type" name="visitor" class="hidden">
+          <option value="default">Type par défaut pour visiteurs</option>
+        </select>
+      {% endif %}
 
-<div class="select-container">
-  {# PREMIER FILTRE #}
-  {% if category == 'articles' %}
-    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
-    <select id="filter-type" name="item">
-      <option value="incoming">Articles entrants</option>
-      <option value="outgoing">Articles sortants</option>
-      <option value="Entrants et sortants">Articles entrants et sortants</option>
-    </select>
-  {% elseif category == 'vetements' %}
-    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
-    <select id="filter-type" name="clothing">
-      <option value="incoming">Vêtements entrants</option>
-      <option value="outgoing">Vêtements sortants</option>
-      <option value="oiseau">Vêtements entrants et sortants</option>
-    </select>
-  {% elseif category == 'ventes' %}
-    <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
-    <select id="filter-type" name="sale">
-      <option value="total_ventes">Chiffre des ventes</option>
-      <option value="bar">Chiffre du bar</option>
-      <option value="prix_libre">Chiffre des montants prix libre</option>
-    </select>
-  {% elseif category == 'visiteurs' %}
-    <label for="filter-type" class="hidden">Sélectionner un type</label>
-    <select id="filter-type" name="visitor" class="hidden">
-      <option value="default">Type par défaut pour visiteurs</option>
-    </select>
-  {% endif %}
+      {# DEUXIEME FILTRE #}
+      <label for="filter-period" class="hidden">Sélectionner une période</label>
+      <select id="filter-period">
+        <option value="monthly">Total mensuel sur un an</option>
+        <option value="daily">Total journalier sur un mois</option>
+        <option value="yearly">Total annuel</option>
+      </select>
 
-  {# DEUXIEME FILTRE #}
-  <label for="filter-period" class="hidden">Sélectionner une période</label>
-  <select id="filter-period">
-    <option value="monthly">Total mensuel sur un an</option>
-    <option value="daily">Total journalier sur un mois</option>
-    <option value="yearly">Total annuel</option>
-  </select>
+      {# TROISIEME FILTRE #}
+      <div id="month-picker" class="hidden">
+        <label for="month" class="hidden">Sélectionner un mois</label>
+        <select id="month">
+          {% for month in months %}
+            <option value="{{ month.value }}">{{ month.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-  {# TROISIEME FILTRE #}
-  <div id="month-picker" class="hidden">
-    <label for="month" class="hidden">Sélectionner un mois</label>
-    <select id="month">
-      {% for month in months %}
-        <option value="{{ month.value }}">{{ month.label }}</option>
-      {% endfor %}
-    </select>
-  </div>
+      <div id="year-picker">
+        <label for="year" class="hidden">Sélectionner une année</label>
+        <select id="year">
+          {% for year in years %}
+            <option value="{{ year }}">{{ year }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
 
-  <div id="year-picker">
-    <label for="year" class="hidden">Sélectionner une année</label>
-    <select id="year">
-      {% for year in years %}
-        <option value="{{ year }}">{{ year }}</option>
-      {% endfor %}
-    </select>
-  </div>
-  </div>
-
-  <div class="graph"><canvas id="acquisitions"></canvas></div>
+    <div class="graph"><canvas id="acquisitions"></canvas></div>
   </section>
-
+  </div>
 {% endblock %}
 
 {% block javascripts %}

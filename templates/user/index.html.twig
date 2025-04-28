@@ -20,19 +20,13 @@
       </p>
     </section>
 
-    <section class="card">
+    <section class="card user-graph-container">
       <h2>{{ stats_title }}</h2>
-      {# <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet voluptatibus, voluptatum quos deleniti, numquam
-        culpa soluta natus, assumenda explicabo officia quidem eius laborum repudiandae iusto nemo corrupti rerum
-        incidunt molestiae.
-      </p> #}
 
-      <canvas id="myPieChart"></canvas>
+      <canvas class="user-homepage-graph" id="myPieChart"></canvas>
 
-      <!-- On passe les données à JavaScript via des data-attributes -->
-      <div id="inWeight" data-value="{{ entry_weight }}"></div>
-      <div id="outWeight" data-value="{{ out_weight }}"></div>
+      <div class="hidden" id="inWeight" data-value="{{ entry_weight }}"></div>
+      <div class="hidden" id="outWeight" data-value="{{ out_weight }}"></div>
     </section>
   </div>
 {% endblock %}

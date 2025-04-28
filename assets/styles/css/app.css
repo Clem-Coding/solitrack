@@ -623,7 +623,7 @@ main.container.zindex-visible {
 
 .sidebar {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .sidebar .menu-text {
   display: none;
@@ -752,21 +752,6 @@ main.container.zindex-visible {
     opacity: 0;
     max-height: 0;
     display: none;
-  }
-  .sidebar {
-    width: 15em;
-    background-color: #080222;
-    padding: 1em;
-    position: fixed;
-    left: 0;
-    top: 10em;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .sidebar li {
-    background-color: #ffffff;
   }
 }
 form {
@@ -1016,6 +1001,12 @@ form textarea:focus {
   z-index: 2;
 }
 
+.statistics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
 .select-container {
   display: flex;
   flex-direction: column;
@@ -1062,5 +1053,32 @@ form textarea:focus {
 @media (min-width: 1024px) {
   .graph canvas {
     height: 45vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .user-graph-container {
+    padding: 2em 4em;
+  }
+}
+@media (min-width: 1024px) {
+  .user-graph-container {
+    padding: 2em 5em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2em;
+    flex-shrink: 0;
+  }
+  .statistics-container {
+    flex-direction: row;
+  }
+  .graph-container {
+    flex: 1;
   }
 }/*# sourceMappingURL=app.css.map */

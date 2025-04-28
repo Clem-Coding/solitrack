@@ -8,6 +8,7 @@ use App\Entity\Sale;
 use App\Entity\Category;
 use App\Form\SaleType;
 use App\Service\PriceManagement;
+use App\Service\ReceiptMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,7 @@ class CheckoutController extends AbstractController
 
 
     #[Route('/ventes/caisse/register', name: 'app_sale_register')]
-    public function registerSale(#[CurrentUser] User $user, Request $request, SessionInterface $session, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager)
+    public function registerSale(#[CurrentUser] User $user, Request $request, SessionInterface $session, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager, ReceiptMailer $receiptMailer)
     {
 
         $token = $request->request->get('_csrf_token');
@@ -73,8 +74,16 @@ class CheckoutController extends AbstractController
         $cashAmount = $request->get('cash_amount');
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
-
         $shoppingCart = $session->get('shopping_cart', []);
+
+
+
+        $to = $request->get('email');
+
+        if (!empty($to)) {
+            $receiptMailer->sendReceipt($to);
+        }
+
 
 
         // à laisser au cas où, mais empeecher de passer à la caisse si le panier est vide
