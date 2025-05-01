@@ -22,11 +22,13 @@
 
     <section class="card user-graph-container">
       <h2>{{ stats_title }}</h2>
-
-      <canvas class="user-homepage-graph" id="myPieChart"></canvas>
-
-      <div class="hidden" id="inWeight" data-value="{{ entry_weight }}"></div>
-      <div class="hidden" id="outWeight" data-value="{{ out_weight }}"></div>
+      {% if entry_weight is null and out_weight is null %}
+        <p class="text-center">Pas de données pour le mois en cours</p>
+      {% else %}
+        <canvas class="user-homepage-graph" id="myPieChart"></canvas>
+        <div class="hidden" id="inWeight" data-value="{{ entry_weight }}"></div>
+        <div class="hidden" id="outWeight" data-value="{{ out_weight }}"></div>
+      {% endif %}
     </section>
   </div>
 {% endblock %}

@@ -184,7 +184,14 @@ class SalesItemRepository extends ServiceEntityRepository
         return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
     }
 
-    public function findTotalWeightForCurrentMonth(): float
+
+    // SELECT SUM(si.weight) AS total_weight
+    // FROM sales_items si
+    // JOIN sales s ON si.sale_id = s.id
+    // WHERE MONTH(s.created_at) = 5
+    // AND YEAR(s.created_at) = 2025;
+
+    public function findTotalWeightForCurrentMonth()
     {
         $currentMonth = date('m');
         $currentYear = date('Y');

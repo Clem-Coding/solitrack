@@ -37,6 +37,7 @@ final class UserController extends AbstractController
         $entryWeight = $donationRepository->findTotalWeightForCurrentMonth();
         $outWeight = $salesItemRepository->findTotalWeightForCurrentMonth();
 
+
         $currentMonth = date('n');
         $statsTitle = $monthService->getMonthStatsTitle($currentMonth);
 
