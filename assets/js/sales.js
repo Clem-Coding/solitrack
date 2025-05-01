@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryInput = document.getElementById("sales_item_categoryId");
   // const categoryErrorMessage = document.getElementById("error-message");
   const form = document.querySelector(".sales-form");
-  console.log("le form", form);
   const cartContainer = document.querySelector(".cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
@@ -37,9 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseButton = quantityWrapper.querySelector(".quantity-increase");
 
   const quantityInput = inputs.quantity;
+  quantityInput.value = 1;
 
   let quantity = Number(quantityInput.value);
-
+  cartStatus.classList.add("text-center");
   addItemsCard.classList.remove("card");
 
   // let totalAmount = 0;
@@ -138,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   function handleEmptyCart() {
+    cartStatus.classList.add("text-center");
     cartStatus.innerHTML = "Votre panier est vide.";
     clearCartButton.classList.remove("show");
     clearCartButton.classList.add("hidden");
@@ -188,8 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCartDisplay(cart, total) {
     console.log("le total j'update", total);
     if (total > 0) {
+      cartStatus.classList.remove("text-center");
       cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
     } else {
+      cartStatus.classList.add("text-center");
       cartStatus.innerHTML = "Votre panier est vide.";
     }
     // const cartStatus = document.getElementById("total-price");
@@ -347,6 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalAmount = Number(localStorage.getItem("totalAmount"));
     updateCartDisplay(savedCart, totalAmount);
   } else {
+    cartStatus.classList.add("text-center");
     cartStatus.innerHTML = "Votre panier est vide.";
   }
 

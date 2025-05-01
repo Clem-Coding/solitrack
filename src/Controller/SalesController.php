@@ -29,6 +29,8 @@ final class SalesController extends AbstractController
         $form = $this->createForm(SalesItemType::class, $salesItem);
         $form->handleRequest($request);
 
+
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $categoryId = $form->get('categoryId')->getData();
@@ -41,16 +43,24 @@ final class SalesController extends AbstractController
             $uuid = Uuid::v1();
             $shoppingCart = $session->get('shopping_cart', []);
 
+            if ($category && $category->getId() == 4) {
+                $quantity = $salesItem->getQuantity();
+            } else {
+                $quantity = null;
+            }
+
             $shoppingCart[] = [
                 'uuid' => $uuid->toString(),
                 'category' => $category->getName(),
                 'weight' => $salesItem->getWeight(),
                 'price' => $salesItem->getPrice(),
-                'quantity' => $salesItem->getQuantity(),
+                'quantity' => $quantity
             ];
 
 
             $session->set('shopping_cart', $shoppingCart);
+
+
 
 
             //à revoir XmLhttpRequest , supprimer?
@@ -67,6 +77,8 @@ final class SalesController extends AbstractController
 
             return $this->redirectToRoute('app_sales');
         }
+
+
 
         return $this->render('sales/index.html.twig', [
             'form' => $form,

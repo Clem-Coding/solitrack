@@ -30,6 +30,7 @@ class CheckoutController extends AbstractController
         $form = $this->createForm(SaleType::class);
 
         $shoppingCart = $session->get('shopping_cart', []);
+        // dd($shoppingCart);
         $priceManagement->applyBulkPricingRule($shoppingCart);
 
 
@@ -63,17 +64,18 @@ class CheckoutController extends AbstractController
 
         $form = $this->createForm(SaleType::class);
 
-        $form->handleRequest($request);;
-        if ($form->isSubmitted() && $form->isValid()) {
-            $zipcode =  $form->get('zipcodeCustomer')->getData();
-            $sale->setZipcodeCustomer($zipcode ?? null);
-        }
+        // $form->handleRequest($request);;
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $zipcode =  $form->get('zipcodeCustomer')->getData();
+        //     $sale->setZipcodeCustomer($zipcode ?? null);
+        // }
 
 
         $cardAmount = $request->get('card_amount');
         $cashAmount = $request->get('cash_amount');
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
+        $zipcode = $request->get("zipcode");
         $shoppingCart = $session->get('shopping_cart', []);
 
 
@@ -99,7 +101,7 @@ class CheckoutController extends AbstractController
         $sale->setCashAmount($cashAmount ?? null);
         $sale->setKeepChange($keepChangeAmount) ?? null;
         $sale->setPWYWAmount($pwywAmount) ?? null;
-
+        $sale->setZipcodeCustomer($zipcode) ?? null;
 
         $totalPrice = 0;
 

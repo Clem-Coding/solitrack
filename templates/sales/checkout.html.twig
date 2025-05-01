@@ -33,6 +33,7 @@
       <p class="bold">Total : <span class="data-price">{{ total }}</span> €</p>
       <button onclick="window.history.back()" class="button-rounded">Revenir en arrière</button>
     </section>
+
     <section class="card contained">
       <h2>Paiement</h2>
 
@@ -74,9 +75,19 @@
             <input type="email" id="email" name="email" placeholder="example@mail.com" required />
           </div>
           <div class="form-group">
-            {{ form_label(form.zipcodeCustomer) }}
-            {{ form_widget(form.zipcodeCustomer) }}
+            <label for="zipcode">Code-postal</label>
+            <input
+              type="text"
+              id="zipcode"
+              name="zipcode"
+              placeholder="22208"
+              maxlength="5"
+              required
+              pattern="\d{5}" 
+              title="Le code postal doit être composé de 5 chiffres"
+            />
           </div>
+
           <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
         </fieldset>
         <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>

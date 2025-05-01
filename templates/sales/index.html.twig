@@ -39,7 +39,6 @@
       <h2 class="sr-only">Formulaire de Saisie</h2>
       {{ form_errors(form) }}
       {{ form_start(form) }}
-      {# {{ form_row(form.weight) }} #}
       <div class="input-container" id="weight-input">
         {{ form_label(form.weight) }}
         {{ form_widget(form.weight) }}
@@ -51,25 +50,18 @@
         {{ form_widget(form.price) }}
         <span class="unit">€</span>
       </div>
-      {# {{ form_row(form.price) }} #}
       <div id="quantity-input" class="input-quantity-wrapper hidden">
         <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
         {{ form_widget(form.quantity) }}
         <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
       </div>
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
-      <p id="error-message" class="error-message" style="display: none">Veuillez sélectionner une catégorie.</p>
-      {# attention virer le style display:none pour le mettre en scss à part #}
-
       {{ form_end(form) }}
     </section>
     <section class="card contained" aria-labelledby="cart-heading">
       <h2 id="cart-heading">Panier</h2>
       {# <div id="flash-message-container"></div> #}
       <ul class="cart-container"></ul>
-
-      {# <p>Total : <span id="total-price" class="data-price">{{ total }}</span> €</p> #}
-      {# <p id="total-price">{{ total ? 'Total : ' ~ total ~ ' €' : 'Votre panier est vide.' }}</p> #}
       <p class="cart-status"></p>
       <div>{% include 'partials/flash.html.twig' %}</div>
 
