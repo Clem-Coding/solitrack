@@ -5,19 +5,19 @@ button {
 }
 
 .button-primary {
-  background-color: $emerald-sea;
-  border: 2px solid $ink-night;
-  color: $ink-night;
+  background-color: $ink-night;
+  // border: 2px solid $ink-night;
+  color: $cloud;
   font-weight: $semi-bold;
   // box-shadow: 4px 4px 0 $ink-night;
 
   width: 100%;
 
   &:hover {
-    // background-color: $ink-night;
-    // color: $cloud;
+    background-color: $emerald-sea;
+    color: $cloud;
     // border: 2px solid $ink-night;
-    box-shadow: 6px 6px 0 $ink-night;
+    // box-shadow: 6px 6px 0 $ink-night;
   }
 }
 

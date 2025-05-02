@@ -43,6 +43,11 @@
   &input {
     width: 100%;
   }
+
+  &.form-group.hidden {
+    color: red;
+    display: none;
+  }
 }
 
 .details-wrapper {

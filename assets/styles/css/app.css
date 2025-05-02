@@ -92,7 +92,7 @@ fieldset {
 }
 
 .highlighted {
-  color: #22a094;
+  color: #00857a;
   font-weight: 700;
 }
 
@@ -211,14 +211,14 @@ button {
 }
 
 .button-primary {
-  background-color: #22a094;
-  border: 2px solid #080222;
-  color: #080222;
+  background-color: #080222;
+  color: #ffffff;
   font-weight: 600;
   width: 100%;
 }
 .button-primary:hover {
-  box-shadow: 6px 6px 0 #080222;
+  background-color: #00857a;
+  color: #ffffff;
 }
 
 .button-secondary {
@@ -231,7 +231,7 @@ button {
   font-size: 1.125rem;
 }
 .button-secondary:hover {
-  border-color: #22a094;
+  border-color: #00857a;
   background-color: #f9f5f2;
 }
 
@@ -242,7 +242,7 @@ button {
   border: 2px solid #080222;
 }
 .button-rounded:hover {
-  border-color: #22a094;
+  border-color: #00857a;
   background-color: #f9f5f2;
 }
 
@@ -358,9 +358,9 @@ button {
   }
 }
 
-.logo-container h1 {
-  margin: 0;
-  color: #080222;
+.logo-container img {
+  height: 5em;
+  width: auto;
 }
 
 .user-link {
@@ -597,7 +597,7 @@ main.container.zindex-visible {
   white-space: nowrap;
 }
 .user-menu li a:hover {
-  color: #22a094;
+  color: #00857a;
 }
 
 .user-icon-home {
@@ -645,7 +645,7 @@ main.container.zindex-visible {
   font-weight: 500;
 }
 .sidebar li.active {
-  background-color: #22a094;
+  background-color: #00857a;
   color: #ffffff;
   box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
   transform: translateY(4px);
@@ -788,7 +788,7 @@ form textarea {
 form input:focus,
 form select:focus,
 form textarea:focus {
-  border: 2.5px solid #22a094;
+  border: 2.5px solid #00857a;
   outline: none;
 }
 
@@ -868,6 +868,10 @@ form textarea:focus {
 }
 .sales-cardinput {
   width: 100%;
+}
+.sales-card.form-group.hidden {
+  color: red;
+  display: none;
 }
 
 .details-wrapper {
@@ -989,6 +993,10 @@ form textarea:focus {
   flex-direction: column;
   gap: 1em;
   margin-top: 2em;
+}
+
+.form-group.hidden {
+  display: none;
 }
 
 @media (min-width: 1024px) {

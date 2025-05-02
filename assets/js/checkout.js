@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const keepChangeButton = document.querySelector(".keep-change-button");
   const keepChangeInput = document.querySelector(".keep-change-input");
   const remainingPriceElement = document.querySelector(".remaining-price");
+  const mailInputGroup = document.querySelector("#email").closest(".form-group");
+  const receiptButton = document.querySelector(".receipt-button");
+
   // const emailInput = document.querySelector("#email");
 
   //INITIALIZE
@@ -98,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function addPaymentInput(amount, method) {
     const inputGroup = document.createElement("li");
     inputGroup.classList.add("payment-group");
-    console.log("l'amount", amount);
 
     const paymentDetailsContainer = document.createElement("div");
     paymentDetailsContainer.classList.add("payment-details-container");
@@ -311,4 +313,8 @@ document.addEventListener("DOMContentLoaded", () => {
   checkUnlabeledItemsWeight();
 
   keepChangeButton.addEventListener("click", handleKeepChange);
+
+  receiptButton.addEventListener("click", function () {
+    mailInputGroup.classList.toggle("hidden");
+  });
 });

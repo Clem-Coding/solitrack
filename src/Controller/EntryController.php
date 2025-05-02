@@ -25,27 +25,15 @@ final class EntryController extends AbstractController
     public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository, DonationRepository $donationRepository, FeedbackMessages $feedbackMessage): Response
     {
 
-
-
-
         $donation = new Donation();
 
         $form = $this->createForm(DonationFormType::class, $donation);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $categoryId = $form->get('categoryId')->getData();
-            // $categoryId = (int) $categoryId;
             $category = $categoryRepository->find($categoryId);
-
-
-            if (empty($category)) {
-                // $this->addFlash('warning', 'Veuillez sélectionner une catégorie.');
-                // return $this->redirectToRoute('app_entry');
-            }
-
 
             $totalWeightToday = $donationRepository->getTotalWeightForToday();
             if (!empty($category)) {
@@ -67,12 +55,9 @@ final class EntryController extends AbstractController
 
         $lastEntry = $donationRepository->getLatestEntry();
         $lastEntryName = $lastEntry['categoryName'] ?? null;
-        $lastEntryWeight = $lastEntry['weight'] ?? null;
-
-
+        $lastEntryWeight = number_format($lastEntry['weight'], 2, ',', ' ') ?? null;
 
         $feedback = $feedbackMessage->getRandomFeedbackMessage();
-
 
         return $this->render('entry/index.html.twig', [
             'form' => $form,
@@ -108,26 +93,4 @@ final class EntryController extends AbstractController
 
         return $this->redirectToRoute('app_entry');
     }
-
-
-
-    // #[Route('/entrees/edit-last', name: 'app_entry_edit_last', methods: ['POST'])]
-    // public function editLastEntry(DonationRepository $donationRepository, EntityManagerInterface $entityManager): JsonResponse
-    // {
-    //     try {
-    //         $lastEntry = $donationRepository->getLatestEntry();
-
-    //         if ($lastEntry && isset($lastEntry['id'])) {
-    //             $donation = $donationRepository->find($lastEntry['id']);
-    //             $entityManager->remove($donation);
-    //             $entityManager->flush();
-
-    //             return new JsonResponse(['success' => true]);
-    //         }
-
-    //         return new JsonResponse(['success' => false, 'message' => 'Aucune entrée à supprimer.']);
-    //     } catch (\Exception $e) {
-    //         return new JsonResponse(['success' => false, 'message' => 'Une erreur est survenue : ' . $e->getMessage()]);
-    //     }
-    // }
 }
