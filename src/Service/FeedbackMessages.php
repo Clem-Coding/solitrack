@@ -17,12 +17,13 @@ class FeedbackMessages
     {
         $totalWeightToday = $this->donationRepository->getTotalWeightForToday();
         $formattedTotal = number_format($totalWeightToday, 2, ',', ' ');
+        $messages = [];
 
         $recordWeight = $this->donationRepository->getRecordWeightDay();
 
         if ($totalWeightToday >= $recordWeight['total_weight']) {
             $messages = [
-                "Vous avez pulvérisé le record ! <span class='highlighted'>$formattedTotal kg</span> collectés aujourd’hui ! 🎉",
+                "On a pulvérisé le record ! <span class='highlighted'>$formattedTotal kg</span> collectés aujourd’hui ! 🎉",
                 "Incroyable ! <span class='highlighted'>$formattedTotal kg</span> aujourd’hui : un nouveau record 🚀 !",
                 "Les fourmis sont en feu 🔥! Nouveau record battu avec <span class='highlighted'>$formattedTotal kg</span> !",
             ];

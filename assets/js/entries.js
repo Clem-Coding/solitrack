@@ -1,4 +1,5 @@
 import { formatInputValue } from "./utils.js";
+import confetti from "canvas-confetti";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ==========================
@@ -10,7 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const weightInput = document.getElementById("donation_form_weight");
   const errorMessage = document.getElementById("error-message");
   const lastEntryInfo = document.querySelector(".last-entry-info");
-  console.log("le dernier", lastEntryInfo);
+  const feedbackMessageElement = document.querySelector(".feedback-message");
+  const isRecordJustBeaten = feedbackMessageElement?.getAttribute("data-record-achieved") === "true";
 
   weightInput.value = "";
 
@@ -49,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🔧 HANDLE FILTER CHANGES
   // ==========================
-
   function handleButtonClick(event) {
     const clickedButton = event.currentTarget;
 
@@ -65,22 +66,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handleFormSubmit(event) {
-    console.log("je clique le form");
     if (!categoryInput.value) {
       event.preventDefault();
-      console.log("test");
-
       showError();
     } else {
-      console.log("pas de valeur");
       hideError();
     }
   }
+  // ==========================
+  // 🟡 CONFETTIS 🎉
+  // ==========================
+  let launchCount = 0;
+
+  function launchConfetti() {
+    if (isRecordJustBeaten && launchCount < 4) {
+      launchCount++;
+      confetti({
+        particleCount: 200,
+        spread: 90,
+        origin: { x: 0.5, y: 0.5 },
+        duration: 2000,
+      });
+    }
+  }
+
+  setInterval(launchConfetti, 1000);
 
   // ==========================
   // 🖱️ EVENT LISTENERS
   // ==========================
-
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {
       handleButtonClick(event);
