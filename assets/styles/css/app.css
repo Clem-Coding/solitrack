@@ -816,6 +816,17 @@ form textarea:focus {
   gap: 0.5em;
 }
 
+.password-container {
+  position: relative;
+}
+.password-container i {
+  position: absolute;
+  right: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
 .donation-form {
   display: flex;
   flex-direction: column;

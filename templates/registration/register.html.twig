@@ -36,7 +36,10 @@
 
     <div class="form-group">
       {{ form_label(registrationForm.plainPassword) }}
-      {{ form_widget(registrationForm.plainPassword) }}
+      <div class="password-container">
+        {{ form_widget(registrationForm.plainPassword) }}
+        <i class="ph ph-eye toggle-password"></i>
+      </div>
       {% for error in registrationForm.plainPassword.vars.errors %}
         <p role="note" class="flash-error">{{ error.message }}</p>
       {% endfor %}

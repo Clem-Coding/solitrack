@@ -36,12 +36,19 @@
 
     <div class="form-group">
       <label for="{{ form.newPassword.first.vars.id }}">{{ form.newPassword.first.vars.label }}</label>
-      {{ form_widget(form.newPassword.first) }}
+      <div class="password-container">
+        {{ form_widget(form.newPassword.first) }}
+        <i class="ph ph-eye toggle-password"></i>
+      </div>
     </div>
 
     <div class="form-group">
       <label for="{{ form.newPassword.second.vars.id }}">{{ form.newPassword.second.vars.label }}</label>
-      {{ form_widget(form.newPassword.second) }}
+      <div class="password-container">
+        {{ form_widget(form.newPassword.second) }}
+        <i class="ph ph-eye toggle-password"></i>
+      </div>
+
       {% for error in form.newPassword.first.vars.errors %}
         <p role="note" class="flash-error">{{ error.message }}</p>
       {% endfor %}
