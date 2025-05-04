@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 
-use App\Service\StatsTest;
+use App\Service\StatisticsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\DonationRepository;
 use App\Repository\VisitorRepository;
@@ -50,7 +50,7 @@ class StatisticsController extends AbstractController
 
 
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
-    public function getStatisticsData(Request $request, StatsTest $statsTest): JsonResponse
+    public function getStatisticsData(Request $request, StatisticsService $statsTest): JsonResponse
     {
         $category = $request->query->get('category');
         $type = $request->query->get("type");
