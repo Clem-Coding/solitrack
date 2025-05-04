@@ -43,53 +43,58 @@
             aria-label="Retour à l'accueil Soli'Track"
             class="logo"
           >
-            <img src="{{ asset('images/logo.svg') }}" alt="Soli'Track" />
+            <img src="{{ asset('images/logo.svg') }}" alt="logo de Soli'Track" />
           </a>
         </div>
 
         {% if app.user %}
           {% block navbar %}
             <nav class="navbar">
+              <h1 class="sr-only">Menu principal</h1>
               <ul class="navbar-menu">
                 <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
                 <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
-                <li class="dropdown">
-                  <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
-                    Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
-                  </button>
-                  {# <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a> #}
-                  <ul class="submenu">
-                    <li>
-                      <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
-                    </li>
-                    <li>
-                      <a
-                        href="{{
-                        path(
-                          'app_dashboard_statistics',
-                          {
-                            category: 'articles'
-                          }
-                        )
-                        }}"
-                      >
-                        <i class="ph ph-chart-bar"></i>Les statistiques
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{{ path('app_dashboard_cash_reconciliation') }}">
-                        <i class="ph ph-storefront"></i> Contrôle de Caisse
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{{ path('app_dashboard_user_management') }}">
-                        <i class="ph ph-users-three"></i>Gestion des utilisateurs
-                      </a>
-                    </li>
-                    <li><a href="{{ path('app_dashboard_settings') }}"><i class="ph ph-gear"></i>Paramètres</a></li>
-                  </ul>
-                </li>
+                {% if is_granted('ROLE_VOLONTEER_PLUS') or is_granted('ROLE_ADMIN') %}
+                  <li class="dropdown">
+                    <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
+                      Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
+                    </button>
+                    {# <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a> #}
+                    <ul class="submenu">
+                      <li>
+                        <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
+                      </li>
+                      <li>
+                        <a
+                          href="{{
+                          path(
+                            'app_dashboard_statistics',
+                            {
+                              category: 'articles'
+                            }
+                          )
+                          }}"
+                        >
+                          <i class="ph ph-chart-bar"></i>Les statistiques
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{{ path('app_dashboard_cash_reconciliation') }}">
+                          <i class="ph ph-storefront"></i> Contrôle de Caisse
+                        </a>
+                      </li>
+                      {% if is_granted('ROLE_ADMIN') %}
+                        <li>
+                          <a href="{{ path('app_dashboard_user_management') }}">
+                            <i class="ph ph-users-three"></i>Gestion des utilisateurs
+                          </a>
+                        </li>
+                        <li><a href="{{ path('app_dashboard_settings') }}"><i class="ph ph-gear"></i>Paramètres</a></li>
+                      {% endif %}
+                    </ul>
+                  </li>
+                {% endif %}
               </ul>
             </nav>
           {% endblock %}

@@ -54,7 +54,6 @@ final class UserController extends AbstractController
         #[CurrentUser] User $user,
         Request $request,
         EntityManagerInterface $manager,
-        UserPasswordHasherInterface $passwordHasher
     ): Response {
 
 
@@ -66,12 +65,17 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $newPassword = $form->get('newPassword')->getData();
 
-            // if ($newPassword) {
-            //     $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
-            //     $user->setPassword($hashedPassword);
-            // }
+
+            // The $user object is already managed by Doctrine (injected via #[CurrentUser]),
+            // so Doctrine tracks changes on the $user object and generates an UPDATE query on flush().
+
+            // Exemple of conversion in mySQL query :
+
+            // UPDATE user 
+            // SET last_name = 'Durand' 
+            // WHERE id = 42;
+
 
             $manager->flush();
 

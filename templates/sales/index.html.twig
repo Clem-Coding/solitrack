@@ -25,7 +25,7 @@
         <button class="category-button" data-category="3">
           <img
             src="{{ asset('images/buttons/tag-icon.svg') }}"
-            alt="icone représentant une étiuquette avec le symbole de l'euro"
+            alt="icone représentant une étiquette avec le symbole de l'euro"
           />
           Article étiqueté
         </button>
@@ -52,6 +52,7 @@
       </div>
       <div id="quantity-input" class="input-quantity-wrapper hidden">
         <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
+        {{ form_label(form.quantity) }}
         {{ form_widget(form.quantity) }}
         <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
       </div>

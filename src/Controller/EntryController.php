@@ -77,10 +77,6 @@ final class EntryController extends AbstractController
             $session->set('recordBeaten', true);  // Marquer que le record a été battu
         }
 
-        // dd($session->get('recordBeaten'));  
-
-        // dd($feedback['message']);
-
         return $this->render('entry/index.html.twig', [
             'form' => $form,
             'lastEntryName' => $lastEntryName,
@@ -98,7 +94,10 @@ final class EntryController extends AbstractController
     // This ensures the proper removal of objects from the database, handling relationships and entity state automatically.
 
     // an equivalent MySQL query would be:
-    // DELETE FROM donations WHERE id = {lastEntryId};
+
+    // DELETE 
+    // FROM donations 
+    // WHERE id = {lastEntryId};
 
     #[Route('/entrees/delete-last', name: 'app_entry_delete_last', methods: ['DELETE'])]
     public function deleteLastEntry(

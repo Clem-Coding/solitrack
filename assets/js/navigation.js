@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
   const navbar = document.querySelector(".navbar");
   const dropdown = document.querySelector(".dropdown");
 
-  navbar.classList.add("zindex-hidden");
+  if (navbar) {
+    navbar.classList.add("zindex-hidden");
+  }
 
   // ==========================
   // 🔍 UTILITY FUNCTIONS
@@ -94,8 +96,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
     userIcon.addEventListener("click", toggleUserMenu);
 
     document.addEventListener("click", (e) => {
-      if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
-        userMenu.style.display = "none";
+      if (userMenu) {
+        if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
+          userMenu.style.display = "none";
+        }
       }
     });
   }

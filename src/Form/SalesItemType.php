@@ -33,6 +33,7 @@ class SalesItemType extends AbstractType
             ])
             ->add('quantity', null, [
                 'label' => 'Quantité',
+                'label_attr' => ['class' => 'sr-only'],
                 "row_attr" => [
                     "class" => "hidden",
                     "id" => "quantity-input"

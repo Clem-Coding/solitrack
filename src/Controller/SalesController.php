@@ -21,8 +21,12 @@ final class SalesController extends AbstractController
 
 {
     #[Route('/ventes', name: 'app_sales', methods: ['GET', 'POST'])]
-    public function index(Request $request, CategoryRepository $categoryRepository, SessionInterface $session, PriceManagement $priceManagement): Response
-    {
+    public function index(
+        Request $request,
+        CategoryRepository $categoryRepository,
+        SessionInterface $session,
+        PriceManagement $priceManagement
+    ): Response {
 
         $salesItem = new SalesItem();
 

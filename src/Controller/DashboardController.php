@@ -24,8 +24,16 @@ final class DashboardController extends AbstractController
 {
 
     #[Route('', name: 'app_dashboard_index', methods: ['GET', 'POST'])]
-    public function index(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager, SaleRepository $saleRepository, GeocoderService $geocoderService, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository, VisitorRepository $visitorRepository): Response
-    {
+    public function index(
+        #[CurrentUser] User $user,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        SaleRepository $saleRepository,
+        GeocoderService $geocoderService,
+        DonationRepository $donationRepository,
+        SalesItemRepository $salesItemRepository,
+        VisitorRepository $visitorRepository
+    ): Response {
 
 
         $visitor = new Visitor;
@@ -83,13 +91,6 @@ final class DashboardController extends AbstractController
             'recordsData' => $recordsData
         ]);
     }
-
-
-    // #[Route('/statistiques', name: 'app_dashboard_statistics')]
-    // public function statistics(): Response
-    // {
-    //     return $this->render('dashboard/statistics.html.twig');
-    // }
 
 
     #[Route('/controle-de-caisse', name: 'app_dashboard_cash_reconciliation')]

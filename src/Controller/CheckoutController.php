@@ -50,8 +50,14 @@ class CheckoutController extends AbstractController
 
 
     #[Route('/ventes/caisse/register', name: 'app_sale_register')]
-    public function registerSale(#[CurrentUser] User $user, Request $request, SessionInterface $session, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager, ReceiptMailer $receiptMailer)
-    {
+    public function registerSale(
+        #[CurrentUser] User $user,
+        Request $request,
+        SessionInterface $session,
+        EntityManagerInterface $entityManager,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        ReceiptMailer $receiptMailer
+    ): Response {
 
         $token = $request->request->get('_csrf_token');
 
@@ -62,7 +68,7 @@ class CheckoutController extends AbstractController
 
         $sale = new Sale();
 
-        $form = $this->createForm(SaleType::class);
+        // $form = $this->createForm(SaleType::class);
 
         // $form->handleRequest($request);;
         // if ($form->isSubmitted() && $form->isValid()) {
@@ -88,7 +94,7 @@ class CheckoutController extends AbstractController
 
 
 
-        // à laisser au cas où, mais empeecher de passer à la caisse si le panier est vide
+        // à laisser au cas où, mais empecher de passer à la caisse si le panier est vide
         if (empty($shoppingCart)) {
 
             return $this->redirectToRoute('app_sales');
@@ -133,8 +139,6 @@ class CheckoutController extends AbstractController
             $entityManager->persist($salesItem);
         }
 
-
-        // $entityManager->persist($salesItem);
 
         $sale->setTotalPrice($totalPrice);
 

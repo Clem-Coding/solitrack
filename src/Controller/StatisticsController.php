@@ -13,6 +13,9 @@ use App\Service\MonthService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ObjectRepository;
+
 use Doctrine\Persistence\ManagerRegistry;
 
 class StatisticsController extends AbstractController
@@ -27,7 +30,7 @@ class StatisticsController extends AbstractController
 
 
     #[Route('/tableau-de-bord/statistiques/{category}', name: 'app_dashboard_statistics')]
-    public function index(string $category, DonationRepository $donationRepository, MonthService $monthService): Response
+    public function index(string $category, MonthService $monthService): Response
     {
 
         $currentYear = (int) date('Y');
@@ -47,7 +50,7 @@ class StatisticsController extends AbstractController
 
 
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
-    public function getStatisticsData(Request $request, StatsTest $statsTest)
+    public function getStatisticsData(Request $request, StatsTest $statsTest): JsonResponse
     {
         $category = $request->query->get('category');
         $type = $request->query->get("type");
@@ -77,7 +80,7 @@ class StatisticsController extends AbstractController
     }
 
 
-    private function getRepositoryForCategory($category, $type)
+    private function getRepositoryForCategory($category, $type): ObjectRepository
     {
         switch ($category) {
             case 'articles':

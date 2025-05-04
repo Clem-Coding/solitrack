@@ -104,7 +104,8 @@ class DonationRepository extends ServiceEntityRepository
      */
 
 
-    public function findTotalDataByMonth($repository, $category, $year)
+    public function findTotalDataByMonth($repository, $category, $year): array
+
     {
 
         $qb = $repository->createQueryBuilder('d')
@@ -151,7 +152,7 @@ class DonationRepository extends ServiceEntityRepository
      *    GROUP BY day
      *    ORDER BY day ASC;
      */
-    public function findTotalDataByDayForMonth($repository, $category = null, $year = null, $month = null)
+    public function findTotalDataByDayForMonth($repository, ?string $category = null, ?string $year = null, ?string $month = null): array
     {
         $qb = $repository->createQueryBuilder('d')
             ->select('DAY(d.createdAt) AS day', 'SUM(d.weight) AS totalData')
@@ -198,7 +199,7 @@ class DonationRepository extends ServiceEntityRepository
      *    GROUP BY year
      *    ORDER BY year ASC;
      */
-    public function findTotalDataByYear($repository, $category = null)
+    public function findTotalDataByYear($repository, ?string $category = null): array
     {
         $qb = $this->createQueryBuilder('d')
             ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalData')
@@ -222,7 +223,7 @@ class DonationRepository extends ServiceEntityRepository
     // GROUP BY day
     // ORDER BY total_weight DESC
     // LIMIT 1;
-    public function getRecordWeightDay()
+    public function getRecordWeightDay(): array
     {
         $this->getEntityManager()->getConnection()->executeStatement("SET lc_time_names = 'fr_FR';");
 
