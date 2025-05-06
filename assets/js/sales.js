@@ -12,12 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedCart = JSON.parse(localStorage.getItem("cart"));
   const clearCartButton = document.querySelector(".clear-cart-button");
   const checkoutButton = document.querySelector(".checkout-button");
+  const cartSection = document.querySelector("#cart-section");
+  const header = document.querySelector("header");
+  const headerHeight = header.offsetHeight;
 
   const cartStatus = document.querySelector(".cart-status");
   const addCartButton = document.getElementById("add-cart-button");
   // const addItemscard = document.querySelector(".sales-card");
   const addItemsCard = document.querySelector(".card.sales-card");
-  console.log("le sales form", addItemsCard);
 
   const inputWrappers = {
     weight: document.getElementById("weight-input"),
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "success") {
+          scrollIntoViewAdjusted(cartSection, headerHeight);
           updateCartDisplay(data.cart, data.total);
           // updateTotalDisplay(data.total);
           localStorage.setItem("totalAmount", data.total);
@@ -136,6 +139,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
+
+  function scrollIntoViewAdjusted(elem, offset = 0) {
+    window.scrollBy({
+      top: elem.getBoundingClientRect().top - offset,
+      behavior: "smooth",
+    });
+  }
 
   function handleEmptyCart() {
     cartStatus.classList.add("text-center");
