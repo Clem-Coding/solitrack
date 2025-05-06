@@ -28,7 +28,13 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: $f20;
+  @include respond-to(tablet) {
+    font-size: $f18;
+  }
+  @include respond-to(desktop) {
+    font-size: $f20;
+  }
+  
 }
 
 .feedback-message {

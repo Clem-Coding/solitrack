@@ -124,6 +124,14 @@ main.container {
   }
 }
 
+.login-text {
+  display: none;
+
+  @include respond-to(tablet) {
+    display: inline;
+  }
+}
+
 .user-menu {
   border: 3px solid blue;
   display: none;

@@ -53,6 +53,11 @@
 }
 
 .user-graph-container {
+
+  & .user-homepage-graph {
+    max-width: 100%;
+  
+  }
   @include respond-to(tablet) {
     padding: 2em 4em;
   }

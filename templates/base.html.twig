@@ -129,8 +129,9 @@
           </div>
         {% else %}
           <div class="user-action">
-            <a href="{{ path('app_login') }}">
-              <i class="ph-light ph-user-circle user-icon-home" id="user-icon"></i> Se connecter
+            <a href="{{ path('app_login') }}" class="user-action">
+              <i class="ph-light ph-user-circle user-icon-home" id="user-icon"></i>
+              <span class="login-text">Se connecter</span>
             </a>
           </div>
         {% endif %}

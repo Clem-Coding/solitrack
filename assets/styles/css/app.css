@@ -252,7 +252,7 @@ button {
   gap: 10px;
   justify-content: center;
   align-items: center;
-  max-width: 400px;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -269,6 +269,7 @@ button {
   background-color: #f9f5f2;
   transition: background-color 0.3s ease-in-out;
   box-shadow: 5px 5px 0 #080222;
+  padding: 0;
   font-size: 0.875rem;
 }
 .category-button:hover {
@@ -580,6 +581,15 @@ main.container.zindex-visible {
   margin-left: 0.5em;
 }
 
+.login-text {
+  display: none;
+}
+@media (min-width: 768px) {
+  .login-text {
+    display: inline;
+  }
+}
+
 .user-menu {
   border: 3px solid blue;
   display: none;
@@ -825,6 +835,12 @@ form textarea:focus {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  font-size: 1.25rem;
+}
+@media (min-width: 1024px) {
+  .password-container i {
+    font-size: 2rem;
+  }
 }
 
 .donation-form {
@@ -840,7 +856,16 @@ form textarea:focus {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  font-size: 1.25rem;
+}
+@media (min-width: 768px) {
+  .last-entry-container {
+    font-size: 1.125rem;
+  }
+}
+@media (min-width: 1024px) {
+  .last-entry-container {
+    font-size: 1.25rem;
+  }
 }
 
 .feedback-message {
@@ -945,9 +970,15 @@ form textarea:focus {
 
 .buttons-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 2.5em;
+  gap: 2em;
+}
+@media (min-width: 768px) {
+  .buttons-wrapper {
+    flex-direction: row;
+  }
 }
 .buttons-wrapper button {
   border: 2px solid #080222;
@@ -1082,6 +1113,9 @@ form textarea:focus {
   }
 }
 
+.user-graph-container .user-homepage-graph {
+  max-width: 100%;
+}
 @media (min-width: 768px) {
   .user-graph-container {
     padding: 2em 4em;

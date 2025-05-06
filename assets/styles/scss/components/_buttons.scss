@@ -56,7 +56,7 @@ button {
   gap: 10px;
   justify-content: center;
   align-items: center;
-  max-width: 400px;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -74,6 +74,7 @@ button {
   background-color: $light-beige;
   transition: background-color 0.3s ease-in-out;
   box-shadow: 5px 5px 0 $ink-night;
+  padding : 0;
 
   // font-weight: $medium;
   font-size: $f14;

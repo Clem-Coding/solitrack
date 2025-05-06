@@ -1,8 +1,13 @@
 .buttons-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 2.5em;
+  gap: 2em;
+
+  @include respond-to(tablet) {
+    flex-direction: row;
+  }
 
   & button {
     border: 2px solid $ink-night;
