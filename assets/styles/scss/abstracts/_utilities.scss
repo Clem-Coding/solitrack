@@ -43,3 +43,8 @@
 .state-ok {
   color: $state-ok-green;
 }
+
+.input-error {
+  border: 2.5px solid $alert-red;
+  outline: none;
+}

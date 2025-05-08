@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".donation-form");
   const weightInput = document.getElementById("donation_form_weight");
   const errorMessage = document.getElementById("error-message");
+  const lastEntrySection = document.querySelector("#last-entry-section");
   const lastEntryInfo = document.querySelector(".last-entry-info");
   const feedbackMessageElement = document.querySelector(".feedback-message");
   const isRecordJustBeaten = feedbackMessageElement?.getAttribute("data-record-achieved") === "true";
@@ -70,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       showError();
     } else {
+      // event.preventDefault();
+      lastEntrySection.scrollIntoView({ behavior: "smooth" });
       hideError();
     }
   }
