@@ -1,0 +1,41 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  justify-content: flex;
+  align-items: center;
+
+  width: 100%;
+
+  & .container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    background-color: $light-beige;
+  }
+
+  @include respond-to(desktop) {
+    .navbar {
+      margin-left: auto;
+    }
+  }
+}
+
+.logo-container img {
+  height: 5em;
+  width: auto;
+
+  // background-color: pink;
+}
+
+.user-link {
+  color: $ink-night;
+  font-size: 3em;
+}
+
+// .user-action a {
+//   display: flex;
+//   align-items: center;
+// }

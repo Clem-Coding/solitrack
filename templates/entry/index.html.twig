@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Les entrées
+{% endblock %}
+
+{% block content %}
+  <h1>Les Entrées</h1>
+
+  <div class="sections-container four-sections">
+    <section class="card category-selector">
+      <h2 class="sr-only">Sélection des catégories d'articles</h2>
+      <p>Quel article souhaitez-vous enregistrer ?</p>
+      <div class="buttons-container">
+        <button class="category-button" data-category="1">
+          <img
+            src="{{ asset('images/buttons/clothing-icon.svg') }}"
+            alt="icone avec deux t-shirts suspendus sur des cintres"
+          />
+          Vêtements
+        </button>
+        <button class="category-button" data-category="2">
+          <img src="{{ asset('images/buttons/books.svg') }}" alt="icone avec pile de livres" />Autres articles
+        </button>
+      </div>
+    </section>
+
+    <section class="card contained">
+      <h2 class="sr-only">Saisir un poids</h2>
+      {{ form_errors(form) }}
+      {{ form_start(form) }}
+      <div class="input-container">
+        {{ form_label(form.weight) }}
+        {{ form_widget(form.weight) }}
+        <span class="unit">kg</span>
+      </div>
+
+      {{ form_row(form.categoryId) }}
+      <button type="submit" class="button-primary">Enregistrer</button>
+      <p id="error-message" class="flash-error hide">Veuillez sélectionner une catégorie.</p>
+      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+      {{ form_end(form) }}
+    </section>
+
+    <section class="card contained" id="last-entry-section">
+      <h2>Dernière entrée</h2>
+
+      {% if app.flashes('success') %}
+        <p class="flash-success" role="note">Votre dernière entrée a bien été supprimée.</p>
+      {% else %}
+        {% if lastEntryName is not null %}
+          <div class="last-entry-container">
+            <p class="last-entry-info">{{ lastEntryName }} | {{ lastEntryWeight }} kg</p>
+            <form action="{{ path('app_entry_delete_last') }}" method="post">
+              <input type="hidden" name="_method" value="DELETE" />
+              <input type="hidden" name="_token" value="{{ csrf_token('delete') }}" />
+              <button type="submit" class="btn-cross-delete"><i class="ph ph-x-circle"></i></button>
+            </form>
+          </div>
+        {% else %}
+          {% if app.flashes('success') %}
+            <p class="flash-success">Votre dernière entrée a bien été supprimée.</p>
+          {% else %}
+            <p>Aucune donnée disponible dans la base de données.</p>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    </section>
+
+    {# <section class="card contained">
+      <h2 class="sr-only">Suivi du poids quotidien</h2>
+      <p class="feedback-message">
+        {% if totalWeightToday is null %}
+          Pas de données à l'horizon... mais ça ne va pas durer longtemps !
+        {% else %}
+          {{ feedbackMessage|raw }}
+        {% endif %}
+      </p>
+    </section> #}
+
+    <section class="card contained">
+      <h2 class="sr-only">Suivi du poids quotidien</h2>
+      <p class="feedback-message" data-record-achieved="{{ is_record_just_beaten ? 'true' : 'false' }}">
+        {% if totalWeightToday is null %}
+          Pas de données à l'horizon... mais ça ne va pas durer longtemps !
+        {% else %}
+          {{ feedbackMessage|raw }}
+        {% endif %}
+      </p>
+    </section>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/entries.js') }}" type="module"></script>
+{% endblock %}

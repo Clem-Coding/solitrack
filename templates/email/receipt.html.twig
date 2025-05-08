@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Votre reçu Les Fourmis Soli'Terre</title>
+  </head>
+  <body style="font-family: Arial, sans-serif; color: #333; margin: 0; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 8px;">
+      <div style="text-align: center;">
+        <img
+          src="{{ email.image('@images/logo.png') }}"
+          alt="Logo de l'association Soli'Terre représentant une fourmi forte et colorée"
+          style="width: 150px; height: auto;"
+        />
+      </div>
+
+      <h1 style="color: #2c3e50;">Bonjour,</h1>
+
+      <p>
+        Nous vous remercions pour l'achat de <strong>{{ total_amount }} €</strong> que vous venez d'effectuer au sein de
+        <strong>Les Fourmis Soli'Terre</strong>.
+      </p>
+
+      <p>Vous pouvez dès maintenant consulter votre ticket de caisse en pièce jointe.</p>
+
+      <p style="margin-top: 30px;">À très bientôt chez <strong>Les Fourmis Soli'Terre</strong> !</p>
+    </div>
+
+    <!-- Réseaux sociaux -->
+    <div style="text-align: center; margin-top: 40px;">
+      <h2 style="font-size: 18px; color: #2c3e50;">Nous suivre sur les réseaux</h2>
+
+      <a
+        href="https://www.instagram.com/lesfourmissoliterre/"
+        target="_blank"
+        aria-label="Instagram (nouvel onglet)"
+        title="Instagram"
+        style="display: inline-block; margin-right: 10px; border: none; text-decoration: none;"
+      >
+        <img
+          src="{{ email.image('@images/instagram-logo.svg') }}"
+          alt="Icône Instagram"
+          style="width: 30px; height: 30px; display: block;"
+        />
+      </a>
+      <a
+        href="https://www.facebook.com/p/Les-Fourmis-SoliTerre-100064740156911/"
+        target="_blank"
+        aria-label="Facebook (nouvel onglet)"
+        title="Facebook"
+        style="display: inline-block; margin-right: 10px; border: none; text-decoration: none;"
+      >
+        <img
+          src="{{ email.image('@images/facebook-logo.svg') }}"
+          alt="Icône Facebook"
+          style="width: 30px; height: 30px; display: block;"
+        />
+      </a>
+      <a
+        href="https://www.linkedin.com/company/les-fourmis-soli-terre/"
+        target="_blank"
+        aria-label="Linkedin (nouvel onglet)"
+        title="Linkedin"
+        style="display: inline-block; margin-right: 10px; border: none; text-decoration: none;"
+      >
+        <img
+          src="{{ email.image('@images/linkedin-logo.svg') }}"
+          alt="Icone de Linkedin"
+          style="width: 30px; height: 30px; display: block;"
+        />
+      </a>
+      <a
+        href="https://www.youtube.com/@lesfourmissoliterre6699"
+        target="_blank"
+        aria-label="Youtube (nouvel onglet)"
+        title="Youtube"
+        style="display: inline-block; margin-right: 10px; border: none; text-decoration: none;"
+      >
+        <img
+          src="{{ email.image('@images/youtube-logo.svg') }}"
+          alt="Icône Youtube"
+          style="width: 30px; height: 30px; display: block;"
+        />
+      </a>
+      <a
+        href="https://www.tiktok.com/@lesfourmissoli.terre?lang=fr"
+        target="_blank"
+        aria-label="TikTok (nouvel onglet)"
+        title="TikTok"
+        style="display: inline-block; border: none; text-decoration: none;"
+      >
+        <img
+          src="{{ email.image('@images/tiktok-logo.svg') }}"
+          alt="Icône TikTok"
+          style="width: 30px; height: 30px; display: block;"
+        />
+      </a>
+    </div>
+  </body>
+</html>
