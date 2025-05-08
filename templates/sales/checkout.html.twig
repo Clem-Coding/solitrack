@@ -39,7 +39,11 @@
 
       {# !mettre un token sur le formulaire! #}
       <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
-        <fieldset role="group">
+      <div class="form-group pwyw hidden">
+                <label for="pwyw_amount">Le poids des articles en vrac fait moins de 1kg.</label>
+                <input type="text" inputmode="decimal" id="pwyw_amount" name="pwyw_amount" placeholder="Entrez un montant prix libre"/>
+            </div>
+        <fieldset role="group" id="payment-method">
           <legend id="payment-method-heading" class="sr-only">Méthode de paiement</legend>
           <div class="buttons-wrapper">
             <button type="button" class="payment-button cart-button" data-method="card">

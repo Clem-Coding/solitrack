@@ -14,6 +14,7 @@ use App\Repository\DonationRepository;
 use App\Repository\SaleRepository;
 use App\Repository\SalesItemRepository;
 use App\Repository\VisitorRepository;
+use App\Repository\UserRepository;
 use App\Service\GeocoderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -100,10 +101,56 @@ final class DashboardController extends AbstractController
     }
 
     #[Route('/gestion-utilisateurs', name: 'app_dashboard_user_management')]
-    public function userManagement(): Response
+    public function userManagement(UserRepository $userRepository): Response
     {
-        return $this->render('dashboard/user_management.html.twig');
+        $users = $userRepository->findAll();
+      
+
+        return $this->render('dashboard/user_management.html.twig', [
+            'users' => $users,
+        ]);
     }
+
+
+    #[Route('/gestion-utilisateurs/{id}/role', name: 'app_user_role')]
+public function assignRole(int $id, Request $request, EntityManagerInterface $entityManager): Response
+{
+    $user = $entityManager->getRepository(User::class)->find($id);
+
+    if ($user) {
+        $newRole = $request->get('role');
+        
+        if ($newRole) {
+            $user->setRoles([$newRole]);
+            $entityManager->flush();
+            $this->addFlash('success', 'Rôle attribué avec succès.');
+        }
+    } else {
+        $this->addFlash('error', 'Utilisateur non trouvé.');
+    }
+
+    return $this->redirectToRoute('app_dashboard_user_management');
+}
+
+#[Route('/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
+public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
+{
+    // Récupérer l'utilisateur par ID
+    $user = $entityManager->getRepository(User::class)->find($id);
+
+    if ($user) {
+        // Supprimer l'utilisateur
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+    } else {
+        $this->addFlash('error', 'Utilisateur non trouvé.');
+    }
+
+    return $this->redirectToRoute('app_dashboard_user_management');
+}
+
 
 
     #[Route('/parametres', name: 'app_dashboard_settings')]

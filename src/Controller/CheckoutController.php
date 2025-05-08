@@ -81,6 +81,8 @@ class CheckoutController extends AbstractController
         $cashAmount = $request->get('cash_amount');
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
+        $pwywAmount = str_replace(',', '.', $pwywAmount);
+        // dd($pwywAmount);
         $zipcode = $request->get("zipcode");
         $shoppingCart = $session->get('shopping_cart', []);
 

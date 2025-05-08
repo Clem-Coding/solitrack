@@ -30,6 +30,8 @@
   border: 1px solid $grey-velvet;
   border-radius: 4px;
   padding: 0.5em 1em;
+  background-color: $emerald-sea;
+  background-color: rgba($emerald-sea, 0.1);
 
   .payment-details-container {
     flex: 1;
@@ -53,6 +55,10 @@
     padding: 0;
   }
 }
+
+// .form-group.pwyw {
+//   margin-bottom: 2em;
+// }
 
 .cart-button {
   background-color: $light-beige;

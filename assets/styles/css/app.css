@@ -120,6 +120,11 @@ fieldset {
   color: #1c8221;
 }
 
+.input-error {
+  border: 2.5px solid #e90c2d;
+  outline: none;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -999,6 +1004,8 @@ form textarea:focus {
   border: 1px solid #6e6d7a;
   border-radius: 4px;
   padding: 0.5em 1em;
+  background-color: #00857a;
+  background-color: rgba(0, 133, 122, 0.1);
 }
 .payment-group .payment-details-container {
   flex: 1;
