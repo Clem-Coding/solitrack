@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  La caisse
+{% endblock %}
+
+{% block content %}
+  <h1>La caisse</h1>
+  <div class="sections-container two-sections">
+    <section class="card contained">
+      <h2>Récapitulatif</h2>
+      {% for item in shopping_cart %}
+        <article
+          data-category="{{ item.category }}"
+          data-weight="{{ item.weight }}"
+          data-quantity="{{ item.quantity }}"
+          data-price="{{ item.price }}"
+        >
+          {% if item.category %}
+            <h3>{{ item.category }}</h3>
+          {% endif %}
+          {% if item.weight %}
+            <p>Poids : {{ item.weight }} kg</p>
+          {% endif %}
+          {% if item.quantity %}
+            <p>Quantité : {{ item.quantity }}</p>
+          {% endif %}
+          <p>Prix : <span class="data-price">{{ item.price ?? 0 }}</span> €</p>
+        </article>
+      {% else %}
+        <p>Le panier est vide.</p>
+      {% endfor %}
+      <p class="bold">Total : <span class="data-price">{{ total }}</span> €</p>
+      <button onclick="window.history.back()" class="button-rounded">Revenir en arrière</button>
+    </section>
+
+    <section class="card contained">
+      <h2>Paiement</h2>
+
+      {# !mettre un token sur le formulaire! #}
+      <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
+      <div class="form-group pwyw hidden">
+                <label for="pwyw_amount">Le poids des articles en vrac fait moins de 1kg.</label>
+                <input type="text" inputmode="decimal" id="pwyw_amount" name="pwyw_amount" placeholder="Entrez un montant prix libre"/>
+            </div>
+        <fieldset role="group" id="payment-method">
+          <legend id="payment-method-heading" class="sr-only">Méthode de paiement</legend>
+          <div class="buttons-wrapper">
+            <button type="button" class="payment-button cart-button" data-method="card">
+              <i class="ph ph-credit-card"></i> Carte
+            </button>
+            <button type="button" class="payment-button cart-button" data-method="cash">
+              <i class="ph ph-coins"></i>Espèce
+            </button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend id="payments-list-heading" class="sr-only">Paiements effectués</legend>
+          <ul class="payments-list"></ul>
+        </fieldset>
+
+        <fieldset>
+          <h3 class="remaining-title">Restant à payer</h3>
+          <p class="remaining-price"><span class="data-price remaining">{{ total }}</span> €</p>
+        </fieldset>
+
+        <fieldset class="transaction-options-fieldset">
+          <legend id="remaining-amount-heading" class="sr-only">Options de la transaction</legend>
+          <div class="buttons-wrapper">
+            <button class="keep-change-button cart-button" type="button">
+              <i class="ph ph-gift"></i>Garder la monnaie
+            </button>
+            <button type="button" class="cart-button receipt-button"><i class="ph ph-receipt"></i>Envoyer un reçu</button>
+          </div>
+          <label for="keep-change" class="sr-only">Garder la monnaie</label>
+          <input type="hidden" id="keep-change" class="keep-change-input" name="keep_change" />
+          <div class="form-group hidden">
+            <label for="email">Entrez l'adresse email :</label>
+            <input type="email" id="email" name="email" placeholder="example@mail.com"/>
+          </div>
+          <div class="form-group">
+            <label for="zipcode">Code-postal</label>
+            <input
+              type="text"
+              id="zipcode"
+              name="zipcode"
+              placeholder="22208"
+              maxlength="5"
+              pattern="\d{5}" 
+              title="Le code postal doit être composé de 5 chiffres"
+            />
+          </div>
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
+        </fieldset>
+        <button type="submit" class="register-sale-button button-primary">Finaliser la transaction</button>
+      </form>
+    </section>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/checkout.js') }}" type="module"></script>
+{% endblock %}

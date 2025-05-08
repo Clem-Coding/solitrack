@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Gestion des utilisateurs
+{% endblock %}
+
+{% block content %}
+
+    <h1>Gestion des utilisateurs</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.firstName }}</td>
+                    <td>{{ user.lastName }}</td>
+                    <td>
+                        <form action="{{ path('app_user_role', {id: user.id}) }}" method="post">
+                            <select name="role">
+                                <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Bénévole</option>
+                                <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
+      
+                                <option value="ROLE_VOLUNTEER_PLUS" {% if "ROLE_VOLUNTEER_PLUS" in user.roles %}selected{% endif %}>Bénévole + </option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Attribuer rôle</button>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

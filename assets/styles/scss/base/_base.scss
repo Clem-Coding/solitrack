@@ -1,0 +1,93 @@
+// @import "../abstracts/variables";
+// @import "../base/typography";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  font-family: $font-primary;
+  background-color: $light-beige;
+  color: $ink-night;
+  font-size: $f16;
+  @include respond-to(desktop) {
+    font-size: $f18;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: $font-secondary;
+}
+
+h1 {
+  font-size: $f32;
+  text-align: center;
+
+  @include respond-to(desktop) {
+    font-size: $f48;
+  }
+}
+
+h2 {
+  font-size: $f28;
+  text-align: center;
+
+  @include respond-to(desktop) {
+    font-size: $f32;
+  }
+}
+
+input {
+  border-radius: 4px;
+  border: 1px solid $ink-night;
+  // text-align: center;
+  padding: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+select {
+  border-radius: 4px;
+  border: 1px solid $ink-night;
+  padding: 0.75em;
+  // width: 100%;
+  font-size: inherit;
+
+  background-color: white;
+  cursor: pointer;
+}
+
+.ph {
+  font-size: 2rem;
+}
+
+// main.container {
+//   @include respond-to(tablet) {
+//     margin: 0 8em;
+//   }
+
+//   @include respond-to(desktop) {
+//     margin: auto;
+//   }
+// }
+
+.container {
+  padding: 1.25em;
+
+  @include respond-to(tablet) {
+    margin: 0 8em;
+    padding: 1.25em 0;
+  }
+
+  @include respond-to(desktop) {
+    max-width: $layout-max-width;
+    margin: auto;
+  }
+}

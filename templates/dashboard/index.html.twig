@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Le Tableau de bord
+{% endblock %}
+
+{% block content %}
+  <h1>Le tableau de bord</h1>
+
+  <div class="sections-container three-sections">
+    <section class="card">
+      <h2>Nombre de visiteurs</h2>
+      {{ form_start(form) }}
+      {{ form_errors(form) }}
+      <div class="form-group">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date) }}
+      </div>
+      <div class="form-group">
+        {{ form_label(form.count) }}
+        {{ form_widget(form.count) }}
+      </div>
+      <button type="submit" class="button-primary">Valider</button>
+      {{ form_end(form) }}
+      <div>{% include 'partials/flash.html.twig' %}</div>
+    </section>
+
+    <section class="card">
+      <h2>Les records</h2>
+      <p>
+        <span class="semi-bold">Entrées</span> : <span class="highlighted">
+          {{ recordsData['entry']['total_weight'] }} kg
+        </span>, le {{ recordsData['entry']['day'] }}
+      </p>
+
+      <p>
+        <span class="semi-bold">Sorties</span> : <span class="highlighted">
+          {{ recordsData['sales']['total_weight'] }} kg
+        </span>, le {{ recordsData['sales']['day'] }}
+      </p>
+
+      <p>
+        <span class="semi-bold">Visiteurs</span> : <span class="highlighted">
+          {{ recordsData['visitors']['count'] }}
+        </span>, le {{ recordsData['visitors']['day'] }}
+      </p>
+
+      <p>
+        <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">
+          {{ recordsData['sales_revenue']['total_price'] }} €
+        </span>, le {{ recordsData['sales_revenue']['day'] }}
+      </p>
+    </section>
+    <section class="card">
+      <h2>Carte des visiteurs</h2>
+      <div id="map" class="map-viewer"></div>
+      <div id="points-data" style="display: none;">{{ points|json_encode|raw }}</div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/visitors-map.js') }}"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+{% endblock %}

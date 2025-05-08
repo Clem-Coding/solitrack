@@ -1,0 +1,40 @@
+// @mixin respond-to($breakpoint) {
+//   @if $breakpoint == mobile {
+//     @media (max-width: 768px) {
+//       @content;
+//     }
+//   } @else if $breakpoint == tablet {
+//     @media (max-width: 1024px) {
+//       @content;
+//     }
+//   } @else if $breakpoint == desktop {
+//     @media (min-width: 1200px) {
+//       @content;
+//     }
+//   }
+// }
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == tablet {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == desktop {
+    @media (min-width: 1024px) {
+      @content;
+    }
+  }
+}
+
+// @mixin grid-layout($columns, $areas, $placements: ()) {
+//   display: grid;
+//   grid-template-columns: repeat($columns, 1fr);
+//   grid-template-areas: #{$areas};
+
+//   // On parcourt les placements pour affecter les bonnes zones aux bonnes sections
+//   @each $index, $area in $placements {
+//     & > section:nth-child(#{$index}) {
+//       grid-area: $area;
+//     }
+//   }
+// }

@@ -1,0 +1,106 @@
+button {
+  text-align: center;
+  border-radius: 4px;
+  padding: 0.7em;
+}
+
+.button-primary {
+  background-color: $ink-night;
+  // border: 2px solid $ink-night;
+  color: $cloud;
+  font-weight: $semi-bold;
+  // box-shadow: 4px 4px 0 $ink-night;
+
+  width: 100%;
+
+  &:hover {
+    background-color: $emerald-sea;
+    color: $cloud;
+    // border: 2px solid $ink-night;
+    // box-shadow: 6px 6px 0 $ink-night;
+  }
+}
+
+.button-secondary {
+  background-color: $cloud;
+  color: $ink-night;
+  border: 2px solid $ink-night;
+  font-weight: $bold;
+  // padding: 0.5em 2em;
+
+  i {
+    font-size: $f18;
+  }
+
+  &:hover {
+    border-color: $emerald-sea;
+    background-color: $light-beige;
+  }
+}
+
+.button-rounded {
+  border-radius: 25px; // Ici on applique l'arrondi
+  background-color: $cloud;
+  color: $ink-night;
+  border: 2px solid $ink-night;
+
+  &:hover {
+    border-color: $emerald-sea;
+    background-color: $light-beige;
+  }
+}
+
+.buttons-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  margin: auto;
+}
+
+.category-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  // padding: 0.3em;
+  border: 2px solid $ink-night;
+  border-radius: 7px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: $light-beige;
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 5px 5px 0 $ink-night;
+  padding : 0;
+
+  // font-weight: $medium;
+  font-size: $f14;
+
+  &:hover {
+    background-color: darken($light-beige, 5%);
+  }
+
+  & img {
+    width: 8em;
+    height: auto;
+    max-height: 50%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+}
+
+.category-button.active {
+  background-color: $bright-yellow;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+  transform: translateY(4px);
+}
+
+.btn-cross-delete {
+  padding: 0;
+  &:hover {
+    color: $coral;
+  }
+}
