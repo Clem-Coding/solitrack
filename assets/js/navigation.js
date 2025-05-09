@@ -114,3 +114,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
     toggleIconClassOnHover(footerIcons[index], "ph-duotone");
   });
 });
+
+// ==========================
+// USER ACCOUNT
+// ==========================
+
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const target = tab.dataset.tab;
+    document.querySelectorAll(".tab-content").forEach((content) => {
+      content.classList.add("hidden");
+    });
+    document.getElementById("tab-" + target).classList.remove("hidden");
+  });
+});

@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showError();
     } else {
       // event.preventDefault();
-      lastEntrySection.scrollIntoView({ behavior: "smooth" });
+      // lastEntrySection.scrollIntoView({ behavior: "smooth" });
       hideError();
     }
   }

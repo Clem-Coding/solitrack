@@ -11,13 +11,18 @@
 
 .card.contained {
   @include respond-to(tablet) {
-    padding: 2em 5em;
+    padding: 1.5em 5em;
   }
 }
 
 .card-shadow {
   @extend .card;
   position: relative;
+  margin-right: 0.875em;
+
+  @include respond-to(tablet) {
+    margin-right: 0;
+  }
 
   /* Carte principale avec ombre */
   input {

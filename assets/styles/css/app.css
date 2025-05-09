@@ -138,11 +138,6 @@ body {
   color: #080222;
   font-size: 1rem;
 }
-@media (min-width: 1024px) {
-  body {
-    font-size: 1.125rem;
-  }
-}
 
 h1,
 h2,
@@ -195,6 +190,11 @@ select {
 
 .container {
   padding: 1.25em;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 @media (min-width: 768px) {
   .container {
@@ -202,13 +202,33 @@ select {
     padding: 1.25em 0;
   }
 }
-@media (min-width: 1024px) {
+
+@media (min-width: 576px) {
   .container {
-    max-width: 1280px;
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
     margin: auto;
   }
 }
-
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
 button {
   text-align: center;
   border-radius: 4px;
@@ -274,7 +294,7 @@ button {
   background-color: #f9f5f2;
   transition: background-color 0.3s ease-in-out;
   box-shadow: 5px 5px 0 #080222;
-  padding: 0;
+  padding: 0.2em;
   font-size: 0.875rem;
 }
 .category-button:hover {
@@ -426,13 +446,19 @@ button {
 
 @media (min-width: 768px) {
   .card.contained, .contained.card-shadow {
-    padding: 2em 5em;
+    padding: 1.5em 5em;
   }
 }
 
 .card-shadow {
   position: relative;
+  margin-right: 0.875em;
   /* Carte principale avec ombre */
+}
+@media (min-width: 768px) {
+  .card-shadow {
+    margin-right: 0;
+  }
 }
 .card-shadow::before {
   content: "";
@@ -795,13 +821,6 @@ form textarea {
   border-radius: 4px;
   font-size: 1rem;
 }
-@media (min-width: 1024px) {
-  form input,
-  form select,
-  form textarea {
-    font-size: 1.125rem;
-  }
-}
 
 form input:focus,
 form select:focus,
@@ -1044,7 +1063,6 @@ form textarea:focus {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  margin-top: 2em;
 }
 
 .form-group.hidden {
@@ -1058,6 +1076,33 @@ form textarea:focus {
     margin-right: auto;
     padding: 2em;
   }
+}
+
+.tabs {
+  display: flex;
+  gap: 0.3em;
+}
+@media (min-width: 1024px) {
+  .tabs {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.tabs .tab {
+  flex: 1;
+  padding: 0.75em;
+  text-align: center;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: 1px solid #080222;
+  transition: background-color 0.3s, border-color 0.3s;
+  font-weight: 600;
+}
+.tabs .tab.active {
+  background-color: #ffcb52;
+  box-shadow: 4px 4px 0 #080222;
+  border: 1px solid #080222;
 }
 
 .map-viewer {

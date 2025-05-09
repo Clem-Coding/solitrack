@@ -7,7 +7,7 @@
 {% block content %}
 
     <h1>Gestion des utilisateurs</h1>
-
+<section class="card">
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">{{ message }}</div>
     {% endfor %}
@@ -49,4 +49,5 @@
             {% endfor %}
         </tbody>
     </table>
+    </section>
 {% endblock %}

@@ -13,9 +13,9 @@ body {
   background-color: $light-beige;
   color: $ink-night;
   font-size: $f16;
-  @include respond-to(desktop) {
-    font-size: $f18;
-  }
+  // @include respond-to(desktop) {
+  //   font-size: $f18;
+  // }
 }
 
 h1,
@@ -78,16 +78,63 @@ select {
 //   }
 // }
 
+// .container {
+//   padding: 1.25em;
+
+//   @include respond-to(tablet) {
+//     margin: 0 8em;
+//     padding: 1.25em 0;
+//   }
+
+//   @include respond-to(desktop) {
+//     max-width: $layout-max-width;
+//     margin: auto;
+//   }
+// }
+
+/////////////////////////////////////
+
 .container {
   padding: 1.25em;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
 
   @include respond-to(tablet) {
     margin: 0 8em;
     padding: 1.25em 0;
   }
+}
 
-  @include respond-to(desktop) {
-    max-width: $layout-max-width;
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
     margin: auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
   }
 }

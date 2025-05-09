@@ -6,60 +6,65 @@
 
 {% block content %}
   <h1>Mon compte</h1>
-
+  <div class="tabs">
+    <button class="tab active" data-tab="infos">Mes informations personnelles</button>
+    <button class="tab" data-tab="password">Modifier mon mot de passe</button>
+  </div>
   <section class="card-shadow auth" id="about">
     {{ form_start(form) }}
 
-    <div class="form-group">
-      {{ form_label(form.firstName) }}
-      {{ form_widget(form.firstName) }}
-      {% for error in form.firstName.vars.errors %}
-        <p role="note" class="flash-error">{{ error.message }}</p>
-      {% endfor %}
-    </div>
+    <div class="tab-content" id="tab-infos">
+      <div class="form-group">
+        {{ form_label(form.firstName) }}
+        {{ form_widget(form.firstName) }}
+        {% for error in form.firstName.vars.errors %}
+          <p class="flash-error">{{ error.message }}</p>
+        {% endfor %}
+      </div>
 
-    <div class="form-group">
-      {{ form_label(form.lastName) }}
-      {{ form_widget(form.lastName) }}
-      {% for error in form.lastName.vars.errors %}
-        <p role="note" class="flash-error">{{ error.message }}</p>
-      {% endfor %}
-    </div>
+      <div class="form-group">
+        {{ form_label(form.lastName) }}
+        {{ form_widget(form.lastName) }}
+        {% for error in form.lastName.vars.errors %}
+          <p class="flash-error">{{ error.message }}</p>
+        {% endfor %}
+      </div>
 
-    <div class="form-group">
-      {{ form_label(form.email) }}
-      {{ form_widget(form.email) }}
-      {% for error in form.email.vars.errors %}
-        <p role="note" class="flash-error">{{ error.message }}</p>
-      {% endfor %}
-    </div>
-
-    <div class="form-group">
-      <label for="{{ form.newPassword.first.vars.id }}">{{ form.newPassword.first.vars.label }}</label>
-      <div class="password-container">
-        {{ form_widget(form.newPassword.first) }}
-        <i class="ph ph-eye toggle-password"></i>
+      <div class="form-group">
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email) }}
+        {% for error in form.email.vars.errors %}
+          <p class="flash-error">{{ error.message }}</p>
+        {% endfor %}
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="{{ form.newPassword.second.vars.id }}">{{ form.newPassword.second.vars.label }}</label>
-      <div class="password-container">
-        {{ form_widget(form.newPassword.second) }}
-        <i class="ph ph-eye toggle-password"></i>
+    <div class="tab-content hidden" id="tab-password">
+      <div class="form-group">
+        <label for="{{ form.newPassword.first.vars.id }}">{{ form.newPassword.first.vars.label }}</label>
+        <div class="password-container">
+          {{ form_widget(form.newPassword.first) }}
+          <i class="ph ph-eye toggle-password"></i>
+        </div>
       </div>
 
-      {% for error in form.newPassword.first.vars.errors %}
-        <p role="note" class="flash-error">{{ error.message }}</p>
-      {% endfor %}
+      <div class="form-group">
+        <label for="{{ form.newPassword.second.vars.id }}">{{ form.newPassword.second.vars.label }}</label>
+        <div class="password-container">
+          {{ form_widget(form.newPassword.second) }}
+          <i class="ph ph-eye toggle-password"></i>
+        </div>
+
+        {% for error in form.newPassword.first.vars.errors %}
+          <p class="flash-error">{{ error.message }}</p>
+        {% endfor %}
+      </div>
     </div>
 
-    <button type="submit" class="button-primary">Modifier mes informations</button>
+    <button type="submit" class="button-primary">Sauvegarder</button>
 
     {{ form_end(form) }}
-
-    <div>{% include 'partials/flash.html.twig' %}</div>
   </section>
 
-  {% include 'partials/flash.html.twig' %}
+  <div>{% include 'partials/flash.html.twig' %}</div>
 {% endblock %}
