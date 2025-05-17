@@ -31,7 +31,7 @@ h1 {
   text-align: center;
 
   @include respond-to(desktop) {
-    font-size: $f48;
+    font-size: $f40;
   }
 }
 
@@ -102,21 +102,23 @@ select {
   padding-right: 1rem;
   padding-left: 1rem;
 
+  /// taille : 1200px
   @include respond-to(tablet) {
-    margin: 0 8em;
+    margin: auto;
     padding: 1.25em 0;
   }
 }
 
 @media (min-width: 576px) {
   .container {
-    max-width: 540px;
+    max-width: 500px;
   }
 }
 
 @media (min-width: 768px) {
   .container {
-    max-width: 720px;
+    max-width: 650px;
+    padding: 1.25em 2em;
   }
 }
 

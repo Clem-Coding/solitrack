@@ -24,19 +24,14 @@
     margin-right: 0;
   }
 
-  /* Carte principale avec ombre */
-  input {
-    // border: 2px solid $ink-night;
-    // background-color: $light-beige;
-  }
-
   &::before {
     content: "";
     position: absolute;
-    top: 12px; /* Décalage vers le bas */
-    left: 12px; /* Décalage vers la droite */
-    right: -14px; /* Décalage à droite */
-    bottom: -14px; /* Décalage vers le bas */
+    top: 0.875em;
+    left: 0.875em;
+    right: -0.875em;
+    bottom: -0.875em;
+
     background-color: $bright-yellow;
     border: 2px solid $ink-night;
     border-radius: 6px;

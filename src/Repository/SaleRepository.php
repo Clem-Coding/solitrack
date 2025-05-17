@@ -43,17 +43,20 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'MONTH(s.createdAt) AS month',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
+
             ->where('YEAR(s.createdAt) = :year')
             ->setParameter('year', $year)
             ->groupBy('month')
             ->orderBy('month', 'ASC');
 
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
@@ -66,10 +69,11 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'DAY(s.createdAt) AS day',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
+
             ->where('MONTH(s.createdAt) = :month')
             ->andWhere('YEAR(s.createdAt) = :year')
             ->setParameter('month', $month)
@@ -78,7 +82,9 @@ class SaleRepository extends ServiceEntityRepository
             ->orderBy('day', 'ASC');
 
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
@@ -92,21 +98,26 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'YEAR(s.createdAt) AS year',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
             ->groupBy('year')
             ->orderBy('year', 'ASC');
 
-
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
         return $qb->getQuery()->getResult();
     }
+
+
+
+
 
     // SELECT zipcode_customer, COUNT(*) AS visitorCount
     // FROM sales
