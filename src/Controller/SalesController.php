@@ -64,20 +64,14 @@ final class SalesController extends AbstractController
 
             $session->set('shopping_cart', $shoppingCart);
 
+            $total = $priceManagement->getCartTotal();
 
+            return $this->json([
+                'status' => 'success',
+                'cart' => $shoppingCart ?? [],
+                'total' => $total,
+            ]);
 
-
-            //à revoir XmLhttpRequest , supprimer?
-            if ($request->isXmlHttpRequest()) {
-                $total = $priceManagement->getCartTotal();
-                return $this->json([
-                    'status' => 'success',
-                    'cart' => $shoppingCart ?? [],
-                    'total' => $total,
-                ]);
-            }
-
-            $this->addFlash('success', 'Article ajouté au panier !');
 
             return $this->redirectToRoute('app_sales');
         }

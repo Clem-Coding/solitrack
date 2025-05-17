@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await response.json();
 
       createGraph(data.data);
-      // console.log("data", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
