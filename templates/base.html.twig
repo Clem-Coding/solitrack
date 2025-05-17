@@ -6,7 +6,7 @@
     <meta name="twitter:title" content="Soli'Track - Outil de gestion interne" />
     <meta
       name="description"
-      content="Outil de gestion de l'association Les Fourmi Soli'Terre, enregistrer et suivre les activités"
+      content="Soli'Track – outil interne de suivi des activités pour l'association Les Fourmi Soli'Terre."
     />
     <title>
       {% block title %}
@@ -106,19 +106,11 @@
           class="user-link"
         > #}
         {% if app.user %}
-          <div class="user-action">
+          <nav class="user-action">
+            <h1 class="sr-only">Menu utilisateur</h1>
             <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
-              {# <li>
-                <a
-                  href="{{ path('app_logout') }}"
-                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                >
-                  <i class="ph ph-sign-out"></i> Se déconnecter
-                </a>
-                <form id="logout-form" action="{{ path('app_logout') }}" method="post"></form>
-              </li> #}
               <li>
                 <a href="{{ path('app_logout') }}" id="logout-link"><i class="ph ph-sign-out"></i> Se déconnecter</a>
                 <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;">
@@ -126,14 +118,15 @@
                 </form>
               </li>
             </ul>
-          </div>
+          </nav>
         {% else %}
-          <div class="user-action">
+          <nav class="user-action">
+            <h1 class="sr-only">Menu utilisateur</h1>
             <a href="{{ path('app_login') }}" class="user-action">
               <i class="ph-light ph-user-circle user-icon-home" id="user-icon"></i>
               <span class="login-text">Se connecter</span>
             </a>
-          </div>
+          </nav>
         {% endif %}
       </div>
     </header>

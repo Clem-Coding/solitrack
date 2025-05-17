@@ -37,7 +37,6 @@
                             <select name="role">
                                 <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Bénévole</option>
                                 <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
-      
                                 <option value="ROLE_VOLUNTEER_PLUS" {% if "ROLE_VOLUNTEER_PLUS" in user.roles %}selected{% endif %}>Bénévole + </option>
                             </select>
                             <button type="submit" class="btn btn-primary">Attribuer rôle</button>
