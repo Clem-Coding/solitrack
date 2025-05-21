@@ -16,7 +16,7 @@ class GeocoderService
     public function geocodeByPostalCode(string $zipcode): ?array
     {
         return $this->cache->get('geocode_' . $zipcode, function (ItemInterface $item) use ($zipcode) {
-            $item->expiresAfter(3600); // 1h
+            $item->expiresAfter(86400);
 
             $url = 'https://api-adresse.data.gouv.fr/search/';
 

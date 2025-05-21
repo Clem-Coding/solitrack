@@ -35,9 +35,6 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $cardAmount = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $tip = null;
-
     #[Assert\Length(
         exactly: 5,
     )]
@@ -132,17 +129,6 @@ class Sale
         return $this;
     }
 
-    public function getTip(): ?string
-    {
-        return $this->tip;
-    }
-
-    public function setTip(?string $tip): static
-    {
-        $this->tip = $tip;
-
-        return $this;
-    }
 
     public function getZipcodeCustomer(): ?string
     {

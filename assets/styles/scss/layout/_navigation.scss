@@ -202,20 +202,22 @@ main.container {
 
   li {
     padding: 0.5em 1em;
-    border: 2px solid $ink-night;
-    border-radius: 4px;
-    box-shadow: 2px 2px 0 $ink-night;
+    border: 2px solid $grey;
+    border-radius: 8px;
+    box-shadow: 6px 6px 0 $grey;
     font-weight: $medium;
 
     &.active {
-      background-color: $emerald-sea;
-      color: $cloud;
-      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+      // box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+      border: 2px solid $emerald-sea;
+      box-shadow: 4px 4px 0 $emerald-sea;
       transform: translateY(4px);
     }
 
     &:hover {
-      background-color: darken($light-beige, 5%);
+      border: 2px solid $ink-night;
+      box-shadow: 6px 6px 0 $ink-night;
+      // background-color: darken($light-beige, 5%);
     }
 
     & a {
