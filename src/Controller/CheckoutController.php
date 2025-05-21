@@ -29,9 +29,10 @@ class CheckoutController extends AbstractController
 
         $form = $this->createForm(SaleType::class);
 
-        $shoppingCart = $session->get('shopping_cart', []);
-        // dd($shoppingCart);
-        $priceManagement->applyBulkPricingRule($shoppingCart);
+        // $shoppingCart = $session->get('shopping_cart', []);
+        $priceManagement->applyBulkPricingRule();
+        $shoppingCart = $session->get('shopping_cart');
+
 
 
         if (empty($shoppingCart)) {

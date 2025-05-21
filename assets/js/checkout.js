@@ -79,25 +79,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //_______________________REGLE POUR LE PRIX LIBRE DES ARTICLES VRAC DE MOINS DE 1KG__________________________________
 
+  //Vérfie les catégories vrac
+  function isBulkCategory(category) {
+    return category === "Vêtements vrac" || category === "Autres articles vrac";
+  }
+
+  //Vérfie les catégories à prix fixe
+  function isLabeledCategory(category) {
+    return category === "Boisson" || category === "Article étiqueté";
+  }
+
   function checkUnlabeledItemsWeight() {
     let totalWeight = 0;
-    let onlyDrinks = true;
+    let hasBulkItem = false;
 
-    salesItems.forEach((item) => {
-      const category = item.dataset.category;
-      const weight = item.dataset.weight;
+    //récupére les data attributs des articles du panier
+    salesItems.forEach(({ dataset }) => {
+      const { category, weight } = dataset;
 
-      if (category !== "Boisson") {
-        onlyDrinks = false;
+      //Si ya pas d'articles étiquetés, alors il y a au moins 1 article en vrac
+      if (!isLabeledCategory(category)) {
+        hasBulkItem = true;
       }
 
-      if (category === "Vêtements vrac" || category === "Autres articles vrac") {
+      //On incrémente le poids total avec uniquement les articles en vrac
+      if (isBulkCategory(category)) {
         totalWeight += Number(weight);
-        console.log("le total weight", totalWeight);
       }
     });
 
-    if (totalWeight < 1 && !onlyDrinks) {
+    //Si le poids total fait bien moins de 1 kilo et qu'il y au moins un article en vrac
+    if (totalWeight < 1 && hasBulkItem) {
       pwywAmountInput.parentElement.classList.remove("hidden");
 
       pwywAmountInput.addEventListener("input", () => {
