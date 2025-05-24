@@ -134,7 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleEmptyCart() {
     cartStatus.classList.add("text-center");
-    cartStatus.innerHTML = "Votre panier est vide.";
+    // cartStatus.innerHTML = "Votre panier est vide.";
+    cartStatus.textContent = "Votre panier est vide.";
     clearCartButton.classList.remove("show");
     clearCartButton.classList.add("hidden");
     checkoutButton.classList.add("hidden");
@@ -184,7 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
       cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
     } else {
       cartStatus.classList.add("text-center");
-      cartStatus.innerHTML = "Votre panier est vide.";
+      // cartStatus.innerHTML = "Votre panier est vide.";
+      cartStatus.textContent = "Votre panier est vide.";
     }
 
     if (cart.length === 0) {
@@ -329,7 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartDisplay(savedCart, totalAmount);
   } else {
     cartStatus.classList.add("text-center");
-    cartStatus.innerHTML = "Votre panier est vide.";
+    // cartStatus.innerHTML = "Votre panier est vide.";
+    cartStatus.textContent = "Votre panier est vide.";
   }
 
   clearCartButton.addEventListener("click", () => clearCart());

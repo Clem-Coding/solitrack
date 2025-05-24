@@ -55,7 +55,7 @@
                 <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
                 <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
-                {% if is_granted('ROLE_VOLONTEER_PLUS') or is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_VOLUNTEER_PLUS') %}
                   <li class="dropdown">
                     <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
                       Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
@@ -66,16 +66,8 @@
                         <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
                       </li>
                       <li>
-                        <a
-                          href="{{
-                          path(
-                            'app_dashboard_statistics',
-                            {
-                              category: 'articles'
-                            }
-                          )
-                          }}"
-                        >
+                        {# prettier-ignore-start #}
+                        <a href="{{ path('app_dashboard_statistics', {category: 'articles'} )}}">
                           <i class="ph ph-chart-bar"></i>Les statistiques
                         </a>
                       </li>
@@ -84,6 +76,7 @@
                           <i class="ph ph-storefront"></i> Contrôle de Caisse
                         </a>
                       </li>
+                         {# prettier-ignore-end #}
                       {% if is_granted('ROLE_ADMIN') %}
                         <li>
                           <a href="{{ path('app_dashboard_user_management') }}">

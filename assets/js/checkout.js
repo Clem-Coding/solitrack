@@ -178,8 +178,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (method === "cash") {
       paymentInput.name = "cash_amount"; // Pas de crochets []
     }
+    // const deleteButton = document.createElement("button");
+    // deleteButton.textContent = '<i class="ph ph-x-circle"></i>';
     const deleteButton = document.createElement("button");
-    deleteButton.innerHTML = '<i class="ph ph-x-circle"></i>';
+    const icon = document.createElement("i");
+    icon.classList.add("ph", "ph-x-circle");
+    deleteButton.appendChild(icon);
 
     deleteButton.classList.add("btn-cross-delete");
 

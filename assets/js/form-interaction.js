@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   eyeIcons.forEach((icon) => {
     icon.addEventListener("click", function () {
-      console.log("je clique sur un oeil");
       const passwordField = icon.previousElementSibling;
       if (passwordField.type === "password") {
         passwordField.type = "text";
