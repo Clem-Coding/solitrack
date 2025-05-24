@@ -58,8 +58,11 @@ final class SalesController extends AbstractController
                 'category' => $category->getName(),
                 'weight' => $salesItem->getWeight(),
                 'price' => $salesItem->getPrice(),
-                'quantity' => $quantity
+                'quantity' => $quantity,
+                'id' => $categoryId
             ];
+
+
 
 
             $session->set('shopping_cart', $shoppingCart);

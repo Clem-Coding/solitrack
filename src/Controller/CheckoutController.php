@@ -34,7 +34,6 @@ class CheckoutController extends AbstractController
         $shoppingCart = $session->get('shopping_cart');
 
 
-
         if (empty($shoppingCart)) {
             $this->addFlash('error', 'Votre panier est vide. Veuillez ajouter des articles avant de passer à la caisse.');
 
@@ -88,7 +87,7 @@ class CheckoutController extends AbstractController
         $shoppingCart = $session->get('shopping_cart', []);
         $customerCity = $request->get('city');
 
-
+        // dd($shoppingCart);
         $to = $request->get('email');
         if (!empty($to)) {
             $receiptMailer->sendReceipt($to);
