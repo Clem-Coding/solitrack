@@ -6,7 +6,7 @@ use App\Entity\SalesItem;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 
-class PriceManagement
+class PriceManagementService
 {
 
     public function __construct(protected RequestStack $requestStack,) {}
@@ -102,8 +102,6 @@ class PriceManagement
 
         // IMPORTANT : Libérer la référence pour éviter les bugs d'affichage
         unset($itemData);
-
-        // dump($shoppingCart);
 
         // Mise à jour du panier en session
         $session->set('shopping_cart', $shoppingCart);

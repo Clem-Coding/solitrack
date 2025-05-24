@@ -6,7 +6,7 @@ use App\Entity\SalesItem;
 use App\Form\SalesItemType;
 use App\Repository\CategoryRepository;
 use App\Repository\SalesItemRepository;
-use App\Service\PriceManagement;
+use App\Service\PriceManagementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ final class SalesController extends AbstractController
         Request $request,
         CategoryRepository $categoryRepository,
         SessionInterface $session,
-        PriceManagement $priceManagement
+        PriceManagementService $priceManagement
     ): Response {
 
         $salesItem = new SalesItem();
@@ -75,7 +75,6 @@ final class SalesController extends AbstractController
 
             return $this->redirectToRoute('app_sales');
         }
-
 
 
         return $this->render('sales/index.html.twig', [

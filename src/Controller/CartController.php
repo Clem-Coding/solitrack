@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\PriceManagement;
+use App\Service\PriceManagementService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -15,7 +15,7 @@ final class CartController extends AbstractController
 {
 
     #[Route('/cart/remove-item', name: 'app_cart_remove-item', methods: ['POST'])]
-    public function removeItem(Request $request, SessionInterface $session, PriceManagement $priceManagement)
+    public function removeItem(Request $request, SessionInterface $session, PriceManagementService $priceManagement)
     {
         try {
 

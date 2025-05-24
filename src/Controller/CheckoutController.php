@@ -7,7 +7,7 @@ use App\Entity\SalesItem;
 use App\Entity\Sale;
 use App\Entity\Category;
 use App\Form\SaleType;
-use App\Service\PriceManagement;
+use App\Service\PriceManagementService;
 use App\Service\ReceiptMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 class CheckoutController extends AbstractController
 {
     #[Route('/ventes/caisse', name: 'app_sale_checkout')]
-    public function index(SessionInterface $session, PriceManagement $priceManagement): Response
+    public function index(SessionInterface $session, PriceManagementService $priceManagement): Response
     {
 
 
@@ -57,7 +57,8 @@ class CheckoutController extends AbstractController
         SessionInterface $session,
         EntityManagerInterface $entityManager,
         CsrfTokenManagerInterface $csrfTokenManager,
-        ReceiptMailer $receiptMailer
+        ReceiptMailer $receiptMailer,
+        PriceManagementService $priceManagement
     ): Response {
 
         $token = $request->request->get('_csrf_token');
@@ -83,19 +84,13 @@ class CheckoutController extends AbstractController
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
-        // dd($pwywAmount);
         $zipcode = $request->get("zipcode");
         $shoppingCart = $session->get('shopping_cart', []);
 
-
-
         $to = $request->get('email');
-
         if (!empty($to)) {
             $receiptMailer->sendReceipt($to);
         }
-
-
 
         // à laisser au cas où, mais empecher de passer à la caisse si le panier est vide
         if (empty($shoppingCart)) {
@@ -103,6 +98,8 @@ class CheckoutController extends AbstractController
             return $this->redirectToRoute('app_sales');
         }
 
+        // $totalPrice = 0;
+        $totalPrice = $priceManagement->getCartTotal();
 
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
@@ -111,8 +108,9 @@ class CheckoutController extends AbstractController
         $sale->setKeepChange($keepChangeAmount) ?? null;
         $sale->setPWYWAmount($pwywAmount) ?? null;
         $sale->setZipcodeCustomer($zipcode) ?? null;
+        $sale->setTotalPrice($totalPrice);
 
-        $totalPrice = 0;
+
 
         foreach ($shoppingCart as $itemData) {
             $salesItem = new SalesItem();
@@ -133,17 +131,19 @@ class CheckoutController extends AbstractController
 
             $sale->addSalesItem($salesItem);
 
-            $itemPrice = $salesItem->getPrice();
+            // $itemPrice = $salesItem->getPrice();
 
-            //A faire : if tip condition pour ne pas ajouter le poids si prix libre donné
-            if ($itemPrice !== null) {
-                $totalPrice += $itemPrice;
-            }
+            // //A faire : if tip condition pour ne pas ajouter le poids si prix libre donné
+            // if ($itemPrice !== null) {
+            //     $totalPrice += $itemPrice;
+            // }
+
+
             $entityManager->persist($salesItem);
         }
 
 
-        $sale->setTotalPrice($totalPrice);
+
 
         $entityManager->persist($sale);
         $entityManager->flush();

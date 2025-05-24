@@ -8,7 +8,7 @@ namespace App\Service;
 use App\Repository\SaleRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use App\Service\PriceManagement;
+use App\Service\PriceManagementService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use TCPDF;
 
@@ -18,7 +18,7 @@ class ReceiptMailer
 
     public function __construct(
         private MailerInterface $mailer,
-        private PriceManagement $priceManagement,
+        private PriceManagementService $priceManagement,
         private RequestStack $requestStack,
         private SaleRepository $saleRepository
     ) {}
