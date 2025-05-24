@@ -310,6 +310,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================
+  // FETCH CITIES - API GOUV
+  // ==========================
+  const zipcodeInput = document.getElementById("zipcode");
+  const citySelect = document.getElementById("city-select");
+
+  async function fetchCitiesByZip(zipcode) {
+    if (!/^\d{5}$/.test(zipcode)) {
+      citySelect.innerHTML = '<option value="">Code postal invalide</option>';
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${zipcode}&type=municipality&limit=20`);
+      const data = await response.json();
+
+      const cities = data.features.map((f) => f.properties.city).filter((v, i, a) => v && a.indexOf(v) === i); // éviter les doublons
+
+      if (cities.length === 0) {
+        citySelect.innerHTML = '<option value="">Aucune ville trouvée</option>';
+      } else {
+        citySelect.innerHTML = cities.map((city) => `<option value="${city}">${city}</option>`).join("");
+      }
+    } catch (err) {
+      console.error(err);
+      citySelect.innerHTML = '<option value="">Erreur lors du chargement</option>';
+    }
+  }
+
+  zipcodeInput.addEventListener("blur", () => {
+    const zip = zipcodeInput.value.trim();
+    fetchCitiesByZip(zip);
+  });
+
+  // ==========================
   // 🖱️ EVENT LISTENERS
   // ==========================
 

@@ -57,6 +57,9 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $pwywAmount = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customer_city = null;
+
     public function __construct()
     {
         $this->salesItems = new ArrayCollection();
@@ -192,6 +195,18 @@ class Sale
     public function setPwywAmount(?string $pwywAmount): static
     {
         $this->pwywAmount = $pwywAmount;
+
+        return $this;
+    }
+
+    public function getCustomerCity(): ?string
+    {
+        return $this->customer_city;
+    }
+
+    public function setCustomerCity(?string $customer_city): static
+    {
+        $this->customer_city = $customer_city;
 
         return $this;
     }

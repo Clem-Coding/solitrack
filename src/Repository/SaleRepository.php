@@ -123,16 +123,43 @@ class SaleRepository extends ServiceEntityRepository
     // FROM sales
     // WHERE zipcode_customer IS NOT NULL AND zipcode_customer != ''
     // GROUP BY zipcode_customer;
-    public function countVisitorsByZipcode(): array
+    // public function countVisitorsByZipcode(): array
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->select('s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
+    //         ->where('s.zipcodeCustomer IS NOT NULL')
+    //         ->andWhere('s.zipcodeCustomer != \'\'')
+    //         ->groupBy('s.zipcodeCustomer')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+
+    // public function countVisitorsByCity(): array
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->select('s.customer_city AS city, COUNT(s.id) AS visitorCount')
+    //         ->where('s.customer_city IS NOT NULL')
+    //         ->andWhere('s.customer_city != \'\'')
+    //         ->groupBy('s.customer_city')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+    public function countVisitorsByCity(): array
     {
         return $this->createQueryBuilder('s')
-            ->select('s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
-            ->where('s.zipcodeCustomer IS NOT NULL')
+            ->select('s.customer_city AS city, s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
+            ->where('s.customer_city IS NOT NULL')
+            ->andWhere('s.customer_city != \'\'')
+            ->andWhere('s.zipcodeCustomer IS NOT NULL')
             ->andWhere('s.zipcodeCustomer != \'\'')
-            ->groupBy('s.zipcodeCustomer')
+            ->groupBy('s.customer_city, s.zipcodeCustomer')
             ->getQuery()
             ->getResult();
     }
+
+
 
 
     // SET lc_time_names = 'fr_FR';

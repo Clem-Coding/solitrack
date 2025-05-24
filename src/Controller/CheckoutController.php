@@ -86,6 +86,8 @@ class CheckoutController extends AbstractController
         $pwywAmount = str_replace(',', '.', $pwywAmount);
         $zipcode = $request->get("zipcode");
         $shoppingCart = $session->get('shopping_cart', []);
+        $customerCity = $request->get('city');
+
 
         $to = $request->get('email');
         if (!empty($to)) {
@@ -109,6 +111,7 @@ class CheckoutController extends AbstractController
         $sale->setPWYWAmount($pwywAmount) ?? null;
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setTotalPrice($totalPrice);
+        $sale->setCustomerCity($customerCity ?? null);
 
 
 

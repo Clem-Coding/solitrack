@@ -39,10 +39,16 @@
 
       {# !mettre un token sur le formulaire! #}
       <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
-      <div class="form-group pwyw hidden">
-                <label for="pwyw_amount">Le poids des articles en vrac fait moins de 1kg.</label>
-                <input type="text" inputmode="decimal" id="pwyw_amount" name="pwyw_amount" placeholder="Entrez un montant prix libre"/>
-            </div>
+        <div class="form-group pwyw hidden">
+          <label for="pwyw_amount">Le poids des articles en vrac fait moins de 1kg.</label>
+          <input
+            type="text"
+            inputmode="decimal"
+            id="pwyw_amount"
+            name="pwyw_amount"
+            placeholder="Entrez un montant prix libre"
+          />
+        </div>
         <fieldset role="group" id="payment-method">
           <legend id="payment-method-heading" class="sr-only">Méthode de paiement</legend>
           <div class="buttons-wrapper">
@@ -70,25 +76,29 @@
             <button class="keep-change-button button-grey-shadow" type="button">
               <i class="ph ph-gift"></i>Garder la monnaie
             </button>
-            <button type="button" class="button-grey-shadow receipt-button"><i class="ph ph-receipt"></i>Envoyer un reçu</button>
+            <button type="button" class="button-grey-shadow receipt-button">
+              <i class="ph ph-receipt"></i>Envoyer un reçu
+            </button>
           </div>
           <label for="keep-change" class="sr-only">Garder la monnaie</label>
           <input type="hidden" id="keep-change" class="keep-change-input" name="keep_change" />
           <div class="form-group hidden">
             <label for="email">Entrez l'adresse email :</label>
-            <input type="email" id="email" name="email" placeholder="example@mail.com"/>
+            <input type="email" id="email" name="email" placeholder="example@mail.com" />
           </div>
+
           <div class="form-group">
-            <label for="zipcode">Code-postal</label>
+            <label for="zipcode">Code postal</label>
             <input
               type="text"
               id="zipcode"
               name="zipcode"
-              placeholder="22208"
+              placeholder="22830"
               maxlength="5"
-              pattern="\d{5}" 
+              pattern="^\d{5}$"
               title="Le code postal doit être composé de 5 chiffres"
             />
+            <select id="city-select" name="city"><option value="">Choisissez une ville</option></select>
           </div>
 
           <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
