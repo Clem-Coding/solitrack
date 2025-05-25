@@ -37,7 +37,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?!.*\s).{8,4096}$/',
-                        'message' => 'Votre mot de passe doit contenir au moins 8 caractères, avec une majuscule, un chiffre et un caractère spécial.',
+                        'message' => 'Votre mot de passe doit contenir au moins 8 caractères, avec une majuscule,
+                         un chiffre et un caractère spécial.',
                     ]),
                     new NotCompromisedPassword([
                         'message' => 'Ce mot de passe a été compromis dans une fuite de données. Veuillez en choisir un autre.',

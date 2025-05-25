@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("totalAmount", data.total);
         localStorage.setItem("cart", JSON.stringify(data.cart));
       } else {
+        showFormErrors(data.errors);
         console.error("Error", data.message);
       }
     } catch (error) {
@@ -124,6 +125,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
+
+  function showFormErrors(errors) {
+    for (const [fieldName, messages] of Object.entries(errors)) {
+      const field = form.querySelector(`[name="sales_item[${fieldName}]"]`);
+      if (field) {
+        const errorDiv = document.createElement("p");
+        errorDiv.classList.add("flash-error");
+        errorDiv.setAttribute("role", "note");
+        errorDiv.textContent = messages.join(", ");
+        form.appendChild(errorDiv);
+      }
+    }
+  }
 
   function scrollIntoViewAdjusted(elem, offset = 0) {
     window.scrollBy({

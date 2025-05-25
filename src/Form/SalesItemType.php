@@ -10,6 +10,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 
 class SalesItemType extends AbstractType
 {
@@ -38,7 +42,9 @@ class SalesItemType extends AbstractType
                     "class" => "hidden",
                     "id" => "quantity-input"
                 ],
+
             ])
+
             ->add('categoryId', HiddenType::class, [
                 'mapped' => false,
 
@@ -52,9 +58,16 @@ class SalesItemType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SalesItem::class,
-            'attr' => [
-                'class' => 'sales-form',
-            ]
+            'attr' => ['class' => 'sales-form'],
+            'category_id' => null,
+            'validation_groups' => function (Options $options) {
+                return match ($options['category_id']) {
+                    1, 2 => ['Default', 'category_1_2'],
+                    3 => ['Default', 'category_3'],
+                    4 => ['Default', 'category_4'],
+                    default => ['Default'],
+                };
+            },
         ]);
     }
 }

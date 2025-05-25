@@ -37,8 +37,9 @@
     </section>
     <section class="card sales-card contained">
       <h2 class="sr-only">Formulaire de Saisie</h2>
-      {{ form_errors(form) }}
+
       {{ form_start(form) }}
+
       <div class="input-container" id="weight-input">
         {{ form_label(form.weight) }}
         {{ form_widget(form.weight) }}
@@ -54,8 +55,10 @@
         <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
         {{ form_label(form.quantity) }}
         {{ form_widget(form.quantity) }}
+
         <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
       </div>
+
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
       {{ form_end(form) }}
     </section>

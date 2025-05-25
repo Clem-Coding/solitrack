@@ -119,15 +119,27 @@ document.addEventListener("DOMContentLoaded", function (e) {
 // USER ACCOUNT
 // ==========================
 
-document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
-    tab.classList.add("active");
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
 
-    const target = tab.dataset.tab;
-    document.querySelectorAll(".tab-content").forEach((content) => {
-      content.classList.add("hidden");
+  // Restaurer l'onglet actif
+  const savedTab = localStorage.getItem("activeTab") || "infos";
+  activateTab(savedTab);
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+      localStorage.setItem("activeTab", target);
+      activateTab(target);
     });
-    document.getElementById("tab-" + target).classList.remove("hidden");
   });
+
+  function activateTab(name) {
+    tabs.forEach((t) => t.classList.remove("active"));
+    document.querySelector(`.tab[data-tab="${name}"]`)?.classList.add("active");
+
+    contents.forEach((content) => content.classList.add("hidden"));
+    document.getElementById("tab-" + name)?.classList.remove("hidden");
+  }
 });

@@ -27,8 +27,9 @@
 
     <section class="card contained">
       <h2 class="sr-only">Saisir un poids</h2>
-      {{ form_errors(form) }}
+
       {{ form_start(form) }}
+
       <div class="input-container">
         {{ form_label(form.weight) }}
         {{ form_widget(form.weight) }}
@@ -38,7 +39,9 @@
       {{ form_row(form.categoryId) }}
       <button type="submit" class="button-primary">Enregistrer</button>
       <p id="error-message" class="flash-error hide">Veuillez sélectionner une catégorie.</p>
-      {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+      {% for error in form.weight.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
       {{ form_end(form) }}
     </section>
 

@@ -21,15 +21,19 @@ class DonationRepository extends ServiceEntityRepository
         parent::__construct($registry, Donation::class);
     }
 
+    //An exemple of MySQL native query adaptation to retrieve the total weight of donations for today:
+    // SELECT SUM(weight) AS total_weight
+    // FROM donations
+    // WHERE created_at >= CURDATE();
 
     public function getTotalWeightForToday(): ?float
     {
         return $this->createQueryBuilder('d')
             ->select('SUM(d.weight) as total_weight')
-            ->where('d.createdAt >= :today') // >= s'assure que ce soit à partir de minuit et toute la journée et pas uniquement minuit
+            ->where('d.createdAt >= :today')
             ->setParameter('today', new \DateTime('today'))
             ->getQuery()
-            ->getSingleScalarResult(); // renvoit une valeur scalaire qui est une valeur "simple" et pas un tableau ou un objet ou collection, utile dans le cas du poids total
+            ->getSingleScalarResult();
     }
 
     // Définition wikipedia :"On parle aussi de valeur ou de variable scalaire pour désigner une valeur ou un contenant 
@@ -37,6 +41,14 @@ class DonationRepository extends ServiceEntityRepository
     //Un entier, un nombre flottant sont des valeurs atomiques. Un tableau ou une table associative sont des valeurs composites. 
     //Une valeur composite est une structure de données composée récursivement ou non de valeurs scalaires.
     // Une chaîne de caractères peut être considérée comme un tableau ou une valeur scalaire selon le langage de programmation."
+
+
+    //Example MySQL native query adaptation to retrieve the latest donation entry:
+    // SELECT d.id, d.weight, c.name AS categoryName
+    // FROM donations d
+    // LEFT JOIN categories c ON d.category_id = c.id
+    // ORDER BY d.created_at DESC
+    // LIMIT 1;
 
 
     public function getLatestEntry(): ?array

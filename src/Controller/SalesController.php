@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Form\FormInterface;
+
 
 #[IsGranted('IS_AUTHENTICATED')]
 final class SalesController extends AbstractController
@@ -30,7 +32,18 @@ final class SalesController extends AbstractController
 
         $salesItem = new SalesItem();
 
-        $form = $this->createForm(SalesItemType::class, $salesItem);
+
+
+        $categoryId = null;
+
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all()['sales_item'] ?? [];
+            $categoryId = $formData['categoryId'] ?? null;
+        }
+
+        $form = $this->createForm(SalesItemType::class, $salesItem, [
+            'category_id' => (int) $categoryId,
+        ]);
         $form->handleRequest($request);
 
 
@@ -76,8 +89,22 @@ final class SalesController extends AbstractController
             ]);
 
 
-            return $this->redirectToRoute('app_sales');
+            // return $this->redirectToRoute('app_sales');
+        } else if ($form->isSubmitted()) {
+            $errors = [];
+
+            foreach ($form->all() as $child) {
+                foreach ($child->getErrors(true) as $error) {
+                    $errors[$child->getName()][] = $error->getMessage();
+                }
+            }
+
+            return $this->json([
+                'status' => 'error',
+                'errors' => $errors,
+            ], 400);
         }
+
 
 
         return $this->render('sales/index.html.twig', [
