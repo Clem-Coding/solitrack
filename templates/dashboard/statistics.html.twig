@@ -7,7 +7,7 @@
     <ul class="sidebar">
       <li class="{% if category == 'articles' %}active{% endif %}">
           <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">
-              <i class="ph ph-handbag"></i>
+              <i class="ph ph-handbag menu-icon"></i>
               <span class="menu-text">Articles</span>
           </a>
       </li>
@@ -52,14 +52,14 @@
         <select id="filter-type" name="item">
           <option value="incoming">Articles entrants</option>
           <option value="outgoing">Articles sortants</option>
-          <option value="Entrants et sortants">Articles entrants et sortants</option>
+          <option value="both">Articles entrants et sortants</option>
         </select>
       {% elseif category == 'vetements' %}
         <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
         <select id="filter-type" name="clothing">
           <option value="incoming">Vêtements entrants</option>
           <option value="outgoing">Vêtements sortants</option>
-          <option value="oiseau">Vêtements entrants et sortants</option>
+          <option value="both">Vêtements entrants et sortants</option>
         </select>
       {% elseif category == 'ventes' %}
         <label for="filter-type" class="hidden">Sélectionner une catégorie</label>

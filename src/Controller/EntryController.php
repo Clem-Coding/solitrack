@@ -7,7 +7,7 @@ use App\Entity\Donation;
 use App\Form\DonationFormType;
 use App\Repository\CategoryRepository;
 use App\Repository\DonationRepository;
-use App\Service\FeedbackMessages;
+use App\Service\FeedbackMessagesService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +28,7 @@ final class EntryController extends AbstractController
         EntityManagerInterface $entityManager,
         CategoryRepository $categoryRepository,
         DonationRepository $donationRepository,
-        FeedbackMessages $feedbackMessage,
+        FeedbackMessagesService $feedbackMessage,
         SessionInterface $session
     ): Response {
 
@@ -43,6 +43,8 @@ final class EntryController extends AbstractController
             $category = $categoryRepository->find($categoryId);
 
             $totalWeightToday = $donationRepository->getTotalWeightForToday();
+
+
             if (!empty($category)) {
                 $donation->setCategory($category);
             }
@@ -68,13 +70,11 @@ final class EntryController extends AbstractController
         $isRecordJustBeaten = false;
 
         $feedback = $feedbackMessage->getRandomFeedbackMessage();
-        // dd($feedback['totalWeight']);
-
 
         $isRecordJustBeaten = false;
         if ($feedback['totalWeight'] >= $recordWeight && !$session->get('recordBeaten', false)) {
             $isRecordJustBeaten = true;
-            $session->set('recordBeaten', true);  // Marquer que le record a été battu
+            $session->set('recordBeaten', true);
         }
 
         return $this->render('entry/index.html.twig', [
@@ -103,7 +103,7 @@ final class EntryController extends AbstractController
     public function deleteLastEntry(
         DonationRepository $donationRepository,
         EntityManagerInterface $entityManager,
-        FeedbackMessages $feedbackMessage,
+        FeedbackMessagesService $feedbackMessage,
         SessionInterface $session
     ): Response {
 

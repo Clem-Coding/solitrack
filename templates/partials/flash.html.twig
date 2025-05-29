@@ -1,8 +1,3 @@
-{# {% for type, messages in app.flashes %}
-  <div role="alert" class="flash flash-{{ type }}">{{ messages|join('.') }}</div>
-{% endfor %} #}
-
-{# templates/partials/flash.html.twig #}
 {% for type, messages in app.flashes %}
   {% for message in messages %}
     <div role="alert" class="flash flash-{{ type }}">{{ message }}</div>

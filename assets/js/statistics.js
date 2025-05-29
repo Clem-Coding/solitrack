@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const yearPicker = document.querySelector("#year-picker");
   const monthSelect = document.querySelector("#month");
   const yearInput = document.querySelector("#year");
-  const sidebarButtons = document.querySelectorAll(".sidebar li");
-  console.log(sidebarButtons);
-
   const apiUrl = "/api/statistiques/";
   let chartInstance = null;
 
@@ -21,10 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
 
   async function fetchData(category, type, period, year = null, month = null) {
-    console.log(
-      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
-    );
-
     try {
       let url = `${apiUrl}?period=${period}&category=${category}&type=${type}`;
 
@@ -40,7 +33,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const data = await response.json();
 
       createGraph(data.data);
-      // console.log("data", data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }
@@ -67,7 +59,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleYearChange() {
     yearPicker.addEventListener("change", () => {
       const selectedYear = yearInput.value;
-      // console.log("Selected year:", selectedYear);
       sendToAPI(filterPeriod.value, filterType.value, selectedYear);
     });
   }
@@ -75,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleMonthChange() {
     monthPicker.addEventListener("change", () => {
       const selectedMonth = monthSelect.value;
-      // console.log("Selected month:", selectedMonth);
       sendToAPI(filterPeriod.value, filterType.value, null, selectedMonth);
     });
   }
@@ -86,9 +76,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const year = yearInput.value;
     const month = monthSelect.value;
     let category = getCategoryFromPath();
-    // console.log(
-    //   `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, month: ${month}`
-    // );
     fetchData(category, type, period, year, month);
   }
 
@@ -111,7 +98,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   function getCategoryFromPath() {
     const path = window.location.pathname;
     const parts = path.split("/");
-    // Supposons que la catégorie est toujours le dernier segment de l'URL
+
+    // Category is the last part of the path
     return parts[parts.length - 1];
   }
 
@@ -140,14 +128,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     ];
 
     const category = getCategoryFromPath();
-
     let yearFromMonthlySlection = yearInput.value;
 
     const period = filterPeriod.value;
+    const type = filterType.value;
+
     const [year, month] = monthSelect.value.split("-");
     const days = getDaysInMonth(year, month);
 
-    const formattedData = data.map((item) => {
+    // Data Formatting
+
+    let formattedData;
+
+    if (type === "both") {
+      formattedData = {
+        incoming: data.incoming.map(formatItem),
+        outgoing: data.outgoing.map(formatItem),
+      };
+    } else {
+      formattedData = data.map(formatItem);
+    }
+
+    function formatItem(item) {
       if (category === "visiteurs" && period === "yearly") {
         return Number(item.totalData);
       } else if (category === "visiteurs") {
@@ -157,27 +159,56 @@ document.addEventListener("DOMContentLoaded", async function () {
       } else {
         return Number(item).toFixed(2);
       }
-    });
+    }
 
-    // console.log("LES DONNEES FORMATEES!!!!", formattedData);
+    // Config Datasets
+    let datasets;
 
+    if (type === "both") {
+      datasets = [
+        {
+          label: "Total des poids entrants",
+          data: formattedData.incoming,
+          backgroundColor: "#EB5A47",
+        },
+        {
+          label: "Total des poids sortants",
+          data: formattedData.outgoing,
+          backgroundColor: "#00857a",
+        },
+      ];
+    } else {
+      datasets = [
+        {
+          label: "Total des poids",
+          data: formattedData,
+          backgroundColor: "#EB5A47",
+        },
+      ];
+    }
+
+    //Config Labels
+    let labels;
+
+    if (period === "yearly") {
+      labels = (type === "both" ? data.incoming : data).map((item) => item.year);
+    } else if (period === "monthly") {
+      labels = months;
+    } else {
+      labels = days;
+    }
+
+    //remove the previous chart instance if it exists because Chart.js does not support re-rendering the same canvas element
     if (chartInstance) {
       chartInstance.destroy();
     }
 
+    // Create the chart instance
     chartInstance = new Chart(document.getElementById("acquisitions"), {
       type: "bar",
       data: {
-        labels: period === "yearly" ? data.map((item) => item.year) : period === "monthly" ? months : days,
-        datasets: [
-          {
-            // label: "Total des poids entrants",
-            data: formattedData,
-            backgroundColor: "#EB5A47",
-            // borderColor: "#080222",
-            // borderWidth: 2,
-          },
-        ],
+        labels: labels,
+        datasets: datasets,
       },
       options: {
         responsive: true,
@@ -210,19 +241,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             },
           },
           legend: {
-            display: false, // affichage du carré de couleur légende
+            display: category === "vetements" || category === "articles",
           },
         },
       },
     });
   }
-
-  // sidebarButtons.forEach((button) => {
-  //   button.addEventListener("click", (event) => {
-  //     console.log("jeclique");
-  //     setActiveSidebarButton(event);
-  //   });
-  // });
 
   // ==========================
   // 🚀 INITIALIZATION

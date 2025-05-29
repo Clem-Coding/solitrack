@@ -6,7 +6,7 @@
     <meta name="twitter:title" content="Soli'Track - Outil de gestion interne" />
     <meta
       name="description"
-      content="Outil de gestion de l'association Les Fourmi Soli'Terre, enregistrer et suivre les activités"
+      content="Soli'Track – outil interne de suivi des activités pour l'association Les Fourmi Soli'Terre."
     />
     <title>
       {% block title %}
@@ -55,7 +55,7 @@
                 <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
                 <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
-                {% if is_granted('ROLE_VOLONTEER_PLUS') or is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_VOLUNTEER_PLUS') %}
                   <li class="dropdown">
                     <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
                       Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
@@ -66,16 +66,7 @@
                         <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
                       </li>
                       <li>
-                        <a
-                          href="{{
-                          path(
-                            'app_dashboard_statistics',
-                            {
-                              category: 'articles'
-                            }
-                          )
-                          }}"
-                        >
+                        <a href="{{ path('app_dashboard_statistics', {category: 'articles'} )}}">
                           <i class="ph ph-chart-bar"></i>Les statistiques
                         </a>
                       </li>
@@ -83,7 +74,7 @@
                         <a href="{{ path('app_dashboard_cash_reconciliation') }}">
                           <i class="ph ph-storefront"></i> Contrôle de Caisse
                         </a>
-                      </li>
+                      </li>               
                       {% if is_granted('ROLE_ADMIN') %}
                         <li>
                           <a href="{{ path('app_dashboard_user_management') }}">
@@ -100,25 +91,12 @@
           {% endblock %}
         {% endif %}
 
-        {# <a
-          href="{{ app.user ? path('app_user_homepage') : path('app_login') }}"
-          aria-label="Se connecter"
-          class="user-link"
-        > #}
         {% if app.user %}
-          <div class="user-action">
+          <nav class="user-action">
+            <h1 class="sr-only">Menu utilisateur</h1>
             <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
-              {# <li>
-                <a
-                  href="{{ path('app_logout') }}"
-                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                >
-                  <i class="ph ph-sign-out"></i> Se déconnecter
-                </a>
-                <form id="logout-form" action="{{ path('app_logout') }}" method="post"></form>
-              </li> #}
               <li>
                 <a href="{{ path('app_logout') }}" id="logout-link"><i class="ph ph-sign-out"></i> Se déconnecter</a>
                 <form id="logout-form" action="{{ path('app_logout') }}" method="post" style="display: none;">
@@ -126,14 +104,15 @@
                 </form>
               </li>
             </ul>
-          </div>
+          </nav>
         {% else %}
-          <div class="user-action">
+          <nav class="user-action">
+            <h1 class="sr-only">Menu utilisateur</h1>
             <a href="{{ path('app_login') }}" class="user-action">
               <i class="ph-light ph-user-circle user-icon-home" id="user-icon"></i>
               <span class="login-text">Se connecter</span>
             </a>
-          </div>
+          </nav>
         {% endif %}
       </div>
     </header>
@@ -201,7 +180,7 @@
 
           <section class="site-infos">
             <h3 class="sr-only">Copyright et mentions légales</h3>
-            <p>Mentions légales</p>
+            <a href="{{ path('app_legal_notice') }}" class="hover-blue">Mentions légales</a>
             <p>&copy; 2025 Clem-Coding</p>
           </section>
         </div>

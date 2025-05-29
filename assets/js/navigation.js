@@ -43,10 +43,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
   }
 
-  //Ferme le menu principal si je clique n'importe où
+  //Close the main menu if I click anywhere
   if (navbar) {
     document.addEventListener("click", function (e) {
-      //Vérifie que je ne clique ni sur la navbar ni sur le button toggle
       if (!navbar.contains(e.target) && !toggleButton.contains(e.target)) {
         if (navbar.classList.contains("visible")) {
           navbar.classList.remove("visible");
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // DROPDOWN MENU
   // ==========================
 
-  // Ouvre le sous menu au clic sur l'encoche et rotate l'encoche
+  //Open the submenu on click and rotate the caret icon
   if (dropdown) {
     const submenu = dropdown.querySelector(".submenu");
     const caretIcon = dropdown.querySelector(".caret-icon");
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       caretIcon.classList.toggle("rotate");
     });
 
-    // Ferme le sous-menu si je clique n'importe où
+    // Close the submenu if I click anywhere outside of it
     document.addEventListener("click", function (e) {
       if (!dropdown.contains(e.target)) {
         submenu.classList.remove("visible");
@@ -113,4 +112,33 @@ document.addEventListener("DOMContentLoaded", function (e) {
   footerLinks.forEach((_, index) => {
     toggleIconClassOnHover(footerIcons[index], "ph-duotone");
   });
+});
+
+// ==========================
+// USER ACCOUNT
+// ==========================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+
+  // Activate the tab based on localStorage or default to "infos"
+  const savedTab = localStorage.getItem("activeTab") || "infos";
+  activateTab(savedTab);
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+      localStorage.setItem("activeTab", target);
+      activateTab(target);
+    });
+  });
+
+  function activateTab(name) {
+    tabs.forEach((t) => t.classList.remove("active"));
+    document.querySelector(`.tab[data-tab="${name}"]`)?.classList.add("active");
+
+    contents.forEach((content) => content.classList.add("hidden"));
+    document.getElementById("tab-" + name)?.classList.remove("hidden");
+  }
 });

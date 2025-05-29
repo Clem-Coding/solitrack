@@ -6,22 +6,6 @@
   & label {
     font-weight: $bold;
   }
-
-  // & .input-container {
-  //   position: relative;
-
-  //   & input {
-  //     margin-top: 1.5em;
-  //   }
-
-  //   & .unit {
-  //     position: absolute;
-  //     top: 50%;
-  //     right: 1em;
-  //     transform: translateY(50%);
-  //     color: $grey;
-  //   }
-  // }
 }
 
 .last-entry-container {
@@ -34,40 +18,9 @@
   @include respond-to(desktop) {
     font-size: $f20;
   }
-  
 }
 
 .feedback-message {
   font-size: $f28;
   font-weight: $semi-bold;
 }
-
-// .sections-container {
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   gap: 5em;
-// }
-
-// @media (min-width: 768px) {
-//   .sections-container {
-//     grid-template-columns: repeat(2, 1fr);
-//     grid-template-areas:
-//       "area-1 araa-2"
-//       "area-3 area-4";
-//   }
-
-//   .sections-container > section:nth-child(1) {
-//     grid-area: area-1;
-//   }
-
-//   .sections-container > section:nth-child(2) {
-//     grid-area: area-3;
-
-//     .sections-container > section:nth-child(3) {
-//       grid-area: area-2;
-//     }
-
-//     .sections-container > section:nth-child(4) {
-//       grid-area: area-4;
-//     }
-//   }

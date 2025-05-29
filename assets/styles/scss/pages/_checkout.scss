@@ -10,10 +10,15 @@
   }
 
   & button {
-    border: 2px solid $ink-night;
-    // background-color: $coral;
     padding: 0.7em;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  i {
+    margin-right: 0.4em;
   }
 }
 
@@ -56,33 +61,10 @@
   }
 }
 
-// .form-group.pwyw {
-//   margin-bottom: 2em;
-// }
-
-.cart-button {
-  background-color: $light-beige;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: darken($light-beige, 5%);
-    // background-color: $emerald-sea;
-    // color: $cloud;
-    box-shadow: 4px 4px 0 $ink-night;
-  }
-
-  i {
-    margin-right: 0.5em;
-  }
-}
-
 .transaction-options-fieldset {
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  margin-top: 2em;
+  gap: 2em;
 }
 
 .form-group.hidden {

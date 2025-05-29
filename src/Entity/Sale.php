@@ -35,9 +35,6 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $cardAmount = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $tip = null;
-
     #[Assert\Length(
         exactly: 5,
     )]
@@ -59,6 +56,9 @@ class Sale
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $pwywAmount = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $customer_city = null;
 
     public function __construct()
     {
@@ -132,17 +132,6 @@ class Sale
         return $this;
     }
 
-    public function getTip(): ?string
-    {
-        return $this->tip;
-    }
-
-    public function setTip(?string $tip): static
-    {
-        $this->tip = $tip;
-
-        return $this;
-    }
 
     public function getZipcodeCustomer(): ?string
     {
@@ -206,6 +195,18 @@ class Sale
     public function setPwywAmount(?string $pwywAmount): static
     {
         $this->pwywAmount = $pwywAmount;
+
+        return $this;
+    }
+
+    public function getCustomerCity(): ?string
+    {
+        return $this->customer_city;
+    }
+
+    public function setCustomerCity(?string $customer_city): static
+    {
+        $this->customer_city = $customer_city;
 
         return $this;
     }

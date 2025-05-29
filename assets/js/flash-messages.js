@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // console.log("coucou les flash");
   const flashMessages = document.querySelectorAll(".flash");
 
   flashMessages.forEach((flashMessage) => {

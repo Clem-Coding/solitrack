@@ -6,20 +6,12 @@
   right: 0;
   margin: auto;
   margin-top: 0.5em;
-  // background-color: $bright-yellow;
   background-color: $cloud;
   transform: translateY(0);
   transition: transform 0.7s ease;
   border: 2px solid black;
   border-radius: 6px;
   box-shadow: 6px 6px 0 0 $ink-night;
-
-  // &.zindex-hidden {
-  //   z-index: -1;
-  // }
-  // &.zindex-visible {
-  //   z-index: 1;
-  // }
 
   z-index: -1;
 
@@ -31,8 +23,6 @@
     transform: translateY(-200%);
   }
   ul {
-    // margin: 0;
-    // padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -40,7 +30,6 @@
 
   li {
     padding: 0.75em;
-    // border: 3px solid red;
   }
 
   a {
@@ -48,27 +37,6 @@
     text-decoration: none;
   }
 }
-
-// .navbar {
-//   position: absolute;
-//   width: calc(100% - 2.5em);
-//   top: 100%;
-//   left: 0;
-//   right: 0;
-//   margin: auto;
-//   background-color: $cloud;
-//   transform: translateY(-200%);
-//   transition: transform 4s ease, z-index 0s ease 4s;
-//   border: 2px solid black;
-//   border-radius: 7px;
-//   z-index: -1;
-
-//   &.visible {
-//     transform: translateY(0);
-//     z-index: 11; // Passe au-dessus du header après l'animation
-//     transition: transform 0.7s ease, z-index 0s; // Annule le délai du z-index pour l'affichage
-//   }
-// }
 
 main.container {
   position: relative;
@@ -173,10 +141,6 @@ main.container {
     align-items: center;
     gap: 0.5em;
     font-weight: $semi-bold;
-
-    // i {
-    //   margin-left: 0;
-    // }
   }
 
   i:not(a > i) {
@@ -202,20 +166,20 @@ main.container {
 
   li {
     padding: 0.5em 1em;
-    border: 2px solid $ink-night;
-    border-radius: 4px;
-    box-shadow: 2px 2px 0 $ink-night;
+    border: 2px solid $grey;
+    border-radius: 8px;
+    box-shadow: 6px 6px 0 $grey;
     font-weight: $medium;
 
     &.active {
-      background-color: $emerald-sea;
-      color: $cloud;
-      box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+      border: 2px solid $emerald-sea;
+      box-shadow: 4px 4px 0 $emerald-sea;
       transform: translateY(4px);
     }
 
     &:hover {
-      background-color: darken($light-beige, 5%);
+      border: 2px solid $ink-night;
+      box-shadow: 6px 6px 0 $ink-night;
     }
 
     & a {
@@ -239,7 +203,7 @@ main.container {
     background-color: $light-beige;
     border: none;
     width: auto;
-    margin: 0; // important à laisser pour caler la navbar près du bouton connecté
+    margin: 0;
     box-shadow: none;
 
     &:not(.visible) {
@@ -252,7 +216,7 @@ main.container {
 
     ul {
       margin: 0;
-      // padding: 0;
+
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -302,33 +266,6 @@ main.container {
     }
   }
 
-  // .submenu {
-  //   display: none;
-  //   background-color: pink;
-  //   position: absolute;
-  //   top: 100%;
-  //   left: 0;
-  //   right: 0;
-  //   min-width: max-content;
-
-  //   z-index: 2;
-  //   overflow: hidden;
-
-  //   //transition à revoir
-  //   // transition: max-height 0.5s ease-out, padding 0.5s ease-out, visibility 0.5s ease-out;
-
-  //   &.visible {
-  //     visibility: visible;
-  //   }
-
-  //   &:not(.visible) {
-  //     visibility: hidden;
-  //     opacity: 0;
-  //     max-height: 0;
-  //     display: none;
-  //   }
-  // }
-
   .submenu {
     padding: 0.5em;
     display: none;
@@ -366,5 +303,13 @@ main.container {
       max-height: 0;
       display: none;
     }
+  }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2em;
+    flex-shrink: 0;
   }
 }

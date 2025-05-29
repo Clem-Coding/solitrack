@@ -60,29 +60,24 @@ final class DashboardController extends AbstractController
         $recordsData['sales'] = $salesItemRepository->getRecordWeightDay();
         $recordsData['visitors'] = $visitorRepository->getRecordWeightDay();
         $recordsData['sales_revenue'] = $saleRepository->getRecordWeightDay();
-        // dd($recordsData);
 
 
-        $zipcodeData = $saleRepository->countVisitorsByZipcode();
+        $cityVisitorsData = $saleRepository->countVisitorsByCity();
 
         $points = [];
-
-        foreach ($zipcodeData as $entry) {
-            $zipcode = $entry['zipcode'];
-
-            $coords = $geocoderService->geocodeByPostalCode($zipcode);
+        foreach ($cityVisitorsData as $entry) {
+            $coords = $geocoderService->geocode($entry['city'], $entry['zipcode']);
 
             if ($coords) {
                 $points[] = [
                     'lat' => $coords['lat'],
                     'lon' => $coords['lon'],
-                    'zipcode' => $zipcode,
+                    'zipcode' => $coords['postcode'],
                     'city' => $coords['city'],
                     'visitorCount' => $entry['visitorCount']
                 ];
             }
         }
-
 
 
         return $this->render('dashboard/index.html.twig', [
@@ -104,7 +99,7 @@ final class DashboardController extends AbstractController
     public function userManagement(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
-      
+
 
         return $this->render('dashboard/user_management.html.twig', [
             'users' => $users,
@@ -113,43 +108,42 @@ final class DashboardController extends AbstractController
 
 
     #[Route('/gestion-utilisateurs/{id}/role', name: 'app_user_role')]
-public function assignRole(int $id, Request $request, EntityManagerInterface $entityManager): Response
-{
-    $user = $entityManager->getRepository(User::class)->find($id);
+    public function assignRole(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $entityManager->getRepository(User::class)->find($id);
 
-    if ($user) {
-        $newRole = $request->get('role');
-        
-        if ($newRole) {
-            $user->setRoles([$newRole]);
-            $entityManager->flush();
-            $this->addFlash('success', 'Rôle attribué avec succès.');
+        if ($user) {
+            $newRole = $request->get('role');
+
+            if ($newRole) {
+                $user->setRoles([$newRole]);
+                $entityManager->flush();
+                $this->addFlash('success', 'Rôle attribué avec succès.');
+            }
+        } else {
+            $this->addFlash('error', 'Utilisateur non trouvé.');
         }
-    } else {
-        $this->addFlash('error', 'Utilisateur non trouvé.');
+
+        return $this->redirectToRoute('app_dashboard_user_management');
     }
 
-    return $this->redirectToRoute('app_dashboard_user_management');
-}
+    #[Route('/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
+    public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
+    {
 
-#[Route('/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
-public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
-{
-    // Récupérer l'utilisateur par ID
-    $user = $entityManager->getRepository(User::class)->find($id);
+        $user = $entityManager->getRepository(User::class)->find($id);
 
-    if ($user) {
-        // Supprimer l'utilisateur
-        $entityManager->remove($user);
-        $entityManager->flush();
+        if ($user) {
+            $entityManager->remove($user);
+            $entityManager->flush();
 
-        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
-    } else {
-        $this->addFlash('error', 'Utilisateur non trouvé.');
+            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Utilisateur non trouvé.');
+        }
+
+        return $this->redirectToRoute('app_dashboard_user_management');
     }
-
-    return $this->redirectToRoute('app_dashboard_user_management');
-}
 
 
 

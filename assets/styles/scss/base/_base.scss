@@ -1,6 +1,3 @@
-// @import "../abstracts/variables";
-// @import "../base/typography";
-
 * {
   box-sizing: border-box;
 }
@@ -13,9 +10,9 @@ body {
   background-color: $light-beige;
   color: $ink-night;
   font-size: $f16;
-  @include respond-to(desktop) {
-    font-size: $f18;
-  }
+  // @include respond-to(desktop) {
+  //   font-size: $f18;
+  // }
 }
 
 h1,
@@ -31,7 +28,7 @@ h1 {
   text-align: center;
 
   @include respond-to(desktop) {
-    font-size: $f48;
+    font-size: $f40;
   }
 }
 
@@ -47,7 +44,6 @@ h2 {
 input {
   border-radius: 4px;
   border: 1px solid $ink-night;
-  // text-align: center;
   padding: 0.5em;
   width: 100%;
   box-sizing: border-box;
@@ -57,7 +53,6 @@ select {
   border-radius: 4px;
   border: 1px solid $ink-night;
   padding: 0.75em;
-  // width: 100%;
   font-size: inherit;
 
   background-color: white;
@@ -68,26 +63,51 @@ select {
   font-size: 2rem;
 }
 
-// main.container {
-//   @include respond-to(tablet) {
-//     margin: 0 8em;
-//   }
-
-//   @include respond-to(desktop) {
-//     margin: auto;
-//   }
-// }
+/////////////////////////////////////
 
 .container {
   padding: 1.25em;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
 
+  /// taille : 1200px
   @include respond-to(tablet) {
-    margin: 0 8em;
+    margin: auto;
     padding: 1.25em 0;
   }
+}
 
-  @include respond-to(desktop) {
-    max-width: $layout-max-width;
+@media (min-width: 576px) {
+  .container {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 650px;
+    padding: 1.25em 2em;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
     margin: auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
   }
 }

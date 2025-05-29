@@ -15,4 +15,10 @@ final class HomepageController extends AbstractController
             'controller_name' => 'HomepageController',
         ]);
     }
+
+    #[Route('/mentions-legales', name: 'app_legal_notice')]
+    public function legalNotice(): Response
+    {
+        return $this->render('legal-notice/index.html.twig');
+    }
 }

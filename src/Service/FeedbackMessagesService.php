@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Repository\DonationRepository;
 
-class FeedbackMessages
+class FeedbackMessagesService
 {
     private DonationRepository $donationRepository;
 

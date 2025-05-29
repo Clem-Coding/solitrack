@@ -2,3 +2,86 @@
   height: 31.25rem;
   z-index: 2;
 }
+
+// USER MANAGEMENT
+
+.card.users-mgmt {
+  max-height: 60vh;
+  overflow: hidden;
+  @include respond-to(desktop) {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2em;
+  }
+
+  .table-wrapper {
+    max-height: 100%;
+    overflow: auto;
+  }
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5em;
+  font-size: 0.95em;
+  overflow-x: auto;
+  overflow-y: auto;
+
+  thead {
+    background-color: $light-beige;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  th,
+  td {
+    padding: 0.75em 1em;
+    text-align: left;
+    border: 1px solid #dee2e6;
+  }
+
+  tr:nth-child(even) {
+    background-color: $light-beige;
+  }
+  td form {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 0.4em 0.8em;
+    font-size: 0.85em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background-color: $emerald-sea;
+    color: $cloud;
+
+    &:hover {
+      background-color: $ink-night;
+    }
+  }
+
+  .btn-danger {
+    background-color: $alert-red;
+    color: #fff;
+
+    &:hover {
+      background-color: #bb2d3b;
+    }
+  }
+
+  select {
+    padding: 0.3em;
+    font-size: 0.9em;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+}

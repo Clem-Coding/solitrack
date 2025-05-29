@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
       ],
     },
     options: {
-      // responsive: true,
-      // maintainAspectRatio: true,
       plugins: {
         legend: {
           position: "top",

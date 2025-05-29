@@ -3,7 +3,6 @@
   padding: 2em;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
   gap: 2em;
   border-radius: 10px;
   background-color: $cloud;
@@ -11,27 +10,27 @@
 
 .card.contained {
   @include respond-to(tablet) {
-    padding: 2em 5em;
+    padding: 1.5em 5em;
   }
 }
 
 .card-shadow {
   @extend .card;
   position: relative;
+  margin-right: 0.875em;
 
-  /* Carte principale avec ombre */
-  input {
-    // border: 2px solid $ink-night;
-    // background-color: $light-beige;
+  @include respond-to(tablet) {
+    margin-right: 0;
   }
 
   &::before {
     content: "";
     position: absolute;
-    top: 12px; /* Décalage vers le bas */
-    left: 12px; /* Décalage vers la droite */
-    right: -14px; /* Décalage à droite */
-    bottom: -14px; /* Décalage vers le bas */
+    top: 0.875em;
+    left: 0.875em;
+    right: -0.875em;
+    bottom: -0.875em;
+
     background-color: $bright-yellow;
     border: 2px solid $ink-night;
     border-radius: 6px;

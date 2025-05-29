@@ -43,17 +43,20 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'MONTH(s.createdAt) AS month',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
+
             ->where('YEAR(s.createdAt) = :year')
             ->setParameter('year', $year)
             ->groupBy('month')
             ->orderBy('month', 'ASC');
 
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
@@ -66,10 +69,11 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'DAY(s.createdAt) AS day',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
+
             ->where('MONTH(s.createdAt) = :month')
             ->andWhere('YEAR(s.createdAt) = :year')
             ->setParameter('month', $month)
@@ -78,7 +82,9 @@ class SaleRepository extends ServiceEntityRepository
             ->orderBy('day', 'ASC');
 
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
@@ -92,36 +98,68 @@ class SaleRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('s')
             ->select(
                 'YEAR(s.createdAt) AS year',
-                $type === "bar" ? 'SUM(si.price) AS totalData' : 'SUM(s.totalPrice) AS totalData'
+                $type === "bar"
+                    ? 'SUM(si.price) AS totalData'
+                    : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-            ->innerJoin('s.salesItems', 'si')
-            ->innerJoin('si.category', 'c')
             ->groupBy('year')
             ->orderBy('year', 'ASC');
 
-
         if ($type === "bar") {
-            $qb->andWhere('c.id = :categoryId')
+            $qb->innerJoin('s.salesItems', 'si')
+                ->innerJoin('si.category', 'c')
+                ->andWhere('c.id = :categoryId')
                 ->setParameter('categoryId', 4);
         }
 
         return $qb->getQuery()->getResult();
     }
 
+
+
+
+
     // SELECT zipcode_customer, COUNT(*) AS visitorCount
     // FROM sales
     // WHERE zipcode_customer IS NOT NULL AND zipcode_customer != ''
     // GROUP BY zipcode_customer;
-    public function countVisitorsByZipcode(): array
+    // public function countVisitorsByZipcode(): array
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->select('s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
+    //         ->where('s.zipcodeCustomer IS NOT NULL')
+    //         ->andWhere('s.zipcodeCustomer != \'\'')
+    //         ->groupBy('s.zipcodeCustomer')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+
+    // public function countVisitorsByCity(): array
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->select('s.customer_city AS city, COUNT(s.id) AS visitorCount')
+    //         ->where('s.customer_city IS NOT NULL')
+    //         ->andWhere('s.customer_city != \'\'')
+    //         ->groupBy('s.customer_city')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
+    public function countVisitorsByCity(): array
     {
         return $this->createQueryBuilder('s')
-            ->select('s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
-            ->where('s.zipcodeCustomer IS NOT NULL')
+            ->select('s.customer_city AS city, s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
+            ->where('s.customer_city IS NOT NULL')
+            ->andWhere('s.customer_city != \'\'')
+            ->andWhere('s.zipcodeCustomer IS NOT NULL')
             ->andWhere('s.zipcodeCustomer != \'\'')
-            ->groupBy('s.zipcodeCustomer')
+            ->groupBy('s.customer_city, s.zipcodeCustomer')
             ->getQuery()
             ->getResult();
     }
+
+
 
 
     // SET lc_time_names = 'fr_FR';
@@ -142,31 +180,4 @@ class SaleRepository extends ServiceEntityRepository
 
         return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
     }
-
-
-
-    //    /**
-    //     * @return Sale[] Returns an array of Sale objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Sale
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

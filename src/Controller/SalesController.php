@@ -6,7 +6,7 @@ use App\Entity\SalesItem;
 use App\Form\SalesItemType;
 use App\Repository\CategoryRepository;
 use App\Repository\SalesItemRepository;
-use App\Service\PriceManagement;
+use App\Service\PriceManagementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Form\FormInterface;
+
 
 #[IsGranted('IS_AUTHENTICATED')]
 final class SalesController extends AbstractController
@@ -25,12 +27,23 @@ final class SalesController extends AbstractController
         Request $request,
         CategoryRepository $categoryRepository,
         SessionInterface $session,
-        PriceManagement $priceManagement
+        PriceManagementService $priceManagement
     ): Response {
 
         $salesItem = new SalesItem();
 
-        $form = $this->createForm(SalesItemType::class, $salesItem);
+
+
+        $categoryId = null;
+
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all()['sales_item'] ?? [];
+            $categoryId = $formData['categoryId'] ?? null;
+        }
+
+        $form = $this->createForm(SalesItemType::class, $salesItem, [
+            'category_id' => (int) $categoryId,
+        ]);
         $form->handleRequest($request);
 
 
@@ -58,28 +71,35 @@ final class SalesController extends AbstractController
                 'category' => $category->getName(),
                 'weight' => $salesItem->getWeight(),
                 'price' => $salesItem->getPrice(),
-                'quantity' => $quantity
+                'quantity' => $quantity,
+                'id' => $categoryId
             ];
+
+
 
 
             $session->set('shopping_cart', $shoppingCart);
 
+            $total = $priceManagement->getCartTotal();
 
+            return $this->json([
+                'status' => 'success',
+                'cart' => $shoppingCart ?? [],
+                'total' => $total,
+            ]);
+        } else if ($form->isSubmitted()) {
+            $errors = [];
 
-
-            //à revoir XmLhttpRequest , supprimer?
-            if ($request->isXmlHttpRequest()) {
-                $total = $priceManagement->getCartTotal();
-                return $this->json([
-                    'status' => 'success',
-                    'cart' => $shoppingCart ?? [],
-                    'total' => $total,
-                ]);
+            foreach ($form->all() as $child) {
+                foreach ($child->getErrors(true) as $error) {
+                    $errors[$child->getName()][] = $error->getMessage();
+                }
             }
 
-            $this->addFlash('success', 'Article ajouté au panier !');
-
-            return $this->redirectToRoute('app_sales');
+            return $this->json([
+                'status' => 'error',
+                'errors' => $errors,
+            ], 400);
         }
 
 

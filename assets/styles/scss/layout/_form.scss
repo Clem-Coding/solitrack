@@ -7,7 +7,6 @@ form {
 form label {
   font-size: 1rem;
   font-weight: bold;
-  // margin-bottom: 0.5em;
 }
 
 form input,
@@ -17,10 +16,6 @@ form textarea {
   border: 1px solid $grey-velvet;
   border-radius: 4px;
   font-size: 1rem;
-
-  @include respond-to(desktop) {
-    font-size: $f18;
-  }
 }
 
 form input:focus,

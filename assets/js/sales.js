@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   const buttons = document.querySelectorAll("#sales-section .category-button");
   const categoryInput = document.getElementById("sales_item_categoryId");
-  // const categoryErrorMessage = document.getElementById("error-message");
   const form = document.querySelector(".sales-form");
   const cartContainer = document.querySelector(".cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
@@ -18,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const cartStatus = document.querySelector(".cart-status");
   const addCartButton = document.getElementById("add-cart-button");
-  // const addItemscard = document.querySelector(".sales-card");
   const addItemsCard = document.querySelector(".card.sales-card");
 
   const inputWrappers = {
@@ -44,101 +42,102 @@ document.addEventListener("DOMContentLoaded", () => {
   cartStatus.classList.add("text-center");
   addItemsCard.classList.remove("card");
 
-  // let totalAmount = 0;
-
   // ==========================
-  // 🟢 FETCH API
+  // 🟢 FETCH
   // ==========================
-  function addItemToCart(formData) {
-    fetch(form.action, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
-          scrollIntoViewAdjusted(cartSection, headerHeight);
-          updateCartDisplay(data.cart, data.total);
-          // updateTotalDisplay(data.total);
-          localStorage.setItem("totalAmount", data.total);
-          localStorage.setItem("cart", JSON.stringify(data.cart));
-        } else {
-          console.error("Échec de l'ajout au panier:", data.message);
-        }
-      })
-      .catch(async (error) => {
-        if (error instanceof Response) {
-          const text = await error.text();
-        } else {
-          console.error("Erreur non liée à une réponse HTTP");
-        }
+  async function addItemToCart(formData) {
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
       });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        scrollIntoViewAdjusted(cartSection, headerHeight);
+        updateCartDisplay(data.cart, data.total);
+        localStorage.setItem("totalAmount", data.total);
+        localStorage.setItem("cart", JSON.stringify(data.cart));
+      } else {
+        showFormErrors(data.errors);
+        console.error("Error", data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
-  function removeItemFromCart(uniqueId) {
-    fetch("/cart/remove-item", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: uniqueId }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
-          // console.log("le data total quand je remove un item", data.total);
-
-          // } else {
-          //   updateTotalDisplay(data.total);
-          // }
-
-          localStorage.setItem("cart", JSON.stringify(data.cart));
-
-          localStorage.setItem("totalAmount", JSON.stringify(data.total));
-
-          updateCartDisplay(data.cart, data.total);
-          if (data.cart.length === 0) {
-            handleEmptyCart();
-          }
-        } else {
-          console.error("Échec de la suppression de l'article:", data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la suppression de l'article:", error);
+  async function removeItemFromCart(uniqueId) {
+    try {
+      const response = await fetch("/cart/remove-item", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: uniqueId }),
       });
-  }
 
-  function clearCart() {
-    fetch("/cart/clear", {
-      method: "POST",
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
-          // cartStatus.innerHTML = "Votre panier est vide";
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        localStorage.setItem("cart", JSON.stringify(data.cart));
+        localStorage.setItem("totalAmount", JSON.stringify(data.total));
+        updateCartDisplay(data.cart, data.total);
+
+        if (data.cart.length === 0) {
           handleEmptyCart();
-
-          localStorage.removeItem("cart");
-          cartContainer.innerHTML = "";
-        } else {
-          console.error(data.message);
         }
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la suppression du panier:", error);
-      });
+      } else {
+        console.error("Failed to remove item:", data.message);
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
   }
 
+  async function clearCart() {
+    try {
+      const response = await fetch("/cart/clear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        handleEmptyCart();
+        localStorage.removeItem("cart");
+        cartContainer.innerHTML = "";
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error while clearing the cart:", error);
+    }
+  }
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
+
+  function showFormErrors(errors) {
+    for (const [fieldName, messages] of Object.entries(errors)) {
+      const field = form.querySelector(`[name="sales_item[${fieldName}]"]`);
+      if (field) {
+        const errorDiv = document.createElement("p");
+        errorDiv.classList.add("flash-error");
+        errorDiv.setAttribute("role", "note");
+        errorDiv.textContent = messages.join(", ");
+        form.appendChild(errorDiv);
+      }
+    }
+  }
 
   function scrollIntoViewAdjusted(elem, offset = 0) {
     window.scrollBy({
@@ -149,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleEmptyCart() {
     cartStatus.classList.add("text-center");
-    cartStatus.innerHTML = "Votre panier est vide.";
+    cartStatus.textContent = "Votre panier est vide.";
     clearCartButton.classList.remove("show");
     clearCartButton.classList.add("hidden");
     checkoutButton.classList.add("hidden");
@@ -158,8 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleNonEmptyCart() {
     clearCartButton.classList.add("show");
     clearCartButton.classList.remove("hidden");
-    console.log(document.querySelector(".clear-cart-button").classList);
-
     checkoutButton.classList.remove("hidden");
   }
 
@@ -176,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetInputs() {
     for (const key in inputs) {
-      // inputs[key].value = "";
       inputs[key].removeAttribute("required");
       inputWrappers[key].classList.add("hidden");
       inputWrappers[key].classList.remove("flex");
@@ -197,15 +193,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateCartDisplay(cart, total) {
-    console.log("le total j'update", total);
     if (total > 0) {
       cartStatus.classList.remove("text-center");
       cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
     } else {
       cartStatus.classList.add("text-center");
-      cartStatus.innerHTML = "Votre panier est vide.";
+      cartStatus.textContent = "Votre panier est vide.";
     }
-    // const cartStatus = document.getElementById("total-price");
+
     if (cart.length === 0) {
       handleEmptyCart;
     } else {
@@ -265,15 +260,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // function updateTotalDisplay(total) {
-  //   if (cartStatus) {
-  //     console.log(formatNumber(total));
-  //     cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
-  //   }
-  // }
-
   // ==========================
-  // 🔧 HANDLE FILTER CHANGES
+  // 🔧 HANDLE FUNCTIONS
   // ==========================
 
   function handleButtonClick(event) {
@@ -308,13 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function handleFormSubmit(event) {
     event.preventDefault();
 
-    // if (!categoryInput.value) {
-    //   categoryErrorMessage.style.display = "block";
-    //   return;
-    // }
-
-    // categoryErrorMessage.style.display = "none";
-
     const errorflashMessage = document.querySelector(".flash-error");
     const succesflashMessage = document.querySelector(".flash-success");
 
@@ -325,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (succesflashMessage) {
       succesflashMessage.remove();
     }
-
+    // FormData is a JavaScript object that gathers all the form's input values and files, making it easy to send them in a request.
     const formData = new FormData(form);
     addItemToCart(formData);
   }
@@ -361,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartDisplay(savedCart, totalAmount);
   } else {
     cartStatus.classList.add("text-center");
-    cartStatus.innerHTML = "Votre panier est vide.";
+    cartStatus.textContent = "Votre panier est vide.";
   }
 
   clearCartButton.addEventListener("click", () => clearCart());

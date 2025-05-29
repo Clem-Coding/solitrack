@@ -4,45 +4,39 @@
   Mentions légales
 {% endblock %}
 
-{% block body %}
-  <section class="legal-notice">
+{% block content %}
+  <section class="legal-notice card">
     <h1>Mentions légales</h1>
-
-    <h2>Éditeur du site</h2>
-    <p>
-      <strong>Nom du site</strong> : Soli'Track<br />
-      <strong>Responsable de la publication</strong> : {{ publisher_name }}<br />
-      <strong>Email</strong> : <a href="mailto:{{ publisher_email }}">{{ publisher_email }}</a>
-    </p>
-
-    <h2>Hébergement</h2>
-    <p>
-      Le site est provisoirement hébergé par <strong>O2Switch</strong>,<br />
-      222 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand, France.<br />
-      <a href="https://www.o2switch.fr" target="_blank" rel="noopener noreferrer">www.o2switch.fr</a>
-    </p>
-
-    <h2>Propriété intellectuelle</h2>
-    <p>
-      Tous les contenus présents sur ce site (textes, images, logo, icônes, etc.) sont la propriété exclusive de <em>
-        Soli'Track
-      </em> ou de ses partenaires, sauf mention contraire.<br />
-      Toute reproduction, modification ou diffusion est interdite sans autorisation écrite préalable.
-    </p>
-
-    <h2>Icônes</h2>
-    <p>
-      Ce site utilise la bibliothèque <strong>Phosphor Icons</strong> :<br />
-      <a href="https://phosphoricons.com" target="_blank" rel="noopener noreferrer">phosphoricons.com</a><br />
-      Les icônes sont sous licence MIT.
-    </p>
-
-    <h2>Données personnelles</h2>
-    <p>
-      Ce site ne collecte pas de données personnelles à votre insu.<br />
-      Les informations éventuellement recueillies ne sont jamais transmises à des tiers.<br />
-      Conformément à la loi "Informatique et Libertés", vous disposez d’un droit d’accès, de rectification et de suppression
-      des données vous concernant.
-    </p>
+    <article>
+      <h2>Éditeur du site</h2>
+      <p class="bold">Association Les Fourmi Soli'Terre</p>
+      <p>
+        36 A boulevard de la gare<br />
+        Zone artisanale de la gare<br />
+        22830 Plouasne
+      </p>
+    </article>
+    <article>
+      <h2>Conception et réalisation du site</h2>
+      <p>Clémentine Blondeau</p>
+      <p><span class="bold">Email</span> : clementine.blondeau[at]gmail.com</p>
+    </article>
+    <article>
+      <h2>Hébergement</h2>
+      <p>Le site est hébergé par <span class="bold">o2Switch</span></p>
+      <p>
+        222 Boulevard Gustave Flaubert, 63000 Clermont-Ferrand.
+        <a href="https://www.o2switch.fr" class="highlighted" target="_blank">www.o2switch.fr</a>
+      </p>
+    </article>
+    <article>
+      <h2>Données personnelles</h2>
+      <p>Ce site ne collecte pas de données personnelles à votre insu.</p>
+      <p>Les informations éventuellement recueillies ne sont jamais transmises à des tiers.</p>
+      <p>
+        Conformément à la loi "Informatique et Libertés", vous disposez d’un droit d’accès, de rectification et de
+        suppression des données vous concernant.
+      </p>
+    </article>
   </section>
 {% endblock %}

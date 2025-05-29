@@ -8,10 +8,10 @@ use App\Repository\SalesItemRepository;
 
 class StatisticsService
 {
-    // public function __construct(
-    //     private DonationRepository $donationRepository,
-    //     private SalesItemRepository $salesItemRepository,
-    // ) {}
+    public function __construct(
+        private DonationRepository $donationRepository,
+        private SalesItemRepository $salesItemRepository,
+    ) {}
 
 
     public function getStatisticsByPeriod($repository, $period, $category, $year, $month, $type): array

@@ -64,15 +64,21 @@ class StatisticsController extends AbstractController
         $statistics = [];
 
 
-        $statistics = $statsTest->getStatisticsByPeriod(
-            $repository,
-            $period,
-            $category,
-            $year,
-            $month,
-            $type
-        );
+        if ($type === 'both' && ($category === 'articles' || $category === 'vetements')) {
+            $repoIncoming = $this->getRepositoryForCategory($category, 'incoming');
+            $repoOutgoing = $this->getRepositoryForCategory($category, 'outgoing');
 
+            $dataIncoming = $statsTest->getStatisticsByPeriod($repoIncoming, $period, $category, $year, $month, 'incoming');
+            $dataOutgoing = $statsTest->getStatisticsByPeriod($repoOutgoing, $period, $category, $year, $month, 'outgoing');
+
+            $statistics = [
+                'incoming' => $dataIncoming,
+                'outgoing' => $dataOutgoing,
+            ];
+        } else {
+            $repo = $this->getRepositoryForCategory($category, $type);
+            $statistics = $statsTest->getStatisticsByPeriod($repo, $period, $category, $year, $month, $type);
+        }
 
         return $this->json([
             'data' => $statistics,
@@ -89,6 +95,10 @@ class StatisticsController extends AbstractController
                     return $this->donationRepository;
                 }
                 if ($type === 'outgoing') {
+                    return $this->salesItemRepository;
+                }
+
+                if ($type === 'both') {
                     return $this->salesItemRepository;
                 }
                 break;
