@@ -1,6 +1,7 @@
 .footer {
   border-top: 2px solid $ink-night;
   padding: 2em;
+  margin-top: 2em;
 
   .container {
     display: flex;
@@ -40,5 +41,12 @@
   .site-infos {
     color: $grey-velvet;
     text-align: center;
+  }
+}
+
+.legal-notice {
+  gap: 1em;
+  h2 {
+    text-align: start;
   }
 }

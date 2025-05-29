@@ -95,6 +95,10 @@ fieldset {
   text-align: center;
 }
 
+.text-start {
+  text-align: start;
+}
+
 .bold {
   font-weight: 600;
 }
@@ -118,6 +122,10 @@ fieldset {
 .input-error {
   border: 2.5px solid #e90c2d;
   outline: none;
+}
+
+.hover-blue:hover {
+  color: #00857a;
 }
 
 * {
@@ -401,6 +409,7 @@ button {
 .footer {
   border-top: 2px solid #080222;
   padding: 2em;
+  margin-top: 2em;
 }
 .footer .container {
   display: flex;
@@ -436,6 +445,13 @@ button {
 .footer .site-infos {
   color: #6e6d7a;
   text-align: center;
+}
+
+.legal-notice {
+  gap: 1em;
+}
+.legal-notice h2 {
+  text-align: start;
 }
 
 .card, .card-shadow {

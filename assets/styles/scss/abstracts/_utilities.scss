@@ -20,6 +20,10 @@
   text-align: center;
 }
 
+.text-start {
+  text-align: start;
+}
+
 .bold {
   font-weight: $semi-bold;
 }
@@ -43,4 +47,10 @@
 .input-error {
   border: 2.5px solid $alert-red;
   outline: none;
+}
+
+.hover-blue {
+  &:hover {
+    color: $emerald-sea;
+  }
 }
