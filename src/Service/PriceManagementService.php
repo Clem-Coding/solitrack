@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PriceManagementService
 {
-    private const CATEGORY_DRINK = 4;
-    private const BULK_ARTICLE_CATEGORIES = [1, 2];
+    const CATEGORY_DRINK = 4;
+    const BULK_ARTICLE_CATEGORIES = [1, 2];
 
     // The price per drink unit is set at 1€. Update this value if the pricing rules change
-    private const DRINK_UNIT_PRICE = 1;
+    const DRINK_UNIT_PRICE = 1;
 
     // The current price is 1€/kg. Update these values if the pricing rules change.
-    private const PRICE_PER_KG = 1;
+    const PRICE_PER_KG = 1;
 
 
 
@@ -108,7 +108,7 @@ class PriceManagementService
             }
         }
 
-        // IMPORTANT : Libérer la référence pour éviter les bugs d'affichage
+        //Free the reference to avoid display bugs
         unset($itemData);
 
         $session->set('shopping_cart', $shoppingCart);

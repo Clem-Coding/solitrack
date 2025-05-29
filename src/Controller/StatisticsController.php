@@ -64,16 +64,6 @@ class StatisticsController extends AbstractController
         $statistics = [];
 
 
-        // $statistics = $statsTest->getStatisticsByPeriod(
-        //     $repository,
-        //     $period,
-        //     $category,
-        //     $year,
-        //     $month,
-        //     $type
-        // );
-
-
         if ($type === 'both' && ($category === 'articles' || $category === 'vetements')) {
             $repoIncoming = $this->getRepositoryForCategory($category, 'incoming');
             $repoOutgoing = $this->getRepositoryForCategory($category, 'outgoing');

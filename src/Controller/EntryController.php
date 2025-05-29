@@ -70,13 +70,11 @@ final class EntryController extends AbstractController
         $isRecordJustBeaten = false;
 
         $feedback = $feedbackMessage->getRandomFeedbackMessage();
-        // dd($feedback['totalWeight']);
-
 
         $isRecordJustBeaten = false;
         if ($feedback['totalWeight'] >= $recordWeight && !$session->get('recordBeaten', false)) {
             $isRecordJustBeaten = true;
-            $session->set('recordBeaten', true);  // Marquer que le record a été battu
+            $session->set('recordBeaten', true);
         }
 
         return $this->render('entry/index.html.twig', [

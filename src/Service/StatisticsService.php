@@ -38,62 +38,6 @@ class StatisticsService
         return $data;
     }
 
-    // public function getStatisticsByPeriod($repository, $period, $category, $year, $month, $type): array
-    // {
-
-    //     dump($type);
-    //     if ($type === 'both') {
-    //         // Pour 'both', on récupère séparément les 2 types
-    //         switch ($period) {
-    //             case 'monthly':
-    //                 $entrant = $this->getMonthlyData($repository, $category, $year, 'entrant');
-    //                 $sortant = $this->getMonthlyData($repository, $category, $year, 'sortant');
-    //                 break;
-
-    //             case 'yearly':
-    //                 $entrant = $this->getYearlyData($repository, $category, 'entrant');
-    //                 $sortant = $this->getYearlyData($repository, $category, 'sortant');
-    //                 break;
-
-    //             case 'daily':
-    //                 $entrant = $this->getDailyData($repository, $category, $year, $month, 'entrant');
-    //                 $sortant = $this->getDailyData($repository, $category, $year, $month, 'sortant');
-    //                 break;
-
-    //             default:
-    //                 return ['error' => "Invalid period: {$period}"];
-    //         }
-
-    //         return [
-    //             'entrant' => $entrant,
-    //             'sortant' => $sortant,
-    //         ];
-    //     }
-
-    //     // Sinon, cas simple
-    //     switch ($period) {
-    //         case 'monthly':
-    //             $data = $this->getMonthlyData($repository, $category, $year, $type);
-    //             break;
-
-    //         case 'yearly':
-    //             $data = $this->getYearlyData($repository, $category, $type);
-    //             break;
-
-    //         case 'daily':
-    //             $data = $this->getDailyData($repository, $category, $year, $month, $type);
-    //             break;
-
-    //         default:
-    //             return ['error' => "Invalid period: {$period}"];
-    //     }
-
-    //     return $data;
-    // }
-
-
-
-
 
     private function getMonthlyData($repository, $category, $year, $type): array
     {

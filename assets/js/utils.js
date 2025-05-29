@@ -1,5 +1,8 @@
-// A faire docstrings ou JSDoc
-
+/**
+ * Formats a number to French style with 2 decimals.
+ * @param {number} num - The number to format.
+ * @returns {string} Formatted number (e.g. "1 234,50").
+ */
 export function formatNumber(num) {
   const fixedNumber = num.toFixed(2);
   const [integerPart, decimalPart] = fixedNumber.split(".");
@@ -8,6 +11,12 @@ export function formatNumber(num) {
   return `${formattedInteger},${decimalPart}`;
 }
 
+/**
+ * Parses a string to a number and returns it formatted in French style with 2 decimals.
+ * Returns null if the input is not a valid number.
+ * @param {string} numString - The string to parse and format.
+ * @returns {string|null} Formatted number (e.g. "1 234,50") or null if invalid.
+ */
 export function formatNumberFromString(numString) {
   const parsedNum = parseFloat(numString);
   if (isNaN(parsedNum)) {

@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const yearPicker = document.querySelector("#year-picker");
   const monthSelect = document.querySelector("#month");
   const yearInput = document.querySelector("#year");
-  const sidebarButtons = document.querySelectorAll(".sidebar li");
-  console.log(sidebarButtons);
-
   const apiUrl = "/api/statistiques/";
   let chartInstance = null;
 
@@ -21,10 +18,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
 
   async function fetchData(category, type, period, year = null, month = null) {
-    console.log(
-      `Fetching data with period: ${period}, category: ${category}, and type: ${type}, year: ${year}, month: ${month}`
-    );
-
     try {
       let url = `${apiUrl}?period=${period}&category=${category}&type=${type}`;
 
@@ -39,7 +32,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       const response = await fetch(url);
       const data = await response.json();
 
-      console.log(data.data);
       createGraph(data.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
@@ -67,7 +59,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleYearChange() {
     yearPicker.addEventListener("change", () => {
       const selectedYear = yearInput.value;
-      // console.log("Selected year:", selectedYear);
       sendToAPI(filterPeriod.value, filterType.value, selectedYear);
     });
   }
@@ -75,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   function handleMonthChange() {
     monthPicker.addEventListener("change", () => {
       const selectedMonth = monthSelect.value;
-      // console.log("Selected month:", selectedMonth);
       sendToAPI(filterPeriod.value, filterType.value, null, selectedMonth);
     });
   }
@@ -86,9 +76,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const year = yearInput.value;
     const month = monthSelect.value;
     let category = getCategoryFromPath();
-    // console.log(
-    //   `Sending to API with category: ${category}, type: ${type}, period: ${period}, year: ${year}, month: ${month}`
-    // );
     fetchData(category, type, period, year, month);
   }
 
@@ -111,7 +98,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   function getCategoryFromPath() {
     const path = window.location.pathname;
     const parts = path.split("/");
-    // Supposons que la catégorie est toujours le dernier segment de l'URL
+
+    // Category is the last part of the path
     return parts[parts.length - 1];
   }
 
@@ -172,8 +160,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         return Number(item).toFixed(2);
       }
     }
-
-    // console.log("LES DONNEES FORMATEES", formattedData);
 
     // Config Datasets
     let datasets;

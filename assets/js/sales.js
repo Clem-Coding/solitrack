@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addItemsCard.classList.remove("card");
 
   // ==========================
-  // 🟢 FETCH API
+  // 🟢 FETCH
   // ==========================
   async function addItemToCart(formData) {
     try {
@@ -148,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleEmptyCart() {
     cartStatus.classList.add("text-center");
-    // cartStatus.innerHTML = "Votre panier est vide.";
     cartStatus.textContent = "Votre panier est vide.";
     clearCartButton.classList.remove("show");
     clearCartButton.classList.add("hidden");
@@ -199,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
       cartStatus.innerHTML = `Total : <span class="data-price">${formatNumber(total)} €</span>`;
     } else {
       cartStatus.classList.add("text-center");
-      // cartStatus.innerHTML = "Votre panier est vide.";
       cartStatus.textContent = "Votre panier est vide.";
     }
 
@@ -263,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================
-  // 🔧 HANDLE FILTER CHANGES
+  // 🔧 HANDLE FUNCTIONS
   // ==========================
 
   function handleButtonClick(event) {
@@ -333,7 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateQuantityDisplay(quantity);
   });
 
-  //récupère juste un tableau contenant les valeurs des propriétés de l’objet input
   Object.values(inputs).forEach((input) => {
     input.addEventListener("input", () => {
       formatInputValue(input);
@@ -345,7 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartDisplay(savedCart, totalAmount);
   } else {
     cartStatus.classList.add("text-center");
-    // cartStatus.innerHTML = "Votre panier est vide.";
     cartStatus.textContent = "Votre panier est vide.";
   }
 

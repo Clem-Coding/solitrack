@@ -16,27 +16,14 @@ class SaleType extends AbstractType
     {
         $builder
 
-            // ->add('totalPrice')
-            // ->add('cashAmount', NumberType::class, [
-            //     'label' => 'Espèces',
-            //     'attr' => ['class' => 'cash-input']
-            // ])
-            // ->add('cardAmount', NumberType::class, [
-            //     'label' => 'Carte Bleue',
-            //     'attr' => ['class' => 'card-input']
-            // ])
             ->add('zipcodeCustomer', null, [
                 'label' => "Code postal",
                 'attr' => [
                     'pattern' => '\d{5}',
                     'oninvalid' => "this.setCustomValidity('Le code postal doit contenir exactement 5 chiffres.')",
-                    'oninput' => "this.setCustomValidity('')" 
+                    'oninput' => "this.setCustomValidity('')"
                 ]
-            ])
-            // ->add('keepChange')
-            // ->add('pwywAmount')
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

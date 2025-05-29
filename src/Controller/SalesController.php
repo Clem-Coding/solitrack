@@ -87,9 +87,6 @@ final class SalesController extends AbstractController
                 'cart' => $shoppingCart ?? [],
                 'total' => $total,
             ]);
-
-
-            // return $this->redirectToRoute('app_sales');
         } else if ($form->isSubmitted()) {
             $errors = [];
 

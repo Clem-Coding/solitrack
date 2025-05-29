@@ -1,7 +1,6 @@
 .input-quantity-wrapper.flex {
   display: flex;
   align-items: center;
-  // padding: 0.3em;
   background-color: $coral;
   border-radius: 2em;
   width: 100%;
@@ -10,10 +9,6 @@
   button {
     color: $cloud;
   }
-
-  // @include respond-to(desktop) {
-  //   width : auto; // A revoir
-  // }
 }
 
 .sales-card {
@@ -100,10 +95,6 @@
   align-items: center;
   justify-content: center;
 
-  // &:hover {
-  //   border-color: $coral;
-  // }
-
   i {
     margin-right: 1em;
   }
@@ -111,5 +102,4 @@
 
 .cart-status {
   font-weight: $semi-bold;
-  // text-align: cente;
 }

@@ -29,7 +29,6 @@ button {
   &:hover {
     color: $emerald-sea;
     border: 2px solid $emerald-sea;
-    // background-color: $ink-night;
   }
 }
 
@@ -53,7 +52,6 @@ button {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  // padding: 0.3em;
   border: 2px solid $ink-night;
   border-radius: 7px;
   width: 100%;
@@ -62,8 +60,6 @@ button {
   transition: background-color 0.3s ease-in-out;
   box-shadow: 5px 5px 0 $ink-night;
   padding: 0.2em;
-
-  // font-weight: $medium;
   font-size: $f14;
 
   &:hover {

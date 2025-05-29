@@ -66,7 +66,6 @@
                         <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
                       </li>
                       <li>
-                        {# prettier-ignore-start #}
                         <a href="{{ path('app_dashboard_statistics', {category: 'articles'} )}}">
                           <i class="ph ph-chart-bar"></i>Les statistiques
                         </a>
@@ -75,8 +74,7 @@
                         <a href="{{ path('app_dashboard_cash_reconciliation') }}">
                           <i class="ph ph-storefront"></i> Contrôle de Caisse
                         </a>
-                      </li>
-                         {# prettier-ignore-end #}
+                      </li>               
                       {% if is_granted('ROLE_ADMIN') %}
                         <li>
                           <a href="{{ path('app_dashboard_user_management') }}">
@@ -93,11 +91,6 @@
           {% endblock %}
         {% endif %}
 
-        {# <a
-          href="{{ app.user ? path('app_user_homepage') : path('app_login') }}"
-          aria-label="Se connecter"
-          class="user-link"
-        > #}
         {% if app.user %}
           <nav class="user-action">
             <h1 class="sr-only">Menu utilisateur</h1>

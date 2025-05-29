@@ -70,17 +70,6 @@
       {% endif %}
     </section>
 
-    {# <section class="card contained">
-      <h2 class="sr-only">Suivi du poids quotidien</h2>
-      <p class="feedback-message">
-        {% if totalWeightToday is null %}
-          Pas de données à l'horizon... mais ça ne va pas durer longtemps !
-        {% else %}
-          {{ feedbackMessage|raw }}
-        {% endif %}
-      </p>
-    </section> #}
-
     <section class="card contained">
       <h2 class="sr-only">Suivi du poids quotidien</h2>
       <p class="feedback-message" data-record-achieved="{{ is_record_just_beaten ? 'true' : 'false' }}">

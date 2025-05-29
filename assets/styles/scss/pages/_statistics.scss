@@ -10,8 +10,6 @@
   gap: 1em;
 
   select {
-    // transform: none;
-    // zoom: 1;
     width: 100%;
     appearance: none;
     -webkit-appearance: none;
@@ -40,7 +38,6 @@
 .graph canvas {
   position: relative;
   width: 100%;
-
   height: 260px;
 
   @include respond-to(tablet) {

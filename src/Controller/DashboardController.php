@@ -130,11 +130,10 @@ final class DashboardController extends AbstractController
     #[Route('/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
     public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer l'utilisateur par ID
+
         $user = $entityManager->getRepository(User::class)->find($id);
 
         if ($user) {
-            // Supprimer l'utilisateur
             $entityManager->remove($user);
             $entityManager->flush();
 

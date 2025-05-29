@@ -28,8 +28,6 @@ class CheckoutController extends AbstractController
 
 
         $form = $this->createForm(SaleType::class);
-
-        // $shoppingCart = $session->get('shopping_cart', []);
         $priceManagement->applyBulkPricingRule();
         $shoppingCart = $session->get('shopping_cart');
 
@@ -69,15 +67,6 @@ class CheckoutController extends AbstractController
 
         $sale = new Sale();
 
-        // $form = $this->createForm(SaleType::class);
-
-        // $form->handleRequest($request);;
-        // if ($form->isSubmitted() && $form->isValid()) {
-        //     $zipcode =  $form->get('zipcodeCustomer')->getData();
-        //     $sale->setZipcodeCustomer($zipcode ?? null);
-        // }
-
-
         $cardAmount = $request->get('card_amount');
         $cashAmount = $request->get('cash_amount');
         $keepChangeAmount = $request->get('keep_change');
@@ -87,19 +76,16 @@ class CheckoutController extends AbstractController
         $shoppingCart = $session->get('shopping_cart', []);
         $customerCity = $request->get('city');
 
-        // dd($shoppingCart);
         $to = $request->get('email');
         if (!empty($to)) {
             $receiptMailer->sendReceipt($to);
         }
 
-        // à laisser au cas où, mais empecher de passer à la caisse si le panier est vide
-        if (empty($shoppingCart)) {
 
+        if (empty($shoppingCart)) {
             return $this->redirectToRoute('app_sales');
         }
 
-        // $totalPrice = 0;
         $totalPrice = $priceManagement->getCartTotal();
 
         $sale->setCreatedAt(new \DateTimeImmutable());
@@ -132,15 +118,6 @@ class CheckoutController extends AbstractController
             $salesItem->setQuantity($itemData['quantity'] ?? null);
 
             $sale->addSalesItem($salesItem);
-
-            // $itemPrice = $salesItem->getPrice();
-
-            // //A faire : if tip condition pour ne pas ajouter le poids si prix libre donné
-            // if ($itemPrice !== null) {
-            //     $totalPrice += $itemPrice;
-            // }
-
-
             $entityManager->persist($salesItem);
         }
 

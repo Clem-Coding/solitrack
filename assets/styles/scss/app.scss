@@ -1,23 +1,5 @@
-// @import "abstracts/variables", "abstracts/utilities", "abstracts/mixins";
-// @import "base/reset", "base/typography", "base/base";
-@import "abstracts/variables", "abstracts/mixins"; // On garde utilities après typography
+@import "abstracts/variables", "abstracts/mixins";
 @import "base/reset", "base/typography", "abstracts/utilities", "base/base";
 @import "components/buttons", "components/flash-messages";
 @import "layout/header", "layout/footer", "layout/card", "layout/main", "layout/navigation", "layout/form";
 @import "pages/entries", "pages/sales", "pages/checkout", "pages/login", "pages/dashboard-home", "pages/statistics";
-
-// .hidden {
-//   display: none;
-// }
-
-// @keyframes fadeInOut {
-//   0% {
-//     opacity: 1;
-//   }
-//   90% {
-//     opacity: 1; /* Garder l'opacité à 1 pendant 2 secondes */
-//   }
-//   100% {
-//     opacity: 0; /* Fade-out rapide après 2 secondes */
-//   }
-// }
