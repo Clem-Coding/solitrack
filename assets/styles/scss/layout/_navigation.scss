@@ -369,4 +369,12 @@ main.container {
       display: none;
     }
   }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2em;
+    flex-shrink: 0;
+  }
 }

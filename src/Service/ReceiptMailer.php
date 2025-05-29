@@ -9,6 +9,7 @@ use App\Repository\SaleRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use App\Service\PriceManagementService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use TCPDF;
 
@@ -20,13 +21,22 @@ class ReceiptMailer
         private MailerInterface $mailer,
         private PriceManagementService $priceManagement,
         private RequestStack $requestStack,
-        private SaleRepository $saleRepository
+        private SaleRepository $saleRepository,
+
+
     ) {}
 
     public function sendReceipt(string $to): void
     {
-
         $totalAmount = $this->priceManagement->getCartTotal();
+
+        $request = $this->requestStack->getCurrentRequest();
+        $pwywAmount = $request->get("pwyw_amount");
+
+        if ($pwywAmount) {
+            $totalAmount += (float) $pwywAmount;
+        }
+
         $formattedAmount = number_format($totalAmount, 2, ',', '');
         $pdfPath = $this->generateReceiptPdf();
 
@@ -46,13 +56,20 @@ class ReceiptMailer
     }
 
 
-    public function generateReceiptPdf(): string
+    private function generateReceiptPdf(): string
     {
-
         $session = $this->requestStack->getSession();
         $shoppingCart = $session->get('shopping_cart', []);
 
         $totalAmount = $this->priceManagement->getCartTotal($shoppingCart);
+
+        $request = $this->requestStack->getCurrentRequest();
+        $pwywAmount = $request->get("pwyw_amount");
+
+        if ($pwywAmount) {
+            $totalAmount += (float) $pwywAmount;
+        }
+
         $formattedTotalAmount = number_format($totalAmount, 2, ',', '') . ' €';
 
         $saleDateTime = new \DateTimeImmutable();
@@ -78,7 +95,6 @@ class ReceiptMailer
         $pdf->Cell(0, 10, "Date de la transaction : " . $createdAt, 0, 1, 'L');
         $pdf->Ln(5);
 
-        // Product details
         foreach ($shoppingCart as $item) {
             $pdf->SetFont('Helvetica', 'B', 12);
             $pdf->Cell(0, 7, $item['category'], 0, 1);
@@ -94,13 +110,18 @@ class ReceiptMailer
             $pdf->Ln(5);
         }
 
+        if ($pwywAmount) {
+            $pdf->SetFont('helvetica', 'I', 12);
+            $pdf->writeHTML("<i>Vous avez acheté des articles en vrac pesant moins de 1 kg. Conformément à notre politique, vous avez réglé en prix libre : <b>" . number_format($pwywAmount, 2, ',', '') . " €</b>.</i>");
+            $pdf->Ln(10);
+        }
+
         $pdf->SetFont('Helvetica', 'B', 14);
         $pdf->Cell(0, 10, 'Total : ' . $formattedTotalAmount, 0, 1, 'L');
         $pdf->Ln(10);
 
-        // Sauvegarder le PDF dans un fichier temporaire
         $filepath = sys_get_temp_dir() . '/receipt_' . uniqid() . '.pdf';
-        $pdf->Output($filepath, 'F'); // Sauvegarde dans un fichier temporaire
+        $pdf->Output($filepath, 'F');
 
         return $filepath;
     }

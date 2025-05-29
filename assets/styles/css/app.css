@@ -820,6 +820,13 @@ main.container.zindex-visible {
     max-height: 0;
     display: none;
   }
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2em;
+    flex-shrink: 0;
+  }
 }
 form {
   display: flex;
@@ -1248,13 +1255,6 @@ form textarea:focus {
 }
 
 @media (min-width: 1024px) {
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 2em;
-    flex-shrink: 0;
-  }
   .statistics-container {
     flex-direction: row;
   }
