@@ -1169,14 +1169,14 @@ form textarea:focus {
   color: #ffffff;
 }
 .users-table .btn-primary:hover {
-  background-color: #080222;
+  background-color: #00524b;
 }
 .users-table .btn-danger {
-  background-color: #e90c2d;
+  background-color: #eb5a47;
   color: #fff;
 }
 .users-table .btn-danger:hover {
-  background-color: #bb2d3b;
+  background-color: #e63119;
 }
 .users-table select {
   padding: 0.3em;

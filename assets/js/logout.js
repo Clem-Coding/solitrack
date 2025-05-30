@@ -5,4 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("cart");
     });
   }
+
+  if (typeof window.PHP_SESSION_ACTIVE !== "undefined" && !window.PHP_SESSION_ACTIVE) {
+    localStorage.removeItem("cart");
+  }
 });

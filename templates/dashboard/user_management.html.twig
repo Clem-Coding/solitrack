@@ -33,7 +33,7 @@
                     <td>{{ user.firstName }}</td>
                     <td>{{ user.lastName }}</td>
                     <td>
-                        <form action="{{ path('app_user_role', {id: user.id}) }}" method="post">
+                        <form action="#" method="post">
                             <select name="role">
                                 <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Bénévole</option>
                                 <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
@@ -43,7 +43,7 @@
                         </form>
                     </td>
                     <td>
-                        <a href="{{ path('app_user_delete', {id: user.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                        <a href="#" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}
