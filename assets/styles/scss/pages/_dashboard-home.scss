@@ -65,16 +65,16 @@
     color: $cloud;
 
     &:hover {
-      background-color: $ink-night;
+      background-color: darken($emerald-sea, 10%);
     }
   }
 
   .btn-danger {
-    background-color: $alert-red;
+    background-color: $coral;
     color: #fff;
 
     &:hover {
-      background-color: #bb2d3b;
+      background-color: darken($coral, 10%);
     }
   }
 
