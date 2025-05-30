@@ -1,0 +1,20 @@
+.section-404-container {
+  padding-top: 4em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  img {
+    width: 60%;
+    height: auto;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+  }
+}
