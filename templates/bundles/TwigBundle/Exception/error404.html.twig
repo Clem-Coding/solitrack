@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+  <section class="section-404-container">
+    <img src="{{ asset('images/404-illustration.svg') }}" alt="Illustration erreur 404" />
+
+    <h1 class="text-center">Oh! Cette page s'est fait la malle.</h1>
+    <p>
+      Pas de panique, vous pouvez toujours{% if app.user %}
+        <a href="{{ path('app_user_homepage') }}"><span class="highlighted">revenir à l'accueil</span></a>
+      {% else %}
+        <a href="{{ path('app_homepage') }}"><span class="highlighted">revenir à l'accueil</span></a>
+      {% endif %}
+    </p>
+  </section>
+{% endblock %}

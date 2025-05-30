@@ -6,7 +6,9 @@ main.container {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  min-height: 100vh;
+  @include respond-to(desktop) {
+    min-height: 100vh;
+  }
 }
 
 .sections-container {

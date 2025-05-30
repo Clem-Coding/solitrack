@@ -409,7 +409,7 @@ button {
 .footer {
   border-top: 2px solid #080222;
   padding: 2em;
-  margin-top: 2em;
+  margin-top: 3em;
 }
 .footer .container {
   display: flex;
@@ -500,7 +500,11 @@ main.container {
   display: flex;
   flex-direction: column;
   gap: 2em;
-  min-height: 100vh;
+}
+@media (min-width: 1024px) {
+  main.container {
+    min-height: 100vh;
+  }
 }
 
 .sections-container {
@@ -1261,4 +1265,22 @@ form textarea:focus {
   .graph-container {
     flex: 1;
   }
+}
+.section-404-container {
+  padding-top: 4em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+.section-404-container img {
+  width: 60%;
+  height: auto;
+}
+.section-404-container h1 {
+  text-align: center;
+}
+.section-404-container p {
+  text-align: center;
 }/*# sourceMappingURL=app.css.map */
