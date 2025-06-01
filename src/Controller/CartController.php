@@ -38,7 +38,7 @@ final class CartController extends AbstractController
                 return $this->json(['status' => 'error', 'message' => 'Article non trouvé dans le panier.']);
             }
 
-            $shoppingCart = array_values($shoppingCart); // Réindexation
+            $shoppingCart = array_values($shoppingCart); // Reindex the array
             $session->set('shopping_cart', $shoppingCart);
             $total = $priceManagement->getCartTotal();
 

@@ -2,72 +2,56 @@
   display: flex;
   flex-direction: column;
   gap: 2em;
-}
 
-.select-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
+  @include respond-to(desktop) {
+    flex-direction: row;
+  }
 
-  select {
-    width: 100%;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    font-family: "Inter", sans-serif;
-    padding-right: 2.5em;
-    background-image: url("../../images/icons/caret-down.svg");
-    background-repeat: no-repeat;
-    background-position: right 0.8em center;
-    background-size: 1em;
+  .select-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    select {
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      font-family: "Inter", sans-serif;
+      padding-right: 2.5em;
+      background-image: url("../../images/icons/caret-down.svg");
+      background-repeat: no-repeat;
+      background-position: right 0.8em center;
+      background-size: 1em;
+      @include respond-to(desktop) {
+        width: auto;
+      }
+    }
+
     @include respond-to(desktop) {
-      width: auto;
+      flex-direction: row;
+      justify-content: center;
     }
   }
 
-  @include respond-to(desktop) {
-    flex-direction: row;
-    justify-content: center;
-  }
-}
-
-.graph-container h2 {
-  text-align: center;
-}
-
-.graph canvas {
-  position: relative;
-  width: 100%;
-  height: 260px;
-
-  @include respond-to(tablet) {
-    height: 30vh;
-  }
-
-  @include respond-to(desktop) {
-    height: 45vh;
-  }
-}
-
-.user-graph-container {
-  & .user-homepage-graph {
-    max-width: 100%;
-  }
-  @include respond-to(tablet) {
-    padding: 2em 4em;
-  }
-
-  @include respond-to(desktop) {
-    padding: 2em 5em;
-  }
-}
-
-@media (min-width: 1024px) {
-  .statistics-container {
-    flex-direction: row;
-  }
-
   .graph-container {
-    flex: 1;
+    width: 100%;
+    h2 {
+      text-align: center;
+    }
+
+    .graph {
+      position: relative;
+      width: 100%;
+      height: 260px;
+
+      @include respond-to(tablet) {
+        height: 30vh;
+      }
+
+      @include respond-to(desktop) {
+        height: 45vh;
+      }
+    }
   }
 }

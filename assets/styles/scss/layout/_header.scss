@@ -4,7 +4,6 @@
   z-index: 10;
   justify-content: flex;
   align-items: center;
-
   width: 100%;
 
   & .container {
@@ -14,6 +13,11 @@
     align-items: center;
     flex-direction: row;
     background-color: $light-beige;
+    padding: 1em;
+
+    @include respond-to(tablet) {
+      padding: 1em 0;
+    }
   }
 
   @include respond-to(desktop) {

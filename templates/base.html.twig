@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="twitter:title" content="Soli'Track - Outil de gestion interne" />
     <meta
       name="description"
       content="Soli'Track – outil interne de suivi des activités pour l'association Les Fourmi Soli'Terre."
@@ -14,10 +13,7 @@
       {% endblock %}
     </title>
 
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"
-    />
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.svg') }}" />
 
     {% block stylesheets %}{% endblock %}
 
@@ -50,7 +46,7 @@
         {% if app.user %}
           {% block navbar %}
             <nav class="navbar">
-              <h1 class="sr-only">Menu principal</h1>
+              <h2 class="sr-only">Menu principal</h2>
               <ul class="navbar-menu">
                 <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
@@ -60,7 +56,6 @@
                     <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
                       Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
                     </button>
-                    {# <a href="" class="dashboard-link">Le tableau de bord <i class="ph ph-caret-down"></i></a> #}
                     <ul class="submenu">
                       <li>
                         <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
@@ -90,7 +85,6 @@
                             <i class="ph ph-users-three"></i>Gestion des utilisateurs
                           </a>
                         </li>
-                        <li><a href="{{ path('app_dashboard_settings') }}"><i class="ph ph-gear"></i>Paramètres</a></li>
                       {% endif %}
                     </ul>
                   </li>
@@ -102,7 +96,7 @@
 
         {% if app.user %}
           <nav class="user-action">
-            <h1 class="sr-only">Menu utilisateur</h1>
+            <h2 class="sr-only">Menu utilisateur</h2>
             <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>

@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ],
     },
     options: {
+      responsive: true,
       plugins: {
         legend: {
           position: "top",
