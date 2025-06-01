@@ -1334,4 +1334,23 @@ form textarea:focus {
 .user-sections-container .graph-container .graph {
   max-width: 100%;
   margin: auto;
+}
+
+.section-404-container {
+  padding-top: 4em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}
+.section-404-container img {
+  width: 60%;
+  height: auto;
+}
+.section-404-container h1 {
+  text-align: center;
+}
+.section-404-container p {
+  text-align: center;
 }/*# sourceMappingURL=app.css.map */
