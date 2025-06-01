@@ -39,7 +39,7 @@ button {
 .buttons-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 0.6em;
   justify-content: center;
   align-items: center;
   max-width: 100%;
@@ -51,7 +51,7 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0.6em;
   border: 2px solid $ink-night;
   border-radius: 7px;
   width: 100%;

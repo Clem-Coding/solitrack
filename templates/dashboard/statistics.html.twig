@@ -3,7 +3,6 @@
 {% block content %}
   <h1>Statistiques</h1>
 <div class="statistics-container">
-    {# prettier-ignore-start #}
     <ul class="sidebar">
       <li class="{% if category == 'articles' %}active{% endif %}">
           <a href="{{ path('app_dashboard_statistics', {'category': 'articles'}) }}">
@@ -30,7 +29,6 @@
           </a>
       </li>
     </ul>
-  {# prettier-ignore-end #}
 
   <section class="card graph-container">
     {% block category_graph %}
@@ -46,7 +44,7 @@
     {% endblock %}
 
     <div class="select-container">
-      {# PREMIER FILTRE #}
+      {# FIRST FILTER #}
       {% if category == 'articles' %}
         <label for="filter-type" class="hidden">Sélectionner une catégorie</label>
         <select id="filter-type" name="item">
@@ -75,7 +73,7 @@
         </select>
       {% endif %}
 
-      {# DEUXIEME FILTRE #}
+      {# SECOND FILTER #}
       <label for="filter-period" class="hidden">Sélectionner une période</label>
       <select id="filter-period">
         <option value="monthly">Total mensuel sur un an</option>
@@ -83,7 +81,7 @@
         <option value="yearly">Total annuel</option>
       </select>
 
-      {# TROISIEME FILTRE #}
+      {# THIRD FILTER #}
       <div id="month-picker" class="hidden">
         <label for="month" class="hidden">Sélectionner un mois</label>
         <select id="month">

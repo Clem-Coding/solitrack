@@ -66,17 +66,13 @@ select {
 /////////////////////////////////////
 
 .container {
-  padding: 1.25em;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding: 0 1em;
 
-  /// taille : 1200px
   @include respond-to(tablet) {
-    margin: auto;
-    padding: 1.25em 0;
+    padding: 0;
   }
 }
 
@@ -89,7 +85,6 @@ select {
 @media (min-width: 768px) {
   .container {
     max-width: 650px;
-    padding: 1.25em 2em;
   }
 }
 
@@ -106,8 +101,8 @@ select {
   }
 }
 
-@media (min-width: 1400px) {
-  .container {
-    max-width: 1320px;
-  }
-}
+// @media (min-width: 1400px) {
+//   .container {
+//     max-width: 1320px;
+//   }
+// }

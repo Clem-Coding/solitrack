@@ -154,7 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
     input.classList.add("payment-input");
     input.value = Number(amount);
     input.min = 0;
-    input.name = method === "card" ? "card_amount" : "cash_amount";
+    // input.name = method === "card" ? "card_amount" : "cash_amount";
+    input.name = method === "card" ? "card_amount[]" : "cash_amount[]";
+
     return input;
   }
 

@@ -54,3 +54,18 @@
     color: $emerald-sea;
   }
 }
+
+@for $i from 1 through 5 {
+  .mt-#{$i} {
+    margin-top: #{$i}em;
+  }
+
+  .mb-#{$i} {
+    margin-bottom: #{$i}em;
+  }
+
+  .my-#{$i} {
+    margin-top: #{$i}em;
+    margin-bottom: #{$i}em;
+  }
+}

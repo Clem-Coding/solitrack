@@ -35,9 +35,9 @@
                     <td>
                         <form action="#" method="post">
                             <select name="role">
-                                <option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %}selected{% endif %}>Bénévole</option>
-                                <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur</option>
-                                <option value="ROLE_VOLUNTEER_PLUS" {% if "ROLE_VOLUNTEER_PLUS" in user.roles %}selected{% endif %}>Bénévole + </option>
+                                <option value="ROLE_USER" {{ user.roles[0] == 'ROLE_USER' ? 'selected' : '' }}>Bénévole</option>
+                                <option value="ROLE_ADMIN" {{ user.roles[0] == 'ROLE_ADMIN' ? 'selected' : '' }}>Administrateur</option>
+                                <option value="ROLE_VOLUNTEER_PLUS" {{ user.roles[0] == 'ROLE_VOLUNTEER_PLUS' ? 'selected' : '' }}>Bénévole +</option>
                             </select>
                             <button type="submit" class="btn btn-primary">Attribuer rôle</button>
                         </form>

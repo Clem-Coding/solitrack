@@ -5,27 +5,26 @@
 {% endblock %}
 
 {% block content %}
-  <div class="sections-container two-sections">
+  <div class="sections-container two-sections user-sections-container">
     <section class="card">
       <h2>Hello {{ app.user.firstName }} 👋!</h2>
       <p>
-        Bienvenue sur ton espace personnel ! Ici, tout est conçu pour rendre ton suivi facile et rapide. Accède
-        immédiatement à la page des ventes, enregistre de nouvelles entrées et garde un œil sur ton tableau de bord pour
-        suivre ton activité en un clin d'œil. Besoin d’un coup de main ? N’hésite pas à consulter notre
-        <span class="highlighted"><a href="#">guide</a></span> pour plus d’aide.
+        Bienvenue sur ton espace personnel ! Ici, tout est conçu pour te faciliter le suivi. Accède à la page des
+        ventes, enregistre de nouvelles entrées et garde un œil sur ton tableau de bord pour suivre ton activité en un
+        clin d'œil. Besoin d’un coup de main ? On est là pour t’accompagner.
       </p>
       <p>
-        Bientôt, une nouvelle fonctionnalité sera disponible pour gérer les plannings de bénévolat ! Reste connecté pour
-        plus d’informations.
+        Une nouvelle fonctionnalité sera bientôt disponible pour gérer les plannings de bénévolat. Plus d’informations à
+        venir!
       </p>
     </section>
 
-    <section class="card user-graph-container">
+    <section class="card graph-container">
       <h2>{{ stats_title }}</h2>
       {% if entry_weight is null and out_weight is null %}
         <p class="text-center">Pas de données pour le mois en cours</p>
       {% else %}
-        <canvas class="user-homepage-graph" id="myPieChart"></canvas>
+        <canvas class="graph" id="myPieChart"></canvas>
         <div class="hidden" id="inWeight" data-value="{{ entry_weight }}"></div>
         <div class="hidden" id="outWeight" data-value="{{ out_weight }}"></div>
       {% endif %}

@@ -67,20 +67,22 @@ class CheckoutController extends AbstractController
 
         $sale = new Sale();
 
-        $cardAmount = $request->get('card_amount');
-        $cashAmount = $request->get('cash_amount');
+        $cardAmounts = $request->get('card_amount', []);
+        $cashAmounts = $request->get('cash_amount', []);
+        $cardTotal = array_sum(array_map('floatval', $cardAmounts));
+        $cashTotal = array_sum(array_map('floatval', $cashAmounts));
+
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
         $zipcode = $request->get("zipcode");
-        $shoppingCart = $session->get('shopping_cart', []);
         $customerCity = $request->get('city');
+        $shoppingCart = $session->get('shopping_cart', []);
 
         $to = $request->get('email');
         if (!empty($to)) {
             $receiptMailer->sendReceipt($to);
         }
-
 
         if (empty($shoppingCart)) {
             return $this->redirectToRoute('app_sales');
@@ -90,15 +92,13 @@ class CheckoutController extends AbstractController
 
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
-        $sale->setCardAmount($cardAmount ?? null);
-        $sale->setCashAmount($cashAmount ?? null);
+        $sale->setCardAmount($cardTotal ?? null);
+        $sale->setCashAmount($cashTotal ?? null);
         $sale->setKeepChange($keepChangeAmount) ?? null;
         $sale->setPWYWAmount($pwywAmount) ?? null;
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setTotalPrice($totalPrice);
         $sale->setCustomerCity($customerCity ?? null);
-
-
 
         foreach ($shoppingCart as $itemData) {
             $salesItem = new SalesItem();
@@ -121,14 +121,10 @@ class CheckoutController extends AbstractController
             $entityManager->persist($salesItem);
         }
 
-
-
-
         $entityManager->persist($sale);
         $entityManager->flush();
         $session->remove('shopping_cart');
         $this->addFlash('success', 'Vente enregistrée avec succès.');
-
 
         return $this->redirectToRoute('app_sales', ['clear_local_storage' => true]);
     }
