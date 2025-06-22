@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🟡 VARIABLES
   // ==========================
   const buttons = document.querySelectorAll("#sales-section .category-button");
-  const categoryInput = document.getElementById("sales_item_categoryId");
+  const categorySelect = document.getElementById("sales_item_category");
   const form = document.querySelector(".sales-form");
   const cartContainer = document.querySelector(".cart-container");
   const savedCart = JSON.parse(localStorage.getItem("cart"));
@@ -36,9 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseButton = quantityWrapper.querySelector(".quantity-increase");
 
   const quantityInput = inputs.quantity;
-  quantityInput.value = 1;
-
   let quantity = Number(quantityInput.value);
+
   cartStatus.classList.add("text-center");
   addItemsCard.classList.remove("card");
 
@@ -161,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setCategory(category) {
-    categoryInput.value = category;
+    categorySelect.value = category;
   }
 
   function resetButtonStates(buttons) {
@@ -206,9 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       handleNonEmptyCart();
     }
+
+    const category = categorySelect.value;
+
     inputs.weight.value = "";
     inputs.price.value = "";
-    inputs.quantity.value = 1;
+    inputs.quantity.value = category === "4" ? 1 : "";
 
     cartContainer.innerHTML = "";
 
@@ -275,20 +277,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function handleCategoryChange() {
-    const category = categoryInput.value;
+    const category = categorySelect.value;
     resetInputs();
 
     switch (category) {
       case "1":
       case "2":
         showInput(inputs.weight, inputWrappers.weight);
+        inputs.quantity.value = "";
         break;
       case "3":
         showInput(inputs.weight, inputWrappers.weight);
         showInput(inputs.price, inputWrappers.price);
+        inputs.quantity.value = "";
         break;
       case "4":
         showInput(inputs.quantity, inputWrappers.quantity);
+        inputs.quantity.value = 1;
         break;
     }
   }

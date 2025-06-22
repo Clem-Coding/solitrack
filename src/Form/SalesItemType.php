@@ -44,14 +44,15 @@ class SalesItemType extends AbstractType
                 ],
 
             ])
-
-            ->add('categoryId', HiddenType::class, [
-                'mapped' => false,
-
-            ])
-            ->add('sale', HiddenType::class, [
-                'mapped' => false,
-            ]);;
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'label' => false,
+                'row_attr' => [
+                    'class' => 'hidden',
+                    'id' => 'category-input',
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

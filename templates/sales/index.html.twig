@@ -35,17 +35,15 @@
         </button>
       </div>
     </section>
+
     <section class="card sales-card contained">
       <h2 class="sr-only">Formulaire de Saisie</h2>
-
       {{ form_start(form) }}
-
       <div class="input-container" id="weight-input">
         {{ form_label(form.weight) }}
         {{ form_widget(form.weight) }}
         <span class="unit">kg</span>
       </div>
-      {{ form_row(form.categoryId) }}
       <div class="input-container" id="price-input">
         {{ form_label(form.price) }}
         {{ form_widget(form.price) }}
@@ -55,13 +53,13 @@
         <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
         {{ form_label(form.quantity) }}
         {{ form_widget(form.quantity) }}
-
         <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
       </div>
-
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
+      {{ form_row(form.category) }}
       {{ form_end(form) }}
     </section>
+
     <section class="card contained" id="cart-section" aria-labelledby="cart-heading">
       <h2 id="cart-heading">Panier</h2>
       {# <div id="flash-message-container"></div> #}
