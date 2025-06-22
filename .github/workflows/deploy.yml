@@ -1,0 +1,52 @@
+name: Deploy to dev.solitrack.fr #nom du workflow
+
+#le workflow se déclenche à chaque push sur le branch main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: -main
+
+#on définit un job appelé deploy, qui s'éxécutera sur un runner Github, soit une machine virtuelle avec Ubuntu
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      #première étape : récupérer (cloner) le code du repo Github dans l'environnement de production
+      - name: Checkout code
+        uses:
+          actions/checkout@v4
+
+          # Installe PHP et Composer
+      - name: ⚙️ Setup PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, pdo, pdo_mysql
+          tools: composer
+
+      # Installe les dépendances PHP
+      - name: 📦 Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # Compile les assets avec AssetMapper
+      - name: 🎨 Compile AssetMapper assets
+        run: php bin/console asset-map:compile
+
+      #configure l'agent SSH, variable secrète ajotuer dans les Secrets Githubs, contenant la clé privée SSH
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      #Lance la commande rsync pour synchroniser tous les fichiers du dépot (./) vers le serveur.
+      # -a : mode archive (conserve permissions, liens, etc.)
+      # -v : verbose (affiche ce qu’il fait)
+      # -z : compresse pendant le transfert
+      # --delete : supprime sur le serveur les fichiers qui n’existent plus dans le dépôt (nettoyage)
+      - name: Sync files to server
+        run: |
+          rsync -avz --delete ./ username@dev.solitrack.fr:/path/to/project/
