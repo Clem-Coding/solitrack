@@ -56,7 +56,20 @@ final class SalesController extends AbstractController
                 'cart' => $shoppingCart ?? [],
                 'total' => $total,
             ]);
+        } else if ($form->isSubmitted()) {
+
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
+            }
+
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $errors,
+            ], 400);
         }
+
 
         return $this->render('sales/index.html.twig', [
             'form' => $form,
