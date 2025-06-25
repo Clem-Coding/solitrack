@@ -1,52 +1,97 @@
-name: Deploy to dev.solitrack.fr #nom du workflow
+name: Deploy & Index content
 
-#le workflow se déclenche à chaque push sur le branch main
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  pull_request:
-    branches: -main
 
-#on définit un job appelé deploy, qui s'éxécutera sur un runner Github, soit une machine virtuelle avec Ubuntu
 jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
   deploy:
     runs-on: ubuntu-latest
-
+    needs: build
     steps:
-      #première étape : récupérer (cloner) le code du repo Github dans l'environnement de production
-      - name: Checkout code
-        uses:
-          actions/checkout@v4
-
-          # Installe PHP et Composer
-      - name: ⚙️ Setup PHP with Composer
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@v4
         with:
-          php-version: "8.2"
-          extensions: mbstring, intl, pdo, pdo_mysql
-          tools: composer
+          fetch-depth: 0
 
-      # Installe les dépendances PHP
-      - name: 📦 Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      # Compile les assets avec AssetMapper
-      - name: 🎨 Compile AssetMapper assets
-        run: php bin/console asset-map:compile
-
-      #configure l'agent SSH, variable secrète ajotuer dans les Secrets Githubs, contenant la clé privée SSH
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.1
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: build
+          path: build
 
-      #Lance la commande rsync pour synchroniser tous les fichiers du dépot (./) vers le serveur.
-      # -a : mode archive (conserve permissions, liens, etc.)
-      # -v : verbose (affiche ce qu’il fait)
-      # -z : compresse pendant le transfert
-      # --delete : supprime sur le serveur les fichiers qui n’existent plus dans le dépôt (nettoyage)
-      - name: Sync files to server
+      - name: Add resource hints in the .htaccess
         run: |
-          rsync -avz --delete ./ username@dev.solitrack.fr:/path/to/project/
+          cd build
+          echo "" >> .htaccess
+          for i in assets/css/*.css ; do echo "Header add Link '</$i>; rel=preload; as=style; fetchpriority=high'" >> .htaccess ; echo "" >> .htaccess ; done
+          for i in assets/js/*main*.js ; do echo "Header add Link '</$i>; rel=preload; as=script; fetchpriority=high'" >> .htaccess ; echo "" >> .htaccess ; done
+          for i in assets/fonts/*-{Regular,Bold,SemiBold}*.woff2 ; do echo "Header add Link '</$i>; rel=preload; as=font; type=font/woff2; fetchpriority=high; crossorigin'" >> .htaccess ; echo "" >> .htaccess ; done
+          echo "" >> .htaccess
+          cd -
+
+      - name: Get runner's public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Removing all whitelisted IP
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
+
+      - name: Whitelisting the runner IP
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
+
+      - name: Making sure the IP is whitelisted
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
+
+      - name: Installing the SSH Key
+        run: |
+          eval $(ssh-agent -s)
+          mkdir -p ~/.ssh       
+          chmod 700 ~/.ssh 
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 0400 ~/.ssh/id_rsa
+
+      # Run rsync twice to see if it solves my issue. I have an issue where rsync is hanging randomly.
+      # It might be related to the Imunify360 firewall. When this occurs, Imunify seems to be reloading the ipset list.
+      # I need to investigate further.
+      - name: Sending data with RSYNC
+        run: |
+          sleep 2
+          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
+          --exclude=".git" -av --delete build/ \
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/public || true
+          sleep 2
+          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
+          --exclude=".git" -av --delete build/ \
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/public
+
+      - name: Cleaning SSH keys
+        if: always()
+        run: rm -fr ~/.ssh
+
+      - name: Cleaning artifacts
+        uses: geekyeggo/delete-artifact@v5
+        if: always()
+        with:
+          name: build
+          failOnError: false
+
+      - name: Run DocSearch Scraper
+        uses: celsiusnarhwal/typesense-scraper@v2
+        with:
+          api-key: ${{ secrets.TYPESENSE_API_KEY }}
+          host: search.o2swit.ch
+          port: 443
+          protocol: https
+          config: typesense.config.json
