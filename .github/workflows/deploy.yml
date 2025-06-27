@@ -26,6 +26,15 @@ jobs:
           curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
           "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22"
 
+      - name: Afficher l’IP détectée
+        run: |
+          echo "Runner IP: ${{ steps.ip.outputs.ipv4 }}"
+
+      - name: Afficher la liste des IP whitelistées
+        run: |
+          curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+          "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list"
+
       - name: Verify IP is whitelisted
         run: |
           curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
