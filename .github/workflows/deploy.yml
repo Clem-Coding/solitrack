@@ -1,97 +1,22 @@
-name: Deploy & Index content
+name: Test deploy o2switch
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ci-cd-setup]
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/build.yml
-
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Test connexion SSH to o2switch
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          fetch-depth: 0
-
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build
-
-      - name: Add resource hints in the .htaccess
-        run: |
-          cd build
-          echo "" >> .htaccess
-          for i in assets/css/*.css ; do echo "Header add Link '</$i>; rel=preload; as=style; fetchpriority=high'" >> .htaccess ; echo "" >> .htaccess ; done
-          for i in assets/js/*main*.js ; do echo "Header add Link '</$i>; rel=preload; as=script; fetchpriority=high'" >> .htaccess ; echo "" >> .htaccess ; done
-          for i in assets/fonts/*-{Regular,Bold,SemiBold}*.woff2 ; do echo "Header add Link '</$i>; rel=preload; as=font; type=font/woff2; fetchpriority=high; crossorigin'" >> .htaccess ; echo "" >> .htaccess ; done
-          echo "" >> .htaccess
-          cd -
-
-      - name: Get runner's public IP
-        id: ip
-        uses: haythem/public-ip@v1.3
-
-      - name: Removing all whitelisted IP
-        run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
-
-      - name: Whitelisting the runner IP
-        run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
-
-      - name: Making sure the IP is whitelisted
-        run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
-
-      - name: Installing the SSH Key
-        run: |
-          eval $(ssh-agent -s)
-          mkdir -p ~/.ssh       
-          chmod 700 ~/.ssh 
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 0400 ~/.ssh/id_rsa
-
-      # Run rsync twice to see if it solves my issue. I have an issue where rsync is hanging randomly.
-      # It might be related to the Imunify360 firewall. When this occurs, Imunify seems to be reloading the ipset list.
-      # I need to investigate further.
-      - name: Sending data with RSYNC
-        run: |
-          sleep 2
-          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" -av --delete build/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/public || true
-          sleep 2
-          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude=".git" -av --delete build/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/public
-
-      - name: Cleaning SSH keys
-        if: always()
-        run: rm -fr ~/.ssh
-
-      - name: Cleaning artifacts
-        uses: geekyeggo/delete-artifact@v5
-        if: always()
-        with:
-          name: build
-          failOnError: false
-
-      - name: Run DocSearch Scraper
-        uses: celsiusnarhwal/typesense-scraper@v2
-        with:
-          api-key: ${{ secrets.TYPESENSE_API_KEY }}
-          host: search.o2swit.ch
-          port: 443
-          protocol: https
-          config: typesense.config.json
+          host: dev.solitrack.fr
+          username: ${{ secrets.CPANEL_USERNAME }}
+          key: ${{ secrets.O2SWITCH_SSH_KEY }}
+          script: |
+            echo "Connection successful!"
