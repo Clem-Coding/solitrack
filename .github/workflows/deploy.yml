@@ -13,12 +13,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build
-
       - name: Get runner's public IP
         id: ip
         uses: haythem/public-ip@v1.3
