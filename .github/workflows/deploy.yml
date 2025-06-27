@@ -17,4 +17,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Test SSH connection
-        run: ssh -o StrictHostKeyChecking=no xuzo1696@mortadelle.o2switch.net "echo 'Connexion SSH réussie !'
+        run: ssh -o StrictHostKeyChecking=no xuzo1696@mortadelle.o2switch.net "echo 'Connexion SSH réussie !' "
