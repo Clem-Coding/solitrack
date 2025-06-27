@@ -21,11 +21,10 @@ jobs:
           curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
           'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
 
-      - name: Whitelist runner IP on o2switch
+      - name: Whitelisting the runner IP
         run: |
-          curl --fail --show-error --silent --max-time 45 \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22"
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22
 
       - name: Test connexion SSH to o2switch
         uses: appleboy/ssh-action@v1.0.3
