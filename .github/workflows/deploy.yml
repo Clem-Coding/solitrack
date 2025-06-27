@@ -7,26 +7,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout du code
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Get runner's public IPv4
-        id: ip
-        uses: haythem/public-ip@v1.3
-
-      - name: Whitelist runner IP on o2switch
-        run: |
-          curl --fail --show-error --silent --max-time 45 \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22"
-
-      - name: Test connexion SSH to o2switch
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Setup SSH agent with private key
+        uses: webfactory/ssh-agent@v0.8.1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.CPANEL_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: echo "Connection successful!"
-          port: 22
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Test SSH connection
+        run: ssh -o StrictHostKeyChecking=no xuzo1696@mortadelle.o2switch.net "echo 'Connexion SSH réussie !'
