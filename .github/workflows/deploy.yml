@@ -16,20 +16,20 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.3
 
-      - name: Removing all whitelisted IP
+      - name: Remove all whitelisted IPs
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
+          curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+          "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all"
 
-      - name: Whitelisting the runner IP
+      - name: Whitelist runner IP
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
+          curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+          "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22"
 
-      - name: Making sure the IP is whitelisted
+      - name: Verify IP is whitelisted
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
+          curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+          "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list" | grep ${{ steps.ip.outputs.ipv4 }}
 
       - name: Test connexion SSH to o2switch
         uses: appleboy/ssh-action@v1
