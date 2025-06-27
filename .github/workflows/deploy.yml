@@ -25,7 +25,7 @@ jobs:
       - name: Test connexion SSH to o2switch
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.CPANEL_SERVER }}
+          host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.CPANEL_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: echo "Connection successful!"
