@@ -1,8 +1,9 @@
-name: Test deploy o2switch
+name: Deploy to o2switch
 
 on:
   push:
-    branches: [ci-cd-setup]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -12,26 +13,20 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
-      - name: Get runner's public IP
+      - name: Get runner's public IPv4
         id: ip
         uses: haythem/public-ip@v1.3
 
       - name: Whitelist runner IP on o2switch
-        env:
-          SERVER: 109.234.167.69
-          LOGIN: ${{ secrets.CPANEL_LOGIN }}
-          TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          RUNNER_IP: ${{ steps.ip.outputs.ip }}
-
         run: |
-          echo "Whitelisting IP $RUNNER_IP"
-          curl -s -H "Authorization: cpanel $LOGIN:$TOKEN" \
-            "https://$SERVER:2083/execute/SshWhitelist/add?address=$RUNNER_IP&port=22" | jq
+          curl -sm 45 -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22"
 
       - name: Test connexion SSH to o2switch
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: dev.solitrack.fr
+          host: ${{ secrets.CPANEL_SERVER }}
           username: ${{ secrets.CPANEL_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: echo "Connection successful!"
+          port: 22
