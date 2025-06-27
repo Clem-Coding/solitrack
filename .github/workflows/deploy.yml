@@ -7,14 +7,33 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup SSH agent with private key
-        uses: webfactory/ssh-agent@v0.9.0
+      - uses: actions/checkout@v4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          fetch-depth: 0
 
-      - name: Test SSH connection
-        run: ssh -o StrictHostKeyChecking=no xuzo1696@mortadelle.o2switch.net "echo 'Connexion SSH réussie !' "
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+
+      - name: Get runner's public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Removing all whitelisted IP
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
+
+      - name: Whitelisting the runner IP
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
+
+      - name: Making sure the IP is whitelisted
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
