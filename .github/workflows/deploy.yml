@@ -17,6 +17,6 @@ jobs:
         with:
           host: dev.solitrack.fr
           username: ${{ secrets.CPANEL_USERNAME }}
-          key: ${{ secrets.O2SWITCH_SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Connection successful!"
