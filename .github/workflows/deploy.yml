@@ -12,11 +12,26 @@ jobs:
       - name: Checkout du code
         uses: actions/checkout@v4
 
+      - name: Get runner's public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Whitelist runner IP on o2switch
+        env:
+          SERVER: 109.234.167.69
+          LOGIN: ${{ secrets.CPANEL_LOGIN }}
+          TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          RUNNER_IP: ${{ steps.ip.outputs.ip }}
+
+        run: |
+          echo "Whitelisting IP $RUNNER_IP"
+          curl -s -H "Authorization: cpanel $LOGIN:$TOKEN" \
+            "https://$SERVER:2083/execute/SshWhitelist/add?address=$RUNNER_IP&port=22" | jq
+
       - name: Test connexion SSH to o2switch
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: dev.solitrack.fr
           username: ${{ secrets.CPANEL_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "Connection successful!"
+          key: ${{ secrets.O2SWITCH_SSH_KEY }}
+          script: echo "Connection successful!"
