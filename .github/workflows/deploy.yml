@@ -2,8 +2,7 @@ name: Deploy to o2switch
 
 on:
   push:
-    branches:
-      - main
+    branches: [ci-cd-setup]
 
 jobs:
   deploy:
