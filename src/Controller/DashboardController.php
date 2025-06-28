@@ -89,11 +89,11 @@ final class DashboardController extends AbstractController
     }
 
 
-    #[Route('/controle-de-caisse', name: 'app_dashboard_cash_reconciliation')]
-    public function cashReconciliation(): Response
-    {
-        return $this->render('dashboard/cash_reconciliation.html.twig');
-    }
+    // #[Route('/gestion-de-caisse', name: 'app_dashboard_cash_reconciliation')]
+    // public function cashReconciliation(): Response
+    // {
+    //     return $this->render('dashboard/cash_register.html.twig');
+    // }
 
     #[Route('/gestion-utilisateurs', name: 'app_dashboard_user_management')]
     public function userManagement(UserRepository $userRepository): Response

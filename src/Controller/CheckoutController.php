@@ -7,6 +7,7 @@ use App\Entity\SalesItem;
 use App\Entity\Sale;
 use App\Entity\Category;
 use App\Form\SaleType;
+use App\Repository\CashRegisterSessionRepository;
 use App\Service\PriceManagementService;
 use App\Service\ReceiptMailer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,8 @@ class CheckoutController extends AbstractController
         EntityManagerInterface $entityManager,
         CsrfTokenManagerInterface $csrfTokenManager,
         ReceiptMailer $receiptMailer,
-        PriceManagementService $priceManagement
+        PriceManagementService $priceManagement,
+        CashRegisterSessionRepository $cashRegisterSessionRepository
     ): Response {
 
         $token = $request->request->get('_csrf_token');
@@ -66,6 +68,9 @@ class CheckoutController extends AbstractController
 
 
         $sale = new Sale();
+
+        $openSession = $cashRegisterSessionRepository->findAnyOpenSession();
+        // dd($openSession);
 
         $cardAmounts = $request->get('card_amount', []);
         $cashAmounts = $request->get('cash_amount', []);
@@ -90,6 +95,7 @@ class CheckoutController extends AbstractController
 
         $totalPrice = $priceManagement->getCartTotal();
 
+        $sale->setCashRegisterSession($openSession);
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
         $sale->setCardAmount($cardTotal ?? null);

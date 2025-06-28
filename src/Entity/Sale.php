@@ -60,6 +60,10 @@ class Sale
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customer_city = null;
 
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?CashRegisterSession $CashRegisterSession = null;
+
     public function __construct()
     {
         $this->salesItems = new ArrayCollection();
@@ -207,6 +211,18 @@ class Sale
     public function setCustomerCity(?string $customer_city): static
     {
         $this->customer_city = $customer_city;
+
+        return $this;
+    }
+
+    public function getCashRegisterSession(): ?CashRegisterSession
+    {
+        return $this->CashRegisterSession;
+    }
+
+    public function setCashRegisterSession(?CashRegisterSession $CashRegisterSession): static
+    {
+        $this->CashRegisterSession = $CashRegisterSession;
 
         return $this;
     }
