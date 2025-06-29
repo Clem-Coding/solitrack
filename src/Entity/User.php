@@ -83,6 +83,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CashRegisterClosure::class, mappedBy: 'user')]
     private Collection $cashRegisterClosures;
 
+    /**
+     * @var Collection<int, Withdrawal>
+     */
+    #[ORM\OneToMany(targetEntity: Withdrawal::class, mappedBy: 'madeBy')]
+    private Collection $withdrawals;
+
     public function __construct()
     {
         $this->donations = new ArrayCollection();
@@ -90,6 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->visitors = new ArrayCollection();
         $this->cashRegisterSessions = new ArrayCollection();
         $this->cashRegisterClosures = new ArrayCollection();
+        $this->withdrawals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -335,6 +342,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($cashRegisterClosure->getUser() === $this) {
                 $cashRegisterClosure->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Withdrawal>
+     */
+    public function getWithdrawals(): Collection
+    {
+        return $this->withdrawals;
+    }
+
+    public function addWithdrawal(Withdrawal $withdrawal): static
+    {
+        if (!$this->withdrawals->contains($withdrawal)) {
+            $this->withdrawals->add($withdrawal);
+            $withdrawal->setMadeBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWithdrawal(Withdrawal $withdrawal): static
+    {
+        if ($this->withdrawals->removeElement($withdrawal)) {
+            // set the owning side to null (unless already changed)
+            if ($withdrawal->getMadeBy() === $this) {
+                $withdrawal->setMadeBy(null);
             }
         }
 

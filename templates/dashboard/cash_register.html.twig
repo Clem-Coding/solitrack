@@ -7,47 +7,80 @@
 {% block content %}
   <h1>Gestion de la caisse</h1>
 
-  <div class="sections-container three-sections">
-    <section class="card">
-      <p class="state-ok">Caisse ouverte par {{ openedBy }} le {{ openingAt }}</p>
+  {% if session %}
+    <div class="sections-container three-sections">
+      <section class="card">
+        <p class="state-ok">Caisse ouverte par {{ opened_by }} le {{ opening_at }}</p>
+        <div class="cash-summary">
+          <p>Fond de caisse : {{ cash_float|number_format(2, ',', ' ') }} €</p>
+          <p>Total des ventes pour la session en cours : {{ total_price }} €</p>
+          <p>Total CB : {{ total_card }} €</p>
+          <p>Total espèces : {{ total_cash }} €</p>
+          <p>Total des prélèvements effectués : {{ total_withdrawals }} €</p>
+        </div>
+        <p class="bold">Solde théorique attendu : {{ theoretical_balance }} €</p>
+      </section>
 
-      <p>Fond de caisse : {{ cashFloat|number_format(2, ',', ' ') }} €</p>
-      <p>Total des ventes pour la session en cours : {{ totalPrice }}</p>
-      <p>Total CB : {{ totalCard }}</p>
-      <p>Total espèces : {{ totalCash }}</p>
-    </section>
-    <section class="card">
-      <h2>Effectuer un prélèvement</h2>
-      <form method="post" action="">
-        <label>Montant du prélèvement<input type="number" name="montant" step="0.01" min="0" required /></label>
-        <label>Motif (optionnel) :<input type="text" name="motif" /></label>
+      <section class="card">
+        <h2>Effectuer un prélèvement</h2>
+        {{ form_start(withdrawal_form) }}
+        <div class="form-group">
+          {{ form_label(withdrawal_form.amount) }}
+          {{ form_widget(withdrawal_form.amount) }}
+        </div>
+        <div class="form-group">
+          {{ form_label(withdrawal_form.comment) }}
+          {{ form_widget(withdrawal_form.comment) }}
+        </div>
         <button type="submit" class="button-primary">Valider le prélèvement</button>
-      </form>
-    </section>
+        {{ form_end(withdrawal_form) }}
+        <div>{% include 'partials/flash.html.twig' %}</div>
+      </section>
 
-    <section class="card">
-      <h2>Clôture de caisse</h2>
-      <form method="post" action="">
+      <section class="card">
+        <h2>Clôture de caisse</h2>
+        {{ form_start(coins_count_form) }}
         <div class="grid-2-cols">
-          {% for valeur in [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100] %}
-            <label>
-              {{ valeur|number_format(2, ',', ' ') }} € :<input
-                type="number"
-                name="billets[{{ valeur }}]"
-                min="0"
-                value="0"
-                step="1"
-              />
-            </label>
+          {% for field in coins_count_form %}
+            <label>{{ field.vars.label }} {{ form_widget(field) }}</label>
           {% endfor %}
         </div>
+        {{ form_end(coins_count_form) }}
 
-        <p><strong>💶 Solde théorique espèces :</strong> 100,00 €</p>
-        <p><strong>🧾 Solde compté :</strong> <span id="solde-compté">0,00 €</span></p>
-        <p><strong>❗ Écart :</strong> <span id="ecart">0,00 €</span></p>
+        {{ form_start(closure_form) }}
+        <p>💶 Solde théorique de la caisse : <span id="theoriticalBalance">{{ theoretical_balance }}</span>€</p>
+
+        <div class="form-group">
+          {{ form_label(closure_form.countedBalance) }}
+          {{ form_widget(closure_form.countedBalance) }}
+        </div>
+        <div class="form-group">
+          {{ form_label(closure_form.discrepancy) }}
+          {{ form_widget(closure_form.discrepancy) }}
+        </div>
+
+        <button type="button" class="button-grey-shadow note-toggle">
+          <i class="ph ph-receipt"></i>Ecrire un commentaire
+        </button>
+
+        <div class="form-group hidden">
+          {{ form_label(closure_form.note) }}
+          {{ form_widget(closure_form.note) }}
+        </div>
 
         <button type="submit" class="button-primary">Clôturer la caisse</button>
-      </form>
+        {{ form_end(closure_form) }}
+      </section>
+    </div>
+  {% else %}
+    <section class="card">
+      <p class="alert">Dernière caisse fermée par Karine à 14h30</p>
+      <p>Total des ventes de la dernière session : 189 €</p>
     </section>
-  </div>
+  {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/cash-register.js') }}" type="module"></script>
 {% endblock %}

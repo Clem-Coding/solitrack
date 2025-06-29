@@ -23,12 +23,6 @@ class CashRegisterSession
     #[ORM\Column]
     private ?float $cashFloat = null;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    private ?float $cashWithdrawal = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $withdrawalComment = null;
-
     #[ORM\ManyToOne(inversedBy: 'cashRegisterSessions')]
     #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
     #[ORM\JoinColumn(nullable: false)]
@@ -46,10 +40,17 @@ class CashRegisterSession
     #[ORM\OneToMany(targetEntity: Sale::class, mappedBy: 'CashRegisterSession')]
     private Collection $sales;
 
+    /**
+     * @var Collection<int, Withdrawal>
+     */
+    #[ORM\OneToMany(targetEntity: Withdrawal::class, mappedBy: 'cashRegisterSession')]
+    private Collection $withdrawals;
+
     public function __construct()
     {
         $this->cashRegisterClosures = new ArrayCollection();
         $this->sales = new ArrayCollection();
+        $this->withdrawals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,30 +78,6 @@ class CashRegisterSession
     public function setCashFloat(float $cashFloat): static
     {
         $this->cashFloat = $cashFloat;
-
-        return $this;
-    }
-
-    public function getCashWithdrawal(): ?float
-    {
-        return $this->cashWithdrawal;
-    }
-
-    public function setCashWithdrawal(float $cashWithdrawal): static
-    {
-        $this->cashWithdrawal = $cashWithdrawal;
-
-        return $this;
-    }
-
-    public function getWithdrawalComment(): ?string
-    {
-        return $this->withdrawalComment;
-    }
-
-    public function setWithdrawalComment(?string $withdrawalComment): static
-    {
-        $this->withdrawalComment = $withdrawalComment;
 
         return $this;
     }
@@ -171,6 +148,36 @@ class CashRegisterSession
             // set the owning side to null (unless already changed)
             if ($sale->getCashRegisterSession() === $this) {
                 $sale->setCashRegisterSession(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Withdrawal>
+     */
+    public function getWithdrawals(): Collection
+    {
+        return $this->withdrawals;
+    }
+
+    public function addWithdrawal(Withdrawal $withdrawal): static
+    {
+        if (!$this->withdrawals->contains($withdrawal)) {
+            $this->withdrawals->add($withdrawal);
+            $withdrawal->setCashRegisterSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWithdrawal(Withdrawal $withdrawal): static
+    {
+        if ($this->withdrawals->removeElement($withdrawal)) {
+            // set the owning side to null (unless already changed)
+            if ($withdrawal->getCashRegisterSession() === $this) {
+                $withdrawal->setCashRegisterSession(null);
             }
         }
 
