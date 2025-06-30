@@ -18,9 +18,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-scripts
 
-      - name: Compile assets with AssetMapper
-        run: php bin/console asset-map:compile --no-scripts
-
       - name: Prepare build directory
         run: |
           mkdir -p build
