@@ -15,14 +15,14 @@ jobs:
       - name: Debug IP
         run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
 
-      - name: Add the IP to cPanel SSH whitelist
+      - name: Add IP to whitelist (with response)
         run: |
           curl -sX POST \
             -d "whitelist[address=${{ steps.ip.outputs.ipv4 }}]" \
             -d "whitelist[port]=22" \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add" \
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add"
 
       - name: Check the current whitelist
         run: |
           curl -sX GET \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list" \
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list"
