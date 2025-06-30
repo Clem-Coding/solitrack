@@ -85,9 +85,8 @@ jobs:
           chmod 0400 ~/.ssh/id_rsa
 
       - name: Check remote dirs
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }} "ls -l /home/${{ secrets.CPANEL_USERNAME }}"
-
-      - name: Sending data with RSYNC
+        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }} "ls -l /home/${{ secrets.CPANEL_USERNAME }}"
+ 
         run: |
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude=".git" -av --delete build/ \
