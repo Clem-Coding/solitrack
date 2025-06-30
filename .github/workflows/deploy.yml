@@ -5,7 +5,7 @@ on:
     branches: [ci-cd-setup]
 
 jobs:
-  test-whitelist:
+  whitelist-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Get the public IP of the GitHub runner
@@ -13,9 +13,9 @@ jobs:
         uses: haythem/public-ip@v1.3
 
       - name: Debug IP
-        run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
+        run: echo "Runner IP: ${{ steps.ip.outputs.ipv4 }}"
 
-       - name: Remove all whitelisted IPs
+      - name: Remove all whitelisted IPs
         run: |
           curl -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php" \
           | fgrep 'index.live.php?r=remove&address=' \
@@ -24,14 +24,15 @@ jobs:
               curl -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/$ipToRemove" > /dev/null 2>&1
             done
 
-      - name: Add IP to whitelist (with response)
+      - name: Add runner IP to whitelist
         run: |
           curl -sX POST \
             -d "whitelist[address]=${{ steps.ip.outputs.ipv4 }}" \
             -d "whitelist[port]=22" \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add" | jq
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add"
 
-      - name: Check the current whitelist
+      - name: Verify whitelist contains runner IP
         run: |
           curl -sX GET \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list"
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list" \
+            | grep "${{ steps.ip.outputs.ipv4 }}"
