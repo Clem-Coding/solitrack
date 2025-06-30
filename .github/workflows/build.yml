@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP with Composer
         uses: shivammathur/setup-php@v2
@@ -18,26 +20,19 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-scripts
 
-      - name: Debug current directory and files
+      - name: Debug root directory
         run: |
           echo "Current directory:"
           pwd
-          echo "Contents:"
+          echo "Root directory contents:"
           ls -la
-
-      - name: Debug content of ./public
-        run: |
-          if [ -d public ]; then
-            echo "Public directory exists, contents:"
-            ls -la public
-          else
-            echo "No public directory found"
-          fi
 
       - name: Prepare build directory
         run: |
           mkdir -p build
-          rsync -a --exclude='.git' --exclude='tests' ./ build/
+          rsync -a --exclude='.git' --exclude='tests' --exclude='build' --exclude='var/cache' --exclude='var/log' ./ build/
+          echo "Build directory contents after rsync:"
+          ls -la build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
