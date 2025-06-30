@@ -21,7 +21,7 @@ jobs:
       - name: Prepare build directory
         run: |
           mkdir -p build
-          cp -r public/* build/
+          rsync -a --exclude='.git' --exclude='tests' ./ build/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
