@@ -17,8 +17,22 @@ jobs:
           extensions: mbstring, intl, pdo, pdo_mysql
           tools: composer
 
+      - name: Create temporary .env for build
+        run: |
+          cat <<EOF > .env
+          APP_ENV=prod
+          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          APP_SECRET=${{ secrets.APP_SECRET }}
+          EOF
+
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-scripts
+
+      - name: Compile assets
+        run: php bin/console asset-map:compile
+
+      - name: Clear cache
+        run: php bin/console cache:clear --no-warmup --env=prod
 
       - name: Prepare build directory
         run: |
