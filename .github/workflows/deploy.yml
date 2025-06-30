@@ -2,31 +2,26 @@ name: Deploy to o2switch
 
 on:
   push:
-    branches:
-      - ci-cd-setup
+    branches: [ci-cd-setup]
 
 jobs:
   test-whitelist:
     runs-on: ubuntu-latest
     steps:
-      - name: Get public IP
+      - name: Get the public IP of the GitHub runner
         id: ip
         uses: haythem/public-ip@v1.3
 
-      - name: Clean old whitelist entries and add new IP
-        run: |
-          curl -v -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php" | \
-          fgrep 'index.live.php?r=remove&address=' | cut -d '"' -f 2 | while read ipToRemove; do
-            echo "Removing IP: $ipToRemove"
-            curl -v -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/$ipToRemove"
-          done
+      - name: Debug IP
+        run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
 
-          echo "Adding IP: ${{ steps.ip.outputs.ipv4 }}"
-          curl -v -X POST \
+      - name: Add IP to whitelist (with response)
+        run: |
+          curl -sX POST \
             -d "whitelist[address]=${{ steps.ip.outputs.ipv4 }}" \
             -d "whitelist[port]=22" \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add"
-
-          curl -v -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php" | fgrep -q "${{ steps.ip.outputs.ipv4 }}" && echo "IP whitelisted"
-
-          sleep 65
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add" | jq
+      - name: Check the current whitelist
+        run: |
+          curl -sX GET \
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list"
