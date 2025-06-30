@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [develop, master]
+    branches: [ci-cd-setup]
 
 jobs:
   build-deploy:
