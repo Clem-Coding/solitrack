@@ -17,6 +17,11 @@ jobs:
           extensions: mbstring, intl, pdo, pdo_mysql
           tools: composer
 
+      - name: Create var directory and SQLite file
+        run: |
+          mkdir -p var
+          touch var/data.db
+
       - name: Create temporary .env for build
         run: |
           cat <<EOF > .env
@@ -29,7 +34,7 @@ jobs:
         run: composer install --no-dev --optimize-autoloader --no-scripts
 
       - name: Compile assets
-        run: php bin/console asset-map:compile
+        run: php bin/console asset-map:compile --no-interaction --env=prod
 
       - name: Clear cache
         run: php bin/console cache:clear --no-warmup --env=prod
