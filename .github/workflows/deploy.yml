@@ -76,22 +76,11 @@ jobs:
           script: echo "Connection successful!"
           port: 22
 
-      - name: Installing the SSH Key
-        run: |
-          eval $(ssh-agent -s)
-          mkdir -p ~/.ssh       
-          chmod 700 ~/.ssh 
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 0400 ~/.ssh/id_rsa
-
-      - name: Check remote dirs
-        run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }} "ls -l /home/${{ secrets.CPANEL_USERNAME }}"
-
       - name: Sending data with RSYNC
         run: |
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude=".git" -av --delete build/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }}:/home/dev.solitrack.fr/public
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/
 
       - name: Cleaning SSH keys
         if: always()
