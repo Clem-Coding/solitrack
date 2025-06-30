@@ -35,9 +35,6 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.3
 
-      - name: Debug IP
-        run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
-
       - name: List all whitelisted IPs
         id: list-ips
         run: |
@@ -79,12 +76,6 @@ jobs:
           script: echo "Connection successful!"
           port: 22
 
-      - name: Deploy files to server via rsync
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.CPANEL_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            rsync --timeout=60 -avz --delete ./build/ /home/dev.solitrack.fr/public
+      - name: Deploy files via rsync
+        run: |
+          rsync --timeout=60 -avz --delete -e "ssh -i ${{ secrets.SSH_PRIVATE_KEY }} -o StrictHostKeyChecking=no -p 22" ./build/ ${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }}:/home/dev.solitrack.fr/public
