@@ -12,9 +12,25 @@ on:
     branches: [ci-cd-setup]
 
 jobs:
-  whitelist-and-deploy:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  deploy:
     runs-on: ubuntu-latest
+    needs: build
+
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+
       - name: Get the public IP of the GitHub runner
         id: ip
         uses: haythem/public-ip@v1.3
@@ -62,3 +78,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: echo "Connection successful!"
           port: 22
+
+      - name: Deploy files to server via rsync
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            rsync -avz --delete ./build/ /dev.solitrack.fr/public
