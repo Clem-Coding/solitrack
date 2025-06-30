@@ -23,7 +23,7 @@ jobs:
           echo "$JSON_OUTPUT" | jq .
 
           # Extraire les adresses IP et les stocker dans une variable
-          IPS=$(echo "$JSON_OUTPUT" | jq -r '.data[].address')
+          IPS=$(echo "$JSON_OUTPUT" | jq -r '.data.list[].address' | sort -u)
           echo "ips=$IPS" >> $GITHUB_OUTPUT
 
       - name: Remove all whitelisted IPs
