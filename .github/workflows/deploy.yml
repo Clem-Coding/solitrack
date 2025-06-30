@@ -1,27 +1,36 @@
-name: Deploy to o2switch
+name: Build and Deploy
 
 on:
   push:
-    branches: [ci-cd-setup]
+    branches: [develop, master]
 
 jobs:
-  test-whitelist:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the public IP of the GitHub runner
+      - uses: actions/checkout@v4
+
+      - name: Get public IP of the GitHub runner
         id: ip
         uses: haythem/public-ip@v1.3
 
-      - name: Debug IP
-        run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
+      - name: Remove all whitelisted IPs (in and out)
+        run: |
+          curl -sX GET "https://${{ secrets.REMOTE_USER }}:${{ secrets.URL_ENCODED_PASSWORD }}@${{ secrets.REMOTE_HOST }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php" \
+          | fgrep 'index.live.php?r=remove&address=' \
+          | cut -d '"' -f 2 \
+          | while read ipToRemove; do
+              curl -sX GET "https://${{ secrets.REMOTE_USER }}:${{ secrets.URL_ENCODED_PASSWORD }}@${{ secrets.REMOTE_HOST }}:2083/frontend/o2switch/o2switch-ssh-whitelist/$ipToRemove" > /dev/null 2>&1
+            done
 
-      - name: Add IP to whitelist (with response)
+      - name: Add current runner IP to whitelist on port 22
         run: |
           curl -sX POST \
             -d "whitelist[address]=${{ steps.ip.outputs.ipv4 }}" \
             -d "whitelist[port]=22" \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add" | jq
-      - name: Check the current whitelist
+            "https://${{ secrets.REMOTE_USER }}:${{ secrets.URL_ENCODED_PASSWORD }}@${{ secrets.REMOTE_HOST }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add"
+
+      - name: Check that IP is whitelisted
         run: |
-          curl -sX GET \
-            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list"
+          curl -sX GET "https://${{ secrets.REMOTE_USER }}:${{ secrets.URL_ENCODED_PASSWORD }}@${{ secrets.REMOTE_HOST }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php" \
+          | grep "${{ steps.ip.outputs.ipv4 }}" && echo "IP whitelisted"
