@@ -20,19 +20,10 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-scripts
 
-      - name: Debug root directory
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Root directory contents:"
-          ls -la
-
       - name: Prepare build directory
         run: |
           mkdir -p build
           rsync -a --exclude='.git' --exclude='tests' --exclude='build' --exclude='var/cache' --exclude='var/log' ./ build/
-          echo "Build directory contents after rsync:"
-          ls -la build
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
