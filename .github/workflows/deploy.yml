@@ -12,6 +12,9 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.3
 
+      - name: Debug IP
+        run: echo "Runner IP: ${{ steps.ip.outputs.ip }}"
+
       - name: Add the IP to cPanel SSH whitelist
         run: |
           curl -sX POST \
