@@ -1,3 +1,9 @@
+name: Deploy to o2switch
+
+on:
+  push:
+    branches: [ci-cd-setup]
+
 jobs:
   test-whitelist:
     runs-on: ubuntu-latest
