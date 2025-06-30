@@ -1,33 +1,7 @@
-name: Deploy to o2switch
-
-on:
-  push:
-    branches: [ci-cd-setup]
-
 jobs:
-  deploy:
+  test-whitelist:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Get runner's public IP
-        id: ip
-        uses: haythem/public-ip@v1.3
-
-      - name: Removing all whitelisted IP
+      - name: Test cPanel login auth (whitelist list)
         run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'
-
-      - name: Whitelisting the runner IP
-        run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
-
-      - name: Making sure the IP is whitelisted
-        run: |
-          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
-          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list' | grep ${{ steps.ip.outputs.ipv4 }}
+          curl -sX GET "https://${{ secrets.CPANEL_USERNAME}}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list" | jq
