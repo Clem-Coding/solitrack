@@ -31,7 +31,7 @@ jobs:
           EOF
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader --no-scripts
+        run: composer install --no-dev --optimize-autoloader
 
       - name: Compile assets
         run: php bin/console asset-map:compile --no-interaction --env=prod
