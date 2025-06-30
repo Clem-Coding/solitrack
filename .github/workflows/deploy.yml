@@ -87,4 +87,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            rsync -avz --delete ./build/ \${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }}:/home/dev.solitrack.fr/public
+            rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no" \--exclude=".git" -avz --delete ./build/ \${{ secrets.CPANEL_USERNAME }}@${{ secrets.SSH_HOST }}:/home/dev.solitrack.fr/public
