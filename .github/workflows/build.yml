@@ -26,7 +26,7 @@ jobs:
         run: |
           cat <<EOF > .env
           APP_ENV=prod
-          DATABASE_URL=${{ secrets.DATABASE_URL }}
+          DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db
           APP_SECRET=${{ secrets.APP_SECRET }}
           EOF
 
