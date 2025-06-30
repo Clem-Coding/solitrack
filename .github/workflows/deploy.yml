@@ -13,7 +13,7 @@ jobs:
         uses: haythem/public-ip@v1.3
 
       - name: Debug IP
-        run: echo "Runner IP: ${{ steps.ip.outputs.ipv4 }}"
+        run: echo "Runner IP:${{ steps.ip.outputs.ipv4 }}"
 
       - name: Remove all whitelisted IPs
         run: |
