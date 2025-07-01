@@ -69,3 +69,5 @@ Manually create users with their roles since there are no fixtures. Use the foll
 `php bin/console app:create-user volunteer@example.com ROLE_VOLUNTEER_PLUS`
 
 `symfony server:start`
+
+test
