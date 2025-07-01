@@ -1,15 +1,15 @@
 # Les variables suivantes doivent être configurées dans les Secrets du repo GitHub :
 # CPANEL_USERNAME  : Nom d’utilisateur cPanel pour l’authentification.
-# CPANEL_PASSWORD  : Mot de passe cPanel (ou token) qui doit être encodé URL (par exemple avec : https://www.urlencoder.org/))
+# CPANEL_PASSWORD  : Mot de passe cPanel (ou token) qui doit être encodé URL
 # CPANEL_SERVER    : Adresse du serveur cPanel (exemple : monserveur.o2switch.net).
 # SSH_PRIVATE_KEY : Clé privée SSH pour l’authentification.
 # SSH_HOST : Adresse du serveur web
 
-name: Deploy to o2switch
+name: Deploy to Production
 
 on:
   push:
-    branches: [ci-cd-setup]
+    branches: [main]
 
 jobs:
   build:
@@ -79,7 +79,7 @@ jobs:
         run: |
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude='.env' --exclude='.git' --exclude='public/.htaccess' -av --delete build/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/solitrack.fr/
 
       - name: Cleaning SSH keys
         if: always()
