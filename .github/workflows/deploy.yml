@@ -9,7 +9,7 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [ci-cd-setup]
+    branches: [main]
 
 jobs:
   build:
@@ -79,7 +79,7 @@ jobs:
         run: |
           rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude='.env' --exclude='.git' --exclude='public/.htaccess' -av --delete build/ \
-          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/dev.solitrack.fr/
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/solitrack.fr/
 
       - name: Cleaning SSH keys
         if: always()
