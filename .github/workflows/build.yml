@@ -1,0 +1,51 @@
+name: Build
+
+on: [workflow_call]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, pdo, pdo_mysql
+          tools: composer
+
+      - name: Create var directory and SQLite file
+        run: |
+          mkdir -p var
+          touch var/data.db
+
+      - name: Create temporary .env for build
+        run: |
+          cat <<EOF > .env
+          APP_ENV=prod
+          DATABASE_URL=sqlite:///%kernel.project_dir%/var/data.db
+          APP_SECRET=${{ secrets.APP_SECRET }}
+          EOF
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Compile assets
+        run: php bin/console asset-map:compile --no-interaction --env=prod
+
+      - name: Clear cache
+        run: php bin/console cache:clear --no-warmup --env=prod
+
+      - name: Prepare build directory
+        run: |
+          mkdir -p build
+          rsync -a --exclude='.git' --exclude='tests' --exclude='build' --exclude='var/cache' --exclude='var/log' ./ build/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build

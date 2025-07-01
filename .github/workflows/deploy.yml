@@ -1,0 +1,93 @@
+# Les variables suivantes doivent être configurées dans les Secrets du repo GitHub :
+# CPANEL_USERNAME  : Nom d’utilisateur cPanel pour l’authentification.
+# CPANEL_PASSWORD  : Mot de passe cPanel (ou token) qui doit être encodé URL
+# CPANEL_SERVER    : Adresse du serveur cPanel (exemple : monserveur.o2switch.net).
+# SSH_PRIVATE_KEY : Clé privée SSH pour l’authentification.
+# SSH_HOST : Adresse du serveur web
+
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build
+
+      - name: Get the public IP of the GitHub runner
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: List all whitelisted IPs
+        id: list-ips
+        run: |
+          JSON_OUTPUT=$(curl -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list")
+          echo "$JSON_OUTPUT" | jq .
+
+          # Extraire les adresses IP et les stocker dans une variable
+            IPS=$(echo "$JSON_OUTPUT" | jq -r '.data.list[].address' | sort -u | paste -sd "," -)
+            echo "ips=$IPS" >> $GITHUB_OUTPUT
+
+      - name: Remove all whitelisted IPs
+        run: |
+          IFS=',' read -ra IP_ARRAY <<< "${{ steps.list-ips.outputs.ips }}"
+          for ip in "${IP_ARRAY[@]}"; do
+            echo "Removing IP: $ip"
+            curl -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=remove&address=$ip&direction=in&port=22"
+            curl -sX GET "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=remove&address=$ip&direction=out&port=22"
+          done
+
+      - name: Add runner IP to whitelist
+        run: |
+          curl -sX POST \
+            -d "whitelist[address]=${{ steps.ip.outputs.ipv4 }}" \
+            -d "whitelist[port]=22" \
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=add"
+
+      - name: Verify whitelist contains runner IP
+        run: |
+          curl -sX GET \
+            "https://${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_PASSWORD }}@${{ secrets.CPANEL_SERVER }}:2083/frontend/o2switch/o2switch-ssh-whitelist/index.live.php?r=list" \
+            | grep "${{ steps.ip.outputs.ipv4 }}"
+
+      - name: Installing the SSH Key
+        run: |
+          eval $(ssh-agent -s)
+          mkdir -p ~/.ssh       
+          chmod 700 ~/.ssh 
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 0400 ~/.ssh/id_rsa
+
+      - name: Sending data with RSYNC
+        run: |
+          rsync --timeout=60 -e "ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
+          --exclude='.env' --exclude='.git' --exclude='public/.htaccess' -av --delete build/ \
+          ${{ secrets.CPANEL_USERNAME }}@${{ secrets.CPANEL_SERVER }}:/home/${{ secrets.CPANEL_USERNAME }}/solitrack.fr/
+
+      - name: Cleaning SSH keys
+        if: always()
+        run: rm -fr ~/.ssh
+
+      - name: Cleaning artifacts
+        uses: geekyeggo/delete-artifact@v5
+        if: always()
+        with:
+          name: build
+          failOnError: false
