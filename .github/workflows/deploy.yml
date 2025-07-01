@@ -9,7 +9,7 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [main]
+    branches: [ci-cd]
 
 jobs:
   build:
@@ -84,3 +84,10 @@ jobs:
       - name: Cleaning SSH keys
         if: always()
         run: rm -fr ~/.ssh
+
+      - name: Cleaning artifacts
+        uses: geekyeggo/delete-artifact@v5
+        if: always()
+        with:
+          name: build
+          failOnError: false
