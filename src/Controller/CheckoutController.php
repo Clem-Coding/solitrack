@@ -71,7 +71,6 @@ class CheckoutController extends AbstractController
         $cashAmounts = $request->get('cash_amount', []);
         $cardTotal = array_sum(array_map('floatval', $cardAmounts));
         $cashTotal = array_sum(array_map('floatval', $cashAmounts));
-
         $keepChangeAmount = $request->get('keep_change');
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
@@ -94,16 +93,15 @@ class CheckoutController extends AbstractController
         $sale->setUser($user);
         $sale->setCardAmount($cardTotal ?? null);
         $sale->setCashAmount($cashTotal ?? null);
-        $sale->setKeepChange($keepChangeAmount) ?? null;
-        $sale->setPWYWAmount($pwywAmount) ?? null;
+        $sale->setKeepChange($keepChangeAmount !== '' ? (float) $keepChangeAmount : null);
+        $sale->setPwywAmount($pwywAmount !== '' ? (float) $pwywAmount : null);
         $sale->setZipcodeCustomer($zipcode) ?? null;
-        $sale->setTotalPrice($totalPrice);
         $sale->setCustomerCity($customerCity ?? null);
+        $sale->setTotalPrice($totalPrice);
 
         foreach ($shoppingCart as $itemData) {
             $salesItem = new SalesItem();
             $category = $entityManager->getRepository(Category::class)->findOneBy(['name' => $itemData['category']]);
-
 
             if ($category) {
                 $salesItem->setCategory($category);
@@ -111,7 +109,6 @@ class CheckoutController extends AbstractController
 
                 $salesItem->setCategory(null);
             }
-
 
             $salesItem->setWeight($itemData['weight'] ?? null);
             $salesItem->setPrice($itemData['price'] ?? null);

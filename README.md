@@ -25,15 +25,13 @@ Prerequisites
 
 Before starting, ensure you have the following installed:
 
-    PHP 8.0+: Soli'Track requires PHP 8.0 or higher.
+- Docker & Docker Compose installed
 
-    Composer: The PHP dependency manager.
+- PHP 8.x installed
 
-    Symfony CLI (optional, but recommended for managing Symfony projects).
+Symfony CLI installed (https://symfony.com/download)
 
-    MySQL or PostgreSQL: For database management. You can use XAMPP for a local MySQL server or any other database management system.
-
-    Node.js and npm: Required for managing frontend dependencies (if applicable).
+Composer installed
 
 ### Step 1: Clone the Repository
 
