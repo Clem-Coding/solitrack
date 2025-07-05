@@ -37,7 +37,7 @@ docker-compose up -d
 
 ### Access URLs
 
-- Web app (Symfony + frontend): [`http://localhost:8080/`](http://localhost:8080/)
+- Web app: [`http://localhost:8080/`](http://localhost:8080/)
 - phpMyAdmin (database management): [`http://localhost:8081/`](http://localhost:8081/)
 - Mail interface (Maildev): [`http://localhost:8025/`](http://localhost:8025/)
 
