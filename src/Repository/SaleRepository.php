@@ -32,12 +32,14 @@ class SaleRepository extends ServiceEntityRepository
      *    SELECT MONTH(s.created_at) AS month, SUM(s.total_price) AS totalData
      *    FROM sales s
      *    JOIN categories c ON s.category_id = c.id
+     *     JOIN sales_items si ON si.sale_id = s.id
      *    WHERE YEAR(s.created_at) = 2025
      *      AND c.id = 4
      *    GROUP BY month
      *    ORDER BY month ASC;
      */
-    public function findTotalDataByMonth($repository, $category = null, $year, $type): array
+
+    public function findTotalDataByMonth(?string $year, ?string $type, ?string $category): array
     {
 
         $qb = $this->createQueryBuilder('s')
@@ -64,7 +66,7 @@ class SaleRepository extends ServiceEntityRepository
     }
 
 
-    public function findTotalDataByDayForMonth($repository, $category = null, $year = null, $month = null, $type = null): array
+    public function findTotalDataByDayForMonth(?int $year, ?int $month, ?string $type, ?string $category = null): array
     {
         $qb = $this->createQueryBuilder('s')
             ->select(
@@ -73,13 +75,10 @@ class SaleRepository extends ServiceEntityRepository
                     ? 'SUM(si.price) AS totalData'
                     : 'SUM(s.totalPrice) + SUM(COALESCE(s.pwywAmount, 0)) AS totalData'
             )
-
-            ->where('MONTH(s.createdAt) = :month')
-            ->andWhere('YEAR(s.createdAt) = :year')
-            ->setParameter('month', $month)
+            ->where('YEAR(s.createdAt) = :year')
+            ->andWhere('MONTH(s.createdAt) = :month')
             ->setParameter('year', $year)
-            ->groupBy('day')
-            ->orderBy('day', 'ASC');
+            ->setParameter('month', $month);
 
         if ($type === "bar") {
             $qb->innerJoin('s.salesItems', 'si')
@@ -88,12 +87,16 @@ class SaleRepository extends ServiceEntityRepository
                 ->setParameter('categoryId', 4);
         }
 
+        $qb->groupBy('day')
+            ->orderBy('day', 'ASC');
+
         return $qb->getQuery()->getResult();
     }
 
 
 
-    public function findTotalDataByYear($repository, $category = null, $type): array
+    public function findTotalDataByYear(?string $type = null, ?string $category = null): array
+
     {
         $qb = $this->createQueryBuilder('s')
             ->select(
@@ -123,28 +126,7 @@ class SaleRepository extends ServiceEntityRepository
     // FROM sales
     // WHERE zipcode_customer IS NOT NULL AND zipcode_customer != ''
     // GROUP BY zipcode_customer;
-    // public function countVisitorsByZipcode(): array
-    // {
-    //     return $this->createQueryBuilder('s')
-    //         ->select('s.zipcodeCustomer AS zipcode, COUNT(s.id) AS visitorCount')
-    //         ->where('s.zipcodeCustomer IS NOT NULL')
-    //         ->andWhere('s.zipcodeCustomer != \'\'')
-    //         ->groupBy('s.zipcodeCustomer')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
 
-
-    // public function countVisitorsByCity(): array
-    // {
-    //     return $this->createQueryBuilder('s')
-    //         ->select('s.customer_city AS city, COUNT(s.id) AS visitorCount')
-    //         ->where('s.customer_city IS NOT NULL')
-    //         ->andWhere('s.customer_city != \'\'')
-    //         ->groupBy('s.customer_city')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
 
     public function countVisitorsByCity(): array
     {

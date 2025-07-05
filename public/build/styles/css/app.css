@@ -578,7 +578,7 @@ button {
 }
 
 main.container {
-  background-color: pink;
+  background-color: blue;
   display: flex;
   flex-direction: column;
   gap: 2em;

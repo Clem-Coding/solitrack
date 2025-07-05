@@ -1,18 +1,12 @@
-
 FROM php:8.3-fpm
 
-RUN apt-get update && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev
-
-RUN docker-php-ext-install opcache
-
-RUN pecl install apcu
-
-RUN docker-php-ext-enable apcu
-
-RUN pecl install xdebug
-
-RUN docker-php-ext-enable xdebug
-
-RUN docker-php-ext-install pdo pdo_mysql
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev libxml2-dev unzip \
+    nodejs npm libicu-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd opcache pdo pdo_mysql dom calendar \
+    && pecl install apcu xdebug \
+    && docker-php-ext-enable apcu xdebug \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY php.ini /usr/local/etc/php/php.ini

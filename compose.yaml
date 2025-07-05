@@ -48,13 +48,5 @@ services:
     depends_on:
       - php
 
-  sass:
-    image: node:18
-    container_name: sass
-    working_dir: /var/www/html
-    volumes:
-      - .:/var/www/html
-    command: npx sass --watch assets/styles:public/build/styles --no-source-map
-
 volumes:
   db_data:

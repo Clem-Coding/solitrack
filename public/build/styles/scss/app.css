@@ -557,7 +557,7 @@ button {
 }
 
 main.container {
-  background-color: palegreen;
+  background-color: blue;
   display: flex;
   flex-direction: column;
   gap: 2em;

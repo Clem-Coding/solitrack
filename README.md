@@ -67,3 +67,5 @@ Manually create users with their roles since there are no fixtures. Use the foll
 `php bin/console app:create-user volunteer@example.com ROLE_VOLUNTEER_PLUS`
 
 `symfony server:start`
+
+Pour consommer les messages dans la file d'attente : docker exec -it php php bin/console messenger:consume async
