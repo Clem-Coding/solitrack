@@ -24,10 +24,16 @@ Soli'Track aims to streamline the management of:
 
 - Docker and Docker Compose installed
 
-- For Windows users:
+- ⚠️ For Windows users:
   It is highly recommended to place the project inside WSL (Windows Subsystem for Linux) to avoid major slowdowns caused by filesystem performance.
 
 ### Step 1: Clone the Repository
+
+### Step 2: Copy environment example file.
+
+```bash
+cp .env.example .env
+```
 
 ### Step 2: Starting the project
 
