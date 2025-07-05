@@ -20,52 +20,41 @@ Soli'Track aims to streamline the management of:
 
 ## How to Install Locally
 
-Follow these steps to set up the Soli'Track project on your local machine:
-Prerequisites
+Prerequisites :
 
-Before starting, ensure you have the following installed:
+- Docker and Docker Compose installed
 
-- Docker & Docker Compose installed
-
-- PHP 8.x installed
-
-- Symfony CLI installed (https://symfony.com/download)
-
-- Composer installed
+- For Windows users:
+  It is highly recommended to place the project inside WSL (Windows Subsystem for Linux) to avoid major slowdowns caused by filesystem performance.
 
 ### Step 1: Clone the Repository
 
-### Step 2: Install Backend Dependencies
+### Step 2: Starting the project
 
-Run the following command to install the PHP dependencies:
+```bash
+docker-compose up -d
+```
 
-`composer install`
+### Access URLs
 
-### Step 3: Set Up the Environment
+    Web app (Symfony + frontend):
+    http://localhost:8080/
 
-Create a .env file from the example configuration file provided:
+    phpMyAdmin (database management):
+    http://localhost:8081/
 
-`cp .env.example .env`
+    Mail interface (Maildev):
+    http://localhost:8025/
 
-Edit the .env file to match your local setup (e.g., database credentials, mailer configuration, etc.).
+### Consuming mails (Symfony Messenger)
 
-### Step 4: Create the Database
+To process async messages in the queue:
 
-Once your environment is set up, create the database by running the following command:
+```bash
+docker exec -it php php bin/console messenger:consume async
+```
 
-`php bin/console doctrine:database:create`
+### Notes
 
-Then, run the migrations to set up the database schema:
-
-`php bin/console doctrine:migrations:migrate`
-
-### Step 5: Create Admin and Volunteer Users
-
-Manually create users with their roles since there are no fixtures. Use the following commands to create a user with ROLE_ADMIN and a user with ROLE_VOLUNTEER_PLUS. By default, users have limited access.
-
-`php bin/console app:create-user email@example.com ROLE_ADMIN`
-`php bin/console app:create-user volunteer@example.com ROLE_VOLUNTEER_PLUS`
-
-`symfony server:start`
-
-Pour consommer les messages dans la file d'attente : docker exec -it php php bin/console messenger:consume async
+- No built-in SASS compiler included
+- Use Live Sass Compiler (VSCode) or any other SASS compilation tool depending on your setup
