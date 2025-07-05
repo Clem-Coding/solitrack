@@ -29,9 +29,9 @@ Before starting, ensure you have the following installed:
 
 - PHP 8.x installed
 
-Symfony CLI installed (https://symfony.com/download)
+- Symfony CLI installed (https://symfony.com/download)
 
-Composer installed
+- Composer installed
 
 ### Step 1: Clone the Repository
 

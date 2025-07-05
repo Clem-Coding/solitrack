@@ -1,7 +1,8 @@
 services:
-  database:
+  mariadb:
     ports:
-      - "5432:5432"
+      - "3307:3306" # changer le port exposé par exemple
+
   mailer:
     image: axllent/mailpit
     ports:
