@@ -1,10 +1,10 @@
 # Soli'Track - Internal Logistics Tracking Tool
 
-Soli'Track is the internal tool I'm developing for my final Web Development diploma project. Built with Symfony, it is designed for Les Fourmis Soli’terre, a non-profit organization based in Plouasne (22), Brittany.
+Soli'Track is an internal tool developed with Symfony for Les Fourmis Soli’Terre, a non-profit organization based in Plouasne (22), Brittany.
 
 ## About Les Fourmis Soli’terre
 
-The organization is dedicated to solidarity and environmental protection in rural areas. They manage a recycled goods shop, giving objects a second life while fostering social connections among local residents. With the support of 35 volunteers, the shop is evolving into a community hub offering eco-friendly workshops and a café.
+This organization is committed to environmental protection and solidarity in rural areas. They operate a solidarity recycling shop that gives second life to used items while fostering social ties among local residents. Supported by 35 volunteers, the shop is evolving into a community hub offering eco-friendly workshops and a café.
 
 ## Project Goals
 
