@@ -40,9 +40,31 @@ class SalesItemRepository extends ServiceEntityRepository
      */
 
 
-    public function findTotalDataByMonth($repository, $category, $year)
+    // public function findTotalDataByMonth($repository, $category, $year)
+    // {
+    //     $qb = $repository->createQueryBuilder('si')
+    //         ->select('MONTH(s.createdAt) AS month', 'SUM(si.weight) AS totalData')
+    //         ->innerJoin('si.sale', 's')
+    //         ->groupBy('month')
+    //         ->orderBy('month', 'ASC');
+
+    //     if ($year) {
+    //         $qb->andWhere('YEAR(s.createdAt) = :year')
+    //             ->setParameter('year', $year);
+    //     }
+
+    //     if ($category === "vetements") {
+    //         $qb->leftJoin('si.category', 'c')
+    //             ->andWhere('c.id = :categoryId')
+    //             ->setParameter('categoryId', 1);
+    //     }
+
+    //     return $qb->getQuery()->getResult();
+    // }
+
+    public function findTotalDataByMonth(?string $year, ?string $type, ?string $category): array
     {
-        $qb = $repository->createQueryBuilder('si')
+        $qb = $this->createQueryBuilder('si')
             ->select('MONTH(s.createdAt) AS month', 'SUM(si.weight) AS totalData')
             ->innerJoin('si.sale', 's')
             ->groupBy('month')
@@ -61,6 +83,7 @@ class SalesItemRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
 
 
 
@@ -89,9 +112,9 @@ class SalesItemRepository extends ServiceEntityRepository
      *    GROUP BY day
      *    ORDER BY day ASC;
      */
-    public function findTotalDataByDayForMonth($repository, $category = null, $year = null, $month = null)
+    public function findTotalDataByDayForMonth(?string $year = null, ?string $month = null, ?string $type = null, ?string $category = null)
     {
-        $qb = $repository->createQueryBuilder('si')
+        $qb = $this->createQueryBuilder('si')
             ->select('DAY(s.createdAt) AS day', 'SUM(si.weight) AS totalData')
             ->innerJoin('si.sale', 's')
             ->groupBy('day')
@@ -142,7 +165,8 @@ class SalesItemRepository extends ServiceEntityRepository
      */
 
 
-    public function findTotalDataByYear($repository, $category)
+    public function findTotalDataByYear(?string $type = null, ?string $category = null): array
+
     {
         $qb = $this->createQueryBuilder('si')
             ->select('YEAR(s.createdAt) AS year', 'SUM(si.weight) AS totalData')
@@ -159,7 +183,6 @@ class SalesItemRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
 
 
 

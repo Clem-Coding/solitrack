@@ -1,0 +1,32 @@
+.category-selector p {
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+.donation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.donation-form label {
+  font-weight: 700;
+  margin-bottom: 1.5em;
+}
+
+.feedback-message {
+  /* font-size: $f28; */
+}
+
+.sections-container {
+  display: grid;
+  background-color: skyblue;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .sections-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+} 

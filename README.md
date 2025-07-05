@@ -20,52 +20,36 @@ Soli'Track aims to streamline the management of:
 
 ## How to Install Locally
 
-Follow these steps to set up the Soli'Track project on your local machine:
-Prerequisites
+### Prerequisites :
 
-Before starting, ensure you have the following installed:
+- Docker and Docker Compose installed
 
-    PHP 8.0+: Soli'Track requires PHP 8.0 or higher.
-
-    Composer: The PHP dependency manager.
-
-    Symfony CLI (optional, but recommended for managing Symfony projects).
-
-    MySQL or PostgreSQL: For database management. You can use XAMPP for a local MySQL server or any other database management system.
-
-    Node.js and npm: Required for managing frontend dependencies (if applicable).
+- For Windows users:
+  It is highly recommended to place the project inside WSL (Windows Subsystem for Linux) to avoid major slowdowns caused by filesystem performance.
 
 ### Step 1: Clone the Repository
 
-### Step 2: Install Backend Dependencies
+### Step 2: Starting the project
 
-Run the following command to install the PHP dependencies:
+```bash
+docker-compose up -d
+```
 
-`composer install`
+### Access URLs
 
-### Step 3: Set Up the Environment
+- Web app: [`http://localhost:8080/`](http://localhost:8080/)
+- phpMyAdmin (database management): [`http://localhost:8081/`](http://localhost:8081/)
+- Mail interface (Maildev): [`http://localhost:8025/`](http://localhost:8025/)
 
-Create a .env file from the example configuration file provided:
+### Consuming mails (Symfony Messenger)
 
-`cp .env.example .env`
+To process async messages in the queue:
 
-Edit the .env file to match your local setup (e.g., database credentials, mailer configuration, etc.).
+```bash
+docker exec -it php php bin/console messenger:consume async
+```
 
-### Step 4: Create the Database
+### Notes
 
-Once your environment is set up, create the database by running the following command:
-
-`php bin/console doctrine:database:create`
-
-Then, run the migrations to set up the database schema:
-
-`php bin/console doctrine:migrations:migrate`
-
-### Step 5: Create Admin and Volunteer Users
-
-Manually create users with their roles since there are no fixtures. Use the following commands to create a user with ROLE_ADMIN and a user with ROLE_VOLUNTEER_PLUS. By default, users have limited access.
-
-`php bin/console app:create-user email@example.com ROLE_ADMIN`
-`php bin/console app:create-user volunteer@example.com ROLE_VOLUNTEER_PLUS`
-
-`symfony server:start`
+- No built-in SASS compiler included
+- Use Live Sass Compiler (VSCode) or any other SASS compilation tool depending on your setup

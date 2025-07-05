@@ -42,7 +42,11 @@ class StatisticsService
     private function getMonthlyData($repository, $category, $year, $type): array
     {
 
-        $data = $repository->findTotalDataByMonth($repository, $category, $year, $type);
+        // $data = $repository->findTotalDataByMonth($repository, $category, $year, $type);
+        // $data = $repository->findTotalDataByMonth($repository, $year, $type, $category);
+        $data = $repository->findTotalDataByMonth($year, $type, $category);
+
+
 
         $monthlyData = array_fill(0, 12, 0);
 
@@ -58,7 +62,7 @@ class StatisticsService
 
     private function getYearlyData($repository, $category, $type): array
     {
-        return $repository->findTotalDataByYear($repository, $category, $type);
+        return $repository->findTotalDataByYear($type, $category);
     }
 
     private function getDailyData($repository, $category, $year, $month, $type)
@@ -69,10 +73,17 @@ class StatisticsService
             $year = (int) $year;
             $month = (int) $month;
 
-            $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month, $type);
-
+            // $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month, $type);
+            // $data = $repository->findTotalDataByDayForMonth($repository, $year, $month, $type, $category);
+            $data = $repository->findTotalDataByDayForMonth(
+                $year,
+                $month,
+                $type,
+                $category
+            );
 
             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
             $dailyData = array_fill(1, $daysInMonth, 0);
 
             foreach ($data as $entry) {

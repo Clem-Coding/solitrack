@@ -116,11 +116,38 @@ class DonationRepository extends ServiceEntityRepository
      */
 
 
-    public function findTotalDataByMonth($repository, $category, $year): array
+    // public function findTotalDataByMonth($repository, $category, $year): array
+
+    // {
+
+    //     $qb = $repository->createQueryBuilder('d')
+    //         ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalData')
+    //         ->groupBy('month')
+    //         ->orderBy('month', 'ASC');
+
+    //     if ($year) {
+    //         $qb->andWhere('YEAR(d.createdAt) = :year')
+    //             ->setParameter('year', $year);
+    //     }
+
+    //     // Si un paramètre category est passé, on fait une jointure sur la table Category
+    //     if ($category === "vetements") {
+    //         $qb->leftJoin('d.category', 'c')
+    //             ->andWhere('c.id = :categoryId')
+    //             ->setParameter('categoryId', 1);
+    //     }
+
+    //     return $qb->getQuery()->getResult();
+    // }
+
+
+
+
+    // public function findTotalDataByMonth($type, ?string $category, ?string $year): array
+    public function findTotalDataByMonth(?string $year, ?string $type, ?string $category): array
 
     {
-
-        $qb = $repository->createQueryBuilder('d')
+        $qb = $this->createQueryBuilder('d')
             ->select('MONTH(d.createdAt) AS month', 'SUM(d.weight) AS totalData')
             ->groupBy('month')
             ->orderBy('month', 'ASC');
@@ -130,7 +157,6 @@ class DonationRepository extends ServiceEntityRepository
                 ->setParameter('year', $year);
         }
 
-        // Si un paramètre category est passé, on fait une jointure sur la table Category
         if ($category === "vetements") {
             $qb->leftJoin('d.category', 'c')
                 ->andWhere('c.id = :categoryId')
@@ -139,6 +165,7 @@ class DonationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
 
 
     /**
@@ -164,14 +191,19 @@ class DonationRepository extends ServiceEntityRepository
      *    GROUP BY day
      *    ORDER BY day ASC;
      */
-    public function findTotalDataByDayForMonth($repository, ?string $category = null, ?string $year = null, ?string $month = null): array
-    {
-        $qb = $repository->createQueryBuilder('d')
+
+
+    public function findTotalDataByDayForMonth(
+        string $year,
+        string $month,
+        ?string $type = null,
+        ?string $category = null
+    ): array {
+        $qb = $this->createQueryBuilder('d')
             ->select('DAY(d.createdAt) AS day', 'SUM(d.weight) AS totalData')
             ->groupBy('day')
             ->orderBy('day', 'ASC');
 
-        // Si un paramètre year et month est passé, on filtre par année et mois
         if ($year) {
             $qb->andWhere('YEAR(d.createdAt) = :year')
                 ->setParameter('year', $year);
@@ -180,8 +212,6 @@ class DonationRepository extends ServiceEntityRepository
             $qb->andWhere('MONTH(d.createdAt) = :month')
                 ->setParameter('month', $month);
         }
-
-        // Si un paramètre category est passé, on fait une jointure sur la table Category
         if ($category === "vetements") {
             $qb->leftJoin('d.category', 'c')
                 ->andWhere('c.id = :categoryId')
@@ -211,7 +241,9 @@ class DonationRepository extends ServiceEntityRepository
      *    GROUP BY year
      *    ORDER BY year ASC;
      */
-    public function findTotalDataByYear($repository, ?string $category = null): array
+
+    public function findTotalDataByYear(?string $type = null, ?string $category = null): array
+
     {
         $qb = $this->createQueryBuilder('d')
             ->select('YEAR(d.createdAt) AS year', 'SUM(d.weight) AS totalData')

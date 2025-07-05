@@ -17,11 +17,9 @@ class VisitorRepository extends ServiceEntityRepository
     }
 
 
-
-    public function findTotalDataByMonth($repository, $category = null, $year)
+    public function findTotalDataByMonth(?string $year, ?string $type, ?string $category): array
     {
-
-        $qb = $repository->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v')
             ->select('MONTH(v.date) AS month', 'SUM(v.count) AS totalData')
             ->groupBy('month')
             ->orderBy('month', 'ASC');
@@ -31,8 +29,11 @@ class VisitorRepository extends ServiceEntityRepository
                 ->setParameter('year', $year);
         }
 
+        // Si tu veux filtrer par type ou category, ajoute ici leurs conditions
+
         return $qb->getQuery()->getResult();
     }
+
 
     /**
      * Here are examples of MySQL native query adaptations to retrieve the total visitor count per day for a specific month:
@@ -48,8 +49,14 @@ class VisitorRepository extends ServiceEntityRepository
  
      */
 
-    public function findTotalDataByDayForMonth($repository, $category = null, $year, $month)
-    {
+    // public function findTotalDataByDayForMonth($repository, $category = null, $year, $month)
+    // public function findTotalDataByDayForMonth($year, $month, $category = null)
+    public function findTotalDataByDayForMonth(
+        string $year,
+        string $month,
+        ?string $type = null,
+        ?string $category = null
+    ): array {
         $qb = $this->createQueryBuilder('v')
             ->select('DAY(v.date) AS day', 'SUM(v.count) AS totalData')
             ->where('MONTH(v.date) = :month')
@@ -74,7 +81,8 @@ class VisitorRepository extends ServiceEntityRepository
      *    GROUP BY year
      *    ORDER BY year ASC;
      */
-    public function findTotalDataByYear($repository, $category = null)
+    public function findTotalDataByYear(?string $type = null, ?string $category = null): array
+
     {
         $qb = $this->createQueryBuilder('v')
             ->select('YEAR(v.date) AS year', 'SUM(v.count) AS totalData')
