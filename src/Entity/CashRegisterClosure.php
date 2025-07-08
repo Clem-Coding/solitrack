@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CashRegisterClosureRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "cash_register_closures")]
 #[ORM\Entity(repositoryClass: CashRegisterClosureRepository::class)]
@@ -16,12 +17,15 @@ class CashRegisterClosure
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\DateTime]
     private ?\DateTimeImmutable $closedAt = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
     private ?float $closingCashAmount = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Assert\NotBlank()]
     private ?string $discrepancy = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

@@ -18,12 +18,6 @@ main.container {
   grid-auto-rows: minmax(200px, auto);
 }
 
-.grid-2-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
 @media (min-width: 1024px) {
   .sections-container {
     grid-template-columns: repeat(2, 1fr);
@@ -47,7 +41,7 @@ main.container {
         min-height: 100px;
         transition: height 0.3s ease;
         overflow-y: auto;
-        max-height: 90vh;
+        max-height: 100vh;
       }
     }
     &.four-sections {

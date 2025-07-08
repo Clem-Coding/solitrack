@@ -9,3 +9,9 @@
     }
   }
 }
+
+@mixin grid-cols($count, $gap: 1rem) {
+  display: grid;
+  grid-template-columns: repeat($count, 1fr);
+  gap: $gap;
+}

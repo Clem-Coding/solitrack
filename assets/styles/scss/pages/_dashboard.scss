@@ -85,3 +85,70 @@
     border: 1px solid #ccc;
   }
 }
+
+// CASH MGMT
+
+.cash-mgmt {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "left"
+    "right"
+    "bottom";
+  grid-auto-rows: minmax(200px, auto);
+  gap: 3em;
+
+  > section:nth-child(1) {
+    grid-area: left;
+  }
+
+  > section:nth-child(2) {
+    grid-area: right;
+  }
+
+  > section:nth-child(3) {
+    grid-area: bottom;
+  }
+
+  .withdrawal {
+    gap: 0.5em;
+  }
+
+  .section-grid {
+    @include grid-cols(2);
+
+    @media (min-width: $breakpoint-tablet) {
+      @include grid-cols(4);
+    }
+
+    @media (min-width: $breakpoint-desktop) {
+      @include grid-cols(6);
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .cash-mgmt {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "left right"
+      "bottom bottom";
+
+    .balance-section {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .balance-section > * {
+      flex: 1;
+    }
+
+    .comment-toggle-section {
+      display: flex;
+    }
+
+    .comment-toggle-section > * {
+      flex: 1;
+    }
+  }
+}

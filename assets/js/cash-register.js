@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const countedBalanceEl = document.querySelector("#cash_register_closure_countedBalance");
   const discrepancyEl = document.querySelector("#cash_register_closure_discrepancy");
   const inputs = document.querySelectorAll('input[name^="coin_count[coin_"]');
-  const theoreticalBalance = Number(document.querySelector("#theoriticalBalance").textContent);
+  const theoreticalBalanceEl = document.querySelector("#theoreticalBalance");
+  const theoreticalBalance = theoreticalBalanceEl ? Number(theoreticalBalanceEl.textContent) : 0;
+
   const noteButton = document.querySelector(".note-toggle");
   const noteGroup = document.querySelector(".form-group textarea#cash_register_closure_note").closest(".form-group");
 
@@ -27,16 +29,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateCountedBalance() {
     let total = 0;
+
     inputs.forEach((input) => {
       const value = parseCoinValue(input.name);
       const quantity = Number(input.value) || 0;
       total += value * quantity;
     });
 
-    // console.log(total);
     countedBalanceEl.value = formatNumber(total);
     const diff = total - theoreticalBalance;
-    discrepancyEl.value = formatNumber(diff);
+    console.log(diff);
+
+    discrepancyEl.classList.remove("state-ok", "alert");
+
+    if (diff >= 0) {
+      discrepancyEl.classList.add("state-ok");
+      discrepancyEl.value = diff > 0 ? "+" + formatNumber(diff) : formatNumber(diff);
+    } else {
+      discrepancyEl.classList.add("alert");
+      discrepancyEl.value = formatNumber(diff);
+    }
   }
 
   // ==========================

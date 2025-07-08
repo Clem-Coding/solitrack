@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "cash_register_sessions")]
 #[ORM\Entity(repositoryClass: CashRegisterSessionRepository::class)]
@@ -18,9 +19,12 @@ class CashRegisterSession
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\DateTime]
     private ?\DateTimeImmutable $openingAt = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank()]
+    #[Assert\GreaterThan(value: 0)]
     private ?float $cashFloat = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashRegisterSessions')]

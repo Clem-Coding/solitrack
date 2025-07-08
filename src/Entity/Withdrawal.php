@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\WithdrawalRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "withdrawals")]
 #[ORM\Entity(repositoryClass: WithdrawalRepository::class)]
@@ -16,8 +17,11 @@ class Withdrawal
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\DateTime]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Assert\NotBlank()]
+    #[Assert\GreaterThan(value: 0)]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $amount = null;
 

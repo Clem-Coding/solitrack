@@ -8,7 +8,7 @@
   <h1>Gestion de la caisse</h1>
 
   {% if session %}
-    <div class="sections-container three-sections">
+    <div class="sections-container cash-mgmt">
       <section class="card">
         <p class="state-ok">Caisse ouverte par {{ opened_by }} le {{ opening_at }}</p>
         <div class="cash-summary">
@@ -21,12 +21,16 @@
         <p class="bold">Solde théorique attendu : {{ theoretical_balance }} €</p>
       </section>
 
-      <section class="card">
+      <section class="card withdrawal">
         <h2>Effectuer un prélèvement</h2>
+        <div>{% include 'partials/flash.html.twig' %}</div>
         {{ form_start(withdrawal_form) }}
         <div class="form-group">
           {{ form_label(withdrawal_form.amount) }}
           {{ form_widget(withdrawal_form.amount) }}
+          {% for error in withdrawal_form.amount.vars.errors %}
+            <p role="note" class="flash-error">{{ error.message }}</p>
+          {% endfor %}
         </div>
         <div class="form-group">
           {{ form_label(withdrawal_form.comment) }}
@@ -34,13 +38,12 @@
         </div>
         <button type="submit" class="button-primary">Valider le prélèvement</button>
         {{ form_end(withdrawal_form) }}
-        <div>{% include 'partials/flash.html.twig' %}</div>
       </section>
 
-      <section class="card">
+      <section class="card closure-panel">
         <h2>Clôture de caisse</h2>
         {{ form_start(coins_count_form) }}
-        <div class="grid-2-cols">
+        <div class="section-grid">
           {% for field in coins_count_form %}
             <label>{{ field.vars.label }} {{ form_widget(field) }}</label>
           {% endfor %}
@@ -48,25 +51,36 @@
         {{ form_end(coins_count_form) }}
 
         {{ form_start(closure_form) }}
-        <p>💶 Solde théorique de la caisse : <span id="theoriticalBalance">{{ theoretical_balance }}</span>€</p>
+        {# <p>💶 Solde théorique de la caisse : <span id="theoriticalBalance">{{ theoretical_balance }}</span>€</p>
 
         <div class="form-group">
           {{ form_label(closure_form.countedBalance) }}
           {{ form_widget(closure_form.countedBalance) }}
-        </div>
-        <div class="form-group">
-          {{ form_label(closure_form.discrepancy) }}
-          {{ form_widget(closure_form.discrepancy) }}
-        </div>
+        </div> #}
 
-        <button type="button" class="button-grey-shadow note-toggle">
-          <i class="ph ph-receipt"></i>Ecrire un commentaire
-        </button>
+        <article class="balance-section">
+          <p>💶 Solde théorique de la caisse : <span id="theoreticalBalance">{{ theoretical_balance }}</span>€</p>
 
-        <div class="form-group hidden">
-          {{ form_label(closure_form.note) }}
-          {{ form_widget(closure_form.note) }}
-        </div>
+          <div class="form-group">
+            {{ form_label(closure_form.countedBalance) }}
+            {{ form_widget(closure_form.countedBalance) }}
+          </div>
+        </article>
+
+        <article class="comment-toggle-section">
+          <div class="form-group">
+            {{ form_label(closure_form.discrepancy) }}
+            {{ form_widget(closure_form.discrepancy) }}
+          </div>
+          <button type="button" class="button-grey-shadow note-toggle">
+            <i class="ph ph-receipt"></i> Écrire un commentaire
+          </button>
+
+          <div class="form-group hidden">
+            {{ form_label(closure_form.note) }}
+            {{ form_widget(closure_form.note) }}
+          </div>
+        </article>
 
         <button type="submit" class="button-primary">Clôturer la caisse</button>
         {{ form_end(closure_form) }}

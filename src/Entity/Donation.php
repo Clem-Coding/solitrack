@@ -18,7 +18,7 @@ class Donation
 
 
     #[Assert\NotBlank()]
-    #[Assert\GreaterThanOrEqual(value: 0.01)]
+    #[Assert\GreaterThan(value: 0)]
     #[ORM\Column]
     private ?float $weight = null;
 
