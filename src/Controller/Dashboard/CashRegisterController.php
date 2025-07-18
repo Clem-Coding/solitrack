@@ -4,11 +4,12 @@ namespace App\Controller\Dashboard;
 
 use App\Entity\CashRegisterClosure;
 use App\Entity\CashRegisterSession;
+use App\Enum\CashMovementAction;
 use App\Entity\User;
-use App\Entity\Withdrawal;
+use App\Entity\CashMovement;
+use App\Form\CashMovementType;
 use App\Form\CashRegisterClosureType;
 use App\Form\CoinCountType;
-use App\Form\WithdrawalType;
 use App\Repository\CashRegisterClosureRepository;
 use App\Repository\CashRegisterSessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,8 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,33 +28,44 @@ class CashRegisterController extends AbstractController
         #[CurrentUser] User $user,
         CashRegisterSessionRepository $cashRegisterSessionRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        CashRegisterClosureRepository $closureRepository
     ): Response {
         $session = $cashRegisterSessionRepository->findAnyOpenSession();
+        // dd($session);
 
 
-        // 📤 Withdrawal form
-        $withdrawal = new Withdrawal();
-        $withdrawalForm = $this->createForm(WithdrawalType::class, $withdrawal);
-        $withdrawalForm->handleRequest($request);
+        // 📤 CASH MOVEMENT FORM
+        $cashMovement = new CashMovement();
+        $cashMovementForm = $this->createForm(CashMovementType::class, $cashMovement);
+        $cashMovementForm->handleRequest($request);
 
-        if ($withdrawalForm->isSubmitted() && $withdrawalForm->isValid()) {
-            $withdrawal->setCashRegisterSession($session);
-            $withdrawal->setCreatedAt(new \DateTimeImmutable());
-            $withdrawal->setMadeBy($user);
+        if ($cashMovementForm->isSubmitted() && $cashMovementForm->isValid()) {
+            $cashMovement->setCashRegisterSession($session);
+            $cashMovement->setCreatedAt(new \DateTimeImmutable());
+            $cashMovement->setMadeBy($user);
 
-            $entityManager->persist($withdrawal);
+            $entityManager->persist($cashMovement);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Retrait enregistré.');
+            $this->addFlash('success', 'Mouvement de caisse enregistré.');
             return $this->redirectToRoute('app_dashboard_cash_register');
         }
 
-        $withdrawals = $session ? $session->getWithdrawals()->toArray() : [];
+        $cashMovements = $session ? $session->getCashMovements()->toArray() : [];
 
-
-        $totalWithdrawals = array_sum(array_map(fn($w) => (float) $w->getAmount(), $withdrawals));
         $sales = $session?->getSales()->toArray() ?? [];
+
+        $totalCashMovements = 0;
+        foreach ($cashMovements as $movement) {
+            $amount = (float) $movement->getAmount();
+            if ($movement->getType() === CashMovementAction::Deposit) {
+                $totalCashMovements += $amount;
+            } else {
+                $totalCashMovements -= $amount;
+            }
+        }
+
 
 
         $totalPrice = $totalCard = $totalCash = 0;
@@ -67,97 +77,57 @@ class CashRegisterController extends AbstractController
 
         $cashFloat = $session ? $session->getCashFloat() : 0;
 
-        $theoreticalBalance = ($cashFloat + $totalCash) - $totalWithdrawals;
+        // $theoreticalBalance = ($cashFloat + $totalCash) - $totalWithdrawals;
+        $theoreticalBalance = $cashFloat + $totalCash + $totalCashMovements;
 
 
 
-
-        // 🪙 Coins Count form 
-        $coinsCountForm = $this->createForm(CoinCountType::class);
-
-        // 🧾 Cash register Closure form 
+        // 🧾 CASH REGISTER CLOSURE FORM 
         $cashRegisterClosure = new CashRegisterClosure();
         $closureForm = $this->createForm(CashRegisterClosureType::class, $cashRegisterClosure);
         $closureForm->handleRequest($request);
 
         if ($closureForm->isSubmitted() && $closureForm->isValid()) {
-            $discrepancy = $cashRegisterClosure->getDiscrepancy();
-            $countedTotal = $theoreticalBalance + $discrepancy;
+            // Récupérer la valeur du solde compté à partir du formulaire
+            $countedBalance = $closureForm->get('countedBalance')->getData();
 
+            //Récupère le montant de l'écart (positif ou négatif)
+            $discrepancy = $cashRegisterClosure->getDiscrepancy();
+
+            // Calcule le montant en espèces déposer à la banque
+            $closingCashAmount = $countedBalance - $cashFloat;
+
+            $cashRegisterClosure->setDiscrepancy($discrepancy);
+            $cashRegisterClosure->setNote($closureForm->get('note')->getData());
             $cashRegisterClosure->setClosedBy($user);
             $cashRegisterClosure->setClosedAt(new \DateTimeImmutable());
             $cashRegisterClosure->setCashRegisterSession($session);
-            $cashRegisterClosure->setClosingCashAmount($countedTotal);
+            $cashRegisterClosure->setClosingCashAmount($closingCashAmount);
 
             $entityManager->persist($cashRegisterClosure);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Clôture de caisse enregistrée avec succès.');
             return $this->redirectToRoute('app_dashboard_cash_register');
         }
 
 
-
-
+        //💰 LAST CLOSURE
+        $lastClosure = $closureRepository->findLastClosureWithUser();
 
 
         return $this->render('dashboard/cash_register.html.twig', [
             'session' => $session,
-            'withdrawal_form' => $withdrawalForm,
-            'coins_count_form' => $coinsCountForm,
+            'cash_movement_form' => $cashMovementForm,
             'closure_form' => $closureForm,
-            'opened_by' => $session?->getOpenedBy()?->getFirstName(),
-            'opening_at' => $session?->getOpeningAt()?->format('d/m/Y à H\hi'),
+            // 'opened_by' => $session?->getOpenedBy()?->getFirstName(),
+            // 'opening_at' => $session?->getOpeningAt()?->format('d/m/Y à H\hi'),
             'cash_float' => $cashFloat,
             'total_price' => $totalPrice,
             'total_card' => $totalCard,
             'total_cash' => $totalCash,
-            'total_withdrawals' => $totalWithdrawals,
+            // 'total_withdrawals' => $totalWithdrawals,
+            'lastClosure' => $lastClosure,
             'theoretical_balance' => $theoreticalBalance,
         ]);
     }
-
-
-
-
-    public function closeCashRegisterSession(
-        #[CurrentUser] User $user,
-        Request $request,
-        CashRegisterSessionRepository $sessionRepo,
-        CashRegisterClosureRepository   $closureRepo,
-        EntityManagerInterface $entityManager,
-
-    ): Response {
-        $session = $sessionRepo->findAnyOpenSession();
-
-        $form = $this->createForm(CashRegisterClosureType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            dd($data);
-            // Traitement logique ici
-        }
-
-
-
-
-
-        $this->addFlash('success', 'Clôture enregistrée avec succès.');
-
-        return $this->redirectToRoute('app_sales');
-    }
 }
-
-
-
-  // $closure = new CashRegisterClosure();
-        // $closure->setCashRegisterSession($session);
-        // $closure->setClosedBy($user);
-        // $closure->setClosedAt(new \DateTimeImmutable());
-        // $closure->setClosingCashAmount($closingCashAmount);
-        // $closure->setDiscrepancy($discrepancy);
-        // $closure->setNote($request->request->get('note', ''));
-
-        // $entityManager->persist($closure);
-        // $entityManager->flush();

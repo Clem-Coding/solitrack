@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\WithdrawalRepository;
+use App\Repository\CashMovementRepository;
 use Doctrine\DBAL\Types\Types;
+use App\Enum\CashMovementAction;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: "withdrawals")]
-#[ORM\Entity(repositoryClass: WithdrawalRepository::class)]
-class Withdrawal
+#[ORM\Table(name: "cash_movements")]
+#[ORM\Entity(repositoryClass: CashMovementRepository::class)]
+class CashMovement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -28,13 +29,16 @@ class Withdrawal
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'withdrawals')]
+    #[ORM\ManyToOne(inversedBy: 'cashMovements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $madeBy = null;
 
-    #[ORM\ManyToOne(inversedBy: 'withdrawals')]
+    #[ORM\ManyToOne(inversedBy: 'cashMovements')]
     #[ORM\JoinColumn(nullable: false)]
     private ?CashRegisterSession $cashRegisterSession = null;
+
+    #[ORM\Column(length: 10)]
+    private ?CashMovementAction $type = null;
 
     public function getId(): ?int
     {
@@ -97,6 +101,18 @@ class Withdrawal
     public function setCashRegisterSession(?CashRegisterSession $cashRegisterSession): static
     {
         $this->cashRegisterSession = $cashRegisterSession;
+
+        return $this;
+    }
+
+    public function getType(): ?CashMovementAction
+    {
+        return $this->type;
+    }
+
+    public function setType(CashMovementAction $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

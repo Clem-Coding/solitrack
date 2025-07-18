@@ -21,7 +21,7 @@ class CashRegisterClosure
     private ?\DateTimeImmutable $closedAt = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     private ?float $closingCashAmount = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

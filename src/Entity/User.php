@@ -84,10 +84,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $cashRegisterClosures;
 
     /**
-     * @var Collection<int, Withdrawal>
+     * @var Collection<int, CashMovement>
      */
-    #[ORM\OneToMany(targetEntity: Withdrawal::class, mappedBy: 'madeBy')]
-    private Collection $withdrawals;
+    #[ORM\OneToMany(targetEntity: CashMovement::class, mappedBy: 'madeBy')]
+    private Collection $cashMovements;
 
     public function __construct()
     {
@@ -96,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->visitors = new ArrayCollection();
         $this->cashRegisterSessions = new ArrayCollection();
         $this->cashRegisterClosures = new ArrayCollection();
-        $this->withdrawals = new ArrayCollection();
+        $this->cashMovements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -349,29 +349,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Withdrawal>
+     * @return Collection<int, CashMovement>
      */
-    public function getWithdrawals(): Collection
+    public function getCashMovements(): Collection
     {
-        return $this->withdrawals;
+        return $this->cashMovements;
     }
 
-    public function addWithdrawal(Withdrawal $withdrawal): static
+    public function addCashMovement(CashMovement $cashMovement): static
     {
-        if (!$this->withdrawals->contains($withdrawal)) {
-            $this->withdrawals->add($withdrawal);
-            $withdrawal->setMadeBy($this);
+        if (!$this->cashMovements->contains($cashMovement)) {
+            $this->cashMovements->add($cashMovement);
+            $cashMovement->setMadeBy($this);
         }
 
         return $this;
     }
 
-    public function removeWithdrawal(Withdrawal $withdrawal): static
+    public function removeCashMovement(CashMovement $cashMovement): static
     {
-        if ($this->withdrawals->removeElement($withdrawal)) {
+        if ($this->cashMovements->removeElement($cashMovement)) {
             // set the owning side to null (unless already changed)
-            if ($withdrawal->getMadeBy() === $this) {
-                $withdrawal->setMadeBy(null);
+            if ($cashMovement->getMadeBy() === $this) {
+                $cashMovement->setMadeBy(null);
             }
         }
 

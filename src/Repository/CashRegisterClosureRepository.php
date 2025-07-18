@@ -16,6 +16,34 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
         parent::__construct($registry, CashRegisterClosure::class);
     }
 
+
+    //     SELECT 
+    //     c.id,
+    //     c.closed_at,
+    //     c.closing_cash_amount,
+    //     c.discrepancy,
+    //     u.first_name AS closed_by_name
+    // FROM 
+    //     cash_register_closures c
+    // LEFT JOIN 
+    //     users u ON c.closed_by_id = u.id
+    // ORDER BY 
+    //     c.closed_at DESC
+    // LIMIT 1;
+
+    public function findLastClosureWithUser(): ?array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.id', 'c.closedAt', 'c.closingCashAmount', 'c.discrepancy', 'u.firstName AS closedByName')
+            ->leftJoin('c.closedBy', 'u')
+            ->orderBy('c.closedAt', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
+
     //    /**
     //     * @return CashRegisterClosure[] Returns an array of CashRegisterClosure objects
     //     */

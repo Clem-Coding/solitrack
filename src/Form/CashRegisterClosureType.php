@@ -9,6 +9,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CashRegisterClosureType extends AbstractType
@@ -24,7 +26,6 @@ class CashRegisterClosureType extends AbstractType
                 'label' => 'Solde compté',
                 'attr' => [
                     'id' => 'counted-balance',
-                    'readonly' => true,
                 ],
             ])
             ->add('discrepancy', NumberType::class, [
@@ -35,6 +36,15 @@ class CashRegisterClosureType extends AbstractType
                     'readonly' => true,
                 ],
             ]);
+
+        // Remove leading "+" from discrepancy (added for UX only) to avoid validation error on submit
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            if (isset($data['discrepancy']) && is_string($data['discrepancy'])) {
+                $data['discrepancy'] = ltrim($data['discrepancy'], '+');
+                $event->setData($data);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

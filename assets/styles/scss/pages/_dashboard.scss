@@ -88,67 +88,80 @@
 
 // CASH MGMT
 
-.cash-mgmt {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "left"
-    "right"
-    "bottom";
-  grid-auto-rows: minmax(200px, auto);
-  gap: 3em;
+.discrepancy-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
 
-  > section:nth-child(1) {
-    grid-area: left;
-  }
-
-  > section:nth-child(2) {
-    grid-area: right;
-  }
-
-  > section:nth-child(3) {
-    grid-area: bottom;
-  }
-
-  .withdrawal {
-    gap: 0.5em;
-  }
-
-  .section-grid {
-    @include grid-cols(2);
-
-    @media (min-width: $breakpoint-tablet) {
-      @include grid-cols(4);
-    }
-
-    @media (min-width: $breakpoint-desktop) {
-      @include grid-cols(6);
-    }
+  & input {
+    border: none;
+    pointer-events: none;
+    width: auto;
   }
 }
 
-@media (min-width: 1024px) {
-  .cash-mgmt {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "left right"
-      "bottom bottom";
+// .cash-mgmt {
+//   display: grid;
+//   grid-template-columns: 1fr;
+//   grid-template-areas:
+//     "left"
+//     "right"
+//     "bottom";
+//   grid-auto-rows: minmax(200px, auto);
+//   gap: 3em;
 
-    .balance-section {
-      display: flex;
-      justify-content: space-between;
-    }
+//   > section:nth-child(1) {
+//     grid-area: left;
+//   }
 
-    .balance-section > * {
-      flex: 1;
-    }
+//   > section:nth-child(2) {
+//     grid-area: right;
+//   }
 
-    .comment-toggle-section {
-      display: flex;
-    }
+//   > section:nth-child(3) {
+//     grid-area: bottom;
+//   }
 
-    .comment-toggle-section > * {
-      flex: 1;
-    }
-  }
-}
+//   .withdrawal {
+//     gap: 0.5em;
+//   }
+
+//   .section-grid {
+//     @include grid-cols(2);
+
+//     @media (min-width: $breakpoint-tablet) {
+//       @include grid-cols(4);
+//     }
+
+//     @media (min-width: $breakpoint-desktop) {
+//       @include grid-cols(6);
+//     }
+//   }
+// }
+
+// @media (min-width: 1024px) {
+//   .cash-mgmt {
+//     grid-template-columns: 1fr 1fr;
+//     grid-template-areas:
+//       "left right"
+//       "bottom bottom";
+
+//     .balance-section {
+//       display: flex;
+//       justify-content: space-between;
+//     }
+
+//     .balance-section > * {
+//       flex: 1;
+//     }
+
+//     .comment-toggle-section {
+//       display: flex;
+//     }
+
+//     .comment-toggle-section > * {
+//       flex: 1;
+//     }
+//   }
+// }

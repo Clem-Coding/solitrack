@@ -45,16 +45,16 @@ class CashRegisterSession
     private Collection $sales;
 
     /**
-     * @var Collection<int, Withdrawal>
+     * @var Collection<int, CashMovement>
      */
-    #[ORM\OneToMany(targetEntity: Withdrawal::class, mappedBy: 'cashRegisterSession')]
-    private Collection $withdrawals;
+    #[ORM\OneToMany(targetEntity: CashMovement::class, mappedBy: 'cashRegisterSession')]
+    private Collection $cashMovements;
 
     public function __construct()
     {
         $this->cashRegisterClosures = new ArrayCollection();
         $this->sales = new ArrayCollection();
-        $this->withdrawals = new ArrayCollection();
+        $this->cashMovements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,29 +159,29 @@ class CashRegisterSession
     }
 
     /**
-     * @return Collection<int, Withdrawal>
+     * @return Collection<int, CashMovement>
      */
-    public function getWithdrawals(): Collection
+    public function getCashMovements(): Collection
     {
-        return $this->withdrawals;
+        return $this->cashMovements;
     }
 
-    public function addWithdrawal(Withdrawal $withdrawal): static
+    public function addCashMovement(CashMovement $cashMovement): static
     {
-        if (!$this->withdrawals->contains($withdrawal)) {
-            $this->withdrawals->add($withdrawal);
-            $withdrawal->setCashRegisterSession($this);
+        if (!$this->cashMovements->contains($cashMovement)) {
+            $this->cashMovements->add($cashMovement);
+            $cashMovement->setCashRegisterSession($this);
         }
 
         return $this;
     }
 
-    public function removeWithdrawal(Withdrawal $withdrawal): static
+    public function removeCashMovement(CashMovement $cashMovement): static
     {
-        if ($this->withdrawals->removeElement($withdrawal)) {
+        if ($this->cashMovements->removeElement($cashMovement)) {
             // set the owning side to null (unless already changed)
-            if ($withdrawal->getCashRegisterSession() === $this) {
-                $withdrawal->setCashRegisterSession(null);
+            if ($cashMovement->getCashRegisterSession() === $this) {
+                $cashMovement->setCashRegisterSession(null);
             }
         }
 

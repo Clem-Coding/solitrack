@@ -371,6 +371,9 @@ button {
 }
 
 .button-grey-shadow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid #cccccc;
   border-radius: 8px;
   box-shadow: 6px 6px 0 #cccccc;
@@ -520,7 +523,7 @@ button {
   padding: 2em;
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 1.5em;
   border-radius: 10px;
   background-color: #ffffff;
 }
@@ -1098,7 +1101,6 @@ form textarea:focus {
 .buttons-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
   gap: 2em;
 }
@@ -1110,9 +1112,6 @@ form textarea:focus {
 .buttons-wrapper button {
   padding: 0.7em;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .buttons-wrapper i {
   margin-right: 0.4em;
@@ -1265,64 +1264,18 @@ form textarea:focus {
   border: 1px solid #ccc;
 }
 
-.cash-mgmt {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas: "left" "right" "bottom";
-  grid-auto-rows: minmax(200px, auto);
-  gap: 3em;
+.discrepancy-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
 }
-.cash-mgmt > section:nth-child(1) {
-  grid-area: left;
-}
-.cash-mgmt > section:nth-child(2) {
-  grid-area: right;
-}
-.cash-mgmt > section:nth-child(3) {
-  grid-area: bottom;
-}
-.cash-mgmt .withdrawal {
-  gap: 0.5em;
-}
-.cash-mgmt .section-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-@media (min-width: 768px) {
-  .cash-mgmt .section-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  }
-}
-@media (min-width: 1024px) {
-  .cash-mgmt .section-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
-  }
+.discrepancy-container input {
+  border: none;
+  pointer-events: none;
+  width: auto;
 }
 
-@media (min-width: 1024px) {
-  .cash-mgmt {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: "left right" "bottom bottom";
-  }
-  .cash-mgmt .balance-section {
-    display: flex;
-    justify-content: space-between;
-  }
-  .cash-mgmt .balance-section > * {
-    flex: 1;
-  }
-  .cash-mgmt .comment-toggle-section {
-    display: flex;
-  }
-  .cash-mgmt .comment-toggle-section > * {
-    flex: 1;
-  }
-}
 .statistics-container {
   display: flex;
   flex-direction: column;

@@ -89,6 +89,9 @@ button {
 }
 
 .button-grey-shadow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid $grey;
   border-radius: 8px;
   box-shadow: 6px 6px 0 $grey;

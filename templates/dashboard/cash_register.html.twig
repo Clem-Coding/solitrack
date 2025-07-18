@@ -8,59 +8,28 @@
   <h1>Gestion de la caisse</h1>
 
   {% if session %}
-    <div class="sections-container cash-mgmt">
+    <div class="sections-container">
       <section class="card">
-        <p class="state-ok">Caisse ouverte par {{ opened_by }} le {{ opening_at }}</p>
+        <p class="state-ok">
+          Caisse ouverte par {{ session.openedBy.firstName }} le {{ session.openingAt|date('d/m/Y') }} à {{ session.openingAt|date('H\\hi') }}
+        </p>
+
         <div class="cash-summary">
           <p>Fond de caisse : {{ cash_float|number_format(2, ',', ' ') }} €</p>
           <p>Total des ventes pour la session en cours : {{ total_price }} €</p>
           <p>Total CB : {{ total_card }} €</p>
           <p>Total espèces : {{ total_cash }} €</p>
-          <p>Total des prélèvements effectués : {{ total_withdrawals }} €</p>
+          {# <p>Total des prélèvements effectués : {{ total_withdrawals }} €</p> #}
         </div>
-        <p class="bold">Solde théorique attendu : {{ theoretical_balance }} €</p>
+        <p class="bold">Solde théorique attendu : <span id="theoreticalBalance">{{ theoretical_balance }}</span> €</p>
       </section>
 
-      <section class="card withdrawal">
-        <h2>Effectuer un prélèvement</h2>
-        <div>{% include 'partials/flash.html.twig' %}</div>
-        {{ form_start(withdrawal_form) }}
-        <div class="form-group">
-          {{ form_label(withdrawal_form.amount) }}
-          {{ form_widget(withdrawal_form.amount) }}
-          {% for error in withdrawal_form.amount.vars.errors %}
-            <p role="note" class="flash-error">{{ error.message }}</p>
-          {% endfor %}
-        </div>
-        <div class="form-group">
-          {{ form_label(withdrawal_form.comment) }}
-          {{ form_widget(withdrawal_form.comment) }}
-        </div>
-        <button type="submit" class="button-primary">Valider le prélèvement</button>
-        {{ form_end(withdrawal_form) }}
-      </section>
-
-      <section class="card closure-panel">
+      <section class="card">
         <h2>Clôture de caisse</h2>
-        {{ form_start(coins_count_form) }}
-        <div class="section-grid">
-          {% for field in coins_count_form %}
-            <label>{{ field.vars.label }} {{ form_widget(field) }}</label>
-          {% endfor %}
-        </div>
-        {{ form_end(coins_count_form) }}
 
         {{ form_start(closure_form) }}
-        {# <p>💶 Solde théorique de la caisse : <span id="theoriticalBalance">{{ theoretical_balance }}</span>€</p>
-
-        <div class="form-group">
-          {{ form_label(closure_form.countedBalance) }}
-          {{ form_widget(closure_form.countedBalance) }}
-        </div> #}
 
         <article class="balance-section">
-          <p>💶 Solde théorique de la caisse : <span id="theoreticalBalance">{{ theoretical_balance }}</span>€</p>
-
           <div class="form-group">
             {{ form_label(closure_form.countedBalance) }}
             {{ form_widget(closure_form.countedBalance) }}
@@ -68,7 +37,7 @@
         </article>
 
         <article class="comment-toggle-section">
-          <div class="form-group">
+          <div class="discrepancy-container">
             {{ form_label(closure_form.discrepancy) }}
             {{ form_widget(closure_form.discrepancy) }}
           </div>
@@ -85,11 +54,43 @@
         <button type="submit" class="button-primary">Clôturer la caisse</button>
         {{ form_end(closure_form) }}
       </section>
+
+      <section class="card withdrawal">
+        <h2>Effectuer une opération en espèces</h2>
+        {# <div>{% include 'partials/flash.html.twig' %}</div> #}
+        {{ form_start(cash_movement_form) }}
+
+        <div class="form-group">
+          {{ form_label(cash_movement_form.type) }}
+          {{ form_widget(cash_movement_form.type) }}
+        </div>
+
+        <div class="form-group">
+          {{ form_label(cash_movement_form.amount) }}
+          {{ form_widget(cash_movement_form.amount) }}
+          {% for error in cash_movement_form.amount.vars.errors %}
+            <p role="note" class="flash-error">{{ error.message }}</p>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          {{ form_label(cash_movement_form.comment) }}
+          {{ form_widget(cash_movement_form.comment) }}
+        </div>
+        <button type="submit" class="button-primary">Valider l'opération</button>
+        {{ form_end(cash_movement_form) }}
+      </section>
     </div>
   {% else %}
     <section class="card">
-      <p class="alert">Dernière caisse fermée par Karine à 14h30</p>
-      <p>Total des ventes de la dernière session : 189 €</p>
+      <p class="alert">
+        Dernière caisse fermée par {{ lastClosure.closedByName }} le {{ lastClosure.closedAt|date('d/m/Y') }} à {{ lastClosure.closedAt|date('H\\hi') }}
+      </p>
+      <p>Total du surplus des espèces : {{ lastClosure.closingCashAmount }} €</p>
+      {% if lastClosure.discrepancy == 0 %}
+        <p>Pas d'erreur de caisse pour cette session.</p>
+      {% else %}
+        <p>Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{ lastClosure.discrepancy|abs }} €</p>
+      {% endif %}
     </section>
   {% endif %}
 {% endblock %}
