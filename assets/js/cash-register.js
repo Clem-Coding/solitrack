@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const noteButton = document.querySelector(".note-toggle");
   const noteGroup = document.querySelector(".form-group textarea#cash_register_closure_note").closest(".form-group");
 
+  const toggleDetailsButton = document.querySelector(".toggle-details");
+  const operationDetails = document.querySelector("#operation-details");
   // ==========================
   // 🔍 UTILITY FUNCTIONS
   // ==========================
@@ -23,16 +25,25 @@ document.addEventListener("DOMContentLoaded", () => {
     discrepancyEl.classList.remove("state-ok", "alert");
 
     if (!isNaN(diff)) {
-      if (diff >= 0) {
+      if (diff > 0) {
         discrepancyEl.classList.add("state-ok");
         discrepancyEl.value = "+" + formatNumber(diff);
-      } else {
+      } else if (diff < 0) {
         discrepancyEl.classList.add("alert");
         discrepancyEl.value = formatNumber(diff);
+      } else {
+        // diff === 0
+        discrepancyEl.classList.add("state-ok");
+        discrepancyEl.value = "0,00";
       }
     } else {
       discrepancyEl.value = "";
     }
+  }
+
+  function setupToggleDetails() {
+    console.log("hello");
+    operationDetails.classList.toggle("hidden");
   }
 
   // ==========================
@@ -45,5 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     noteGroup.classList.toggle("hidden");
   });
 
-  // updateCountedBalance();
+  updateCountedBalance();
+  toggleDetailsButton.addEventListener("click", setupToggleDetails);
 });

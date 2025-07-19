@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\CashMovement;
+use App\Entity\CashRegisterSession;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,18 @@ class CashMovementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CashMovement::class);
     }
+
+
+    public function findBySession(CashRegisterSession $session): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.cashRegisterSession = :session')
+            ->setParameter('session', $session)
+            ->orderBy('m.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return CashMovement[] Returns an array of CashMovement objects

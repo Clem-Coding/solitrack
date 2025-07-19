@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CashRegisterClosureType extends AbstractType
 {
@@ -22,19 +23,27 @@ class CashRegisterClosureType extends AbstractType
             ->add('note')
             ->add('countedBalance', NumberType::class, [
                 'mapped' => false,
-                'required' => false,
+
                 'label' => 'Solde compté',
                 'attr' => [
                     'id' => 'counted-balance',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank([
+                        'message' => 'Veuillez saisir une valeur pour le solde compté.',
+                    ]),
+                ],
             ])
             ->add('discrepancy', NumberType::class, [
                 'required' => false,
-                'label' => 'Écart',
+                'label' => 'Écart :',
                 'attr' => [
                     'id' => 'discrepancy',
                     'readonly' => true,
                 ],
+            ])
+            ->add('note', null, [
+                'attr' => ['placeholder' => 'Justifier l\'écart (facultatif)'],
             ]);
 
         // Remove leading "+" from discrepancy (added for UX only) to avoid validation error on submit

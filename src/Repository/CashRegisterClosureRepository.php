@@ -31,16 +31,54 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
     //     c.closed_at DESC
     // LIMIT 1;
 
+
+    //     SELECT 
+    //     c.id,
+    //     c.closed_at,
+    //     c.closing_cash_amount,
+    //     c.discrepancy,
+    //     u.first_name AS closed_by_name,
+    //     SUM(sal.total_price) AS total_sales,
+    //     SUM(sal.cash_amount),
+    //     SUM(sal.card_amount),
+    // FROM 
+    //     cash_register_closures c
+    // LEFT JOIN 
+    //     users u ON c.closed_by_id = u.id
+    // LEFT JOIN 
+    //     cash_register_sessions s ON s.id = c.cash_register_session_id
+    // LEFT JOIN 
+    //     sales sal ON sal.cash_register_session_id = s.id
+    // GROUP BY 
+    //     c.id, c.closed_at, c.closing_cash_amount, c.discrepancy, u.first_name
+    // ORDER BY 
+    //     c.closed_at DESC
+    // LIMIT 1;
+
+
     public function findLastClosureWithUser(): ?array
     {
         return $this->createQueryBuilder('c')
-            ->select('c.id', 'c.closedAt', 'c.closingCashAmount', 'c.discrepancy', 'u.firstName AS closedByName')
+            ->select(
+                'c.id',
+                'c.closedAt',
+                'c.closingCashAmount',
+                'c.discrepancy',
+                'u.firstName AS closedByName',
+                'SUM(sales.totalPrice) AS totalSales',
+                'SUM(sales.cashAmount) AS totalCash',
+                'SUM(sales.cardAmount) AS totalCard'
+            )
             ->leftJoin('c.closedBy', 'u')
+            ->leftJoin('c.cashRegisterSession', 'session')
+            ->leftJoin('session.sales', 'sales')
+            ->groupBy('c.id', 'c.closedAt', 'c.closingCashAmount', 'c.discrepancy', 'u.firstName')
             ->orderBy('c.closedAt', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }
+
 
 
 

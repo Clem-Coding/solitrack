@@ -251,6 +251,11 @@ select {
   font-size: 2rem;
 }
 
+.radio-inline {
+  display: flex;
+  flex-direction: row;
+}
+
 .container {
   width: 100%;
   margin-right: auto;
@@ -377,6 +382,10 @@ button {
   border: 2px solid #cccccc;
   border-radius: 8px;
   box-shadow: 6px 6px 0 #cccccc;
+  width: 100%;
+}
+.button-grey-shadow i {
+  margin-right: 0.3em;
 }
 .button-grey-shadow:hover {
   border: 2px solid #080222;
@@ -929,7 +938,7 @@ form select,
 form textarea {
   padding: 0.75em;
   border: 1px solid #6e6d7a;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
@@ -1098,6 +1107,11 @@ form textarea:focus {
   font-weight: 600;
 }
 
+.open-cash-register {
+  width: 60%;
+  margin: 0 auto;
+}
+
 .buttons-wrapper {
   display: flex;
   flex-direction: column;
@@ -1113,9 +1127,6 @@ form textarea:focus {
   padding: 0.7em;
   width: 100%;
 }
-.buttons-wrapper i {
-  margin-right: 0.4em;
-}
 
 .payments-list {
   display: flex;
@@ -1127,11 +1138,11 @@ form textarea:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #6e6d7a;
+  border: 1px solid #00857a;
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: #00857a;
-  background-color: rgba(0, 133, 122, 0.1);
+  background-color: #e6f3f2;
 }
 .payment-group .payment-details-container {
   flex: 1;
@@ -1268,12 +1279,37 @@ form textarea:focus {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1em;
 }
 .discrepancy-container input {
   border: none;
   pointer-events: none;
   width: auto;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.75em 1em;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: border 0.2s, background-color 0.2s;
+}
+.radio-option label {
+  cursor: pointer;
+}
+.radio-option input[type=radio] {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+.radio-option input[type=radio]:checked:focus-visible {
+  outline: none;
+}
+
+.radio-option:has(input[type=radio]:checked) {
+  background-color: #e6f3f2;
+  border-color: #00857a;
 }
 
 .statistics-container {

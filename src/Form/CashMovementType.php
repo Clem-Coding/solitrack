@@ -23,6 +23,7 @@ class CashMovementType extends AbstractType
                 'label_attr' => ['class' => 'sr-only'],
                 'choice_label' => fn(CashMovementAction $choice) => $choice->getLabel(),
                 'expanded' => true,
+                'attr' => ['class' => 'radio-inline'],
             ])
             ->add('amount', null, [
                 'label' => 'Montant',

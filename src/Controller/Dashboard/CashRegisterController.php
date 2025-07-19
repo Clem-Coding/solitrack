@@ -10,6 +10,7 @@ use App\Entity\CashMovement;
 use App\Form\CashMovementType;
 use App\Form\CashRegisterClosureType;
 use App\Form\CoinCountType;
+use App\Repository\CashMovementRepository;
 use App\Repository\CashRegisterClosureRepository;
 use App\Repository\CashRegisterSessionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +30,8 @@ class CashRegisterController extends AbstractController
         CashRegisterSessionRepository $cashRegisterSessionRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        CashRegisterClosureRepository $closureRepository
+        CashRegisterClosureRepository $closureRepository,
+        CashMovementRepository $cashMovementRepository
     ): Response {
         $session = $cashRegisterSessionRepository->findAnyOpenSession();
         // dd($session);
@@ -113,19 +115,26 @@ class CashRegisterController extends AbstractController
 
         //💰 LAST CLOSURE
         $lastClosure = $closureRepository->findLastClosureWithUser();
+        // dd($lastClosure);
+
+
+        // LAST OPERATION DETAILS
+        if ($session) {
+            $cashMovements = $cashMovementRepository->findBySession($session) ?? [];
+        }
+
+
 
 
         return $this->render('dashboard/cash_register.html.twig', [
             'session' => $session,
             'cash_movement_form' => $cashMovementForm,
             'closure_form' => $closureForm,
-            // 'opened_by' => $session?->getOpenedBy()?->getFirstName(),
-            // 'opening_at' => $session?->getOpeningAt()?->format('d/m/Y à H\hi'),
             'cash_float' => $cashFloat,
             'total_price' => $totalPrice,
             'total_card' => $totalCard,
             'total_cash' => $totalCash,
-            // 'total_withdrawals' => $totalWithdrawals,
+            'cash_movements' => $cashMovements,
             'lastClosure' => $lastClosure,
             'theoretical_balance' => $theoreticalBalance,
         ]);
