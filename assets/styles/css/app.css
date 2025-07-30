@@ -351,7 +351,7 @@ button {
   font-size: 0.875rem;
 }
 .category-button:hover {
-  background-color: #f1e8e1;
+  background-color: rgb(240.9473684211, 231.5789473684, 224.5526315789);
 }
 .category-button img {
   width: 8em;
@@ -394,6 +394,58 @@ button {
 .button-grey-shadow.active {
   border: 2px solid #00857a;
   box-shadow: 4px 4px 0 #00857a;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.slider {
+  width: 3em;
+  height: 1.5em;
+  background-color: #cccccc;
+  border-radius: 1.5em;
+  position: relative;
+  transition: background-color 0.3s;
+}
+@media (min-width: 768px) {
+  .slider {
+    width: 4.5em;
+  }
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 1.25em;
+  height: 1.25em;
+  background-color: #ffffff;
+  border-radius: 50%;
+  left: 0.125em;
+  top: 0.125em;
+  transition: transform 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #00857a;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+.label-text {
+  font-size: 14px;
 }
 
 .flash-success {
@@ -1142,7 +1194,7 @@ form textarea:focus {
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: #00857a;
-  background-color: #e6f3f2;
+  background-color: rgb(229.5, 242.8, 241.7);
 }
 .payment-group .payment-details-container {
   flex: 1;
@@ -1259,14 +1311,14 @@ form textarea:focus {
   color: #ffffff;
 }
 .users-table .btn-primary:hover {
-  background-color: #00524b;
+  background-color: rgb(0, 82, 75.2180451128);
 }
 .users-table .btn-danger {
   background-color: #eb5a47;
   color: #fff;
 }
 .users-table .btn-danger:hover {
-  background-color: #e63119;
+  background-color: rgb(230, 48.75, 25);
 }
 .users-table select {
   padding: 0.3em;
@@ -1308,7 +1360,7 @@ form textarea:focus {
 }
 
 .radio-option:has(input[type=radio]:checked) {
-  background-color: #e6f3f2;
+  background-color: rgb(229.5, 242.8, 241.7);
   border-color: #00857a;
 }
 

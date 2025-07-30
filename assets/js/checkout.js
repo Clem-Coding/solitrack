@@ -270,17 +270,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔧 HANDLE FUNCTIONS
   // ==========================
 
-  function handleKeepChange() {
-    if (remainingTitle.textContent === "Retour Monnaie : ") {
-      const keepChangeAmount = Math.abs(getRemainingAmount());
-      keepChangeInput.value = keepChangeAmount;
-      const messageElement = document.createElement("p");
-      messageElement.classList.add("flash-success");
-      messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;
-      paymentForm.appendChild(messageElement);
-      remainingTitle.textContent = "Restant à payer :";
-      remainingNumberElement.textContent = 0;
-    }
+  function handleKeepChangeOnSubmit() {
+    const toggle = document.getElementById("change-amount-toggle");
+
+    const hiddenInput = document.getElementById("change-amount");
+    const remaining = getRemainingAmount(); // ex: -0.50
+
+    if (!toggle || !hiddenInput) return;
+
+    const changeAmount = toggle.checked
+      ? Math.abs(remaining) // garder la monnaie → positif
+      : remaining; // rendre la monnaie → négatif
+
+    hiddenInput.value = changeAmount;
+    // console.log("Montant de la monnaie à garder ou à rendre :", changeAmount);
   }
 
   function handlePaymentSelection(method) {
@@ -354,11 +357,10 @@ document.addEventListener("DOMContentLoaded", () => {
   registerSaleButton.addEventListener("click", (event) => {
     preventTransactionSubmission(event);
     localStorage.removeItem("cart");
+    handleKeepChangeOnSubmit();
   });
 
   checkUnlabeledItemsWeight();
-
-  keepChangeButton.addEventListener("click", handleKeepChange);
 
   receiptButton.addEventListener("click", function () {
     mailInputGroup.classList.toggle("hidden");

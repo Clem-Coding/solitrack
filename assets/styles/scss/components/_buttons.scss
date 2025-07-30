@@ -110,3 +110,54 @@ button {
     box-shadow: 4px 4px 0 $emerald-sea;
   }
 }
+
+// toggle switch
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.slider {
+  width: 3em;
+  @include respond-to(tablet) {
+    width: 4.5em;
+  }
+  height: 1.5em;
+  background-color: $grey;
+  border-radius: 1.5em;
+  position: relative;
+  transition: background-color 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 1.25em; 
+  height: 1.25em;
+  background-color: $cloud;
+  border-radius: 50%;
+  left: 0.125em; 
+  top: 0.125em; 
+  transition: transform 0.3s;
+}
+
+input:checked + .slider {
+  background-color: $emerald-sea;
+}
+
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+.label-text {
+  font-size: 14px;
+}

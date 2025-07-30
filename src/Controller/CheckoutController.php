@@ -76,7 +76,8 @@ class CheckoutController extends AbstractController
         $cashAmounts = $request->get('cash_amount', []);
         $cardTotal = array_sum(array_map('floatval', $cardAmounts));
         $cashTotal = array_sum(array_map('floatval', $cashAmounts));
-        $keepChangeAmount = $request->get('keep_change');
+        $changeAmount = $request->get('change_amount');
+        // dd($changeAmount);
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
         $zipcode = $request->get("zipcode");
@@ -99,7 +100,7 @@ class CheckoutController extends AbstractController
         $sale->setUser($user);
         $sale->setCardAmount($cardTotal ?? null);
         $sale->setCashAmount($cashTotal ?? null);
-        $sale->setKeepChange($keepChangeAmount !== '' ? (float) $keepChangeAmount : null);
+        $sale->setKeepChange($changeAmount !== '' ? (float) $changeAmount : null);
         $sale->setPwywAmount($pwywAmount !== '' ? (float) $pwywAmount : null);
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setCustomerCity($customerCity ?? null);

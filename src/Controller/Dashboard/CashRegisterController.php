@@ -56,6 +56,7 @@ class CashRegisterController extends AbstractController
 
         $cashMovements = $session ? $session->getCashMovements()->toArray() : [];
 
+
         $sales = $session?->getSales()->toArray() ?? [];
 
         $totalCashMovements = 0;
@@ -70,17 +71,29 @@ class CashRegisterController extends AbstractController
 
 
 
-        $totalPrice = $totalCard = $totalCash = 0;
+        $totalPrice = $totalCard = $totalCash = $totalKeepChange = $returnedChange = $totalPwywAmount = 0;
         foreach ($sales as $sale) {
-            $totalPrice += (float) $sale->getTotalPrice() + (float) $sale->getPwywAmount() + (float) $sale->getKeepChange();
+            $totalPrice += (float) $sale->getTotalPrice() + (float) $sale->getPwywAmount();
             $totalCard += (float) $sale->getCardAmount();
-            $totalCash += (float) $sale->getCashAmount();
+            $totalPwywAmount += (float) $sale->getPwywAmount();
+            $changeAmount = $sale->getKeepChange() ?? 0;
+            $cashAmount = (float) $sale->getCashAmount();
+
+            if ($changeAmount < 0) { // If negative, add the change returned amount to be deducted.
+                $returnedChange += abs($changeAmount);
+            }
+
+            if ($changeAmount > 0) {
+                $totalKeepChange += $changeAmount;
+            }
+
+            $totalCash += (float) $cashAmount;
         }
 
         $cashFloat = $session ? $session->getCashFloat() : 0;
 
         // $theoreticalBalance = ($cashFloat + $totalCash) - $totalWithdrawals;
-        $theoreticalBalance = $cashFloat + $totalCash + $totalCashMovements;
+        $theoreticalBalance = $cashFloat + $totalCash + $totalCashMovements - $returnedChange;
 
 
 
@@ -90,13 +103,13 @@ class CashRegisterController extends AbstractController
         $closureForm->handleRequest($request);
 
         if ($closureForm->isSubmitted() && $closureForm->isValid()) {
-            // Récupérer la valeur du solde compté à partir du formulaire
+            // Retrieve the counted balance value from the form
             $countedBalance = $closureForm->get('countedBalance')->getData();
 
-            //Récupère le montant de l'écart (positif ou négatif)
+            //Retrieve the discrepancy amount (positive or negative)
             $discrepancy = $cashRegisterClosure->getDiscrepancy();
 
-            // Calcule le montant en espèces déposer à la banque
+            // Calculate the amount of cash to deposit at the bank
             $closingCashAmount = $countedBalance - $cashFloat;
 
             $cashRegisterClosure->setDiscrepancy($discrepancy);
@@ -115,8 +128,6 @@ class CashRegisterController extends AbstractController
 
         //💰 LAST CLOSURE
         $lastClosure = $closureRepository->findLastClosureWithUser();
-        // dd($lastClosure);
-
 
         // LAST OPERATION DETAILS
         if ($session) {
@@ -134,9 +145,11 @@ class CashRegisterController extends AbstractController
             'total_price' => $totalPrice,
             'total_card' => $totalCard,
             'total_cash' => $totalCash,
+            'total_keep_change' => $totalKeepChange,
             'cash_movements' => $cashMovements,
             'lastClosure' => $lastClosure,
             'theoretical_balance' => $theoreticalBalance,
+            'total_pwyw_amount' => $totalPwywAmount,
         ]);
     }
 }
