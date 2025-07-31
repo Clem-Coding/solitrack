@@ -64,6 +64,7 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
                 'c.closedAt',
                 'c.closingCashAmount',
                 'c.discrepancy',
+                'c.note',
                 'u.firstName AS closedByName',
                 'SUM(sales.totalPrice) AS totalSales',
                 'SUM(sales.cashAmount) AS totalCash',

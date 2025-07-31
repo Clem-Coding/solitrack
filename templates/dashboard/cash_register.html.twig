@@ -133,7 +133,6 @@
       <div>
         <p>Total des ventes pour cette session : {{ lastClosure.totalSales|number_format(2, ',', ' ') }} €</p>
         <p>Total des montants par CB : {{ lastClosure.totalCard|number_format(2, ',', ' ') }} €</p>
-        {# <p>Total des montants par espèces : {{ lastClosure.totalCash|number_format(2, ',', ' ') }} €</p> #}
         <p>
           Total réel compté des recettes en espèces : {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
         </p>
@@ -144,7 +143,9 @@
             ⚠️ Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
               lastClosure.discrepancy|abs|number_format(2, ',', ' ')
             }} €
-          </p>
+            {% if lastClosure.note %}
+             <p role="note">📌 Commentaire : {{ lastClosure.note }}</p>
+            {% endif %}
         {% endif %}
       </div>
     </section>
