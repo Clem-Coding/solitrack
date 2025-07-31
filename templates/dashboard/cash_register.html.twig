@@ -26,7 +26,7 @@
 
           <div class="withdrawals-summary">
             <button type="button" class="toggle-details button-secondary mt-1" data-target="#opration-details">
-              Voir le détail des opérations en espèces
+             <i class="ph ph-eye"></i> Voir le détail des opérations en espèces
             </button>
 
             <div id="operation-details" class="hidden mt-1">
@@ -51,7 +51,7 @@
             </div>
           </div>
         </div>
-        <p class="bold">Solde théorique attendu dans la caisse: <span id="theoreticalBalance">{{ theoretical_balance }}</span> €</p>
+        <p class="bold">Solde théorique attendu dans la caisse : <span id="theoreticalBalance">{{ theoretical_balance|number_format(2, ',', ' ') }}</span> €</p>
       </section>
 
       <section class="card withdrawal">

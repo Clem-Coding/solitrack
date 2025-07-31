@@ -92,7 +92,6 @@ class CashRegisterController extends AbstractController
 
         $cashFloat = $session ? $session->getCashFloat() : 0;
 
-        // $theoreticalBalance = ($cashFloat + $totalCash) - $totalWithdrawals;
         $theoreticalBalance = $cashFloat + $totalCash + $totalCashMovements - $returnedChange;
 
 

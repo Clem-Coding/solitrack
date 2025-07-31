@@ -307,13 +307,16 @@ button {
 }
 
 .button-secondary {
+  display: flex;
+  align-items: center;
   background-color: #ffffff;
   color: #080222;
   border: 2px solid #080222;
   font-weight: 700;
 }
 .button-secondary i {
-  font-size: 1.125rem;
+  font-size: 1.375rem;
+  margin-right: 0.3em;
 }
 .button-secondary:hover {
   color: #00857a;
@@ -385,6 +388,7 @@ button {
   width: 100%;
 }
 .button-grey-shadow i {
+  font-size: 1.375rem;
   margin-right: 0.3em;
 }
 .button-grey-shadow:hover {
@@ -1342,7 +1346,7 @@ form textarea:focus {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 0.75em 1em;
+  padding: 0.5em 1em;
   border: 1px solid transparent;
   border-radius: 6px;
   transition: border 0.2s, background-color 0.2s;

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const discrepancyEl = document.querySelector("#cash_register_closure_discrepancy");
 
   const theoreticalBalanceEl = document.querySelector("#theoreticalBalance");
-  const theoreticalBalance = theoreticalBalanceEl ? Number(theoreticalBalanceEl.textContent) : 0;
+  const theoreticalBalance = theoreticalBalanceEl ? Number(theoreticalBalanceEl.textContent.replace(",", ".")) : 0;
 
   const noteButton = document.querySelector(".note-toggle");
   const noteGroup = document.querySelector(".form-group textarea#cash_register_closure_note").closest(".form-group");

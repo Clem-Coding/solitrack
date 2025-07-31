@@ -17,13 +17,17 @@ button {
 }
 
 .button-secondary {
+  display : flex;
+  align-items: center;;
+
   background-color: $cloud;
   color: $ink-night;
   border: 2px solid $ink-night;
   font-weight: $bold;
 
   i {
-    font-size: $f18;
+    font-size: $f22;
+    margin-right: 0.3em;
   }
 
   &:hover {
@@ -97,6 +101,7 @@ button {
   box-shadow: 6px 6px 0 $grey;
   width: 100%;
   & i {
+    font-size: $f22;
     margin-right: 0.3em;
   }
 
