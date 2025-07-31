@@ -61,6 +61,11 @@
                         <a href="{{ path('app_dashboard_index') }}"><i class="ph ph-house-line"></i>Tableau de bord</a>
                       </li>
                       <li>
+                        <a href="{{ path('app_dashboard_cash_register') }}">
+                          <i class="ph ph-storefront"></i> Gestion de caisse
+                        </a>
+                      </li>
+                      <li>
                         <a
                           href="{{
                           path(
@@ -74,11 +79,7 @@
                           <i class="ph ph-chart-bar"></i>Les statistiques
                         </a>
                       </li>
-                      <li>
-                        <a href="{{ path('app_dashboard_cash_reconciliation') }}">
-                          <i class="ph ph-storefront"></i> Contrôle de Caisse
-                        </a>
-                      </li>
+
                       {% if is_granted('ROLE_ADMIN') %}
                         <li>
                           <a href="{{ path('app_dashboard_user_management') }}">

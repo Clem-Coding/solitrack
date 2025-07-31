@@ -251,6 +251,11 @@ select {
   font-size: 2rem;
 }
 
+.radio-inline {
+  display: flex;
+  flex-direction: row;
+}
+
 .container {
   width: 100%;
   margin-right: auto;
@@ -302,13 +307,18 @@ button {
 }
 
 .button-secondary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   background-color: #ffffff;
   color: #080222;
   border: 2px solid #080222;
   font-weight: 700;
 }
 .button-secondary i {
-  font-size: 1.125rem;
+  font-size: 1.375rem;
+  margin-right: 0.3em;
 }
 .button-secondary:hover {
   color: #00857a;
@@ -346,7 +356,7 @@ button {
   font-size: 0.875rem;
 }
 .category-button:hover {
-  background-color: #f1e8e1;
+  background-color: rgb(240.9473684211, 231.5789473684, 224.5526315789);
 }
 .category-button img {
   width: 8em;
@@ -371,9 +381,17 @@ button {
 }
 
 .button-grey-shadow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid #cccccc;
   border-radius: 8px;
   box-shadow: 6px 6px 0 #cccccc;
+  width: 100%;
+}
+.button-grey-shadow i {
+  font-size: 1.375rem;
+  margin-right: 0.3em;
 }
 .button-grey-shadow:hover {
   border: 2px solid #080222;
@@ -382,6 +400,58 @@ button {
 .button-grey-shadow.active {
   border: 2px solid #00857a;
   box-shadow: 4px 4px 0 #00857a;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.slider {
+  width: 3em;
+  height: 1.5em;
+  background-color: #cccccc;
+  border-radius: 1.5em;
+  position: relative;
+  transition: background-color 0.3s;
+}
+@media (min-width: 768px) {
+  .slider {
+    width: 4.5em;
+  }
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 1.25em;
+  height: 1.25em;
+  background-color: #ffffff;
+  border-radius: 50%;
+  left: 0.125em;
+  top: 0.125em;
+  transition: transform 0.3s;
+}
+
+input:checked + .slider {
+  background-color: #00857a;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+.label-text {
+  font-size: 14px;
 }
 
 .flash-success {
@@ -520,7 +590,7 @@ button {
   padding: 2em;
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 1.5em;
   border-radius: 10px;
   background-color: #ffffff;
 }
@@ -595,7 +665,7 @@ main.container {
     min-height: 100px;
     transition: height 0.3s ease;
     overflow-y: auto;
-    max-height: 90vh;
+    max-height: 100vh;
   }
   .sections-container.four-sections {
     grid-template-areas: "area-1 area-2" "area-3 area-4";
@@ -926,7 +996,7 @@ form select,
 form textarea {
   padding: 0.75em;
   border: 1px solid #6e6d7a;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
 }
 
@@ -1087,18 +1157,19 @@ form textarea:focus {
 .clear-cart-button.show {
   display: flex;
 }
-.clear-cart-button i {
-  margin-right: 1em;
-}
 
 .cart-status {
   font-weight: 600;
 }
 
+.open-cash-register {
+  width: 60%;
+  margin: 0 auto;
+}
+
 .buttons-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
   gap: 2em;
 }
@@ -1110,12 +1181,6 @@ form textarea:focus {
 .buttons-wrapper button {
   padding: 0.7em;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.buttons-wrapper i {
-  margin-right: 0.4em;
 }
 
 .payments-list {
@@ -1128,11 +1193,11 @@ form textarea:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #6e6d7a;
+  border: 1px solid #00857a;
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: #00857a;
-  background-color: rgba(0, 133, 122, 0.1);
+  background-color: rgb(229.5, 242.8, 241.7);
 }
 .payment-group .payment-details-container {
   flex: 1;
@@ -1249,20 +1314,57 @@ form textarea:focus {
   color: #ffffff;
 }
 .users-table .btn-primary:hover {
-  background-color: #00524b;
+  background-color: rgb(0, 82, 75.2180451128);
 }
 .users-table .btn-danger {
   background-color: #eb5a47;
   color: #fff;
 }
 .users-table .btn-danger:hover {
-  background-color: #e63119;
+  background-color: rgb(230, 48.75, 25);
 }
 .users-table select {
   padding: 0.3em;
   font-size: 0.9em;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+.discrepancy-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.discrepancy-container input {
+  border: none;
+  pointer-events: none;
+  width: auto;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1em;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  transition: border 0.2s, background-color 0.2s;
+}
+.radio-option label {
+  cursor: pointer;
+}
+.radio-option input[type=radio] {
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
+.radio-option input[type=radio]:checked:focus-visible {
+  outline: none;
+}
+
+.radio-option:has(input[type=radio]:checked) {
+  background-color: rgb(229.5, 242.8, 241.7);
+  border-color: #00857a;
 }
 
 .statistics-container {

@@ -7,6 +7,7 @@ use App\Entity\SalesItem;
 use App\Entity\Sale;
 use App\Entity\Category;
 use App\Form\SaleType;
+use App\Repository\CashRegisterSessionRepository;
 use App\Service\PriceManagementService;
 use App\Service\ReceiptMailer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +56,8 @@ class CheckoutController extends AbstractController
         EntityManagerInterface $entityManager,
         CsrfTokenManagerInterface $csrfTokenManager,
         ReceiptMailer $receiptMailer,
-        PriceManagementService $priceManagement
+        PriceManagementService $priceManagement,
+        CashRegisterSessionRepository $cashRegisterSessionRepository
     ): Response {
 
         $token = $request->request->get('_csrf_token');
@@ -67,11 +69,15 @@ class CheckoutController extends AbstractController
 
         $sale = new Sale();
 
+        $openSession = $cashRegisterSessionRepository->findAnyOpenSession();
+        // dd($openSession);
+
         $cardAmounts = $request->get('card_amount', []);
         $cashAmounts = $request->get('cash_amount', []);
         $cardTotal = array_sum(array_map('floatval', $cardAmounts));
         $cashTotal = array_sum(array_map('floatval', $cashAmounts));
-        $keepChangeAmount = $request->get('keep_change');
+        $changeAmount = $request->get('change_amount');
+        // dd($changeAmount);
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
         $zipcode = $request->get("zipcode");
@@ -89,11 +95,12 @@ class CheckoutController extends AbstractController
 
         $totalPrice = $priceManagement->getCartTotal();
 
+        $sale->setCashRegisterSession($openSession);
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
         $sale->setCardAmount($cardTotal ?? null);
         $sale->setCashAmount($cashTotal ?? null);
-        $sale->setKeepChange($keepChangeAmount !== '' ? (float) $keepChangeAmount : null);
+        $sale->setChangeAmount($changeAmount !== '' ? (float) $changeAmount : null);
         $sale->setPwywAmount($pwywAmount !== '' ? (float) $pwywAmount : null);
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setCustomerCity($customerCity ?? null);

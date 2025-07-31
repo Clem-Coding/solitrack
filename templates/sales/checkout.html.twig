@@ -73,15 +73,19 @@
         <fieldset class="transaction-options-fieldset">
           <legend id="remaining-amount-heading" class="sr-only">Options de la transaction</legend>
           <div class="buttons-wrapper">
-            <button class="keep-change-button button-grey-shadow" type="button">
-              <i class="ph ph-gift"></i>Garder la monnaie
-            </button>
+            <label class="toggle-switch">
+              <input type="checkbox" id="change-amount-toggle" />
+              <span class="slider"></span>
+              <span class="label-text">Garder la monnaie</span>
+            </label>
             <button type="button" class="button-grey-shadow receipt-button">
               <i class="ph ph-receipt"></i>Envoyer un reçu
             </button>
           </div>
-          <label for="keep-change" class="sr-only">Garder la monnaie</label>
-          <input type="hidden" id="keep-change" class="keep-change-input" name="keep_change" />
+    
+         <input type="hidden" id="change-amount" name="change_amount" />
+
+ 
           <div class="form-group hidden">
             <label for="email">Entrez l'adresse email :</label>
             <input type="email" id="email" name="email" placeholder="example@mail.com" />

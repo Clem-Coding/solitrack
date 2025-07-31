@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Ouverture de caisse
+{% endblock %}
+
+{% block content %}
+  <h1>Ouverture de la caisse</h1>
+
+  <section class="card contained open-cash-register">
+    <p class="text-center">
+      Aucune session de vente ouverte. Veuilez saisir un montant pour le fond de caisse pour ouvrir les ventes.
+    </p>
+
+    {{ form_start(form) }}
+
+    <div class="form-group">
+      {{ form_label(form.cashFloat) }}
+      {{ form_widget(form.cashFloat) }}
+      {% for error in form.cashFloat.vars.errors %}
+        <p role="note" class="flash-error">{{ error.message }}</p>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="button-primary">Ouvrir la caisse</button>
+    {{ form_end(form) }}
+  </section>
+{% endblock %}

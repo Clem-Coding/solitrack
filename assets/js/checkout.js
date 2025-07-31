@@ -10,12 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
   const remainingTitle = document.querySelector(".remaining-title");
-  const keepChangeButton = document.querySelector(".keep-change-button");
-  const keepChangeInput = document.querySelector(".keep-change-input");
+  // const keepChangeButton = document.querySelector(".keep-change-button");
+  // const keepChangeInput = document.querySelector(".keep-change-input");
   const remainingPriceElement = document.querySelector(".remaining-price");
   const mailInputGroup = document.querySelector("#email").closest(".form-group");
   const receiptButton = document.querySelector(".receipt-button");
   const pwywAmountInput = document.querySelector("#pwyw_amount");
+
+  const toggle = document.getElementById("change-amount-toggle");
+  toggle.disabled = true;
 
   // ==========================
 
@@ -133,6 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
     remainingNumberElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
     remainingTitle.classList.add(statusClass);
     remainingPriceElement.classList.add(statusClass);
+
+    // 🔁 Enables/disables the toggle depending on the change to give back
+    if (toggle) {
+      if (isOverpaid) {
+        toggle.disabled = false;
+      } else {
+        toggle.disabled = true;
+        toggle.checked = false;
+      }
+    }
   }
 
   function updateAmounts() {
@@ -270,17 +283,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔧 HANDLE FUNCTIONS
   // ==========================
 
-  function handleKeepChange() {
-    if (remainingTitle.textContent === "Retour Monnaie : ") {
-      const keepChangeAmount = Math.abs(getRemainingAmount());
-      keepChangeInput.value = keepChangeAmount;
-      const messageElement = document.createElement("p");
-      messageElement.classList.add("flash-success");
-      messageElement.textContent = `Vous avez bien gardé la monnaie de ${keepChangeAmount} €.`;
-      paymentForm.appendChild(messageElement);
-      remainingTitle.textContent = "Restant à payer :";
-      remainingNumberElement.textContent = 0;
-    }
+  function handleKeepChangeOnSubmit() {
+    // const toggle = document.getElementById("change-amount-toggle");
+
+    const hiddenInput = document.getElementById("change-amount");
+    const remaining = getRemainingAmount(); // ex: -0.50
+
+    if (!toggle || !hiddenInput) return;
+
+    const changeAmount = toggle.checked
+      ? Math.abs(remaining) // garder la monnaie → positif
+      : remaining; // rendre la monnaie → négatif
+
+    hiddenInput.value = changeAmount;
   }
 
   function handlePaymentSelection(method) {
@@ -354,11 +369,10 @@ document.addEventListener("DOMContentLoaded", () => {
   registerSaleButton.addEventListener("click", (event) => {
     preventTransactionSubmission(event);
     localStorage.removeItem("cart");
+    handleKeepChangeOnSubmit();
   });
 
   checkUnlabeledItemsWeight();
-
-  keepChangeButton.addEventListener("click", handleKeepChange);
 
   receiptButton.addEventListener("click", function () {
     mailInputGroup.classList.toggle("hidden");

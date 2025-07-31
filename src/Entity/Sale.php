@@ -52,13 +52,17 @@ class Sale
     private Collection $salesItems;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $keepChange = null;
+    private ?string $changeAmount = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $pwywAmount = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $customer_city = null;
+
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?CashRegisterSession $CashRegisterSession = null;
 
     public function __construct()
     {
@@ -175,14 +179,14 @@ class Sale
         return $this;
     }
 
-    public function getKeepChange(): ?string
+    public function getChangeAmount(): ?string
     {
-        return $this->keepChange;
+        return $this->changeAmount;
     }
 
-    public function setKeepChange(?string $keepChange): static
+    public function setChangeAmount(?string $changeAmount): static
     {
-        $this->keepChange = $keepChange;
+        $this->changeAmount = $changeAmount;
 
         return $this;
     }
@@ -207,6 +211,18 @@ class Sale
     public function setCustomerCity(?string $customer_city): static
     {
         $this->customer_city = $customer_city;
+
+        return $this;
+    }
+
+    public function getCashRegisterSession(): ?CashRegisterSession
+    {
+        return $this->CashRegisterSession;
+    }
+
+    public function setCashRegisterSession(?CashRegisterSession $CashRegisterSession): static
+    {
+        $this->CashRegisterSession = $CashRegisterSession;
 
         return $this;
     }

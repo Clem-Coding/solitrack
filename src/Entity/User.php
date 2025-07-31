@@ -71,11 +71,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Visitor::class, mappedBy: 'user')]
     private Collection $visitors;
 
+    /**
+     * @var Collection<int, CashRegisterSession>
+     */
+    #[ORM\OneToMany(targetEntity: CashRegisterSession::class, mappedBy: 'user')]
+    private Collection $cashRegisterSessions;
+
+    /**
+     * @var Collection<int, CashRegisterClosure>
+     */
+    #[ORM\OneToMany(targetEntity: CashRegisterClosure::class, mappedBy: 'user')]
+    private Collection $cashRegisterClosures;
+
+    /**
+     * @var Collection<int, CashMovement>
+     */
+    #[ORM\OneToMany(targetEntity: CashMovement::class, mappedBy: 'madeBy')]
+    private Collection $cashMovements;
+
     public function __construct()
     {
         $this->donations = new ArrayCollection();
         $this->sales = new ArrayCollection();
         $this->visitors = new ArrayCollection();
+        $this->cashRegisterSessions = new ArrayCollection();
+        $this->cashRegisterClosures = new ArrayCollection();
+        $this->cashMovements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -261,6 +282,96 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($visitor->getUser() === $this) {
                 $visitor->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashRegisterSession>
+     */
+    public function getCashRegisterSessions(): Collection
+    {
+        return $this->cashRegisterSessions;
+    }
+
+    public function addCashRegisterSession(CashRegisterSession $cashRegisterSession): static
+    {
+        if (!$this->cashRegisterSessions->contains($cashRegisterSession)) {
+            $this->cashRegisterSessions->add($cashRegisterSession);
+            $cashRegisterSession->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashRegisterSession(CashRegisterSession $cashRegisterSession): static
+    {
+        if ($this->cashRegisterSessions->removeElement($cashRegisterSession)) {
+            // set the owning side to null (unless already changed)
+            if ($cashRegisterSession->getUser() === $this) {
+                $cashRegisterSession->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashRegisterClosure>
+     */
+    public function getCashRegisterClosures(): Collection
+    {
+        return $this->cashRegisterClosures;
+    }
+
+    public function addCashRegisterClosure(CashRegisterClosure $cashRegisterClosure): static
+    {
+        if (!$this->cashRegisterClosures->contains($cashRegisterClosure)) {
+            $this->cashRegisterClosures->add($cashRegisterClosure);
+            $cashRegisterClosure->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashRegisterClosure(CashRegisterClosure $cashRegisterClosure): static
+    {
+        if ($this->cashRegisterClosures->removeElement($cashRegisterClosure)) {
+            // set the owning side to null (unless already changed)
+            if ($cashRegisterClosure->getUser() === $this) {
+                $cashRegisterClosure->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CashMovement>
+     */
+    public function getCashMovements(): Collection
+    {
+        return $this->cashMovements;
+    }
+
+    public function addCashMovement(CashMovement $cashMovement): static
+    {
+        if (!$this->cashMovements->contains($cashMovement)) {
+            $this->cashMovements->add($cashMovement);
+            $cashMovement->setMadeBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCashMovement(CashMovement $cashMovement): static
+    {
+        if ($this->cashMovements->removeElement($cashMovement)) {
+            // set the owning side to null (unless already changed)
+            if ($cashMovement->getMadeBy() === $this) {
+                $cashMovement->setMadeBy(null);
             }
         }
 

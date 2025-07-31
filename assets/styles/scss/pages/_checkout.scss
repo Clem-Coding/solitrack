@@ -1,7 +1,7 @@
 .buttons-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   gap: 2em;
 
@@ -12,14 +12,11 @@
   & button {
     padding: 0.7em;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  i {
-    margin-right: 0.4em;
-  }
+  // i {
+  //   margin-right: 0.4em;
+  // }
 }
 
 .payments-list {
@@ -32,11 +29,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid $grey-velvet;
+  border: 1px solid $emerald-sea;
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: $emerald-sea;
-  background-color: rgba($emerald-sea, 0.1);
+  background-color: mix(white, $emerald-sea, 90%);
 
   .payment-details-container {
     flex: 1;

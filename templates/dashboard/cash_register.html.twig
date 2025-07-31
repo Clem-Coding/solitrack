@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Contrôle de caisse
+{% endblock %}
+
+{% block content %}
+  <h1>Gestion de la caisse</h1>
+
+  {% if session %}
+    <div class="sections-container three-sections">
+      <section class="card">
+        <p class="state-ok">
+          Caisse ouverte par {{ session.openedBy.firstName }} le {{ session.openingAt|date('d/m/Y') }} à {{ session.openingAt|date('H\\hi') }}
+        </p>
+
+        <div class="cash-summary">
+          <p>Fond de caisse : {{ cash_float|number_format(2, ',', ' ') }} €</p>
+          <p>Total des ventes pour la session en cours : {{ total_price|number_format(2, ',', ' ') }} €</p>
+          <p>Total CB : {{ total_card|number_format(2, ',', ' ') }} €</p>
+          {# <p>Total espèces : {{ (total_cash > 0 ? total_cash : 0)|number_format(2, ',', ' ') }} €</p> #}
+          <p>Total des espèces données : {{ total_cash|number_format(2, ',', ' ') }} €</p>
+          <p>Total du retour monnaie : {{ returned_change|number_format(2, ',', ' ') }} €</p>
+          <p>Total monnaie gardée : {{ total_keep_change|number_format(2, ',', ' ') }} €</p>
+          <p>Total prix libres : {{ total_pwyw_amount|number_format(2, ',', ' ') }} €</p>
+
+          <div class="withdrawals-summary">
+            <button type="button" class="toggle-details button-secondary mt-1" data-target="#opration-details">
+              <i class="ph ph-eye"></i> Voir le détail des opérations en espèces
+            </button>
+
+            <div id="operation-details" class="hidden mt-1">
+              {% if cash_movements is not empty %}
+                <ul class="cash-movements-list">
+                  {% for movement in cash_movements %}
+                    <li class="cash-movement-item">
+                      <p>
+                        ► {{ movement.type.getLabel() }} de {{ movement.amount|number_format(2, ',', ' ') }} € par {{
+                          movement.madeBy.firstName
+                        }} à {{ movement.createdAt|date(' H\\hi') }}
+                      </p>
+                      {% if movement.comment %}
+                        <p class="note">Commentaire : {{ movement.comment }}</p>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p>Aucun ajout ou retrait effectué.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <p class="bold">
+          Solde théorique attendu dans la caisse : <span id="theoreticalBalance">
+            {{ theoretical_balance|number_format(2, ',', ' ') }}
+          </span> €
+        </p>
+      </section>
+
+      <section class="card withdrawal">
+        <h2>Effectuer une opération en espèces</h2>
+        {% include 'partials/flash.html.twig' %}
+
+        {{ form_start(cash_movement_form) }}
+
+        <div class="form-group">
+          {{ form_label(cash_movement_form.type) }}
+
+          {% for choice in cash_movement_form.type %}
+            <div class="radio-option">
+              {{ form_widget(choice) }}
+              {{ form_label(choice) }}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          {{ form_label(cash_movement_form.amount) }}
+          {{ form_widget(cash_movement_form.amount) }}
+          {% for error in cash_movement_form.amount.vars.errors %}
+            <p role="note" class="flash-error">{{ error.message }}</p>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          {{ form_label(cash_movement_form.comment) }}
+          {{ form_widget(cash_movement_form.comment) }}
+        </div>
+
+        <button type="submit" class="button-primary">Valider l'opération</button>
+
+        {{ form_end(cash_movement_form) }}
+      </section>
+
+      <section class="card">
+        <h2>Clôture de caisse</h2>
+        {{ form_start(closure_form) }}
+        <article class="balance-section">
+          <div class="form-group">
+            {{ form_label(closure_form.countedBalance) }}
+            {{ form_widget(closure_form.countedBalance) }}
+            {% for error in closure_form.countedBalance.vars.errors %}
+              <p role="note" class="flash-error">{{ error.message }}</p>
+            {% endfor %}
+          </div>
+        </article>
+
+        <article class="comment-toggle-section">
+          <div class="discrepancy-container">
+            {{ form_label(closure_form.discrepancy) }}
+            {{ form_widget(closure_form.discrepancy) }}
+          </div>
+          <button type="button" class="button-grey-shadow note-toggle mt-2">
+            <i class="ph ph-receipt"></i> Écrire un commentaire
+          </button>
+
+          <div class="form-group hidden mt-1">
+            {{ form_label(closure_form.note) }}
+            {{ form_widget(closure_form.note) }}
+          </div>
+        </article>
+
+        <button type="submit" class="button-primary">Clôturer la caisse</button>
+        {{ form_end(closure_form) }}
+      </section>
+    </div>
+  {% else %}
+    <section class="card">
+      <p class="alert">
+        Dernière caisse fermée par {{ lastClosure.closedByName }} le {{ lastClosure.closedAt|date('d/m/Y') }} à {{ lastClosure.closedAt|date('H\\hi') }}
+      </p>
+      <div>
+        <p>Total des ventes pour cette session : {{ lastClosure.totalSales|number_format(2, ',', ' ') }} €</p>
+        <p>Total des montants par CB : {{ lastClosure.totalCard|number_format(2, ',', ' ') }} €</p>
+        <p>
+          Total réel compté des recettes en espèces : {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
+        </p>
+        {% if lastClosure.discrepancy == 0 %}
+          <p>✅ Pas d'erreur de caisse pour cette session.</p>
+        {% else %}
+          <p>
+            ⚠️ Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
+              lastClosure.discrepancy|abs|number_format(2, ',', ' ')
+            }} €
+            {% if lastClosure.note %}
+             <p role="note">📌 Commentaire : {{ lastClosure.note }}</p>
+            {% endif %}
+        {% endif %}
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/cash-register.js') }}" type="module"></script>
+{% endblock %}

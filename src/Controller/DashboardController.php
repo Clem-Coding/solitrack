@@ -41,16 +41,12 @@ final class DashboardController extends AbstractController
         $form = $this->createForm(VisitorType::class, $visitor);
         $form->handleRequest($request);
 
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             $visitor->setUser($user);
             $entityManager->persist($visitor);
             $entityManager->flush();
 
             $this->addFlash('success', 'Le nombre de visiteurs a été enregistré avec succès !');
-
-
             return $this->redirectToRoute('app_dashboard_index');
         }
 
@@ -89,17 +85,16 @@ final class DashboardController extends AbstractController
     }
 
 
-    #[Route('/controle-de-caisse', name: 'app_dashboard_cash_reconciliation')]
-    public function cashReconciliation(): Response
-    {
-        return $this->render('dashboard/cash_reconciliation.html.twig');
-    }
+    // #[Route('/gestion-de-caisse', name: 'app_dashboard_cash_reconciliation')]
+    // public function cashReconciliation(): Response
+    // {
+    //     return $this->render('dashboard/cash_register.html.twig');
+    // }
 
     #[Route('/gestion-utilisateurs', name: 'app_dashboard_user_management')]
     public function userManagement(UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
-
 
         return $this->render('dashboard/user_management.html.twig', [
             'users' => $users,

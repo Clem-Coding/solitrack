@@ -63,6 +63,16 @@ select {
   font-size: 2rem;
 }
 
+.radio-inline {
+  display: flex;
+  flex-direction: row;
+  // align-items: center;
+}
+
+.radio-inline input[type="radio"] {
+  // margin-right: 5px;
+}
+
 /////////////////////////////////////
 
 .container {
