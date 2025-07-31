@@ -135,7 +135,7 @@
         <p>Total des montants par CB : {{ lastClosure.totalCard|number_format(2, ',', ' ') }} €</p>
         {# <p>Total des montants par espèces : {{ lastClosure.totalCash|number_format(2, ',', ' ') }} €</p> #}
         <p>
-          Total réel compté des recettes en espèces: {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
+          Total réel compté des recettes en espèces : {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
         </p>
         {% if lastClosure.discrepancy == 0 %}
           <p>✅ Pas d'erreur de caisse pour cette session.</p>
