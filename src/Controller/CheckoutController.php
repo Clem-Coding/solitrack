@@ -100,7 +100,7 @@ class CheckoutController extends AbstractController
         $sale->setUser($user);
         $sale->setCardAmount($cardTotal ?? null);
         $sale->setCashAmount($cashTotal ?? null);
-        $sale->setKeepChange($changeAmount !== '' ? (float) $changeAmount : null);
+        $sale->setChangeAmount($changeAmount !== '' ? (float) $changeAmount : null);
         $sale->setPwywAmount($pwywAmount !== '' ? (float) $pwywAmount : null);
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setCustomerCity($customerCity ?? null);

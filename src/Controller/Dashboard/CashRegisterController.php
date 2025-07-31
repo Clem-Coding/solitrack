@@ -74,7 +74,7 @@ class CashRegisterController extends AbstractController
             $totalPrice += (float) $sale->getTotalPrice() + (float) $sale->getPwywAmount();
             $totalCard += (float) $sale->getCardAmount();
             $totalPwywAmount += (float) $sale->getPwywAmount();
-            $changeAmount = $sale->getKeepChange() ?? 0;
+            $changeAmount = $sale->getChangeAmount() ?? 0;
             $totalCash += (float) $sale->getCashAmount();
 
 
