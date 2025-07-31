@@ -126,29 +126,38 @@
       </section>
     </div>
   {% else %}
-    <section class="card">
-      <p class="alert">
-        Dernière caisse fermée par {{ lastClosure.closedByName }} le {{ lastClosure.closedAt|date('d/m/Y') }} à {{ lastClosure.closedAt|date('H\\hi') }}
-      </p>
-      <div>
-        <p>Total des ventes pour cette session : {{ lastClosure.totalSales|number_format(2, ',', ' ') }} €</p>
-        <p>Total des montants par CB : {{ lastClosure.totalCard|number_format(2, ',', ' ') }} €</p>
-        <p>
-          Total réel compté des recettes en espèces : {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
+    {% if lastClosure %}
+      <section class="card">
+        <p class="alert">
+          Dernière caisse fermée par {{ lastClosure.closedByName|default('Inconnu') }}
+          le {{ lastClosure.closedAt ? lastClosure.closedAt|date('d/m/Y') : 'Date inconnue' }}
+          à {{ lastClosure.closedAt ? lastClosure.closedAt|date('H\\hi') : '--h--' }}
         </p>
-        {% if lastClosure.discrepancy == 0 %}
-          <p>✅ Pas d'erreur de caisse pour cette session.</p>
-        {% else %}
+        <div>
+          <p>Total des ventes pour cette session : {{ (lastClosure.totalSales ?? 0)|number_format(2, ',', ' ') }} €</p>
+          <p>Total des montants par CB : {{ (lastClosure.totalCard ?? 0)|number_format(2, ',', ' ') }} €</p>
           <p>
-            ⚠️ Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
-              lastClosure.discrepancy|abs|number_format(2, ',', ' ')
+            Total réel compté des recettes en espèces : {{
+              (lastClosure.closingCashAmount ?? 0)|number_format(2, ',', ' ')
             }} €
+          </p>
+          {% if lastClosure.discrepancy is defined and lastClosure.discrepancy == 0 %}
+            <p>✅ Pas d'erreur de caisse pour cette session.</p>
+          {% elseif lastClosure.discrepancy is defined %}
+            <p>
+              ⚠️ Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
+                lastClosure.discrepancy|abs|number_format(2, ',', ' ')
+              }} €
+            </p>
             {% if lastClosure.note %}
-             <p role="note">📌 Commentaire : {{ lastClosure.note }}</p>
+              <p role="note">📌 Commentaire : {{ lastClosure.note }}</p>
             {% endif %}
-        {% endif %}
-      </div>
-    </section>
+          {% endif %}
+        </div>
+      </section>
+    {% else %}
+      <section class="card"><p class="alert">Aucune session de caisse trouvée</p></section>
+    {% endif %}
   {% endif %}
 {% endblock %}
 
