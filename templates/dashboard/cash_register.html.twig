@@ -19,14 +19,14 @@
           <p>Total des ventes pour la session en cours : {{ total_price|number_format(2, ',', ' ') }} €</p>
           <p>Total CB : {{ total_card|number_format(2, ',', ' ') }} €</p>
           {# <p>Total espèces : {{ (total_cash > 0 ? total_cash : 0)|number_format(2, ',', ' ') }} €</p> #}
-          <p>Total espèces : {{ total_cash|number_format(2, ',', ' ') }} €</p>
+          <p>Total des espèces données : {{ total_cash|number_format(2, ',', ' ') }} €</p>
+          <p>Total du retour monnaie : {{ returned_change|number_format(2, ',', ' ') }} €</p>
           <p>Total monnaie gardée : {{ total_keep_change|number_format(2, ',', ' ') }} €</p>
           <p>Total prix libres : {{ total_pwyw_amount|number_format(2, ',', ' ') }} €</p>
 
-
           <div class="withdrawals-summary">
             <button type="button" class="toggle-details button-secondary mt-1" data-target="#opration-details">
-             <i class="ph ph-eye"></i> Voir le détail des opérations en espèces
+              <i class="ph ph-eye"></i> Voir le détail des opérations en espèces
             </button>
 
             <div id="operation-details" class="hidden mt-1">
@@ -46,12 +46,16 @@
                   {% endfor %}
                 </ul>
               {% else %}
-                <p>Aucun retrait ou prélèvement effectué.</p>
+                <p>Aucun ajout ou retrait effectué.</p>
               {% endif %}
             </div>
           </div>
         </div>
-        <p class="bold">Solde théorique attendu dans la caisse : <span id="theoreticalBalance">{{ theoretical_balance|number_format(2, ',', ' ') }}</span> €</p>
+        <p class="bold">
+          Solde théorique attendu dans la caisse : <span id="theoreticalBalance">
+            {{ theoretical_balance|number_format(2, ',', ' ') }}
+          </span> €
+        </p>
       </section>
 
       <section class="card withdrawal">
@@ -129,15 +133,15 @@
       <div>
         <p>Total des ventes pour cette session : {{ lastClosure.totalSales|number_format(2, ',', ' ') }} €</p>
         <p>Total des montants par CB : {{ lastClosure.totalCard|number_format(2, ',', ' ') }} €</p>
-        <p>Total des montants par espèces : {{ lastClosure.totalCash|number_format(2, ',', ' ') }} €</p>
+        {# <p>Total des montants par espèces : {{ lastClosure.totalCash|number_format(2, ',', ' ') }} €</p> #}
         <p>
           Total réel compté des recettes en espèces: {{ lastClosure.closingCashAmount|number_format(2, ',', ' ') }} €
         </p>
         {% if lastClosure.discrepancy == 0 %}
-          <p>Pas d'erreur de caisse pour cette session.</p>
+          <p>✅ Pas d'erreur de caisse pour cette session.</p>
         {% else %}
           <p>
-            Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
+            ⚠️ Écart {{ lastClosure.discrepancy > 0 ? 'positif' : 'négatif' }} de {{
               lastClosure.discrepancy|abs|number_format(2, ',', ' ')
             }} €
           </p>

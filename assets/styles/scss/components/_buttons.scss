@@ -17,9 +17,10 @@ button {
 }
 
 .button-secondary {
-  display : flex;
-  align-items: center;;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   background-color: $cloud;
   color: $ink-night;
   border: 2px solid $ink-night;
@@ -145,19 +146,18 @@ button {
 .slider::before {
   content: "";
   position: absolute;
-  width: 1.25em; 
+  width: 1.25em;
   height: 1.25em;
   background-color: $cloud;
   border-radius: 50%;
-  left: 0.125em; 
-  top: 0.125em; 
+  left: 0.125em;
+  top: 0.125em;
   transition: transform 0.3s;
 }
 
 input:checked + .slider {
   background-color: $emerald-sea;
 }
-
 
 input:checked + .slider::before {
   transform: translateX(26px);

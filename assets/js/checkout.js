@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const receiptButton = document.querySelector(".receipt-button");
   const pwywAmountInput = document.querySelector("#pwyw_amount");
 
+  const toggle = document.getElementById("change-amount-toggle");
+  toggle.disabled = true;
+
   // ==========================
 
   //here we set the initial total amount of the cart to the dataset initial attribute
@@ -133,6 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
     remainingNumberElement.dataset.status = isOverpaid ? "overpaid" : "remaining";
     remainingTitle.classList.add(statusClass);
     remainingPriceElement.classList.add(statusClass);
+
+    // 🔁 Enables/disables the toggle depending on the change to give back
+    if (toggle) {
+      if (isOverpaid) {
+        toggle.disabled = false;
+      } else {
+        toggle.disabled = true;
+        toggle.checked = false;
+      }
+    }
   }
 
   function updateAmounts() {
@@ -271,7 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   function handleKeepChangeOnSubmit() {
-    const toggle = document.getElementById("change-amount-toggle");
+    // const toggle = document.getElementById("change-amount-toggle");
 
     const hiddenInput = document.getElementById("change-amount");
     const remaining = getRemainingAmount(); // ex: -0.50
@@ -283,7 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
       : remaining; // rendre la monnaie → négatif
 
     hiddenInput.value = changeAmount;
-    // console.log("Montant de la monnaie à garder ou à rendre :", changeAmount);
   }
 
   function handlePaymentSelection(method) {

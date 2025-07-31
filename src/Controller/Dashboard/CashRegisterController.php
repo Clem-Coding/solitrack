@@ -34,7 +34,6 @@ class CashRegisterController extends AbstractController
         CashMovementRepository $cashMovementRepository
     ): Response {
         $session = $cashRegisterSessionRepository->findAnyOpenSession();
-        // dd($session);
 
 
         // 📤 CASH MOVEMENT FORM
@@ -56,7 +55,6 @@ class CashRegisterController extends AbstractController
 
         $cashMovements = $session ? $session->getCashMovements()->toArray() : [];
 
-
         $sales = $session?->getSales()->toArray() ?? [];
 
         $totalCashMovements = 0;
@@ -77,7 +75,8 @@ class CashRegisterController extends AbstractController
             $totalCard += (float) $sale->getCardAmount();
             $totalPwywAmount += (float) $sale->getPwywAmount();
             $changeAmount = $sale->getKeepChange() ?? 0;
-            $cashAmount = (float) $sale->getCashAmount();
+            $totalCash += (float) $sale->getCashAmount();
+
 
             if ($changeAmount < 0) { // If negative, add the change returned amount to be deducted.
                 $returnedChange += abs($changeAmount);
@@ -86,8 +85,6 @@ class CashRegisterController extends AbstractController
             if ($changeAmount > 0) {
                 $totalKeepChange += $changeAmount;
             }
-
-            $totalCash += (float) $cashAmount;
         }
 
         $cashFloat = $session ? $session->getCashFloat() : 0;
@@ -96,7 +93,7 @@ class CashRegisterController extends AbstractController
 
 
 
-        // 🧾 CASH REGISTER CLOSURE FORM 
+        // 🧾 CASH REGISTER CLOSURE FORM
         $cashRegisterClosure = new CashRegisterClosure();
         $closureForm = $this->createForm(CashRegisterClosureType::class, $cashRegisterClosure);
         $closureForm->handleRequest($request);
@@ -134,8 +131,6 @@ class CashRegisterController extends AbstractController
         }
 
 
-
-
         return $this->render('dashboard/cash_register.html.twig', [
             'session' => $session,
             'cash_movement_form' => $cashMovementForm,
@@ -149,6 +144,7 @@ class CashRegisterController extends AbstractController
             'lastClosure' => $lastClosure,
             'theoretical_balance' => $theoreticalBalance,
             'total_pwyw_amount' => $totalPwywAmount,
+            'returned_change' => $returnedChange,
         ]);
     }
 }

@@ -308,7 +308,9 @@ button {
 
 .button-secondary {
   display: flex;
+  justify-content: center;
   align-items: center;
+  width: 100%;
   background-color: #ffffff;
   color: #080222;
   border: 2px solid #080222;
@@ -1154,9 +1156,6 @@ form textarea:focus {
 }
 .clear-cart-button.show {
   display: flex;
-}
-.clear-cart-button i {
-  margin-right: 1em;
 }
 
 .cart-status {
