@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupToggleDetails() {
-    console.log("hello");
     operationDetails.classList.toggle("hidden");
   }
 

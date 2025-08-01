@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerSaleButton = document.querySelector(".register-sale-button");
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
-  console.log(salesItems);
   const remainingTitle = document.querySelector(".remaining-title");
   const remainingPriceElement = document.querySelector(".remaining-price");
   const mailInputGroup = document.querySelector("#email").closest(".form-group");
