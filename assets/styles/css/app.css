@@ -1162,9 +1162,11 @@ form textarea:focus {
   font-weight: 600;
 }
 
-.open-cash-register {
-  width: 60%;
-  margin: 0 auto;
+@media (min-width: 1024px) {
+  .open-cash-register {
+    width: 60%;
+    margin: 0 auto;
+  }
 }
 
 .buttons-wrapper {
@@ -1336,9 +1338,10 @@ form textarea:focus {
   align-items: center;
 }
 .discrepancy-container input {
+  flex: 1;
+  width: 100%;
   border: none;
   pointer-events: none;
-  width: auto;
 }
 
 .radio-option {

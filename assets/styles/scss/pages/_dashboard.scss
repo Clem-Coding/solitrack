@@ -94,9 +94,10 @@
   align-items: center;
 
   & input {
+    flex: 1;
+    width: 100%;
     border: none;
     pointer-events: none;
-    width: auto;
   }
 }
 
