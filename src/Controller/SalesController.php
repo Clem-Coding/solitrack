@@ -60,7 +60,20 @@ final class SalesController extends AbstractController
 
         $salesItem = new SalesItem();
 
-        $form = $this->createForm(SalesItemType::class, $salesItem);
+        // We first get the category ID from the submitted form data (only on POST requests).
+        // Then, we pass this category ID as an option when creating the form.
+        // This links to configureOptions in SalesItemType, where validation groups change depending on the category.
+
+        $categoryId = null;
+
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all()['sales_item'] ?? [];
+            $categoryId = $formData['category'] ?? null;
+        }
+
+        $form = $this->createForm(SalesItemType::class, $salesItem, [
+            'category_id' => (int) $categoryId,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -89,7 +102,25 @@ final class SalesController extends AbstractController
                 'cart' => $shoppingCart ?? [],
                 'total' => $total,
             ]);
+
+            // If the form is submitted but not valid, collect all validation errors per field
+            // and return them as a JSON response with HTTP status 400 (Bad Request).
+
+        } elseif ($form->isSubmitted()) {
+            $errors = [];
+
+            foreach ($form->all() as $child) {
+                foreach ($child->getErrors(true) as $error) {
+                    $errors[$child->getName()][] = $error->getMessage();
+                }
+            }
+
+            return $this->json([
+                'status' => 'error',
+                'errors' => $errors,
+            ], 400);
         }
+
 
         return $this->render('sales/index.html.twig', [
             'form' => $form,
