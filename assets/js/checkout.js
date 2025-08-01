@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function isLabeledCategory(category) {
-    return category === "Boisson" || category === "Article étiqueté";
+    return category === "Boisson" || category === "Article étiqueté" || category === "Livre";
   }
 
   function checkUnlabeledItemsWeight() {

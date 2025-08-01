@@ -295,6 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
         showInput(inputs.quantity, inputWrappers.quantity);
         inputs.quantity.value = 1;
         break;
+      case "5":
+        showInput(inputs.quantity, inputWrappers.quantity);
+        showInput(inputs.weight, inputWrappers.weight);
+        inputs.quantity.value = 1;
+        break;
     }
   }
 

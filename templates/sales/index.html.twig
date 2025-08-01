@@ -19,7 +19,7 @@
           Vêtements
         </button>
         <button class="category-button" data-category="2">
-          <img src="{{ asset('images/buttons/books.svg') }}" alt="icone avec deux t-shirts suspendus sur des cintres" />
+          <img src="" alt="" />
           Autres articles
         </button>
         <button class="category-button" data-category="3">
@@ -28,6 +28,10 @@
             alt="icone représentant une étiquette avec le symbole de l'euro"
           />
           Article étiqueté
+        </button>
+        <button class="category-button" data-category="5">
+          <img src="{{ asset('images/buttons/books.svg') }}" alt="icone représentant un livre" />
+          Livre
         </button>
         <button class="category-button" data-category="4">
           <img src="{{ asset('images/buttons/tea-icon.svg') }}" alt="icone représentant une tasse de thé" />
@@ -39,11 +43,7 @@
     <section class="card sales-card contained">
       <h2 class="sr-only">Formulaire de Saisie</h2>
       {{ form_start(form) }}
-      <div class="input-container" id="weight-input">
-        {{ form_label(form.weight) }}
-        {{ form_widget(form.weight) }}
-        <span class="unit">kg</span>
-      </div>
+
       <div class="input-container" id="price-input">
         {{ form_label(form.price) }}
         {{ form_widget(form.price) }}
@@ -54,6 +54,11 @@
         {{ form_label(form.quantity) }}
         {{ form_widget(form.quantity) }}
         <button type="button" class="quantity-increase"><i class="ph ph-plus-circle"></i></button>
+      </div>
+      <div class="input-container" id="weight-input">
+        {{ form_label(form.weight) }}
+        {{ form_widget(form.weight) }}
+        <span class="unit">kg</span>
       </div>
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
       {{ form_row(form.category) }}

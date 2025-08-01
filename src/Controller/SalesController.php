@@ -66,7 +66,7 @@ final class SalesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $category = $salesItem->getCategory();
-            $priceManagement->setDrinkPrice($salesItem);
+            $priceManagement->assignPrice($salesItem);
             $priceManagement->setWeightBasedPrice($salesItem);
             $uuid = Uuid::v4();
             $shoppingCart = $session->get('shopping_cart', []);
