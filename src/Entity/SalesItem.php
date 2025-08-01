@@ -24,8 +24,8 @@ class SalesItem
     #[ORM\JoinColumn(nullable: false)]
     private ?Sale $sale = null;
 
-    #[Assert\NotBlank(groups: ['category_1_2', 'category_3'])]
-    #[Assert\GreaterThan(value: 0, groups: ['category_1_2', 'category_3'])]
+    #[Assert\NotBlank(groups: ['category_1_2', 'category_3', 'category_5'])]
+    #[Assert\GreaterThan(value: 0, groups: ['category_1_2', 'category_3', 'category_5'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $weight = null;
 

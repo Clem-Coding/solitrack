@@ -3,16 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Category;
-// use App\Entity\Sale;
 use App\Entity\SalesItem;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 
 class SalesItemType extends AbstractType
@@ -66,6 +62,7 @@ class SalesItemType extends AbstractType
                     1, 2 => ['Default', 'category_1_2'],
                     3 => ['Default', 'category_3'],
                     4 => ['Default', 'category_4'],
+                    5 => ['Default', 'category_5'],
                     default => ['Default'],
                 };
             },

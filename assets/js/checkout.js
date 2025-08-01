@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentForm = document.querySelector(".payment-form");
   const salesItems = document.querySelectorAll("article");
   const remainingTitle = document.querySelector(".remaining-title");
-  // const keepChangeButton = document.querySelector(".keep-change-button");
-  // const keepChangeInput = document.querySelector(".keep-change-input");
   const remainingPriceElement = document.querySelector(".remaining-price");
   const mailInputGroup = document.querySelector("#email").closest(".form-group");
   const receiptButton = document.querySelector(".receipt-button");
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function isLabeledCategory(category) {
-    return category === "Boisson" || category === "Article étiqueté";
+    return category === "Boisson" || category === "Article étiqueté" || category === "Livre";
   }
 
   function checkUnlabeledItemsWeight() {

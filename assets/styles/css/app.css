@@ -338,6 +338,12 @@ button {
   max-width: 100%;
   margin: auto;
 }
+.buttons-container > :nth-child(5) {
+  grid-column: 1/3;
+  justify-self: center;
+  width: -moz-max-content;
+  width: max-content;
+}
 
 .category-button {
   display: flex;
