@@ -41,12 +41,7 @@ class StatisticsService
 
     private function getMonthlyData($repository, $category, $year, $type): array
     {
-
-        // $data = $repository->findTotalDataByMonth($repository, $category, $year, $type);
-        // $data = $repository->findTotalDataByMonth($repository, $year, $type, $category);
         $data = $repository->findTotalDataByMonth($year, $type, $category);
-
-
 
         $monthlyData = array_fill(0, 12, 0);
 
@@ -73,8 +68,6 @@ class StatisticsService
             $year = (int) $year;
             $month = (int) $month;
 
-            // $data = $repository->findTotalDataByDayForMonth($repository, $category, $year, $month, $type);
-            // $data = $repository->findTotalDataByDayForMonth($repository, $year, $month, $type, $category);
             $data = $repository->findTotalDataByDayForMonth(
                 $year,
                 $month,
