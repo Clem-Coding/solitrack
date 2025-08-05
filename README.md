@@ -35,6 +35,8 @@ Soli'Track aims to streamline the management of:
 cp .env.example .env
 ```
 
+Open the .env file and update the DATABASE_URL with your personal settings.
+
 ### Step 2: Starting the project
 
 ```bash
