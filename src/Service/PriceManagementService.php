@@ -22,8 +22,6 @@ class PriceManagementService
     const PRICE_PER_KG = 1;
 
 
-
-
     public function __construct(protected RequestStack $requestStack,) {}
 
 
@@ -79,8 +77,7 @@ class PriceManagementService
 
     private function roundDownToTenth(float $price): float
     {
-        $roundedPrice = floor($price * 10) / 10;
-        return $roundedPrice;
+        return floor($price * 10) / 10;
     }
 
 
@@ -96,23 +93,38 @@ class PriceManagementService
 
         if ($category && in_array($category, self::BULK_ARTICLE_CATEGORIES)) {
             $totalPrice = $weight * self::PRICE_PER_KG;
-            $salesItem->setPrice($this->roundDownToTenth($totalPrice));
+            $salesItem->setPrice($totalPrice);
         }
     }
 
 
     /**
      * Get the total price of the shopping cart.
-     *
+     * Bulk items are rounded down before being included in the total.
+     * 
      * @return float The total price of the items in the cart.
      */
+
     public function getCartTotal(): float
     {
         $session = $this->requestStack->getSession();
         $shoppingCart = $session->get('shopping_cart', []);
-        return array_sum(array_column($shoppingCart, 'price'));
-    }
 
+        $bulkTotal = 0.0;
+        $normalTotal = 0.0;
+
+        foreach ($shoppingCart as $item) {
+            if (in_array($item['id'], self::BULK_ARTICLE_CATEGORIES, true)) {
+                $bulkTotal += $item['price'];
+            } else {
+                $normalTotal += $item['price'];
+            }
+        }
+
+        $bulkTotalRounded = $this->roundDownToTenth($bulkTotal);
+
+        return $normalTotal + $bulkTotalRounded;
+    }
 
 
     /**
