@@ -15,14 +15,14 @@
         </p>
 
         <div class="cash-summary">
-          <p>Fond de caisse : {{ cash_float|number_format(2, ',', ' ') }} €</p>
-          <p>Total des ventes pour la session en cours : {{ total_price|number_format(2, ',', ' ') }} €</p>
-          <p>Total CB : {{ total_card|number_format(2, ',', ' ') }} €</p>
+          <p>• Fond de caisse : {{ cash_float|number_format(2, ',', ' ') }} €</p>
+          <p>• Total des ventes pour la session en cours : {{ total_price|number_format(2, ',', ' ') }} €</p>
+          <p>• Total CB : {{ total_card|number_format(2, ',', ' ') }} €</p>
           {# <p>Total espèces : {{ (total_cash > 0 ? total_cash : 0)|number_format(2, ',', ' ') }} €</p> #}
-          <p>Total espèces données : {{ total_cash|number_format(2, ',', ' ') }} €</p>
-          <p>Total du retour monnaie : {{ returned_change|number_format(2, ',', ' ') }} €</p>
-          <p>Total monnaie gardée : {{ total_keep_change|number_format(2, ',', ' ') }} €</p>
-          <p>Total prix libres : {{ total_pwyw_amount|number_format(2, ',', ' ') }} €</p>
+          <p>• Total espèces données : {{ total_cash|number_format(2, ',', ' ') }} €</p>
+          <p>• Total du retour monnaie : {{ returned_change|number_format(2, ',', ' ') }} €</p>
+          <p>• Total monnaie gardée : {{ total_keep_change|number_format(2, ',', ' ') }} €</p>
+          <p>• Total prix libres : {{ total_pwyw_amount|number_format(2, ',', ' ') }} €</p>
 
           <div class="withdrawals-summary">
             <button type="button" class="toggle-details button-secondary mt-1" data-target="#opration-details">
