@@ -20,8 +20,9 @@ class FeedbackMessagesService
         $messages = [];
 
         $recordWeight = $this->donationRepository->getRecordWeightDay();
+        $totalWeightRecord = $recordWeight['total_weight'] ?? 0;
 
-        if ($totalWeightToday >= $recordWeight['total_weight']) {
+        if ($totalWeightToday >= $totalWeightRecord) {
             $messages = [
                 "On a pulvérisé le record ! <span class='highlighted'>$formattedTotal kg</span> collectés aujourd’hui ! 🎉",
                 "Incroyable ! <span class='highlighted'>$formattedTotal kg</span> aujourd’hui : un nouveau record 🚀 !",

@@ -64,8 +64,12 @@ final class EntryController extends AbstractController
 
         $lastEntry = $donationRepository->getLatestEntry();
         $lastEntryName = $lastEntry['categoryName'] ?? null;
-        $lastEntryWeight = number_format($lastEntry['weight'], 2, ',', ' ') ?? null;
-        $recordWeight = $donationRepository->getRecordWeightDay()['total_weight'];
+        // $lastEntryWeight = number_format($lastEntry['weight'], 2, ',', ' ') ?? null;
+        $lastEntryWeight = isset($lastEntry['weight']) ? number_format($lastEntry['weight'], 2, ',', ' ') : null;
+
+        // $recordWeight = $donationRepository->getRecordWeightDay()['total_weight'];
+        $record = $donationRepository->getRecordWeightDay();
+        $recordWeight = $record['total_weight'] ?? 0;
 
         $isRecordJustBeaten = false;
 

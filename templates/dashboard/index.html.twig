@@ -27,30 +27,25 @@
 
     <section class="card">
       <h2>Les records</h2>
-      <p>
-        <span class="semi-bold">Entrées</span> : <span class="highlighted">
-          {{ recordsData['entry']['total_weight'] }} kg
-        </span>, le {{ recordsData['entry']['day'] }}
-      </p>
 
-      <p>
-        <span class="semi-bold">Sorties</span> : <span class="highlighted">
-          {{ recordsData['sales']['total_weight'] }} kg
-        </span>, le {{ recordsData['sales']['day'] }}
-      </p>
-
-      <p>
-        <span class="semi-bold">Visiteurs</span> : <span class="highlighted">
-          {{ recordsData['visitors']['count'] }}
-        </span>, le {{ recordsData['visitors']['day'] }}
-      </p>
-
-      <p>
-        <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">
-          {{ recordsData['sales_revenue']['total_price'] }} €
-        </span>, le {{ recordsData['sales_revenue']['day'] }}
-      </p>
+      {% if recordsData.entry is defined and recordsData.entry is not empty %}
+        <p>
+          <span class="semi-bold">Entrées</span> : <span class="highlighted">{{ recordsData.entry.total_weight ?? 'N/A' }} kg</span>, le {{ recordsData.entry.day ?? 'N/A' }}
+        </p>
+        <p>
+          <span class="semi-bold">Sorties</span> : <span class="highlighted">{{ recordsData.sales.total_weight ?? 'N/A' }} kg</span>, le {{ recordsData.sales.day ?? 'N/A' }}
+        </p>
+        <p>
+          <span class="semi-bold">Visiteurs</span> : <span class="highlighted">{{ recordsData.visitors.count ?? 'N/A' }}</span>, le {{ recordsData.visitors.day ?? 'N/A' }}
+        </p>
+        <p>
+          <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">{{ recordsData.sales_revenue.total_price ?? 'N/A' }} €</span>, le {{ recordsData.sales_revenue.day ?? 'N/A' }}
+        </p>
+      {% else %}
+        <p>Aucune donnée disponible dans la base de données.</p>
+      {% endif %}
     </section>
+
     <section class="card">
       <h2>Carte des visiteurs</h2>
       <div id="map" class="map-viewer"></div>
