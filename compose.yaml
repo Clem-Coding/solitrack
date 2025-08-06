@@ -15,7 +15,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: solitrack-app_testinstall
+    container_name: solitrack-app
     ports:
       - "8080:80"
     volumes:

@@ -46,7 +46,7 @@ docker-compose up -d
 ### Step 3: Install dependencies
 
 ```bash
-docker exec -it php composer install
+docker exec -it php_solitrack composer install
 ```
 
 ### Step 3: Apply migrations
