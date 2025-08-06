@@ -43,6 +43,42 @@ Open the .env file and update the DATABASE_URL with your personal settings.
 docker-compose up -d
 ```
 
+### Step 3: Install dependencies
+
+```bash
+docker exec -it php_solitrack composer install
+```
+
+### Step 3: Apply migrations
+```bash
+docker exec -it php_solitrack php bin/console doctrine:migrations:migrate
+```
+
+### Step 4: Load fixtures
+```bash
+docker exec -it php_solitrack php bin/console doctrine:fixtures:load
+```
+
+### Step 5: Create users
+
+You have two options to test the app:
+
+1. **Register a new user:**  
+  Go to [`http://localhost:8080/register`](http://localhost:8080/register) and create a user account.  
+  > **Note:** You’ll then need to manually edit the user’s role in the database (e.g. set ["ROLE_ADMIN"]) if you want full access.
+
+2. **Use predefined test users:**  
+
+To work locally, you can use the following test accounts (password: `password` for all):
+
+| Email                      | Role(s)              | Access                                                             |
+|----------------------------|----------------------|--------------------------------------------------------------------|
+| admin@solitrack.fr         | ROLE_ADMIN           | Full access to all features                                        |
+| benevole-plus@solitrack.fr | ROLE_VOLUNTEER_PLUS  | Entries, sales, statistics, and cash management pages              |
+| user@solitrack.fr          | *(none)*             | “My Account” and “My Schedule” pages                               |
+
+
+
 ### Access URLs
 
 - Web app: [`http://localhost:8080/`](http://localhost:8080/)

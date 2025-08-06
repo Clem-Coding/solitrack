@@ -204,7 +204,8 @@ class SalesItemRepository extends ServiceEntityRepository
             ORDER BY total_weight DESC
             LIMIT 1;';
 
-        return $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
+        $result = $this->getEntityManager()->getConnection()->executeQuery($sql)->fetchAssociative();
+        return $result ?: [];
     }
 
 

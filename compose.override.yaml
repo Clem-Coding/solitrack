@@ -1,5 +1,5 @@
 services:
-  mariadb:
+  db_solitrack:
     ports:
       - "3307:3306" # changer le port exposé par exemple
 

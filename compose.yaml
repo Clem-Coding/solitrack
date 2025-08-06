@@ -2,7 +2,7 @@ services:
   php:
     image: php:8.3-fpm
     build: .
-    container_name: php
+    container_name: php_solitrack
     volumes:
       - .:/var/www/html:cached
       - ./php.ini:/usr/local/etc/php/php.ini
@@ -11,7 +11,7 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - mariadb
+      - db_solitrack
 
   nginx:
     image: nginx:latest
@@ -24,29 +24,29 @@ services:
     depends_on:
       - php
 
-  mariadb:
+  db_solitrack:
     image: mariadb:11.8.2
-    container_name: mariadb
+    container_name: db_solitrack
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: solitrack
-      MYSQL_USER: solitrack
-      MYSQL_PASSWORD: "solitrack"
+       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+       MYSQL_DATABASE: ${DB_NAME}
+       MYSQL_USER: ${DB_USER}
+       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     environment:
-      PMA_HOST: mariadb
-      PMA_USER: solitrack
-      PMA_PASSWORD: solitrack
+      PMA_HOST: ${DB_HOST}
+      PMA_USER: ${DB_USER}      
+      PMA_PASSWORD: ${DB_PASSWORD}  
     ports:
       - "8081:80"
     depends_on:
-      - mariadb
+      - db_solitrack
 
 volumes:
   db_data:
