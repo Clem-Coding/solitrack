@@ -91,15 +91,15 @@ final class DashboardController extends AbstractController
     //     return $this->render('dashboard/cash_register.html.twig');
     // }
 
-    #[Route('/gestion-utilisateurs', name: 'app_dashboard_user_management')]
-    public function userManagement(UserRepository $userRepository): Response
-    {
-        $users = $userRepository->findAll();
+    // #[Route('/gestion-utilisateurs', name: 'app_dashboard_user_management')]
+    // public function userManagement(UserRepository $userRepository): Response
+    // {
+    //     $users = $userRepository->findAll();
 
-        return $this->render('dashboard/user_management.html.twig', [
-            'users' => $users,
-        ]);
-    }
+    //     return $this->render('dashboard/user_management.html.twig', [
+    //         'users' => $users,
+    //     ]);
+    // }
 
 
     #[Route('/gestion-utilisateurs/{id}/role', name: 'app_user_role')]

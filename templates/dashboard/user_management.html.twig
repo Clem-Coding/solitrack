@@ -5,50 +5,61 @@
 {% endblock %}
 
 {% block content %}
+  <h1>Gestion des utilisateurs</h1>
+  <section class="card users-mgmt">
+    <div class="table-wrapper">
+      {% for message in app.flashes('success') %}
+        <div class="alert alert-success">✅ {{ message }}</div>
+      {% endfor %}
 
-    <h1>Gestion des utilisateurs</h1>
-<section class="card users-mgmt">
-  <div class="table-wrapper">
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endfor %}
-
-    <table class="users-table">
+      <table class="users-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th class="role">Rôle</th>
-                <th>Actions</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th class="role">Rôle</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>
-                        <form action="#" method="post">
-                            <select name="role">
-                                <option value="ROLE_USER" {{ user.roles[0] == 'ROLE_USER' ? 'selected' : '' }}>Bénévole</option>
-                                <option value="ROLE_ADMIN" {{ user.roles[0] == 'ROLE_ADMIN' ? 'selected' : '' }}>Administrateur</option>
-                                <option value="ROLE_VOLUNTEER_PLUS" {{ user.roles[0] == 'ROLE_VOLUNTEER_PLUS' ? 'selected' : '' }}>Bénévole +</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary">Attribuer rôle</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
-                    </td>
-                </tr>
-            {% endfor %}
+          {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+              <td>
+                {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
+                  {# prettier-ignore #}
+                  <form action="{{ path('app_user_role', { id: user.id }) }}" method="post">
+                    <select name="role">
+                      <option value="ROLE_USER" {{ user.roles[0] == 'ROLE_USER' ? 'selected' : '' }}>Bénévole</option>
+                      <option value="ROLE_ADMIN" {{ user.roles[0] == 'ROLE_ADMIN' ? 'selected' : '' }}>
+                        Administrateur
+                      </option>
+                      <option
+                        value="ROLE_VOLUNTEER_PLUS"
+                        {{ user.roles[0] == 'ROLE_VOLUNTEER_PLUS' ? 'selected' : '' }}
+                      >
+                        Bénévole +
+                      </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Attribuer rôle</button>
+                  </form>
+                {% else %}
+                  <p class="bold">Super Admin</p>
+                {% endif %}
+              </td>
+              <td>
+                {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
+                  {# prettier-ignore #}<a href="{{ path('app_user_delete', { id: user.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
     </div>
-    </section>
+  </section>
 {% endblock %}
