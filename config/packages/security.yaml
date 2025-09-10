@@ -44,6 +44,8 @@ security:
     - { path: ^/tableau-de-bord/parametres, roles: ROLE_ADMIN }
     - { path: ^/tableau-de-bord/gestion-utilisateurs, roles: ROLE_ADMIN }
     - { path: ^/tableau-de-bord, roles: ROLE_VOLUNTEER_PLUS }
+    - { path: ^/entrees, roles: ROLE_VOLUNTEER_PLUS }
+    - { path: ^/ventes, roles: ROLE_VOLUNTEER_PLUS }
     - { path: ^/tableau-de-bord/statistiques, roles: ROLE_VOLUNTEER_PLUS }
     - { path: ^/tableau-de-bord/controle-de-caisse, roles: ROLE_VOLUNTEER_PLUS }
 
