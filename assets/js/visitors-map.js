@@ -1,3 +1,4 @@
+import L from "leaflet";
 
 document.addEventListener("DOMContentLoaded", function () {
   const isMobile = window.innerWidth <= 768;
@@ -44,11 +45,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   youAreHereMarker.openPopup();
 
-  map.addControl(
-    new L.Control.Fullscreen({
-      position: "topleft",
-      title: "Voir en plein écran",
-      titleCancel: "Quitter le plein écran",
-    })
-  );
+  //Fullscreen
+  // map.addControl(
+  //   new L.Control.Fullscreen({
+  //     position: "topleft",
+  //     title: "Voir en plein écran",
+  //     titleCancel: "Quitter le plein écran",
+  //   })
+  // );
 });
