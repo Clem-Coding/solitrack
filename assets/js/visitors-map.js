@@ -3,12 +3,12 @@ import "leaflet.fullscreen";
 
 document.addEventListener("DOMContentLoaded", function () {
   const isMobile = window.innerWidth <= 768;
-  const mapCenter = isMobile ? [48, -2.3] : [46.5, 0.2];
+  const mapCenter = isMobile ? [48, -2.3] : [47, -2];
   const mapZoom = isMobile ? 6.5 : 5.5;
   const map = L.map("map").setView(mapCenter, mapZoom);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
   const points = JSON.parse(document.getElementById("points-data").textContent);
