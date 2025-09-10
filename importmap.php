@@ -16,15 +16,6 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    // '@hotwired/stimulus' => [
-    //     'version' => '3.2.2',
-    // ],
-    // '@symfony/stimulus-bundle' => [
-    //     'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
-    // ],
-    // '@hotwired/turbo' => [
-    //     'version' => '7.3.0',
-    // ],
     '@kurkle/color' => [
         'version' => '0.3.4',
     ],
@@ -33,5 +24,11 @@ return [
     ],
     '@phosphor-icons/web' => [
         'version' => '2.1.2',
+    ],
+    'leaflet' => [
+        'version' => '1.9.4',
+    ],
+    'leaflet.fullscreen' => [
+        'version' => '4.0.0',
     ],
 ];
