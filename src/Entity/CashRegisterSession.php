@@ -29,7 +29,6 @@ class CashRegisterSession
 
     #[ORM\ManyToOne(inversedBy: 'cashRegisterSessions')]
     #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $openedBy = null;
 
     /**

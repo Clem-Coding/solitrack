@@ -23,7 +23,7 @@ class Sale
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'sales')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?User $user = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]

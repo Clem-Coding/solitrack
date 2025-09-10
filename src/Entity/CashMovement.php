@@ -30,7 +30,7 @@ class CashMovement
     private ?string $comment = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashMovements')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?User $madeBy = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashMovements')]
