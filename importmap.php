@@ -27,5 +27,8 @@ return [
     ],
     'leaflet' => [
         'version' => '1.9.4',
-    ]
+    ],
+    'leaflet.fullscreen' => [
+        'version' => '4.0.0',
+    ],
 ];

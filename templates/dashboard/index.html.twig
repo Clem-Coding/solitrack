@@ -30,16 +30,24 @@
 
       {% if recordsData.entry is defined and recordsData.entry is not empty %}
         <p>
-          <span class="semi-bold">Entrées</span> : <span class="highlighted">{{ recordsData.entry.total_weight ?? 'N/A' }} kg</span>, le {{ recordsData.entry.day ?? 'N/A' }}
+          <span class="semi-bold">Entrées</span> : <span class="highlighted">
+            {{ recordsData.entry.total_weight ?? 'N/A' }} kg
+          </span>, le {{ recordsData.entry.day ?? 'N/A' }}
         </p>
         <p>
-          <span class="semi-bold">Sorties</span> : <span class="highlighted">{{ recordsData.sales.total_weight ?? 'N/A' }} kg</span>, le {{ recordsData.sales.day ?? 'N/A' }}
+          <span class="semi-bold">Sorties</span> : <span class="highlighted">
+            {{ recordsData.sales.total_weight ?? 'N/A' }} kg
+          </span>, le {{ recordsData.sales.day ?? 'N/A' }}
         </p>
         <p>
-          <span class="semi-bold">Visiteurs</span> : <span class="highlighted">{{ recordsData.visitors.count ?? 'N/A' }}</span>, le {{ recordsData.visitors.day ?? 'N/A' }}
+          <span class="semi-bold">Visiteurs</span> : <span class="highlighted">
+            {{ recordsData.visitors.count ?? 'N/A' }}
+          </span>, le {{ recordsData.visitors.day ?? 'N/A' }}
         </p>
         <p>
-          <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">{{ recordsData.sales_revenue.total_price ?? 'N/A' }} €</span>, le {{ recordsData.sales_revenue.day ?? 'N/A' }}
+          <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">
+            {{ recordsData.sales_revenue.total_price ?? 'N/A' }} €
+          </span>, le {{ recordsData.sales_revenue.day ?? 'N/A' }}
         </p>
       {% else %}
         <p>Aucune donnée disponible dans la base de données.</p>
@@ -56,15 +64,14 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script src="{{ asset('js/visitors-map.js') }}"></script>
-  <script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-  ></script>
+  <script src="{{ asset('js/visitors-map.js') }}" type="module"></script>
 {% endblock %}
 
 {% block stylesheets %}
   {{ parent() }}
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/4.0.0/Control.FullScreen.css"
+  />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 {% endblock %}

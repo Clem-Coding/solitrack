@@ -1,4 +1,5 @@
 import L from "leaflet";
+import "leaflet.fullscreen";
 
 document.addEventListener("DOMContentLoaded", function () {
   const isMobile = window.innerWidth <= 768;
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Pin "You are here"
-
   const plouasneLatLon = [48.304521, -2.010791];
 
   const pinIcon = L.divIcon({
@@ -45,12 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   youAreHereMarker.openPopup();
 
-  //Fullscreen
-  // map.addControl(
-  //   new L.Control.Fullscreen({
-  //     position: "topleft",
-  //     title: "Voir en plein écran",
-  //     titleCancel: "Quitter le plein écran",
-  //   })
-  // );
+  // Fullscreen control
+  L.control
+    .fullscreen({
+      position: "topleft",
+      title: "Activer le mode plein écran",
+      titleCancel: "Quitter le mode plein écran",
+      forcePseudoFullscreen: false,
+      fullscreenElement: map.getContainer(),
+    })
+    .addTo(map);
 });
