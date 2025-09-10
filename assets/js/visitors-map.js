@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
   const isMobile = window.innerWidth <= 768;
   const mapCenter = isMobile ? [48, -2.3] : [46.5, 0.2];
@@ -21,4 +22,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const mapCenter = isMobile ? [48.1, -2.7] : [46.5, 1];
     map.setView(mapCenter, mapZoom);
   });
+
+  // Pin "You are here"
+
+  const plouasneLatLon = [48.304521, -2.010791];
+
+  const pinIcon = L.divIcon({
+    html: `<span style="
+      font-size: 1.8rem;
+    " aria-label="Vous êtes ici">📍</span>`,
+    className: "your-location-pin",
+    iconSize: [40, 40],
+    iconAnchor: [24, 40],
+    popupAnchor: [0, -40],
+  });
+
+  const topLayer = L.layerGroup().addTo(map);
+  const youAreHereMarker = L.marker(plouasneLatLon, { icon: pinIcon, zIndexOffset: 1000 })
+    .addTo(topLayer)
+    .bindPopup(`<span style="font-size:1rem;color: #080222;;font-weight:500;">Vous êtes ici</span>`);
+
+  youAreHereMarker.openPopup();
+
+  map.addControl(
+    new L.Control.Fullscreen({
+      position: "topleft",
+      title: "Voir en plein écran",
+      titleCancel: "Quitter le plein écran",
+    })
+  );
 });
