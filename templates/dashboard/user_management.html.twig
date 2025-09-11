@@ -57,10 +57,10 @@
               <td>
                 {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
                   {# prettier-ignore #}
-                  <form action="{{ path('app_user_delete', { id: user.id }) }}" method="post" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                  <form id="delete-user" action="{{ path('app_user_delete', { id: user.id }) }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
                     <button type="submit" name="delete_user" value="{{ user.id }}" class="btn btn-danger">Supprimer</button>
-                </form>
+                  </form>
                 {% endif %}
               </td>
             </tr>
@@ -69,6 +69,21 @@
       </table>
     </div>
   </section>
+  <div id="confirm-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <img
+        src="{{ asset('images/icons/warning-circle-fill.svg') }}"
+        alt="Avertissement"
+        style="width:32px;height:32px;vertical-align:middle;"
+      />
+      <p>Êtes-vous sûr de vouloir supprimer cet utilisateur&nbsp;?</p>
+      <p>Cette action est irréversible.</p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn btn-cancel">Annuler</button>
+        <button id="modal-confirm" class="btn btn-danger">Oui, Supprimer</button>
+      </div>
+    </div>
+  </div>
   <section class="user-guide">
     <p>• Les utilisateurs avec le rôle ⭐ "Super Admin" ne peuvent pas être modifiés ou supprimés.</p>
     <p>
@@ -80,4 +95,9 @@
       du tableau de bord (gestion de caisse et statistiques).
     </p>
   </section>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/modals.js') }}" type="module"></script>
 {% endblock %}

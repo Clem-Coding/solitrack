@@ -69,20 +69,54 @@
     }
   }
 
-  .btn-danger {
-    background-color: $coral;
-    color: #fff;
-
-    &:hover {
-      background-color: darken($coral, 10%);
-    }
-  }
-
   select {
     padding: 0.3em;
     font-size: 0.9em;
     border-radius: 4px;
     border: 1px solid #ccc;
+  }
+}
+
+.user-guide {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+
+  p {
+    font-style: italic;
+    color: $grey-velvet;
+    font-size: $f14;
+  }
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+
+  .modal-content {
+    background: $cloud;
+    padding: 2em;
+    border-radius: 8px;
+    text-align: center;
+
+    img {
+      margin-bottom: 1em;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1em;
+      margin-top: 1.5em;
+    }
   }
 }
 
