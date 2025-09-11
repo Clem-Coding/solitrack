@@ -23,7 +23,7 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
     //     c.closing_cash_amount,
     //     c.discrepancy,
     //     u.first_name AS closed_by_name,
-    //     'SUM(sales.totalPrice + COALESCE(sales.pwywAmount, 0)) AS totalSales', // fix pb requete : à push dans la branche appropriée
+    //     'SUM(sales.totalPrice + COALESCE(sales.pwywAmount, 0)) AS totalSales',
     //     'SUM(sales.cashAmount) AS totalCash',
     //     'SUM(sales.cardAmount) AS totalCard'
     // FROM 
