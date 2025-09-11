@@ -25,11 +25,10 @@ class UserManagementController extends AbstractController
         ]);
     }
 
-    #[Route('/gestion-utilisateurs/{id}/role', name: 'app_user_role')]
+    #[Route('/tableau-de-bord/gestion-utilisateurs/{id}/role', name: 'app_user_role')]
     public function assignRole(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
-        dd($user);
 
         if ($user) {
             $newRole = $request->get('role');
@@ -46,22 +45,31 @@ class UserManagementController extends AbstractController
         return $this->redirectToRoute('app_dashboard_user_management');
     }
 
-    #[Route('/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
+
+    #[Route('/tableau-de-bord/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
     public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
     {
-
         $user = $entityManager->getRepository(User::class)->find($id);
 
-        if ($user) {
-            $sales = $entityManager->getRepository(Sale::class)->findBy(['user' => $user]);
-            foreach ($sales as $sale) {
-                $sale->setUser(null);
-            }
-            $entityManager->remove($user);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
+        if (!$user) {
+            $this->addFlash('error', 'Utilisateur introuvable.');
+            return $this->redirectToRoute('app_dashboard_user_management');
         }
+
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
+            $this->addFlash('error', 'Impossible de supprimer un super-admin.');
+            return $this->redirectToRoute('app_dashboard_user_management');
+        }
+
+        $sales = $entityManager->getRepository(Sale::class)->findBy(['user' => $user]);
+        foreach ($sales as $sale) {
+            $sale->setUser(null);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Utilisateur supprimé avec succès.');
 
         return $this->redirectToRoute('app_dashboard_user_management');
     }
