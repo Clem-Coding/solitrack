@@ -123,6 +123,20 @@ button {
   }
 }
 
+.btn-danger {
+  background-color: $coral;
+  color: $cloud;
+
+  &:hover {
+    background-color: darken($coral, 10%);
+  }
+}
+
+.btn-cancel {
+  color: $grey-velvet;
+  border: 1px solid $grey-velvet;
+}
+
 // toggle switch
 
 .toggle-switch {

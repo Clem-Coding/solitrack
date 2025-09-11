@@ -33,7 +33,6 @@ class CashRegisterClosure
 
     #[ORM\ManyToOne(inversedBy: 'cashRegisterClosures')]
     #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $closedBy = null;
 
     #[ORM\ManyToOne(inversedBy: 'cashRegisterClosures')]

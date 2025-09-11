@@ -408,6 +408,19 @@ button {
   box-shadow: 4px 4px 0 #00857a;
 }
 
+.btn-danger {
+  background-color: #eb5a47;
+  color: #ffffff;
+}
+.btn-danger:hover {
+  background-color: rgb(230, 48.75, 25);
+}
+
+.btn-cancel {
+  color: #6e6d7a;
+  border: 1px solid #6e6d7a;
+}
+
 .toggle-switch {
   display: flex;
   align-items: center;
@@ -1324,18 +1337,50 @@ form textarea:focus {
 .users-table .btn-primary:hover {
   background-color: rgb(0, 82, 75.2180451128);
 }
-.users-table .btn-danger {
-  background-color: #eb5a47;
-  color: #fff;
-}
-.users-table .btn-danger:hover {
-  background-color: rgb(230, 48.75, 25);
-}
 .users-table select {
   padding: 0.3em;
   font-size: 0.9em;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+.user-guide {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.user-guide p {
+  font-style: italic;
+  color: #6e6d7a;
+  font-size: 0.875rem;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modal .modal-content {
+  background: #ffffff;
+  padding: 2em;
+  border-radius: 8px;
+  text-align: center;
+}
+.modal .modal-content img {
+  margin-bottom: 1em;
+}
+.modal .modal-content .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-top: 1.5em;
 }
 
 .discrepancy-container {

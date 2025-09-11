@@ -5,50 +5,99 @@
 {% endblock %}
 
 {% block content %}
+  <h1>Gestion des utilisateurs</h1>
+  <section class="card users-mgmt">
+    <div class="table-wrapper">
+      {% for message in app.flashes('success') %}
+        <div class="alert">✅ {{ message }}</div>
+      {% endfor %}
+      {% for message in app.flashes('error') %}
+        <div class="alert">❌ {{ message }}</div>
+      {% endfor %}
 
-    <h1>Gestion des utilisateurs</h1>
-<section class="card users-mgmt">
-  <div class="table-wrapper">
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endfor %}
-
-    <table class="users-table">
+      <table class="users-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th class="role">Rôle</th>
-                <th>Actions</th>
-            </tr>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th class="role">Rôle</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>
-                        <form action="#" method="post">
-                            <select name="role">
-                                <option value="ROLE_USER" {{ user.roles[0] == 'ROLE_USER' ? 'selected' : '' }}>Bénévole</option>
-                                <option value="ROLE_ADMIN" {{ user.roles[0] == 'ROLE_ADMIN' ? 'selected' : '' }}>Administrateur</option>
-                                <option value="ROLE_VOLUNTEER_PLUS" {{ user.roles[0] == 'ROLE_VOLUNTEER_PLUS' ? 'selected' : '' }}>Bénévole +</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary">Attribuer rôle</button>
-                        </form>
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
-                    </td>
-                </tr>
-            {% endfor %}
+          {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ 'ROLE_SUPER_ADMIN' in user.roles ? '⭐ ' ~ user.firstName : user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+              <td>
+                {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
+                  {# prettier-ignore #}
+                  <form action="{{ path('app_user_role', { id: user.id }) }}" method="post">
+                    <select name="role">
+                      <option value="ROLE_USER" {{ user.roles[0] == 'ROLE_USER' ? 'selected' : '' }}>Bénévole</option>
+                      <option value="ROLE_ADMIN" {{ user.roles[0] == 'ROLE_ADMIN' ? 'selected' : '' }}>
+                        Administrateur
+                      </option>
+                      <option
+                        value="ROLE_VOLUNTEER_PLUS"
+                        {{ user.roles[0] == 'ROLE_VOLUNTEER_PLUS' ? 'selected' : '' }}
+                      >
+                        Bénévole +
+                      </option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary">Attribuer rôle</button>
+                  </form>
+                {% else %}
+                  <p class="bold">Super Admin</p>
+                {% endif %}
+              </td>
+              <td>
+                {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
+                  {# prettier-ignore #}
+                  <form id="delete-user" action="{{ path('app_user_delete', { id: user.id }) }}" method="post">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                    <button type="submit" name="delete_user" value="{{ user.id }}" class="btn btn-danger">Supprimer</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
     </div>
-    </section>
+  </section>
+  <div id="confirm-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <img
+        src="{{ asset('images/icons/warning-circle-fill.svg') }}"
+        alt="Avertissement"
+        style="width:32px;height:32px;vertical-align:middle;"
+      />
+      <p>Êtes-vous sûr de vouloir supprimer cet utilisateur&nbsp;?</p>
+      <p>Cette action est irréversible.</p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn btn-cancel">Annuler</button>
+        <button id="modal-confirm" class="btn btn-danger">Oui, Supprimer</button>
+      </div>
+    </div>
+  </div>
+  <section class="user-guide">
+    <p>• Les utilisateurs avec le rôle ⭐ "Super Admin" ne peuvent pas être modifiés ou supprimés.</p>
+    <p>
+      • Les utilisateurs avec le rôle "Administrateur" ont accès à toutes les fonctionnalités, y compris la gestion des
+      utilisateurs.
+    </p>
+    <p>
+      • Les utilisateurs avec le rôle "Bénévole+" ont accès aux pages des entrées et des ventes, ainsi qu'à une partie
+      du tableau de bord (gestion de caisse et statistiques).
+    </p>
+  </section>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/modals.js') }}" type="module"></script>
 {% endblock %}
