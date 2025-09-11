@@ -56,13 +56,10 @@
               </td>
               <td>
                 {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
-                  {# <a href="{{ path('app_user_delete', { id: user.id }) }}" 
-                  class="btn btn-danger" 
-                  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
                   {# prettier-ignore #}
                   <form action="{{ path('app_user_delete', { id: user.id }) }}" method="post" onsubmit="return confirm('Supprimer cet utilisateur ?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                    <button class="btn btn-danger">Supprimer</button>
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                    <button type="submit" name="delete_user" value="{{ user.id }}" class="btn btn-danger">Supprimer</button>
                 </form>
                 {% endif %}
               </td>
