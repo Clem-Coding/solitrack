@@ -134,7 +134,10 @@
           à {{ lastClosure.closedAt ? lastClosure.closedAt|date('H\\hi') : '--h--' }}
         </p>
         <div>
-          <p>Total des ventes pour cette session : {{ (lastClosure.totalSales ?? 0)|number_format(2, ',', ' ') }} €</p>
+          <p>
+            Total des ventes pour cette session : {{ (lastClosure.totalSales ?? 0)|number_format(2, ',', ' ') }} € (dont
+            {{ (lastClosure.totalPwyw ?? 0)|number_format(2, ',', ' ') }} € en prix libres).
+          </p>
           <p>Total des montants par CB : {{ (lastClosure.totalCard ?? 0)|number_format(2, ',', ' ') }} €</p>
           <p>
             Total réel compté des recettes en espèces : {{
