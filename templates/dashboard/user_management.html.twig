@@ -9,7 +9,10 @@
   <section class="card users-mgmt">
     <div class="table-wrapper">
       {% for message in app.flashes('success') %}
-        <div class="alert alert-success">✅ {{ message }}</div>
+        <div class="alert">✅ {{ message }}</div>
+      {% endfor %}
+      {% for message in app.flashes('error') %}
+        <div class="alert">❌ {{ message }}</div>
       {% endfor %}
 
       <table class="users-table">
@@ -26,7 +29,7 @@
           {% for user in users %}
             <tr>
               <td>{{ user.id }}</td>
-              <td>{{ user.firstName }}</td>
+              <td>{{ 'ROLE_SUPER_ADMIN' in user.roles ? '⭐ ' ~ user.firstName : user.firstName }}</td>
               <td>{{ user.lastName }}</td>
               <td>
                 {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
@@ -53,7 +56,14 @@
               </td>
               <td>
                 {% if 'ROLE_SUPER_ADMIN' not in user.roles %}
-                  {# prettier-ignore #}<a href="{{ path('app_user_delete', { id: user.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a>
+                  {# <a href="{{ path('app_user_delete', { id: user.id }) }}" 
+                  class="btn btn-danger" 
+                  onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">Supprimer</a> #}
+                  {# prettier-ignore #}
+                  <form action="{{ path('app_user_delete', { id: user.id }) }}" method="post" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                    <button class="btn btn-danger">Supprimer</button>
+                </form>
                 {% endif %}
               </td>
             </tr>
@@ -61,5 +71,16 @@
         </tbody>
       </table>
     </div>
+  </section>
+  <section class="user-guide">
+    <p>• Les utilisateurs avec le rôle ⭐ "Super Admin" ne peuvent pas être modifiés ou supprimés.</p>
+    <p>
+      • Les utilisateurs avec le rôle "Administrateur" ont accès à toutes les fonctionnalités, y compris la gestion des
+      utilisateurs.
+    </p>
+    <p>
+      • Les utilisateurs avec le rôle "Bénévole+" ont accès aux pages des entrées et des ventes, ainsi qu'à une partie
+      du tableau de bord (gestion de caisse et statistiques).
+    </p>
   </section>
 {% endblock %}

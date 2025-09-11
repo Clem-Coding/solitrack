@@ -46,8 +46,8 @@ class UserManagementController extends AbstractController
     }
 
 
-    #[Route('/tableau-de-bord/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete')]
-    public function deleteUser(int $id, EntityManagerInterface $entityManager): Response
+    #[Route('/tableau-de-bord/gestion-utilisateurs/{id}/supprimer', name: 'app_user_delete', methods: ['POST'])]
+    public function deleteUser(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $entityManager->getRepository(User::class)->find($id);
 
@@ -58,6 +58,11 @@ class UserManagementController extends AbstractController
 
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
             $this->addFlash('error', 'Impossible de supprimer un super-admin.');
+            return $this->redirectToRoute('app_dashboard_user_management');
+        }
+
+        if (!$this->isCsrfTokenValid('delete_user_' . $user->getId(), $request->request->get('_token'))) {
+            $this->addFlash('error', 'Token invalide.');
             return $this->redirectToRoute('app_dashboard_user_management');
         }
 
