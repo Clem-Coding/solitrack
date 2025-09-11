@@ -37,7 +37,6 @@
     <section class="card contained">
       <h2>Paiement</h2>
 
-      {# !mettre un token sur le formulaire! #}
       <form class="payment-form" action="{{ path('app_sale_register') }}" method="post">
         <div class="form-group pwyw hidden">
           <label for="pwyw_amount">Le poids des articles en vrac fait moins de 1kg.</label>
@@ -117,3 +116,4 @@
   {{ parent() }}
   <script src="{{ asset('js/checkout.js') }}" type="module"></script>
 {% endblock %}
+
