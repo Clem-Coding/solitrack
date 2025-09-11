@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 #[IsGranted('IS_AUTHENTICATED')]
 class CashRegisterController extends AbstractController
 {
-    #[Route('/gestion-de-caisse', name: 'app_dashboard_cash_register')]
+    #[Route('/tableau-de-bord/gestion-de-caisse', name: 'app_dashboard_cash_register')]
     public function index(
         #[CurrentUser] User $user,
         CashRegisterSessionRepository $cashRegisterSessionRepository,

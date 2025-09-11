@@ -17,30 +17,15 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
     }
 
 
-    //     SELECT 
-    //     c.id,
-    //     c.closed_at,
-    //     c.closing_cash_amount,
-    //     c.discrepancy,
-    //     u.first_name AS closed_by_name
-    // FROM 
-    //     cash_register_closures c
-    // LEFT JOIN 
-    //     users u ON c.closed_by_id = u.id
-    // ORDER BY 
-    //     c.closed_at DESC
-    // LIMIT 1;
-
-
-    //     SELECT 
+    // SELECT 
     //     c.id,
     //     c.closed_at,
     //     c.closing_cash_amount,
     //     c.discrepancy,
     //     u.first_name AS closed_by_name,
-    //     SUM(sal.total_price) AS total_sales,
-    //     SUM(sal.cash_amount),
-    //     SUM(sal.card_amount),
+    //     'SUM(sales.totalPrice + COALESCE(sales.pwywAmount, 0)) AS totalSales',
+    //     'SUM(sales.cashAmount) AS totalCash',
+    //     'SUM(sales.cardAmount) AS totalCard'
     // FROM 
     //     cash_register_closures c
     // LEFT JOIN 
@@ -66,9 +51,10 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
                 'c.discrepancy',
                 'c.note',
                 'u.firstName AS closedByName',
-                'SUM(sales.totalPrice) AS totalSales',
+                'SUM(sales.totalPrice + COALESCE(sales.pwywAmount, 0)) AS totalSales',
                 'SUM(sales.cashAmount) AS totalCash',
-                'SUM(sales.cardAmount) AS totalCard'
+                'SUM(sales.cardAmount) AS totalCard',
+                'SUM(sales.pwywAmount) AS totalPwyw'
             )
             ->leftJoin('c.closedBy', 'u')
             ->leftJoin('c.cashRegisterSession', 'session')
