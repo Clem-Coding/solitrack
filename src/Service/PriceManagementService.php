@@ -114,16 +114,17 @@ class PriceManagementService
         $normalTotal = 0.0;
 
         foreach ($shoppingCart as $item) {
+            $priceCents = (int) round($item['price'] * 100);
             if (in_array($item['id'], self::BULK_ARTICLE_CATEGORIES, true)) {
-                $bulkTotal += $item['price'];
+                $bulkTotal += $priceCents;
             } else {
-                $normalTotal += $item['price'];
+                $normalTotal += $priceCents;
             }
         }
 
-        $bulkTotalRounded = $this->roundDownToTenth($bulkTotal);
+        $bulkTotalRounded = (int) ($bulkTotal / 10) * 10;
 
-        return $normalTotal + $bulkTotalRounded;
+        return ($normalTotal + $bulkTotalRounded) / 100;
     }
 
 
