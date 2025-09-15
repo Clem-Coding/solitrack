@@ -18,7 +18,7 @@ Soli’Track aims to simplify and optimize the management of:
 
 - Organizing volunteer schedules (WIP)
 
-![Demo](https://ann.nl.tab.digital/s/y7Em8sNg9RiAm83/download/solitrack_demo.gif)
+![Demo](docs/solitrack_demo.gif)
 
 ## How to Install Locally
 
