@@ -4,7 +4,7 @@ Soli'Track is an internal tool developed with Symfony 7.2 for Les Fourmis Soli�
 
 ## About Les Fourmis Soli’terre
 
-This organization is committed to environmental protection and solidarity in rural areas. They operate a solidarity recycling shop that gives second life to used items while fostering social ties among local residents. Supported by 35 volunteers, the shop is evolving into a community hub offering eco-friendly workshops and a café.
+Les Fourmis Soliterre is a non-profit organization that manages La Fourmilière, a space dedicated to environmental protection and solidarity in rural areas. Supported by 35 volunteers, they run a low-cost recycling shop to give used items a second life and also provide a café, a youth area, and solidarity workshops.
 
 ## Project Goals
 
@@ -12,7 +12,7 @@ Soli’Track aims to simplify and optimize the management of:
 
 - Weighing incoming and outgoing items
 
-- Full-featured cash register: sales sessions, cart management,checkout & payment, cash reconciliation
+- Full-featured cash register for the Recycling Shop: sales sessions, cart management,checkout & payment, cash reconciliation
 
 - Tracking statistics
 
