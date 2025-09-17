@@ -89,6 +89,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: CashMovement::class, mappedBy: 'madeBy')]
     private Collection $cashMovements;
 
+    /**
+     * @var Collection<int, VolunteerSession>
+     */
+    #[ORM\OneToMany(targetEntity: VolunteerSession::class, mappedBy: 'createdBy')]
+    private Collection $volunteerSessions;
+
+    /**
+     * @var Collection<int, VolunteerRegistration>
+     */
+    #[ORM\OneToMany(targetEntity: VolunteerRegistration::class, mappedBy: 'user')]
+    private Collection $volunteerRegistrations;
+
     public function __construct()
     {
         $this->donations = new ArrayCollection();
@@ -97,6 +109,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->cashRegisterSessions = new ArrayCollection();
         $this->cashRegisterClosures = new ArrayCollection();
         $this->cashMovements = new ArrayCollection();
+        $this->volunteerSessions = new ArrayCollection();
+        $this->volunteerRegistrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -372,6 +386,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($cashMovement->getMadeBy() === $this) {
                 $cashMovement->setMadeBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VolunteerSession>
+     */
+    public function getVolunteerSessions(): Collection
+    {
+        return $this->volunteerSessions;
+    }
+
+    public function addVolunteerSession(VolunteerSession $volunteerSession): static
+    {
+        if (!$this->volunteerSessions->contains($volunteerSession)) {
+            $this->volunteerSessions->add($volunteerSession);
+            $volunteerSession->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVolunteerSession(VolunteerSession $volunteerSession): static
+    {
+        if ($this->volunteerSessions->removeElement($volunteerSession)) {
+            // set the owning side to null (unless already changed)
+            if ($volunteerSession->getCreatedBy() === $this) {
+                $volunteerSession->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VolunteerRegistration>
+     */
+    public function getVolunteerRegistrations(): Collection
+    {
+        return $this->volunteerRegistrations;
+    }
+
+    public function addVolunteerRegistration(VolunteerRegistration $volunteerRegistration): static
+    {
+        if (!$this->volunteerRegistrations->contains($volunteerRegistration)) {
+            $this->volunteerRegistrations->add($volunteerRegistration);
+            $volunteerRegistration->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVolunteerRegistration(VolunteerRegistration $volunteerRegistration): static
+    {
+        if ($this->volunteerRegistrations->removeElement($volunteerRegistration)) {
+            // set the owning side to null (unless already changed)
+            if ($volunteerRegistration->getUser() === $this) {
+                $volunteerRegistration->setUser(null);
             }
         }
 
