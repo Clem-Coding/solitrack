@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Hello VolunteerRegistrationController!
+{% endblock %}
+
+{% block content %}
+  <h1>Volunteer Registration</h1>
+  {% for session in sessions_with_count %}
+    <div class="session">
+      <h2>{{ session.title }}</h2>
+      <p>Date de début: {{ session.startDatetime ? session.startDatetime|date('Y-m-d H:i') : 'N/A' }}</p>
+      <p>Date de fin: {{ session.endDatetime ? session.endDatetime|date('Y-m-d H:i') : 'N/A' }}</p>
+      <p>Inscrits: {{ session.count }}</p>
+      <form method="post" action="{{ path('app_volunteer_registration') }}">
+        <input type="hidden" name="session_id" value="{{ session.id }}" />
+        <button type="submit" class="button-primary">Participer</button>
+      </form>
+    </div>
+  {% endfor %}
+
+  <h2>Mes inscriptions</h2>
+  {% for registration in registrations_by_user %}
+    {% if registration.status != 'canceled' %}
+      <div class="registration">
+        <span>{{ registration.session.title }}</span>
+        <form
+          method="post"
+          action="{{
+          path(
+            'app_volunteer_registration_cancel',
+            {
+              id: registration.id
+            }
+          )
+          }}"
+        >
+          <button type="submit" class="btn btn-danger">Annuler l'inscription</button>
+        </form>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

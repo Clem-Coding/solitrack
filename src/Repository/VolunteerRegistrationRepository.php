@@ -16,6 +16,16 @@ class VolunteerRegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, VolunteerRegistration::class);
     }
 
+    // public function findRegistrationsByUser($user): array
+    // {
+    //     return $this->createQueryBuilder('s')
+    //         ->innerJoin('s.v', 'r')
+    //         ->andWhere('r.user = :user')
+    //         ->setParameter('user', $user)
+    //         ->getQuery()
+    //         ->getResult();
+    // }
+
     //    /**
     //     * @return VolunteerRegistration[] Returns an array of VolunteerRegistration objects
     //     */

@@ -16,6 +16,21 @@ class VolunteerSessionRepository extends ServiceEntityRepository
         parent::__construct($registry, VolunteerSession::class);
     }
 
+
+    public function findLastThreeSessions(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.startDatetime', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult();
+    }
+
+ 
+
+
+    // trouve toutes les session ou l'utilisateur est inscrit
+
     //    /**
     //     * @return VolunteerSession[] Returns an array of VolunteerSession objects
     //     */
