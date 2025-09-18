@@ -1,0 +1,27 @@
+<dialog id="eventModal">
+  <button id="closeButton"><i class="ph ph-x"></i></button>
+  {{ form_start(createForm) }}
+
+  <div class="form-group">{{ form_row(createForm.title) }}</div>
+  <div class="form-group">
+    <label>De :</label>
+    {{ form_row(createForm.from_date) }}
+    {{ form_row(createForm.from_time) }}
+  </div>
+
+  <div class="form-group">
+    <label>À :</label>
+    {{ form_row(createForm.to_date) }}
+    {{ form_row(createForm.to_time) }}
+  </div>
+
+  <div class="form-group">
+    {{ form_row(createForm.description) }}
+    {{ form_row(createForm.location) }}
+    {{ form_row(createForm.required_volunteers) }}
+  </div>
+
+  <button class="button-primary" type="submit">Enregistrer</button>
+
+  {{ form_end(createForm) }}
+</dialog>
