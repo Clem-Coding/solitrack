@@ -16,6 +16,21 @@ class VolunteerRegistrationRepository extends ServiceEntityRepository
         parent::__construct($registry, VolunteerRegistration::class);
     }
 
+
+    public function findUpcomingSessionsByUser($user): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.session', 's')
+            ->where('r.user = :user')
+            ->andWhere('r.status = :status')
+            ->andWhere('s.startDatetime >= :today')
+            ->setParameter('user', $user)
+            ->setParameter('status', 'registered')
+            ->setParameter('today', new \DateTimeImmutable('today'))
+            ->getQuery()
+            ->getResult();
+    }
+
     // public function findRegistrationsByUser($user): array
     // {
     //     return $this->createQueryBuilder('s')

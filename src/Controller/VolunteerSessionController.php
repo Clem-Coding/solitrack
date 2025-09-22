@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class VolunteerSessionController extends AbstractController
 {
-    #[Route('/volunteer/session', name: 'app_volunteer_session')]
+    #[Route('/mon-compte/benevolat', name: 'app_user_benevolat')]
     public function new(Request $request, EntityManagerInterface $em, #[CurrentUser] User $user): Response
     {
         $session = new VolunteerSession();
@@ -66,7 +66,7 @@ final class VolunteerSessionController extends AbstractController
 
             $em->persist($session);
             $em->flush();
-            return $this->redirectToRoute('app_volunteer_session');
+            return $this->redirectToRoute('app_user_benevolat');
         }
 
         return $this->render('volunteer_session/index.html.twig', [
