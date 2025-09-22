@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\VolunteerSession;
 use App\Form\VolunteerSessionEditType;
 use App\Repository\VolunteerSessionRepository;
+use App\Service\VolunteerSessionGeneratorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -37,8 +38,12 @@ class VolunteerScheduleController extends AbstractController
     }
 
     #[Route('/creer', name: 'app_dashboard_schedule_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, #[CurrentUser] User $user): JsonResponse
-    {
+    public function create(
+        Request $request,
+        EntityManagerInterface $em,
+        #[CurrentUser] User $user,
+        VolunteerSessionGeneratorService $volunteerSessionGenerator
+    ): JsonResponse {
 
         $session = new VolunteerSession();
         $form = $this->createForm(VolunteerSessionType::class, $session);
@@ -50,7 +55,6 @@ class VolunteerScheduleController extends AbstractController
             $toDate = $form->get('to_date')->getData();
             $toTime = $form->get('to_time')->getData();
             $recurrenceValue = $form->get('recurrence')->getData();
-            $untilDate = $form->get('until_date')->getData();
             $untilDate = $form->get('until_date')->getData();
 
 
@@ -83,10 +87,16 @@ class VolunteerScheduleController extends AbstractController
 
                 $em->persist($recurrence);
                 $session->setRecurrence($recurrence);
+
+                $em->persist($session);
+                $em->flush();
+
+                $volunteerSessionGenerator->generateOccurrences($session);
+            } else {
+                $em->persist($session);
+                $em->flush();
             }
 
-            $em->persist($session);
-            $em->flush();
             return new JsonResponse(['success' => true]);
         }
         return new JsonResponse(['success' => false, 'errors' => (string) $form->getErrors(true, false)], 400);
@@ -102,6 +112,8 @@ class VolunteerScheduleController extends AbstractController
             'start' => $s->getStartDatetime()->format(DATE_ATOM),
             'end' => $s->getEndDatetime()->format(DATE_ATOM),
             'id' => $s->getId(),
+            'frequency' => $s->getRecurrence()?->getFrequency(),   // daily, weekly, monthly
+            'until' => $s->getRecurrence()?->getUntilDate()?->format('Y-m-d'),
         ], $sessions);
 
         return $this->json($data);

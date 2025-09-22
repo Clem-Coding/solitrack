@@ -1,3 +1,5 @@
+import { syncMinDate } from "./utils.js";
+
 // =======================
 // API REQUESTS (AJAX)
 // =======================
@@ -95,6 +97,27 @@ function bindCloseButton(modalSelector, buttonSelector) {
   }
 }
 
+function toggleUntilDate(recurrenceSelect, untilDateField) {
+  const formGroup = untilDateField.closest(".form-group");
+  const startDateField = document.querySelector("#volunteer_session_from_date");
+  untilDateField.value = "";
+  if (
+    recurrenceSelect.value === "daily" ||
+    recurrenceSelect.value === "weekly" ||
+    recurrenceSelect.value === "monthly"
+  ) {
+    formGroup.style.display = "block";
+    untilDateField.required = true;
+
+    if (startDateField) {
+      syncMinDate(startDateField, untilDateField);
+    }
+  } else {
+    formGroup.style.display = "none";
+    untilDateField.required = false;
+  }
+}
+
 // =======================
 // CALENDAR INSTANCE & CONFIGURATION
 // =======================
@@ -129,7 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
     dateClick: function (info) {
       const eventModal = document.getElementById("eventModal");
       const form = eventModal.querySelector("form");
-
+      const recurrenceSelect = document.querySelector("#volunteer_session_recurrence");
+      const untilDateField = document.querySelector("#volunteer_session_until_date");
       const startDateInput = form.querySelector("#volunteer_session_from_date");
       const startTimeInput = form.querySelector("#volunteer_session_from_time");
       const endDateInput = form.querySelector("#volunteer_session_to_date");
@@ -137,6 +161,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       startDateInput.value = info.dateStr;
       endDateInput.value = info.dateStr;
+
+      if (startDateInput && endDateInput) {
+        syncMinDate(startDateInput, endDateInput);
+      }
 
       startTimeInput.value = "09:00";
 
@@ -158,6 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const closeButton = eventModal.querySelector("#closeButton");
       closeButton.addEventListener("click", () => eventModal.close());
+
+      if (recurrenceSelect && untilDateField) {
+        toggleUntilDate(recurrenceSelect, untilDateField);
+        recurrenceSelect.addEventListener("change", () => toggleUntilDate(recurrenceSelect, untilDateField));
+      }
     },
 
     //  SELECTION D'UNE PLAGE DE DATES

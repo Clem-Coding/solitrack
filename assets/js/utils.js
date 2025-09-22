@@ -75,3 +75,19 @@ export function getFrenchMonthName(month) {
   const monthIndex = Number(month) - 1;
   return monthNames[monthIndex] || "Mois invalide";
 }
+
+/**
+ * Synchronizes the minimum end date with the start date.
+ * @param {HTMLInputElement} startField - Start date input field
+ * @param {HTMLInputElement} endField - End date input field
+ */
+export function syncMinDate(startField, endField) {
+  if (!startField || !endField) return;
+
+  const updateMin = () => {
+    endField.min = startField.value;
+  };
+
+  startField.addEventListener("change", updateMin);
+  updateMin();
+}
