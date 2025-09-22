@@ -2,23 +2,39 @@
   <button id="closeButton"><i class="ph ph-x"></i></button>
   {{ form_start(createForm) }}
 
-  <div class="form-group">{{ form_row(createForm.title) }}</div>
   <div class="form-group">
-    <label>De :</label>
-    {{ form_row(createForm.from_date) }}
-    {{ form_row(createForm.from_time) }}
+    {{ form_label(createForm.title) }}
+    {{ form_widget(createForm.title) }}
   </div>
-
+  <fieldset class="date-time-group">
+    <legend>De :</legend>
+    {{ form_label(createForm.from_date, null, {'label_attr': {'class': 'sr-only'}}) }}
+    {{ form_widget(createForm.from_date) }}
+    {{ form_label(createForm.from_time, null, {'label_attr': {'class': 'sr-only'}}) }}
+    {{ form_widget(createForm.from_time) }}
+  </fieldset>
+  <fieldset class="date-time-group">
+    <legend>À :</legend>
+    {{ form_label(createForm.to_date, null, {'label_attr': {'class': 'sr-only'}}) }}
+    {{ form_widget(createForm.to_date) }}
+    {{ form_label(createForm.to_time, null, {'label_attr': {'class': 'sr-only'}}) }}
+    {{ form_widget(createForm.to_time) }}
+  </fieldset>
   <div class="form-group">
-    <label>À :</label>
-    {{ form_row(createForm.to_date) }}
-    {{ form_row(createForm.to_time) }}
+    {{ form_label(createForm.description) }}
+    {{ form_widget(createForm.description) }}
+    {{ form_label(createForm.location) }}
+    {{ form_widget(createForm.location) }}
+    {{ form_label(createForm.required_volunteers) }}
+    {{ form_widget(createForm.required_volunteers) }}
   </div>
-
   <div class="form-group">
-    {{ form_row(createForm.description) }}
-    {{ form_row(createForm.location) }}
-    {{ form_row(createForm.required_volunteers) }}
+    {{ form_label(createForm.recurrence) }}
+    {{ form_widget(createForm.recurrence) }}
+  </div>
+  <div class="form-group">
+    {{ form_label(createForm.until_date) }}
+    {{ form_widget(createForm.until_date) }}
   </div>
 
   <button class="button-primary" type="submit">Enregistrer</button>

@@ -56,14 +56,15 @@ class VolunteerSessionType extends AbstractType
             ])
             ->add('recurrence', ChoiceType::class, [
                 'choices' => [
-                    'Aucune' => null,
+                    'Ne pas répéter' => null,
                     'Tous les jours' => 'daily',
                     'Toutes les semaines' => 'weekly',
                     'Tous les mois' => 'monthly',
                 ],
-                'mapped' => false, // on gère la logique dans le contrôleur
+                'choice_value' => fn($choice) => $choice,
+                'mapped' => false,
                 'required' => false,
-                'label' => 'Répéter',
+                'label' => 'Réccurence',
                 'placeholder' => 'Choisir une récurrence',
             ])
             ->add('until_date', DateType::class, [

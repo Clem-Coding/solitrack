@@ -16,7 +16,7 @@
 {% block javascripts %}
   {{ parent() }}
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
-  <script src="{{ asset('js/admin-volunteer-calendar.js') }}"></script>
+  <script src="{{ asset('js/admin-volunteer-calendar.js') }}" type="module"></script>
 {% endblock %}
 
 {# {% block stylesheets %}

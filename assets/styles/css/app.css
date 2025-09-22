@@ -1421,6 +1421,12 @@ form textarea:focus {
   border-color: #00857a;
 }
 
+.date-time-group {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
 .statistics-container {
   display: flex;
   flex-direction: column;

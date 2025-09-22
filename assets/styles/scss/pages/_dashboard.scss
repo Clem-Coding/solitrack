@@ -163,3 +163,16 @@
   background-color: mix(white, $emerald-sea, 90%);
   border-color: $emerald-sea;
 }
+
+// VOLUNTEER CALENDAR
+
+.date-time-group {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+
+  // @include respond-to(tablet) {
+  //   flex-direction: column;
+  //   align-items: stretch;
+  // }
+}
