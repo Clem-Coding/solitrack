@@ -114,7 +114,10 @@ class VolunteerScheduleController extends AbstractController
             'id' => $s->getId(),
             'frequency' => $s->getRecurrence()?->getFrequency(),   // daily, weekly, monthly
             'until' => $s->getRecurrence()?->getUntilDate()?->format('Y-m-d'),
+            'registeredVolunteers' => $s->getVolunteerRegistrations()->count() ?? 0
         ], $sessions);
+
+        dump($data); // Pour debug
 
         return $this->json($data);
     }

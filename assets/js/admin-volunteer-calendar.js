@@ -226,6 +226,22 @@ document.addEventListener("DOMContentLoaded", function () {
       bindCloseButton("#editEventModal", "#editEventModal #closeButton");
 
       // AFFICHER LE RÉSUMÉ D'UN ÉVÉNEMENT
+      document.querySelector("#modalTitle").textContent = info.event.title;
+      document.querySelector(
+        "#modalVolunteers"
+      ).textContent = `Bénvoles inscrits : ${info.event.extendedProps.registeredVolunteers}`;
+
+      //afficher le résumé de la date en français
+      const start = info.event.start;
+      const end = info.event.end;
+      const optionsDate = { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" };
+      const optionsTime = { hour: "2-digit", minute: "2-digit", hour12: false };
+      const dateStr = start.toLocaleDateString("fr-FR", optionsDate);
+      const startTime = start.toLocaleTimeString("fr-FR", optionsTime);
+      const endTime = end ? end.toLocaleTimeString("fr-FR", optionsTime) : "";
+      const timeText = `${dateStr} ${startTime} - ${endTime}`;
+      document.querySelector("#modalTime").textContent = timeText;
+
       summaryModal.showModal();
 
       // EDITER L'ÉVÉNEMENT
