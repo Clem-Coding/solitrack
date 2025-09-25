@@ -4,7 +4,7 @@ import { syncMinDate } from "./utils.js";
 // API REQUESTS (AJAX)
 // =======================
 async function submitEventForm(calendar) {
-  const form = document.querySelector("#eventModal form");
+  const form = document.querySelector(".createEventModal form");
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
     const formData = new FormData(form);
@@ -20,7 +20,7 @@ async function submitEventForm(calendar) {
     if (data.success) {
       calendar.refetchEvents(); // recharge depuis /api/events
       form.reset();
-      document.getElementById("eventModal").close();
+      document.querySelector(".createEventModal").close();
     } else {
       alert("Erreur lors de la création");
     }
@@ -28,15 +28,14 @@ async function submitEventForm(calendar) {
 }
 
 async function updateEventForm(calendar) {
-  const form = document.querySelector("#editEventModal form");
-  console.log("updateEventForm called");
+  const editModal = document.querySelector(".editEventModal");
+  const form = editModal.querySelector("form");
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
-
     const formData = new FormData(form);
 
     // Récupère l'id stocké dans la modale
-    const eventId = document.getElementById("editEventModal").dataset.eventId;
+    const eventId = editModal.dataset.eventId;
 
     try {
       const response = await fetch(`/tableau-de-bord/planning-benevolat/schedule/${eventId}/edit`, {
@@ -47,10 +46,9 @@ async function updateEventForm(calendar) {
       const data = await response.json();
 
       if (data.success) {
-        console.log("Événement modifié avec succès");
         calendar.refetchEvents(); // Recharge la grille
         form.reset();
-        document.getElementById("editEventModal").close();
+        editModal.close();
       } else {
         alert("Erreur lors de la modification");
       }
@@ -129,9 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
     initialView: "dayGridMonth",
     locale: "fr",
     height: "auto",
+    // eventColor: "#339d95",
+    // eventColor: "#c9e8e5",
 
     headerToolbar: {
-      left: "prev,next today",
+      left: "prev,next,today",
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
@@ -150,8 +150,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // SELECTION D'UNE DATE
     dateClick: function (info) {
-      const eventModal = document.getElementById("eventModal");
-      const form = eventModal.querySelector("form");
+      const createModal = document.querySelector(".createEventModal");
+      const form = createModal.querySelector("form");
       const recurrenceSelect = document.querySelector("#volunteer_session_recurrence");
       const untilDateField = document.querySelector("#volunteer_session_until_date");
       const startDateInput = form.querySelector("#volunteer_session_from_date");
@@ -182,10 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       updateEndTime();
 
-      eventModal.showModal();
-
-      const closeButton = eventModal.querySelector("#closeButton");
-      closeButton.addEventListener("click", () => eventModal.close());
+      createModal.showModal();
 
       if (recurrenceSelect && untilDateField) {
         toggleUntilDate(recurrenceSelect, untilDateField);
@@ -193,12 +190,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     },
 
-    //  SELECTION D'UNE PLAGE DE DATES
+    //SELECTION D'UNE PLAGE DE DATES
     select: function (info) {
-      const eventModal = document.getElementById("eventModal");
-      const closeButton = document.getElementById("closeButton");
+      const createModal = document.querySelector(".createEventModal");
+      const closeButton = createModal.querySelector(".closeButton");
 
-      eventModal.showModal();
+      createModal.showModal();
 
       const startDate = info.start;
       const endDate = info.end;
@@ -209,29 +206,31 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("volunteer_session_to_time").value = "17:00";
 
       closeButton.addEventListener("click", () => {
-        eventModal.close();
+        createModal.close();
       });
     },
 
     eventClick: function (info) {
-      const summaryModal = document.querySelector("#eventSummaryModal");
-      const editButton = document.querySelector("#eventSummaryModal #editEventButton");
-      const editModal = document.querySelector("#editEventModal");
-      const editForm = editModal.querySelector("form");
-      const updateEventButton = editModal.querySelector("#updateEventButton");
-      const deleteEventButton = editModal.querySelector("#deleteEventButton");
+      const summaryModal = document.querySelector(".eventSummaryModal");
 
-      // GESTION DES BOUTONS DE FERMETURE DES MODALES
-      bindCloseButton("#eventSummaryModal", "#eventSummaryModal #closeButton");
-      bindCloseButton("#editEventModal", "#editEventModal #closeButton");
-
+      // ===========================
       // AFFICHER LE RÉSUMÉ D'UN ÉVÉNEMENT
-      document.querySelector("#modalTitle").textContent = info.event.title;
-      document.querySelector(
-        "#modalVolunteers"
-      ).textContent = `Bénvoles inscrits : ${info.event.extendedProps.registeredVolunteers}`;
+      // ===========================
+      const requiredVolunteers = info.event.extendedProps.requiredVolunteers;
+      const modalTitle = summaryModal.querySelector(".modalTitle");
+      const registeredVolunteers = summaryModal.querySelector(".modalRegisteredVolunteers");
+      const volunteerList = summaryModal.querySelector(".modalVolunteerList");
+      const modalTime = summaryModal.querySelector(".modalTime");
+      const volunteerNames = info.event.extendedProps.volunteerFirstNames;
 
-      //afficher le résumé de la date en français
+      modalTitle.textContent = info.event.title;
+      registeredVolunteers.textContent = `Bénvoles inscrits : ${info.event.extendedProps.registeredVolunteers} / ${requiredVolunteers}`;
+      volunteerList.innerHTML = "";
+      volunteerNames.forEach((name) => {
+        volunteerList.appendChild(document.createElement("li")).textContent = name;
+      });
+
+      //affiche le résumé de la date en français
       const start = info.event.start;
       const end = info.event.end;
       const optionsDate = { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" };
@@ -239,12 +238,20 @@ document.addEventListener("DOMContentLoaded", function () {
       const dateStr = start.toLocaleDateString("fr-FR", optionsDate);
       const startTime = start.toLocaleTimeString("fr-FR", optionsTime);
       const endTime = end ? end.toLocaleTimeString("fr-FR", optionsTime) : "";
-      const timeText = `${dateStr} ${startTime} - ${endTime}`;
-      document.querySelector("#modalTime").textContent = timeText;
+      const timeText = `<i class="ph ph-clock"></i>${dateStr} ${startTime} - ${endTime}`;
+      modalTime.innerHTML = timeText;
 
       summaryModal.showModal();
 
-      // EDITER L'ÉVÉNEMENT
+      /* ===========================
+         EDITER L'ÉVÉNEMENT
+         =========================== */
+
+      const editModal = document.querySelector(".editEventModal");
+      const editButton = document.querySelector(".eventSummaryModal .editEventButton");
+
+      const editForm = editModal.querySelector("form");
+
       editButton.onclick = () => {
         summaryModal.close();
 
@@ -252,37 +259,60 @@ document.addEventListener("DOMContentLoaded", function () {
         editForm.querySelector('[name="volunteer_session_edit[title]"]').value = info.event.title;
         editForm.querySelector('[name="volunteer_session_edit[description]"]').value =
           info.event.extendedProps.description || "";
-        editForm.querySelector('[name="volunteer_session_edit[startDatetime]"]').value = info.event.start
-          .toISOString()
-          .slice(0, 16);
-        if (info.event.end) {
-          editForm.querySelector('[name="volunteer_session_edit[endDatetime]"]').value = info.event.end
-            .toISOString()
-            .slice(0, 16);
+        editForm.querySelector('[name="volunteer_session_edit[location]"]').value =
+          info.event.extendedProps.location || "";
+        // Remplir les champs date et heure de début
+        if (info.event.start) {
+          const startDate = info.event.start.toISOString().slice(0, 10);
+          const startTime = info.event.start.toTimeString().slice(0, 5);
+          editForm.querySelector('[name="volunteer_session_edit[from_date]"]').value = startDate;
+          editForm.querySelector('[name="volunteer_session_edit[from_time]"]').value = startTime;
         }
-        editForm.querySelector('[name="volunteer_session_edit[requiredVolunteers]"]').value =
-          info.event.extendedProps.requiredVolunteers || "";
+        // Remplir les champs date et heure de fin
+        if (info.event.end) {
+          const endDate = info.event.end.toISOString().slice(0, 10);
+          const endTime = info.event.end.toTimeString().slice(0, 5);
+          editForm.querySelector('[name="volunteer_session_edit[to_date]"]').value = endDate;
+          editForm.querySelector('[name="volunteer_session_edit[to_time]"]').value = endTime;
+        }
+        editForm.querySelector('[name="volunteer_session_edit[required_volunteers]"]').value =
+          info.event.extendedProps.requiredVolunteers;
 
         editModal.dataset.eventId = info.event.id; // Stocke l'ID de l'événement dans un data-attribute
-
+        syncMinDate(
+          editForm.querySelector('[name="volunteer_session_edit[from_date]"]'),
+          editForm.querySelector('[name="volunteer_session_edit[to_date]"]')
+        );
         editModal.showModal();
       };
 
-      // SUPPRIMER L'ÉVÉNEMENT
+      /* ===========================
+         SUPPRIMER L'ÉVÉNEMENT
+         =========================== */
+
+      const deleteEventButton = editModal.querySelector(".deleteEventButton");
+
       deleteEventButton.onclick = () => {
         deleteCalendarEvent(info.event.id, info.event, summaryModal);
         editModal.close();
       };
+
+      /* ===========================
+        GESTION DE LA FERMETURE DES MODALES
+         =========================== */
+      bindCloseButton(".createEventModal", ".createEventModal .closeButton");
+      bindCloseButton(".eventSummaryModal", ".eventSummaryModal .closeButton");
+      bindCloseButton(".editEventModal", ".editEventModal .closeButton");
     },
-
-    // Glisser-déposer des événements
-    // editable: true,
-
-    //DEPLACEMENT DES ÉVÉNEMENTS DANS LE CALENDRIER
-    // eventDrop: function (info) {},
   });
 
   calendar.render();
   submitEventForm(calendar);
   updateEventForm(calendar);
 });
+
+// Glisser-déposer des événements
+// editable: true,
+
+//DEPLACEMENT DES ÉVÉNEMENTS DANS LE CALENDRIER
+// eventDrop: function (info) {},

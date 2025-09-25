@@ -27,7 +27,7 @@ class VolunteerScheduleController extends AbstractController
         $session = new VolunteerSession();
 
         $createForm = $this->createForm(VolunteerSessionType::class, $session);
-        $editForm = $this->createForm(VolunteerSessionEditType::class, null);
+        $editForm = $this->createForm(VolunteerSessionEditType::class, $session);
 
 
         return $this->render('dashboard/volunteer_schedule.html.twig', [
@@ -107,17 +107,32 @@ class VolunteerScheduleController extends AbstractController
     {
         $sessions = $em->getRepository(VolunteerSession::class)->findAll();
 
-        $data = array_map(fn($s) => [
-            'title' => $s->getTitle(),
-            'start' => $s->getStartDatetime()->format(DATE_ATOM),
-            'end' => $s->getEndDatetime()->format(DATE_ATOM),
-            'id' => $s->getId(),
-            'frequency' => $s->getRecurrence()?->getFrequency(),   // daily, weekly, monthly
-            'until' => $s->getRecurrence()?->getUntilDate()?->format('Y-m-d'),
-            'registeredVolunteers' => $s->getVolunteerRegistrations()->count() ?? 0
-        ], $sessions);
+        $data = array_map(function ($s) {
 
-        dump($data); // Pour debug
+            $firstNames = [];
+            foreach ($s->getVolunteerRegistrations() as $registration) {
+                $user = $registration->getUser();
+                if ($user) {
+                    $firstNames[] = $user->getFirstName();
+                }
+            }
+
+            return [
+                'title' => $s->getTitle(),
+                'start' => $s->getStartDatetime()->format(DATE_ATOM),
+                'end' => $s->getEndDatetime()->format(DATE_ATOM),
+                'id' => $s->getId(),
+                'frequency' => $s->getRecurrence()?->getFrequency(),
+                'description' => $s->getDescription(),
+                'location' => $s->getLocation(),
+                'until' => $s->getRecurrence()?->getUntilDate()?->format('Y-m-d'),
+                'registeredVolunteers' => count($firstNames),
+                'requiredVolunteers' => $s->getRequiredVolunteers(),
+                'volunteerFirstNames' => $firstNames,
+            ];
+        }, $sessions);
+
+        dump($data);
 
         return $this->json($data);
     }
@@ -126,9 +141,30 @@ class VolunteerScheduleController extends AbstractController
     public function editEvent(VolunteerSession $session, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(VolunteerSessionEditType::class, $session);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupérer les champs date et heure séparés
+            $fromDate = $form->get('from_date')->getData();
+            $fromTime = $form->get('from_time')->getData();
+            $toDate = $form->get('to_date')->getData();
+            $toTime = $form->get('to_time')->getData();
+
+            // Fusionne la date et l'heure pour une datetime complète
+            if ($fromDate && $fromTime) {
+                $session->setStartDatetime(\DateTimeImmutable::createFromFormat(
+                    'Y-m-d H:i',
+                    $fromDate->format('Y-m-d') . ' ' . $fromTime->format('H:i')
+                ));
+            }
+            if ($toDate && $toTime) {
+                $session->setEndDatetime(\DateTimeImmutable::createFromFormat(
+                    'Y-m-d H:i',
+                    $toDate->format('Y-m-d') . ' ' . $toTime->format('H:i')
+                ));
+            }
+
             $session->setUpdatedAt(new \DateTimeImmutable());
             $em->flush();
             return new JsonResponse(['success' => true]);

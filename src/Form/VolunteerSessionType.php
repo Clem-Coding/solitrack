@@ -20,43 +20,56 @@ class VolunteerSessionType extends AbstractType
         $builder
             ->add('title', null, [
                 'label' => 'Titre',
+                'attr' => ['placeholder' => 'Titre de l\'événement'],
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('description', null, [
                 'label' => 'Description',
+                'attr' => ['placeholder' => 'Ajouter une description'],
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('location', null, [
                 'label' => 'Lieu',
+                'attr' => ['placeholder' => 'Ajouter un lieu'],
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('from_date', DateType::class, [
                 'widget' => 'single_text',
                 'mapped' => false,
                 'required' => true,
                 'label' => 'Date de début',
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('from_time', TimeType::class, [
                 'widget' => 'single_text',
                 'mapped' => false,
                 'required' => true,
                 'label' => 'Heure de début',
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('to_date', DateType::class, [
                 'widget' => 'single_text',
                 'mapped' => false,
                 'required' => true,
                 'label' => 'Date de fin',
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('to_time', TimeType::class, [
                 'widget' => 'single_text',
                 'mapped' => false,
                 'required' => true,
                 'label' => 'Heure de fin',
+                'label_attr' => ['class' => 'sr-only'],
             ])
             ->add('required_volunteers', null, [
                 'label' => 'Nombre de bénévoles requis',
+                'label_attr' => ['class' => 'sr-only'],
+                'required' => true,
+                'attr' => ['placeholder' => 'Ajouter un nombre de bénévoles'],
             ])
             ->add('recurrence', ChoiceType::class, [
                 'choices' => [
-                    'Ne pas répéter' => null,
+                    'Jamais' => null,
                     'Tous les jours' => 'daily',
                     'Toutes les semaines' => 'weekly',
                     'Tous les mois' => 'monthly',
@@ -64,7 +77,7 @@ class VolunteerSessionType extends AbstractType
                 'choice_value' => fn($choice) => $choice,
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Réccurence',
+                'label' => 'Répéter',
                 'placeholder' => 'Choisir une récurrence',
             ])
             ->add('until_date', DateType::class, [

@@ -247,8 +247,12 @@ select {
   cursor: pointer;
 }
 
+textarea {
+  font-family: "Inter", sans-serif;
+}
+
 .ph {
-  font-size: 2rem;
+  vertical-align: middle;
 }
 
 .radio-inline {
@@ -293,32 +297,31 @@ button {
   text-align: center;
   border-radius: 4px;
   padding: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+button i {
+  font-size: 1.375rem;
+  margin-right: 0.3em;
 }
 
 .button-primary {
   background-color: #080222;
   color: #ffffff;
   font-weight: 700;
-  width: 100%;
 }
 .button-primary:hover {
-  background-color: #00857a;
-  color: #ffffff;
+  background-color: rgba(0, 133, 122, 0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .button-secondary {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
   background-color: #ffffff;
   color: #080222;
   border: 2px solid #080222;
   font-weight: 700;
-}
-.button-secondary i {
-  font-size: 1.375rem;
-  margin-right: 0.3em;
 }
 .button-secondary:hover {
   color: #00857a;
@@ -346,10 +349,7 @@ button {
 }
 
 .category-button {
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 0.6em;
   border: 2px solid #080222;
   border-radius: 7px;
@@ -364,6 +364,11 @@ button {
 .category-button:hover {
   background-color: rgb(240.9473684211, 231.5789473684, 224.5526315789);
 }
+.category-button.active {
+  background-color: #ffcb52;
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
+  transform: translateY(4px);
+}
 .category-button img {
   width: 8em;
   height: auto;
@@ -373,31 +378,23 @@ button {
   pointer-events: none;
 }
 
-.category-button.active {
-  background-color: #ffcb52;
-  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2), 2px 2px 5px rgba(0, 0, 0, 0.4);
-  transform: translateY(4px);
-}
-
 .btn-cross-delete {
   padding: 0;
+  width: auto;
 }
 .btn-cross-delete:hover {
   color: #eb5a47;
 }
+.btn-cross-delete i {
+  margin-right: 0;
+  font-size: 1.75rem;
+}
 
 .button-grey-shadow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border: 2px solid #cccccc;
   border-radius: 8px;
   box-shadow: 6px 6px 0 #cccccc;
   width: 100%;
-}
-.button-grey-shadow i {
-  font-size: 1.375rem;
-  margin-right: 0.3em;
 }
 .button-grey-shadow:hover {
   border: 2px solid #080222;
@@ -1094,16 +1091,23 @@ form textarea:focus {
   font-weight: 600;
 }
 
-.input-quantity-wrapper.flex {
+.input-quantity-wrapper {
   display: flex;
   align-items: center;
   background-color: #eb5a47;
   border-radius: 2em;
   width: 100%;
 }
-.input-quantity-wrapper.flex input,
-.input-quantity-wrapper.flex button {
+.input-quantity-wrapper input,
+.input-quantity-wrapper button {
   color: #ffffff;
+}
+.input-quantity-wrapper button {
+  width: auto;
+}
+.input-quantity-wrapper button i {
+  margin-right: 0;
+  font-size: 1.5rem;
 }
 
 .sales-card {
@@ -1218,7 +1222,7 @@ form textarea:focus {
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: #00857a;
-  background-color: rgb(229.5, 242.8, 241.7);
+  background-color: rgb(234.6, 245.24, 244.36);
 }
 .payment-group .payment-details-container {
   flex: 1;
@@ -1233,10 +1237,6 @@ form textarea:focus {
   border: none;
   padding: 0.2em 0.5em;
   width: 5em;
-}
-.payment-group .delete-button {
-  width: auto;
-  padding: 0;
 }
 
 .transaction-options-fieldset {
@@ -1421,10 +1421,83 @@ form textarea:focus {
   border-color: #00857a;
 }
 
-.date-time-group {
+.eventModal {
+  border: none;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.eventModal .eventModal-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.eventModal .eventModal-content h2 {
+  font-size: 1.25rem;
+  text-align: left;
+}
+.eventModal .eventModal-content .datetime-picker {
   display: flex;
   gap: 1em;
   align-items: center;
+  font-size: 0.875rem;
+}
+.eventModal .eventModal-content form {
+  gap: 1em;
+}
+.eventModal .eventModal-content form .form-group.icon {
+  flex-direction: row;
+  align-items: center;
+}
+.eventModal .eventModal-content form .form-group.icon i {
+  font-size: 1.5rem;
+}
+.eventModal .eventModal-content form input {
+  padding: 0.4375em;
+}
+.eventModal .eventModal-content form fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.eventModal .eventModal-content form .datetime-fieldset {
+  gap: 0.5em;
+}
+.eventModal .eventModal-content form .datetime-fieldset .datetime-picker {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.eventModal .eventModal-content form .datetime-fieldset .datetime-picker span {
+  min-width: 1em;
+}
+.eventModal .eventModal-content .modalTime {
+  font-size: 0.875rem;
+  color: #6e6d7a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+}
+.eventModal .eventModal-content .editEventButton {
+  margin-top: 1em;
+  padding: 0.5em;
+}
+.eventModal .eventModal-content .closeButton {
+  padding: 0;
+  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
+}
+.eventModal .eventModal-content .closeButton i {
+  margin-right: 0;
+}
+
+.modalVolunteerList {
+  list-style: inside;
 }
 
 .statistics-container {
