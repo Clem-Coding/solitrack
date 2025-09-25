@@ -59,8 +59,12 @@ select {
   cursor: pointer;
 }
 
+textarea {
+  font-family: $font-primary;
+}
+
 .ph {
-  font-size: 2rem;
+  vertical-align: middle;
 }
 
 .radio-inline {

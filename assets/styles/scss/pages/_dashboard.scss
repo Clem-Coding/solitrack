@@ -166,13 +166,111 @@
 
 // VOLUNTEER CALENDAR
 
-.date-time-group {
-  display: flex;
-  gap: 1em;
-  align-items: center;
+.eventModal {
+  border: none;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 
-  // @include respond-to(tablet) {
-  //   flex-direction: column;
-  //   align-items: stretch;
-  // }
+  .eventModal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5em;
+
+    h2 {
+      font-size: $f20;
+      text-align: left;
+    }
+
+    .datetime-picker {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+      font-size: $f14;
+    }
+
+    form {
+      gap: 1em;
+
+      .form-group.icon {
+        flex-direction: row;
+        align-items: center;
+
+        & i {
+          font-size: 1.5rem;
+        }
+      }
+
+      input {
+        padding: 0.4375em;
+      }
+
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+
+      .datetime-fieldset {
+        gap: 0.5em;
+
+        .datetime-picker {
+          display: flex;
+          gap: 1em;
+          align-items: center;
+          font-size: $f14;
+          span {
+            min-width: 1em;
+          }
+        }
+      }
+    }
+
+    .modalTime {
+      font-size: $f14;
+      color: $grey-velvet;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .editEventButton {
+      margin-top: 1em;
+      padding: 0.5em;
+    }
+
+    .closeButton {
+      padding: 0;
+      align-self: flex-end;
+      display: flex;
+      justify-content: flex-end;
+
+      & i {
+        margin-right: 0;
+      }
+    }
+  }
 }
+
+.modalVolunteerList {
+  list-style: inside;
+}
+
+// CUSTOM FULLCALENDAR STYLES
+
+// .fc-event-title,
+// .fc-event-title.fc-sticky,
+// .fc-event-time {
+//   color: $ink-night;
+// }
+// .fc .fc-button-primary {
+//   background-color: $ink-night;
+// }
+
+// .fc-event-title.fc-sticky {
+//   background-color: brown;
+//   font-weight: $semibold;
+// }
