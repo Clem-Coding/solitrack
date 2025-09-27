@@ -28,29 +28,44 @@
     <fieldset>
       <legend class="sr-only">Détails de l'événement</legend>
       <div class="form-group icon">
-      <i class="ph-fill ph-note"></i>
-      {{ form_label(editForm.description) }}
-      {{ form_widget(editForm.description) }}
+        <i class="ph-fill ph-note"></i>
+        {{ form_label(editForm.description) }}
+        {{ form_widget(editForm.description) }}
       </div>
       <div class="form-group icon">
-      <i class="ph-fill ph-map-pin"></i>
-      {{ form_label(editForm.location) }}
-      {{ form_widget(editForm.location) }}
+        <i class="ph-fill ph-map-pin"></i>
+        {{ form_label(editForm.location) }}
+        {{ form_widget(editForm.location) }}
       </div>
       <div class="form-group icon">
-      <i class="ph-fill ph-users"></i>
-      {{ form_label(editForm.required_volunteers) }}
-      {{ form_widget(editForm.required_volunteers) }}
+        <i class="ph-fill ph-users"></i>
+        {{ form_label(editForm.required_volunteers) }}
+        {{ form_widget(editForm.required_volunteers) }}
       </div>
     </fieldset>
     <fieldset>
       <legend class="sr-only">Gestion des bénévoles</legend>
-      {{ form_label(editForm.add_volunteer) }}
-      {{ form_widget(editForm.add_volunteer) }}
+      <div class="volunteer-management">
+        <div class="volunteer-list-section">
+          <h3>Bénévoles inscrits</h3>
+          <ul class="volunteer-list" aria-label="Liste des bénévoles inscrits"></ul>
+        </div>
+        <div class="volunteer-add-section">
+          <h3>Inscrire un bénévole</h3>
+          {{ form_label(editForm.add_volunteer) }}
+          {{ form_widget(editForm.add_volunteer) }}
+          <button type="button" class="volunteer-add-btn" title="Inscrire ce bénévole">Ajouter</button>
+        </div>
+        <p class="flash-error hide" role="note"></p>
+      </div>
+    </fieldset>
 
     <button class="button-primary" type="submit">Mettre à jour</button>
+
     {{ form_end(editForm) }}
 
-    <button class="deleteEventButton btn-danger" type="button">Supprimer l'événement</button>
+    <button class="deleteEventButton button-secondary" type="button">
+      <i class="ph ph-trash"></i>Supprimer l'événement
+    </button>
   </div>
 </dialog>

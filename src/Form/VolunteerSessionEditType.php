@@ -27,7 +27,8 @@ class VolunteerSessionEditType extends VolunteerSessionType
             'choice_label' => 'firstName',
             'required' => false,
             'label' => 'Ajouter un bénévole',
-            'mapped' => false, // si ce n'est pas une propriété de l'entité
+            'label_attr' => ['class' => 'sr-only'],
+            'mapped' => false,
         ]);
     }
 

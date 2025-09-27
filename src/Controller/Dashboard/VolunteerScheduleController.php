@@ -105,15 +105,19 @@ class VolunteerScheduleController extends AbstractController
     #[Route('/sessions', name: 'get_all_sessions')]
     public function getAllSessions(EntityManagerInterface $em): JsonResponse
     {
-        $sessions = $em->getRepository(VolunteerSession::class)->findAll();
-
+        $sessions = $em->getRepository(VolunteerSession::class)->findBy(['isCancelled' => false]);
         $data = array_map(function ($s) {
 
             $firstNames = [];
+            $volunteerIds = [];
+
             foreach ($s->getVolunteerRegistrations() as $registration) {
-                $user = $registration->getUser();
-                if ($user) {
-                    $firstNames[] = $user->getFirstName();
+                if ($registration->getStatus() !== 'cancelled_by_admin') {
+                    $user = $registration->getUser();
+                    if ($user) {
+                        $firstNames[] = $user->getFirstName();
+                        $volunteerIds[] = $user->getId();
+                    }
                 }
             }
 
@@ -129,10 +133,9 @@ class VolunteerScheduleController extends AbstractController
                 'registeredVolunteers' => count($firstNames),
                 'requiredVolunteers' => $s->getRequiredVolunteers(),
                 'volunteerFirstNames' => $firstNames,
+                "volunteerIds" => $volunteerIds,
             ];
         }, $sessions);
-
-        dump($data);
 
         return $this->json($data);
     }
@@ -141,17 +144,56 @@ class VolunteerScheduleController extends AbstractController
     public function editEvent(VolunteerSession $session, Request $request, EntityManagerInterface $em): JsonResponse
     {
         $form = $this->createForm(VolunteerSessionEditType::class, $session);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer les champs date et heure séparés
+            // Gére l'ajout des bénévoles
+            $volunteerIdsToAdd = explode(',', $request->request->get('volunteers_to_add', ''));
+            foreach ($volunteerIdsToAdd as $volunteerId) {
+                if ($volunteerId) {
+                    $user = $em->getRepository(User::class)->find($volunteerId);
+                    if ($user) {
+                        $existingRegistration = $em->getRepository(VolunteerRegistration::class)
+                            ->findOneBy(['session' => $session, 'user' => $user]);
+                        if ($existingRegistration) {
+                            if ($existingRegistration->getStatus() === 'cancelled_by_admin') {
+                                $existingRegistration->setStatus('registered');
+                                $existingRegistration->setUpdatedAt(new \DateTimeImmutable());
+                                $em->persist($existingRegistration);
+                            }
+                        } else {
+                            $registration = new VolunteerRegistration();
+                            $registration->setSession($session);
+                            $registration->setUser($user);
+                            $registration->setStatus('registered');
+                            $registration->setRegisteredAt(new \DateTimeImmutable());
+                            $registration->setUpdatedAt(new \DateTimeImmutable());
+                            $em->persist($registration);
+                        }
+                    }
+                }
+            }
+
+            // Gére la suppression des bénévoles
+            $volunteerIdsToRemove = explode(',', $request->request->get('volunteers_to_remove', ''));
+            foreach ($volunteerIdsToRemove as $volunteerId) {
+                if ($volunteerId) {
+                    $registration = $em->getRepository(VolunteerRegistration::class)
+                        ->findOneBy(['session' => $session, 'user' => $volunteerId]);
+                    if ($registration) {
+                        $registration->setStatus('cancelled_by_admin');
+                        $registration->setUpdatedAt(new \DateTimeImmutable());
+                        $em->persist($registration);
+                    }
+                }
+            }
+
+            // Gère la "fusion" du datetime
             $fromDate = $form->get('from_date')->getData();
             $fromTime = $form->get('from_time')->getData();
             $toDate = $form->get('to_date')->getData();
             $toTime = $form->get('to_time')->getData();
 
-            // Fusionne la date et l'heure pour une datetime complète
             if ($fromDate && $fromTime) {
                 $session->setStartDatetime(\DateTimeImmutable::createFromFormat(
                     'Y-m-d H:i',
@@ -173,11 +215,16 @@ class VolunteerScheduleController extends AbstractController
         return new JsonResponse(['success' => false, 'errors' => (string) $form->getErrors(true, false)], 400);
     }
 
-    #[Route('/schedule/{id}/delete', name: 'app_dashboard_schedule_delete', methods: ['DELETE'])]
+    #[Route('/schedule/{id}/cancel', name: 'app_dashboard_schedule_delete', methods: ['DELETE'])]
     public function deleteEvent(VolunteerSession $session, EntityManagerInterface $em): JsonResponse
     {
         if ($session) {
-            $em->remove($session);
+            foreach ($session->getVolunteerRegistrations() as $registration) {
+                $registration->setStatus('cancelled_by_admin');
+                $em->persist($registration);
+            }
+            $session->setIsCancelled(true);
+            $em->persist($session);
             $em->flush();
             return new JsonResponse(['success' => true]);
         }

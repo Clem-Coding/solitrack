@@ -194,12 +194,24 @@
     form {
       gap: 1em;
 
+      select {
+        padding: 0.4375em;
+      }
+
       .form-group.icon {
+        display: flex;
         flex-direction: row;
         align-items: center;
+        gap: 1em;
 
         & i {
           font-size: 1.5rem;
+        }
+
+        textarea,
+        select {
+          flex: 1;
+          width: 100%;
         }
       }
 
@@ -257,6 +269,44 @@
 
 .modalVolunteerList {
   list-style: inside;
+}
+
+.volunteer-management {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+
+  .flash-error {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  h3 {
+    text-align: center;
+    margin: 0.5em 0;
+  }
+  .volunteer-list {
+    list-style: inside;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .volunteer-add-section {
+    button {
+      padding: 0.4em;
+      background-color: $emerald-sea;
+      color: $cloud;
+      margin-top: 1em;
+    }
+
+    & select {
+      width: 100%;
+      padding: 0.4em;
+    }
+  }
 }
 
 // CUSTOM FULLCALENDAR STYLES

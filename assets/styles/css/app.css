@@ -1447,12 +1447,22 @@ form textarea:focus {
 .eventModal .eventModal-content form {
   gap: 1em;
 }
+.eventModal .eventModal-content form select {
+  padding: 0.4375em;
+}
 .eventModal .eventModal-content form .form-group.icon {
+  display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 1em;
 }
 .eventModal .eventModal-content form .form-group.icon i {
   font-size: 1.5rem;
+}
+.eventModal .eventModal-content form .form-group.icon textarea,
+.eventModal .eventModal-content form .form-group.icon select {
+  flex: 1;
+  width: 100%;
 }
 .eventModal .eventModal-content form input {
   padding: 0.4375em;
@@ -1498,6 +1508,37 @@ form textarea:focus {
 
 .modalVolunteerList {
   list-style: inside;
+}
+
+.volunteer-management {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+}
+.volunteer-management .flash-error {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.volunteer-management h3 {
+  text-align: center;
+  margin: 0.5em 0;
+}
+.volunteer-management .volunteer-list {
+  list-style: inside;
+}
+.volunteer-management .volunteer-list li {
+  display: flex;
+  justify-content: space-between;
+}
+.volunteer-management .volunteer-add-section button {
+  padding: 0.4em;
+  background-color: #00857a;
+  color: #ffffff;
+  margin-top: 1em;
+}
+.volunteer-management .volunteer-add-section select {
+  width: 100%;
+  padding: 0.4em;
 }
 
 .statistics-container {

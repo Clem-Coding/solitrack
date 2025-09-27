@@ -65,7 +65,7 @@ class VolunteerSessionType extends AbstractType
                 'label' => 'Nombre de bénévoles requis',
                 'label_attr' => ['class' => 'sr-only'],
                 'required' => true,
-                'attr' => ['placeholder' => 'Ajouter un nombre de bénévoles'],
+                'attr' => ['placeholder' => 'Nombre de bénévoles souhaités'],
             ])
             ->add('recurrence', ChoiceType::class, [
                 'choices' => [
