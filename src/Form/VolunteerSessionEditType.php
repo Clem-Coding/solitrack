@@ -29,6 +29,10 @@ class VolunteerSessionEditType extends VolunteerSessionType
             'label' => 'Ajouter un bénévole',
             'label_attr' => ['class' => 'sr-only'],
             'mapped' => false,
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {
+            return $er->createQueryBuilder('u')
+                ->orderBy('u.firstName', 'ASC');
+            },
         ]);
     }
 

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Mon planing de bénévolat
+{% endblock %}
+
+{% block content %}
+  <h1>Mon planning de bénévolat</h1>
+  <section><h2 class="sr-only">Les événements à venir</h2></section>
+  <section>
+    <h2 class="sr-only">Le planning des inscriptions</h2>
+    <div id="calendar" data-user-id="{{ app.user.id }}" data-user-firstname="{{ app.user.firstname }}"></div>
+  </section>
+  {% include 'user/partials/event_summary_modal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="{{ asset('js/user-volunteer-calendar.js') }}" type="module"></script>
+{% endblock %}

@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\VolunteerRegistration;
+use App\Entity\VolunteerSession;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,6 +32,24 @@ class VolunteerRegistrationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findRegistrationBySessionAndUser(VolunteerSession $session, User $user): ?VolunteerRegistration
+    {
+        return $this->createQueryBuilder('vr')
+            ->andWhere('vr.session = :session')
+            ->andWhere('vr.user = :user')
+            ->andWhere('vr.status = :status')
+            ->setParameter('session', $session)
+            ->setParameter('user', $user)
+            ->setParameter('status', 'registered')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
+
+
+
 
     // public function findRegistrationsByUser($user): array
     // {
