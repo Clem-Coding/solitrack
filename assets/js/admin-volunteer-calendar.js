@@ -186,6 +186,7 @@ function getCurrentVolunteerCount(volunteerIds, volunteersToAdd, volunteersToRem
 
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
+  const isMobile = window.innerWidth < 768;
 
   window.volunteersToAdd = window.volunteersToAdd || [];
   window.volunteersToRemove = window.volunteersToRemove || [];
@@ -203,18 +204,13 @@ document.addEventListener("DOMContentLoaded", function () {
       right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
 
-    // headerToolbar:
-    //   window.innerWidth < 768
-    //     ? {
-    //         left: "prev,next",
-    //         center: "title",
-    //         right: "dayGridMonth,timeGridWeek,timeGridDay",
-    //       }
-    //     : {
-    //         left: "prev,next today",
-    //         center: "title",
-    //         right: "dayGridMonth,timeGridWeek,timeGridDay",
-    //       },
+    views: {
+      ...(isMobile && {
+        timeGridWeek: {
+          dayHeaderFormat: { weekday: "short", day: "numeric", omitCommas: true },
+        },
+      }),
+    },
 
     buttonText: {
       today: "Aujourd'hui",
@@ -474,9 +470,3 @@ document.addEventListener("DOMContentLoaded", function () {
   submitEventForm(calendar);
   updateEventForm(calendar);
 });
-
-// Glisser-déposer des événements
-// editable: true,
-
-//DEPLACEMENT DES ÉVÉNEMENTS DANS LE CALENDRIER
-// eventDrop: function (info) {},

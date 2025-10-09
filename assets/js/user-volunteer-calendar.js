@@ -51,6 +51,7 @@ function bindCloseButton(modalSelector, buttonSelector) {
 // =======================
 document.addEventListener("DOMContentLoaded", function () {
   const calendarEl = document.getElementById("calendar");
+  const isMobile = window.innerWidth < 768;
   if (!calendarEl) return;
 
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -63,6 +64,15 @@ document.addEventListener("DOMContentLoaded", function () {
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
+
+    views: {
+      ...(isMobile && {
+        timeGridWeek: {
+          dayHeaderFormat: { weekday: "short", day: "numeric", omitCommas: true },
+        },
+      }),
+    },
+
     buttonText: {
       today: "Aujourd'hui",
       month: "Mois",
@@ -70,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
       day: "Jour",
     },
     events: "/mon-compte/benevolat/sessions",
+
     eventDidMount: function (info) {
       const registered = info.event.extendedProps.registeredVolunteers;
       const required = info.event.extendedProps.requiredVolunteers;

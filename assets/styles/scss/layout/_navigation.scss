@@ -39,7 +39,12 @@
 }
 
 .navbar-toggle {
+  width: auto;
   padding: 0;
+
+  & i {
+    font-size: 2rem;
+  }
 }
 
 main.container {
@@ -89,7 +94,7 @@ main.container {
 .dashboard-link {
   display: flex;
   align-items: center;
-
+  width: auto;
   i {
     margin-left: 0.5em;
   }
