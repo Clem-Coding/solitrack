@@ -90,9 +90,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const calendarElUserId = calendarEl.getAttribute("data-user-id");
       const currentUserId = calendarElUserId ? parseInt(calendarElUserId) : null;
 
-      // Si l'utilisateur est inscrit, couleur jaune vif
+      //Gestion des couleurs de l'événement en fonction du statut d'inscription
       if (currentUserId && volunteerIds.includes(currentUserId)) {
-        console.log(currentUserId);
         info.el.style.backgroundColor = USER_REGISTERED;
         info.el.style.borderColor = USER_REGISTERED;
       } else {
@@ -159,9 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const endTime = end ? end.toLocaleTimeString("fr-FR", optionsTime) : "";
       modalTime.innerHTML = `<i class="ph ph-clock"></i>${dateStr} ${startTime} - ${endTime}`;
 
+      // création du bouton d'inscription/désinscription uniquement pour les événements futurs
       let toggleRegistrationBtn;
       if (!isEventPast) {
-        console.log("Event is upcoming or ongoing");
         toggleRegistrationBtn = document.createElement("button");
         toggleRegistrationBtn.className = "toggleRegistrationBtn button-primary";
         toggleRegistrationBtn.setAttribute("data-session-id", info.event.id);

@@ -19,7 +19,7 @@ async function submitEventForm(calendar) {
     const data = await response.json();
 
     if (data.success) {
-      calendar.refetchEvents(); // recharge depuis /api/events
+      calendar.refetchEvents();
       form.reset();
       document.querySelector(".createEventModal").close();
     } else {
@@ -57,15 +57,13 @@ async function updateEventForm(calendar) {
       const data = await response.json();
 
       if (data.success) {
-        calendar.refetchEvents(); // Recharge la grille
+        calendar.refetchEvents();
         form.reset();
         editModal.close();
       } else {
         alert("Erreur lors de la modification");
       }
     } catch (error) {
-      //pour test, à enlever ensuite
-      alert("Erreur réseau");
       console.error(error);
     }
   });
@@ -347,10 +345,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const volunteerIds = info.event.extendedProps.volunteerIds;
       const registeredCount = volunteerIds.length;
       const requiredCount = info.event.extendedProps.requiredVolunteers;
-      console.log({
-        "le nombres de bénévoles inscrits": registeredCount,
-        "le noombre de bénévoles recquis": requiredCount,
-      });
 
       editVolunteerList.innerHTML = "";
 
@@ -406,7 +400,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         //INSCRIRE UN BENEVOLE
-
         const volunteerAddBtn = editModal.querySelector(".volunteer-add-btn");
 
         volunteerAddBtn.onclick = () => {
@@ -421,9 +414,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.volunteersToRemove
           );
 
-          console.log("le current count", currentCount);
-
-          // Empêche l’ajout si le nombre requis est atteint
           if (currentCount >= requiredCount) {
             errorPara.style.display = "block";
             errorPara.textContent = "Le nombre de bénévoles requis est déjà atteint.";
@@ -448,8 +438,6 @@ document.addEventListener("DOMContentLoaded", function () {
           window.volunteersToAdd.push(volunteerId);
           window.volunteersToRemove = window.volunteersToRemove.filter((id) => id !== volunteerId);
           addVolunteerToUI(volunteerName, volunteerId, info.event.id);
-          // select.options[select.selectedIndex].disabled = true;
-          // select.value = "";
         };
       };
 
