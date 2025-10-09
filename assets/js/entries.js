@@ -1,4 +1,4 @@
-import { formatInputValue } from "./utils.js";
+import { formatInputValue } from "./helpers/utils.js";
 import confetti from "canvas-confetti";
 
 document.addEventListener("DOMContentLoaded", () => {

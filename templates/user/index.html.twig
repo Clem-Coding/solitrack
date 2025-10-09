@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="sections-container two-sections user-sections-container">
+  <div class="sections-container three-sections user-sections-container">
     <section class="card">
       <h2>Hello {{ app.user.firstName }} 👋!</h2>
       <p>
@@ -28,6 +28,32 @@
         <div class="hidden" id="inWeight" data-value="{{ entry_weight }}"></div>
         <div class="hidden" id="outWeight" data-value="{{ out_weight }}"></div>
       {% endif %}
+    </section>
+
+    <section class="card">
+      <h2>Mes prochains créneaux de bénévolat</h2>
+      {% if (upcoming_sessions|length) > 0 %}
+        <ul class="volunteer-sessions-list">
+          {% for session in upcoming_sessions %}
+            <li class="volunteer-session">
+              <p class="bold">{{ session.session.title }}</p>
+              {% if session.session.location %}
+                <p><i class="ph-fill ph-map-pin"></i> {{ session.session.location }}</p>
+              {% endif %}
+              <p>
+                <i class="ph-fill ph-clock"></i> {{ session.session.startDatetime|date('d/m/Y') }} |
+                {{ session.session.startDatetime|date('H:i') }} - {{ session.session.endDatetime|date('H:i') }}
+              </p>
+              {% if session.session.description %}
+                <p><i class="ph-fill ph-note"></i> {{ session.session.description }}</p>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Aucun créneau de bénévolat à venir.</p>
+      {% endif %}
+      <a class="see-calendar-btn" href="{{ path('app_user_benevolat') }}">Voir le planning</a>
     </section>
   </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 import L from "leaflet";
 import "leaflet.fullscreen";
+import { POPUP_COLOR_PRIMARY } from "./helpers/constants.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const isMobile = window.innerWidth <= 768;
@@ -41,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const topLayer = L.layerGroup().addTo(map);
   const youAreHereMarker = L.marker(plouasneLatLon, { icon: pinIcon, zIndexOffset: 1000 })
     .addTo(topLayer)
-    .bindPopup(`<span style="font-size:1rem;color: #080222;;font-weight:500;">Vous êtes ici</span>`);
+    .bindPopup(`<span style="font-size:1rem;color: ${POPUP_COLOR_PRIMARY};font-weight:500;">Vous êtes ici</span>`);
 
   youAreHereMarker.openPopup();
 

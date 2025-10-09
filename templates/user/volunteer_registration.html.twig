@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Mon planing de bénévolat
+{% endblock %}
+
+{% block content %}
+  <h1>Le planning de bénévolat</h1>
+  <section><h2 class="sr-only">Les événements à venir</h2></section>
+  <section>
+    <h2 class="sr-only">Le planning des inscriptions</h2>
+    <div id="calendar" data-user-id="{{ app.user.id }}" data-user-firstname="{{ app.user.firstname }}"></div>
+  </section>
+  {% include 'user/partials/event_summary_modal.html.twig' %}
+
+  <section class="user-guide">
+    <p>• Les créneaux en vert sont disponibles. Cliquez dessus pour vous y inscrire</p>
+    <p>
+      • Les créneaux en jaune sont ceux auxquels vous êtes inscrit·e. Cliquez dessus pour voir les détails ou vous
+      désinscrire.
+    </p>
+    <p>• Les créneaux en rouge sont complets. Vous ne pouvez pas vous y inscrire</p>
+  </section>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="{{ asset('js/user-volunteer-calendar.js') }}" type="module"></script>
+{% endblock %}

@@ -33,7 +33,7 @@
   border-radius: 4px;
   padding: 0.5em 1em;
   background-color: $emerald-sea;
-  background-color: mix(white, $emerald-sea, 90%);
+  background-color: mix(white, $emerald-sea, 92%);
 
   .payment-details-container {
     flex: 1;
@@ -50,11 +50,6 @@
       padding: 0.2em 0.5em;
       width: 5em;
     }
-  }
-
-  .delete-button {
-    width: auto;
-    padding: 0;
   }
 }
 

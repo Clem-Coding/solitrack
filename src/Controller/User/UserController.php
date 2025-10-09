@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 
 use App\Entity\User;
@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\UserType;
 use App\Repository\DonationRepository;
 use App\Repository\SalesItemRepository;
+use App\Repository\VolunteerRegistrationRepository;
 use App\Service\MonthService;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -30,14 +31,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class UserController extends AbstractController
 {
     #[Route('/accueil', name: 'app_user_homepage')]
-    public function index(MonthService $monthService, DonationRepository $donationRepository, SalesItemRepository $salesItemRepository): Response
-    {
+    public function index(
+        MonthService $monthService,
+        DonationRepository $donationRepository,
+        SalesItemRepository $salesItemRepository,
+        VolunteerRegistrationRepository $volunteerRegistrationRepository,
+        #[CurrentUser] User $user,
+    ): Response {
 
 
         $entryWeight = $donationRepository->findTotalWeightForCurrentMonth();
         $outWeight = $salesItemRepository->findTotalWeightForCurrentMonth();
-
-
+        $upcomingSessions = $volunteerRegistrationRepository->findUpcomingSessionsByUser($user);
         $currentMonth = date('n');
         $statsTitle = $monthService->getMonthStatsTitle($currentMonth);
 
@@ -46,6 +51,7 @@ final class UserController extends AbstractController
             'stats_title' => $statsTitle,
             'entry_weight' => $entryWeight,
             'out_weight' => $outWeight,
+            'upcoming_sessions' => $upcomingSessions,
         ]);
     }
 

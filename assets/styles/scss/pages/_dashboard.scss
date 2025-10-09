@@ -78,9 +78,11 @@
 }
 
 .user-guide {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+  @include respond-to(desktop) {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   p {
     font-style: italic;
@@ -162,4 +164,191 @@
 .radio-option:has(input[type="radio"]:checked) {
   background-color: mix(white, $emerald-sea, 90%);
   border-color: $emerald-sea;
+}
+
+// VOLUNTEER CALENDAR
+
+.eventModal {
+  border: none;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+
+  .eventModal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.5em;
+
+    h2 {
+      font-size: $f20;
+      text-align: left;
+    }
+
+    .datetime-picker {
+      display: flex;
+      gap: 1em;
+      align-items: center;
+      font-size: $f14;
+    }
+
+    form {
+      gap: 1em;
+
+      select {
+        padding: 0.4375em;
+      }
+
+      .form-group.icon {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1em;
+
+        & i {
+          font-size: 1.5rem;
+        }
+
+        textarea,
+        select {
+          flex: 1;
+          width: 100%;
+        }
+      }
+
+      input {
+        padding: 0.4375em;
+      }
+
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+
+      .datetime-fieldset {
+        gap: 0.5em;
+
+        .datetime-picker {
+          display: flex;
+          gap: 1em;
+          align-items: center;
+          font-size: $f14;
+          span {
+            min-width: 1em;
+          }
+        }
+      }
+    }
+
+    .modalTime {
+      font-size: $f14;
+      color: $grey-velvet;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .editEventButton {
+      margin-top: 1em;
+      padding: 0.5em;
+    }
+
+    .closeButton {
+      padding: 0;
+      align-self: flex-end;
+      display: flex;
+      justify-content: flex-end;
+
+      & i {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.modalVolunteerList {
+  list-style: inside;
+}
+
+.volunteer-management {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2em;
+
+  .flash-error {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  h3 {
+    text-align: center;
+    margin: 0.5em 0;
+  }
+  .volunteer-list {
+    list-style: inside;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .volunteer-add-section {
+    button {
+      padding: 0.4em;
+      background-color: $emerald-sea;
+      color: $cloud;
+      margin-top: 1em;
+    }
+
+    & select {
+      width: 100%;
+      padding: 0.4em;
+    }
+  }
+}
+
+// CUSTOM FULLCALENDAR STYLES
+
+.fc-today-button {
+  background-color: $grey-velvet !important;
+  opacity: 1 !important;
+}
+
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
+
+.fc-event-title {
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: $ink-night;
+}
+
+.fc-event-time {
+  font-weight: $semi-bold !important;
+  color: $ink-night;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .fc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5em;
+  }
+
+  .fc-toolbar-chunk:nth-child(1) {
+    order: 2;
+  }
+
+  .fc-toolbar-chunk:nth-child(2) {
+    order: 1;
+  }
+
+  .fc-toolbar-chunk:nth-child(3) {
+    order: 3;
+  }
 }

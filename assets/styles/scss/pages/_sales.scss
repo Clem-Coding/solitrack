@@ -1,4 +1,4 @@
-.input-quantity-wrapper.flex {
+.input-quantity-wrapper {
   display: flex;
   align-items: center;
   background-color: $coral;
@@ -8,6 +8,14 @@
   & input,
   button {
     color: $cloud;
+  }
+
+  button {
+    width: auto;
+    & i {
+      margin-right: 0;
+      font-size: $f24;
+    }
   }
 }
 

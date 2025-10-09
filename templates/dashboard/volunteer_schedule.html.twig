@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Gestion du planning de bénévolat
+{% endblock %}
+
+{% block content %}
+  <h1>Gestion du planning de bénévolat</h1>
+
+  <div id="calendar"></div>
+  {% include 'dashboard/partials/create_event_modal.html.twig' %}
+  {% include 'dashboard/partials/event_summary_modal.html.twig' %}
+  {% include 'dashboard/partials/edit_event_modal.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="{{ asset('js/admin-volunteer-calendar.js') }}" type="module"></script>
+{% endblock %}
+
+{# {% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('vendor/@fullcalendar/daygrid/main.css') }}" />
+{% endblock %} #}

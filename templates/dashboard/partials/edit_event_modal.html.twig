@@ -1,0 +1,71 @@
+<dialog class="eventModal editEventModal">
+  <div class="eventModal-content">
+    <button class="closeButton"><i class="ph ph-x"></i></button>
+    {{ form_start(editForm) }}
+    <div class="form-group">
+      {{ form_label(editForm.title) }}
+      {{ form_widget(editForm.title) }}
+    </div>
+
+    <fieldset class="datetime-fieldset">
+      <legend class="sr-only">Sélection des dates</legend>
+      <div class="datetime-picker">
+        <span>De</span>
+        {{ form_label(editForm.from_date) }}
+        {{ form_widget(editForm.from_date) }}
+        {{ form_label(editForm.from_time) }}
+        {{ form_widget(editForm.from_time) }}
+      </div>
+      <div class="datetime-picker">
+        <span>À</span>
+        {{ form_label(editForm.to_date) }}
+        {{ form_widget(editForm.to_date) }}
+        {{ form_label(editForm.to_time) }}
+        {{ form_widget(editForm.to_time) }}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="sr-only">Détails de l'événement</legend>
+      <div class="form-group icon">
+        <i class="ph-fill ph-note"></i>
+        {{ form_label(editForm.description) }}
+        {{ form_widget(editForm.description) }}
+      </div>
+      <div class="form-group icon">
+        <i class="ph-fill ph-map-pin"></i>
+        {{ form_label(editForm.location) }}
+        {{ form_widget(editForm.location) }}
+      </div>
+      <div class="form-group icon">
+        <i class="ph-fill ph-users"></i>
+        {{ form_label(editForm.required_volunteers) }}
+        {{ form_widget(editForm.required_volunteers) }}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend class="sr-only">Gestion des bénévoles</legend>
+      <div class="volunteer-management">
+        <div class="volunteer-list-section">
+          <h3>Bénévoles inscrits</h3>
+          <ul class="volunteer-list" aria-label="Liste des bénévoles inscrits"></ul>
+        </div>
+        <div class="volunteer-add-section">
+          <h3>Inscrire un bénévole</h3>
+          {{ form_label(editForm.add_volunteer) }}
+          {{ form_widget(editForm.add_volunteer) }}
+          <button type="button" class="volunteer-add-btn" title="Inscrire ce bénévole">Ajouter</button>
+        </div>
+        <p class="flash-error hide" role="note"></p>
+      </div>
+    </fieldset>
+
+    <button class="button-primary" type="submit">Mettre à jour</button>
+
+    {{ form_end(editForm) }}
+
+    <button class="deleteEventButton button-secondary" type="button">
+      <i class="ph ph-trash"></i>Supprimer l'événement
+    </button>
+  </div>
+</dialog>

@@ -1,4 +1,4 @@
-import { formatNumber, formatInputValue } from "./utils.js";
+import { formatNumber, formatInputValue } from "./helpers/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const countedBalanceEl = document.querySelector("#cash_register_closure_countedBalance");

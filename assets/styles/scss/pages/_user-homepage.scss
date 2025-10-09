@@ -7,4 +7,15 @@
       margin: auto;
     }
   }
+
+  .volunteer-sessions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+}
+
+.see-calendar-btn {
+  @extend button;
+  @extend .button-primary;
 }

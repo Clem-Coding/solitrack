@@ -48,10 +48,10 @@
             <nav class="navbar">
               <h2 class="sr-only">Menu principal</h2>
               <ul class="navbar-menu">
-                <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
-                <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
-                <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
                 {% if is_granted('ROLE_VOLUNTEER_PLUS') %}
+                  <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
+                  <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
+                  <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
                   <li class="dropdown">
                     <button class="dashboard-link" aria-label="Ouvrir le sous-menu">
                       Le tableau de bord <i class="ph-bold ph-caret-down caret-icon"></i>
@@ -86,6 +86,11 @@
                             <i class="ph ph-users-three"></i>Gestion des utilisateurs
                           </a>
                         </li>
+                        <li>
+                          <a href="{{ path('app_dashboard_volunteer_schedule') }}">
+                            <i class="ph ph-calendar"></i>Planification du bénévolat
+                          </a>
+                        </li>
                       {% endif %}
                     </ul>
                   </li>
@@ -100,6 +105,7 @@
             <h2 class="sr-only">Menu utilisateur</h2>
             <i class="ph-light ph-user-circle-check" id="user-icon"></i>
             <ul class="user-menu">
+              <li><a href="{{ path('app_user_benevolat') }}">Mon planning</a></li>
               <li><a href="{{ path('app_user_account') }}">Mon compte</a></li>
               <li>
                 <a href="{{ path('app_logout') }}" id="logout-link"><i class="ph ph-sign-out"></i> Se déconnecter</a>

@@ -1,4 +1,4 @@
-import { formatNumber, formatInputValue } from "./utils.js";
+import { formatNumber, formatInputValue } from "./helpers/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // CONSTANTES
