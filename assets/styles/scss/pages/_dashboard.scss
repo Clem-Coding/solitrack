@@ -311,16 +311,42 @@
 
 // CUSTOM FULLCALENDAR STYLES
 
-// .fc-event-title,
-// .fc-event-title.fc-sticky,
-// .fc-event-time {
-//   color: $ink-night;
-// }
-// .fc .fc-button-primary {
-//   background-color: $ink-night;
-// }
+.fc-today-button {
+  background-color: $grey-velvet !important;
+  opacity: 1 !important;
+}
 
-// .fc-event-title.fc-sticky {
-//   background-color: brown;
-//   font-weight: $semibold;
-// }
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
+
+.fc-event-title {
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: $ink-night;
+}
+
+.fc-event-time {
+  font-weight: $semi-bold !important;
+  color: $ink-night;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .fc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5em;
+  }
+
+  .fc-toolbar-chunk:nth-child(1) {
+    order: 2;
+  }
+
+  .fc-toolbar-chunk:nth-child(2) {
+    order: 1;
+  }
+
+  .fc-toolbar-chunk:nth-child(3) {
+    order: 3;
+  }
+}

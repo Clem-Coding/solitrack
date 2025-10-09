@@ -1541,6 +1541,42 @@ form textarea:focus {
   padding: 0.4em;
 }
 
+.fc-today-button {
+  background-color: #6e6d7a !important;
+  opacity: 1 !important;
+}
+
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
+
+.fc-event-title {
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: #080222;
+}
+
+.fc-event-time {
+  font-weight: 600 !important;
+  color: #080222;
+}
+
+@media (max-width: 480px) {
+  .fc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5em;
+  }
+  .fc-toolbar-chunk:nth-child(1) {
+    order: 2;
+  }
+  .fc-toolbar-chunk:nth-child(2) {
+    order: 1;
+  }
+  .fc-toolbar-chunk:nth-child(3) {
+    order: 3;
+  }
+}
 .statistics-container {
   display: flex;
   flex-direction: column;
