@@ -100,8 +100,14 @@ async function deleteCalendarEvent(eventId, eventObj, modal) {
 function bindCloseButton(modalSelector, buttonSelector) {
   const modal = document.querySelector(modalSelector);
   const closeButton = document.querySelector(buttonSelector);
+
   if (modal && closeButton) {
     closeButton.onclick = () => modal.close();
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.close();
+      }
+    });
   }
 }
 
