@@ -121,6 +121,7 @@ button {
 .btn-danger {
   background-color: $coral;
   color: $cloud;
+  font-weight: $bold;
 
   &:hover {
     background-color: darken($coral, 10%);

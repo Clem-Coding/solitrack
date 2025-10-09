@@ -29,6 +29,7 @@ class VolunteerRegistrationRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->setParameter('status', 'registered')
             ->setParameter('today', new \DateTimeImmutable('today'))
+            ->orderBy('s.startDatetime', 'ASC')
             ->getQuery()
             ->getResult();
     }

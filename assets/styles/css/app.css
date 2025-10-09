@@ -8,7 +8,6 @@ a {
 a:focus,
 a:hover,
 a:active {
-  color: inherit;
   text-decoration: none;
 }
 
@@ -36,7 +35,7 @@ ol {
   padding: 0;
 }
 
-button {
+button, .see-calendar-btn {
   padding: 0;
   font-size: inherit;
   font-family: inherit;
@@ -293,7 +292,7 @@ textarea {
     margin: auto;
   }
 }
-button {
+button, .see-calendar-btn {
   text-align: center;
   border-radius: 4px;
   padding: 0.7em;
@@ -302,17 +301,17 @@ button {
   justify-content: center;
   width: 100%;
 }
-button i {
+button i, .see-calendar-btn i {
   font-size: 1.375rem;
   margin-right: 0.3em;
 }
 
-.button-primary {
+.button-primary, .see-calendar-btn {
   background-color: #080222;
   color: #ffffff;
   font-weight: 700;
 }
-.button-primary:hover {
+.button-primary:hover, .see-calendar-btn:hover {
   background-color: rgba(0, 133, 122, 0.8);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
@@ -408,6 +407,7 @@ button i {
 .btn-danger {
   background-color: #eb5a47;
   color: #ffffff;
+  font-weight: 700;
 }
 .btn-danger:hover {
   background-color: rgb(230, 48.75, 25);
@@ -1099,13 +1099,14 @@ form textarea:focus {
   width: 100%;
 }
 .input-quantity-wrapper input,
-.input-quantity-wrapper button {
+.input-quantity-wrapper button,
+.input-quantity-wrapper .see-calendar-btn {
   color: #ffffff;
 }
-.input-quantity-wrapper button {
+.input-quantity-wrapper button, .input-quantity-wrapper .see-calendar-btn {
   width: auto;
 }
-.input-quantity-wrapper button i {
+.input-quantity-wrapper button i, .input-quantity-wrapper .see-calendar-btn i {
   margin-right: 0;
   font-size: 1.5rem;
 }
@@ -1203,7 +1204,7 @@ form textarea:focus {
     flex-direction: row;
   }
 }
-.buttons-wrapper button {
+.buttons-wrapper button, .buttons-wrapper .see-calendar-btn {
   padding: 0.7em;
   width: 100%;
 }
@@ -1530,7 +1531,7 @@ form textarea:focus {
   display: flex;
   justify-content: space-between;
 }
-.volunteer-management .volunteer-add-section button {
+.volunteer-management .volunteer-add-section button, .volunteer-management .volunteer-add-section .see-calendar-btn {
   padding: 0.4em;
   background-color: #00857a;
   color: #ffffff;
@@ -1646,6 +1647,11 @@ form textarea:focus {
 .user-sections-container .graph-container .graph {
   max-width: 100%;
   margin: auto;
+}
+.user-sections-container .volunteer-sessions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .section-404-container {
