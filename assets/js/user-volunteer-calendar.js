@@ -97,9 +97,12 @@ document.addEventListener("DOMContentLoaded", function () {
       let volunteerIds = info.event.extendedProps.volunteerIds;
       const currentUserId = parseInt(calendarEl.getAttribute("data-user-id"));
       const currentUserFirstName = calendarEl.getAttribute("data-user-firstname");
+      const now = new Date();
+      const eventEnd = info.event.end;
 
       // Etats
       const isEventFull = volunteerIds.length >= requiredVolunteers;
+      const isEventPast = eventEnd < now;
       let isUserRegistered = volunteerIds.includes(currentUserId);
       const showFullMessage = isEventFull && !isUserRegistered;
 
@@ -143,16 +146,23 @@ document.addEventListener("DOMContentLoaded", function () {
       const endTime = end ? end.toLocaleTimeString("fr-FR", optionsTime) : "";
       modalTime.innerHTML = `<i class="ph ph-clock"></i>${dateStr} ${startTime} - ${endTime}`;
 
+      let toggleRegistrationBtn;
+      if (!isEventPast) {
+        console.log("Event is upcoming or ongoing");
+        toggleRegistrationBtn = document.createElement("button");
+        toggleRegistrationBtn.className = "toggleRegistrationBtn button-primary";
+        toggleRegistrationBtn.setAttribute("data-session-id", info.event.id);
+        summaryModal.querySelector(".eventModal-content").appendChild(toggleRegistrationBtn);
+      }
+
       if (showFullMessage) {
         // ===========================
-        // CAS : ÉVÉNEMENT COMPLET ET UTILISATEUR NON INSCRIT
+        // CAS : ÉVÉNEMENT COMPLET
         // ===========================
 
-        // Cacher la liste des bénévoles et le compteur
         registeredVolunteers.style.display = "none";
         volunteerList.style.display = "none";
 
-        // Créer et afficher le message d'événement complet
         let fullMessage = summaryModal.querySelector(".fullEventMessage");
         if (!fullMessage) {
           fullMessage = document.createElement("p");
@@ -167,11 +177,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // CAS : ÉVÉNEMENT NORMAL OU UTILISATEUR DÉJÀ INSCRIT
         // ===========================
 
-        // Afficher la liste des bénévoles normalement
         registeredVolunteers.style.display = "";
         volunteerList.style.display = "";
 
-        // Cacher le message d'événement complet s'il existe
         const fullMessage = summaryModal.querySelector(".fullEventMessage");
         if (fullMessage) {
           fullMessage.style.display = "none";
@@ -179,17 +187,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let volunteerNames = info.event.extendedProps.volunteerFirstNames;
 
-        // Créer le bouton d'inscription/désinscription
-        const toggleRegistrationBtn = document.createElement("button");
-        toggleRegistrationBtn.className = "toggleRegistrationBtn button-primary";
-        toggleRegistrationBtn.setAttribute("data-session-id", info.event.id);
-        summaryModal.querySelector(".eventModal-content").appendChild(toggleRegistrationBtn);
-
         function updateButtonState(button, isRegistered) {
+          if (!button) return; // évite l'erreur
           button.className = isRegistered ? "toggleRegistrationBtn btn-danger" : "toggleRegistrationBtn button-primary";
           button.textContent = isRegistered ? "Se désinscrire" : "S'inscrire";
         }
-
         function updateVolunteerDisplay() {
           registeredVolunteers.innerHTML = `<i class="ph-fill ph-users-three"></i>
         Bénévoles inscrits : ${volunteerIds.length} / ${requiredVolunteers}`;
@@ -202,26 +204,42 @@ document.addEventListener("DOMContentLoaded", function () {
           updateButtonState(toggleRegistrationBtn, isUserRegistered);
         }
 
-        updateButtonState(toggleRegistrationBtn, isUserRegistered);
+        if (toggleRegistrationBtn) {
+          updateButtonState(toggleRegistrationBtn, isUserRegistered);
+          toggleRegistrationBtn.onclick = async () => {
+            if (isUserRegistered) {
+              const result = await unsubscribeFromSession(info.event.id);
+              if (result?.success) {
+                isUserRegistered = false;
+                volunteerIds = volunteerIds.filter((id) => id !== currentUserId);
+                volunteerNames = volunteerNames.filter((name) => name !== currentUserFirstName);
 
-        toggleRegistrationBtn.onclick = async () => {
-          if (isUserRegistered) {
-            const result = await unsubscribeFromSession(info.event.id);
-            if (result?.success) {
-              isUserRegistered = false;
-              volunteerIds = volunteerIds.filter((id) => id !== currentUserId);
-              volunteerNames = volunteerNames.filter((name) => name !== currentUserFirstName);
+                const color = volunteerIds.length >= requiredVolunteers ? UNAVAILABLE : AVAILABLE;
+                info.el.style.backgroundColor = color;
+                info.el.style.borderColor = color;
+
+                info.event.setExtendedProp("volunteerIds", volunteerIds);
+                info.event.setExtendedProp("volunteerFirstNames", volunteerNames);
+                info.event.setExtendedProp("registeredVolunteers", volunteerIds.length);
+              }
+            } else {
+              const result = await registerForSession(info.event.id);
+              if (result?.success) {
+                isUserRegistered = true;
+                if (!volunteerIds.includes(currentUserId)) volunteerIds.push(currentUserId);
+                if (!volunteerNames.includes(currentUserFirstName)) volunteerNames.push(currentUserFirstName);
+
+                info.el.style.backgroundColor = USER_REGISTERED;
+                info.el.style.borderColor = USER_REGISTERED;
+
+                info.event.setExtendedProp("volunteerIds", volunteerIds);
+                info.event.setExtendedProp("volunteerFirstNames", volunteerNames);
+                info.event.setExtendedProp("registeredVolunteers", volunteerIds.length);
+              }
             }
-          } else {
-            const result = await registerForSession(info.event.id);
-            if (result?.success) {
-              isUserRegistered = true;
-              if (!volunteerIds.includes(currentUserId)) volunteerIds.push(currentUserId);
-              if (!volunteerNames.includes(currentUserFirstName)) volunteerNames.push(currentUserFirstName);
-            }
-          }
-          updateVolunteerDisplay();
-        };
+            updateVolunteerDisplay();
+          };
+        }
 
         updateVolunteerDisplay();
       }
