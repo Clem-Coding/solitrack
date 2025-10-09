@@ -1,4 +1,5 @@
-import { getFrenchMonthName } from "./utils.js";
+import { getFrenchMonthName } from "./helpers/utils.js";
+import { EMERALD_SEA, CORAL } from "./helpers/constants.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   // ==========================
@@ -169,12 +170,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         {
           label: "Total des poids entrants",
           data: formattedData.incoming,
-          backgroundColor: "#EB5A47",
+          backgroundColor: CORAL,
         },
         {
           label: "Total des poids sortants",
           data: formattedData.outgoing,
-          backgroundColor: "#00857a",
+          backgroundColor: EMERALD_SEA,
         },
       ];
     } else {
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         {
           label: "Total des poids",
           data: formattedData,
-          backgroundColor: "#EB5A47",
+          backgroundColor: CORAL,
         },
       ];
     }

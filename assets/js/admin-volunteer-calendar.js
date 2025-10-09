@@ -1,4 +1,5 @@
-import { syncMinDate } from "./utils.js";
+import { syncMinDate } from "./helpers/utils.js";
+import { ADMIN_EVENT_PRIMARY } from "./helpers/constants.js";
 
 // =======================
 // API REQUESTS (AJAX)
@@ -193,14 +194,27 @@ document.addEventListener("DOMContentLoaded", function () {
     initialView: "dayGridMonth",
     locale: "fr",
     height: "auto",
-    // eventColor: "#339d95",
-    // eventColor: "#c9e8e5",
+    eventColor: ADMIN_EVENT_PRIMARY,
+    eventDisplay: "block",
 
     headerToolbar: {
       left: "prev,next,today",
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
+
+    // headerToolbar:
+    //   window.innerWidth < 768
+    //     ? {
+    //         left: "prev,next",
+    //         center: "title",
+    //         right: "dayGridMonth,timeGridWeek,timeGridDay",
+    //       }
+    //     : {
+    //         left: "prev,next today",
+    //         center: "title",
+    //         right: "dayGridMonth,timeGridWeek,timeGridDay",
+    //       },
 
     buttonText: {
       today: "Aujourd'hui",
