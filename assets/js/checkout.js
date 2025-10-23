@@ -111,16 +111,21 @@ document.addEventListener("DOMContentLoaded", () => {
   //========================== UPDATE TEXT AND COLORS FOR REMAINING TOTAL AND BALANCE VALUE ===========================
 
   function updateRemainingUI(remaining) {
-    // Evaluates to true if remaining is negative (see function getRemainingAmount)
-    let isOverpaid = remaining < 0;
+    // original overpaid state based on the passed remaining value
+    const originalIsOverpaid = remaining < 0;
+    let isOverpaid = originalIsOverpaid;
 
-    // We use Math.abs to return the absolute value (if the remaining amount is negative, it becomes positive for the change to give back)
-    let balance = formatNumber(Math.abs(remaining));
+    // If toggle is checked while there is an overpayment, display zero for both change and remaining
+    if (toggle && toggle.checked && originalIsOverpaid) {
+      remaining = 0;
+      isOverpaid = false;
+    }
 
+    // Use absolute value for display (amount shown should be positive)
+    const balance = formatNumber(Math.abs(remaining));
     const text = isOverpaid ? "Retour Monnaie : " : "Restant à payer : ";
 
     let statusClass = "alert";
-
     if (remaining === 0 || isOverpaid) {
       statusClass = "state-ok";
     }
@@ -136,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Enables/disables the toggle depending on the change to give back
     if (toggle) {
-      if (isOverpaid) {
+      if (originalIsOverpaid) {
         toggle.disabled = false;
       } else {
         toggle.disabled = true;
@@ -330,8 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   function handleKeepChangeOnSubmit() {
-    // const toggle = document.getElementById("change-amount-toggle");
-
     const hiddenInput = document.getElementById("change-amount");
     const remaining = getRemainingAmount(); // ex: -0.50
 
@@ -360,9 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     } else {
-      if (remaining > 0) {
-        addPaymentInput(remaining, method);
-      }
+      addPaymentInput(remaining, method);
     }
   }
 
@@ -478,5 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   receiptButton.addEventListener("click", function () {
     mailInputGroup.classList.toggle("hidden");
+  });
+
+  toggle.addEventListener("change", () => {
+    updateAmounts();
   });
 });
