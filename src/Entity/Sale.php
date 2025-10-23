@@ -29,12 +29,6 @@ class Sale
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $totalPrice = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $cashAmount = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $cardAmount = null;
-
     #[Assert\Length(
         exactly: 5,
     )]
@@ -64,9 +58,16 @@ class Sale
     #[ORM\JoinColumn(nullable: true)]
     private ?CashRegisterSession $CashRegisterSession = null;
 
+    /**
+     * @var Collection<int, Payment>
+     */
+    #[ORM\OneToMany(targetEntity: Payment::class, mappedBy: 'sale')]
+    private Collection $payments;
+
     public function __construct()
     {
         $this->salesItems = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
 
@@ -111,31 +112,6 @@ class Sale
 
         return $this;
     }
-
-    public function getCashAmount(): ?string
-    {
-        return $this->cashAmount;
-    }
-
-    public function setCashAmount(?string $cashAmount): static
-    {
-        $this->cashAmount = $cashAmount;
-
-        return $this;
-    }
-
-    public function getCardAmount(): ?string
-    {
-        return $this->cardAmount;
-    }
-
-    public function setCardAmount(?string $cardAmount): static
-    {
-        $this->cardAmount = $cardAmount;
-
-        return $this;
-    }
-
 
     public function getZipcodeCustomer(): ?string
     {
@@ -223,6 +199,36 @@ class Sale
     public function setCashRegisterSession(?CashRegisterSession $CashRegisterSession): static
     {
         $this->CashRegisterSession = $CashRegisterSession;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Payment>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
+    }
+
+    public function addPayment(Payment $payment): static
+    {
+        if (!$this->payments->contains($payment)) {
+            $this->payments->add($payment);
+            $payment->setSale($this);
+        }
+
+        return $this;
+    }
+
+    public function removePayment(Payment $payment): static
+    {
+        if ($this->payments->removeElement($payment)) {
+            // set the owning side to null (unless already changed)
+            if ($payment->getSale() === $this) {
+                $payment->setSale(null);
+            }
+        }
 
         return $this;
     }
