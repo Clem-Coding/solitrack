@@ -70,12 +70,19 @@
               inputmode="decimal"
               id="gift_card_amount"
               name="gift_card_amount"
-              placeholder="Entrez un montant pour le bon cadeau"
+              placeholder="Montant du bon cadeau"
             />
           </div>
-          <button id="validate-gift-card" type="button" title="Valider le montant">
-            <i class="ph ph-check-circle"></i>
-          </button>
+          <div class="button-container" role="group" aria-label="Actions bon cadeau">
+            <button id="validate-gift-card" type="button" title="Valider le montant" class="button-validate">
+              <i class="ph ph-check-circle" aria-hidden="true"></i>
+              <span class="sr-only">Valider</span>
+            </button>
+            <button id="cancel-gift-card" type="button" title="Annuler" class="button-cancel">
+              <i class="ph ph-x-circle" aria-hidden="true"></i>
+              <span class="sr-only">Annuler</span>
+            </button>
+          </div>
         </div>
         <fieldset>
           <legend id="payments-list-heading" class="sr-only">Paiements effectués</legend>

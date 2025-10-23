@@ -61,20 +61,28 @@
 
 .gift-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.5em;
-  align-items: flex-end;
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
 
   button {
     width: auto;
 
-    &:hover {
+    i {
+      margin-right: 0;
+      font-size: $f30;
+    }
+
+    .ph-check-circle:hover {
       color: $emerald-sea;
     }
 
-    i {
-      margin-right: 0;
-      font-size: $f28;
+    .ph-x-circle:hover {
+      color: $coral;
     }
   }
 }

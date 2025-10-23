@@ -156,9 +156,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const giftCardGroup = document.querySelector(".form-group.gift-card");
   const giftCardAmountInput = document.querySelector(".gift-card .input-container input");
   const validateGiftCardBtn = document.querySelector("#validate-gift-card");
+  const cancelGiftCardBtn = document.querySelector("#cancel-gift-card");
 
   giftCardButton.addEventListener("click", () => {
     giftCardGroup.classList.toggle("hidden");
+  });
+
+  cancelGiftCardBtn.addEventListener("click", () => {
+    giftCardAmountInput.value = "";
+    giftCardGroup.classList.add("hidden");
   });
 
   if (giftCardAmountInput) {
