@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //_________________________RETRIEVE THE REMAINING AMOUNT TO BE PAID___________________________________________________
+  //========================== RETRIEVE THE REMAINING AMOUNT TO BE PAID =============================================
   function getRemainingAmount() {
     const totalPaid = getTotalPaid();
     let initialTotal = Number(remainingNumberElement.dataset.initial);
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.round(remainingAmount * 100) / 100;
   }
 
-  //________________// UPDATE TEXT AND COLORS FOR REMAINING TOTAL AND BALANCE VALUE_____________________________________
+  //========================== UPDATE TEXT AND COLORS FOR REMAINING TOTAL AND BALANCE VALUE ===========================
 
   function updateRemainingUI(remaining) {
     // Evaluates to true if remaining is negative (see function getRemainingAmount)
@@ -150,11 +150,45 @@ document.addEventListener("DOMContentLoaded", () => {
     updateRemainingUI(remaining);
   }
 
-  //_________________________ ADDING PAYMENT INPUTS FOR CARD OR CASH____________________________________________________
+  // ========================== HANDLE GIFT CARDS PAYMENTS ==========================
+
+  const giftCardButton = document.querySelector('button[data-method="gift_card"]');
+  const giftCardGroup = document.querySelector(".form-group.gift-card");
+  const giftCardAmountInput = document.querySelector(".gift-card .input-container input");
+  const validateGiftCardBtn = document.querySelector("#validate-gift-card");
+
+  giftCardButton.addEventListener("click", () => {
+    giftCardGroup.classList.toggle("hidden");
+  });
+
+  if (giftCardAmountInput) {
+    giftCardAmountInput.addEventListener("input", () => {
+      formatInputValue(giftCardAmountInput);
+    });
+  }
+
+  validateGiftCardBtn.addEventListener("click", () => {
+    const amount = Number(giftCardAmountInput.value.replace(",", "."));
+    if (amount > 0) {
+      addPaymentInput(amount, "gift_card");
+      giftCardAmountInput.value = "";
+      giftCardGroup.classList.add("hidden");
+    }
+  });
+
+  // ========================== ADDING PAYMENT INPUTS ==================================
 
   function createLabel(method) {
     const label = document.createElement("label");
-    label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
+    if (method === "card") {
+      label.textContent = "Carte Bleue";
+    } else if (method === "cash") {
+      label.textContent = "Espèces";
+    } else if (method === "gift_card") {
+      label.textContent = "Carte Cadeau";
+    } else {
+      label.textContent = method;
+    }
     return label;
   }
 
@@ -162,11 +196,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.createElement("input");
     input.type = "text";
     input.classList.add("payment-input");
-    input.value = Number(amount);
+    input.value = amount != null ? Number(amount) : "";
     input.min = 0;
-    // input.name = method === "card" ? "card_amount" : "cash_amount";
-    input.name = method === "card" ? "card_amount[]" : "cash_amount[]";
 
+    if (method === "card") {
+      input.name = "card_amount[]";
+    } else if (method === "cash") {
+      input.name = "cash_amount[]";
+    } else if (method === "gift_card") {
+      input.name = "gift_card_amount[]";
+    } else {
+      input.name = `${method}_amount[]`;
+    }
+
+    input.dataset.method = method;
     return input;
   }
 
@@ -212,7 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAmounts();
   }
 
-  //_______________________________ ALERT MESSAGES FOR THE USER_________________________________________________________
+  //============================= ALERT MESSAGES FOR THE USER =========================
 
   function createWarningMessageRemainingAmount() {
     const warningMessageElement = document.createElement("p");
@@ -411,7 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      const paymentMethod = event.target.dataset.method;
+      const paymentMethod = button.dataset.method || event.currentTarget.dataset.method;
+      if (paymentMethod === "gift_card") return; // Gift card handled separately
       handlePaymentSelection(paymentMethod);
     });
   });

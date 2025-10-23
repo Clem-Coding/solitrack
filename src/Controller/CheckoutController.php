@@ -119,6 +119,7 @@ class CheckoutController extends AbstractController
         $paymentsData = [
             'cash' => (float) str_replace(',', '.', ($request->get('cash_amount')[0] ?? 0)),
             'card' => (float) str_replace(',', '.', ($request->get('card_amount')[0] ?? 0)),
+            'gift_card' => (float) str_replace(',', '.', ($request->get('gift_card_amount')[0] ?? 0)),
         ];
 
         foreach ($paymentsData as $method => $amount) {

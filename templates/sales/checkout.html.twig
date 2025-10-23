@@ -57,8 +57,26 @@
             <button type="button" class="payment-button button-grey-shadow" data-method="cash">
               <i class="ph ph-coins"></i>Espèce
             </button>
+            <button type="button" class="payment-button button-grey-shadow" data-method="gift_card">
+              <i class="ph ph-gift"></i>Bon cadeau
+            </button>
           </div>
         </fieldset>
+        <div class="form-group gift-card hidden">
+          <div class="input-container">
+            <label for="gift_card_amount">Entrez le montant du bon cadeau</label>
+            <input
+              type="text"
+              inputmode="decimal"
+              id="gift_card_amount"
+              name="gift_card_amount"
+              placeholder="Entrez un montant pour le bon cadeau"
+            />
+          </div>
+          <button id="validate-gift-card" type="button" title="Valider le montant">
+            <i class="ph ph-check-circle"></i>
+          </button>
+        </div>
         <fieldset>
           <legend id="payments-list-heading" class="sr-only">Paiements effectués</legend>
           <ul class="payments-list"></ul>
