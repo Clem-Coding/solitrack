@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //_________________________RETRIEVE THE REMAINING AMOUNT TO BE PAID___________________________________________________
+  //========================== RETRIEVE THE REMAINING AMOUNT TO BE PAID =============================================
   function getRemainingAmount() {
     const totalPaid = getTotalPaid();
     let initialTotal = Number(remainingNumberElement.dataset.initial);
@@ -108,19 +108,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.round(remainingAmount * 100) / 100;
   }
 
-  //________________// UPDATE TEXT AND COLORS FOR REMAINING TOTAL AND BALANCE VALUE_____________________________________
+  //========================== UPDATE TEXT AND COLORS FOR REMAINING TOTAL AND BALANCE VALUE ===========================
 
   function updateRemainingUI(remaining) {
-    // Evaluates to true if remaining is negative (see function getRemainingAmount)
-    let isOverpaid = remaining < 0;
+    // original overpaid state based on the passed remaining value
+    const originalIsOverpaid = remaining < 0;
+    let isOverpaid = originalIsOverpaid;
 
-    // We use Math.abs to return the absolute value (if the remaining amount is negative, it becomes positive for the change to give back)
-    let balance = formatNumber(Math.abs(remaining));
+    // If toggle is checked while there is an overpayment, display zero for both change and remaining
+    if (toggle && toggle.checked && originalIsOverpaid) {
+      remaining = 0;
+      isOverpaid = false;
+    }
 
+    // Use absolute value for display (amount shown should be positive)
+    const balance = formatNumber(Math.abs(remaining));
     const text = isOverpaid ? "Retour Monnaie : " : "Restant à payer : ";
 
     let statusClass = "alert";
-
     if (remaining === 0 || isOverpaid) {
       statusClass = "state-ok";
     }
@@ -136,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Enables/disables the toggle depending on the change to give back
     if (toggle) {
-      if (isOverpaid) {
+      if (originalIsOverpaid) {
         toggle.disabled = false;
       } else {
         toggle.disabled = true;
@@ -150,11 +155,51 @@ document.addEventListener("DOMContentLoaded", () => {
     updateRemainingUI(remaining);
   }
 
-  //_________________________ ADDING PAYMENT INPUTS FOR CARD OR CASH____________________________________________________
+  // ========================== HANDLE GIFT CARDS PAYMENTS ==========================
+
+  const giftCardButton = document.querySelector('button[data-method="gift_card"]');
+  const giftCardGroup = document.querySelector(".form-group.gift-card");
+  const giftCardAmountInput = document.querySelector(".gift-card .input-container input");
+  const validateGiftCardBtn = document.querySelector("#validate-gift-card");
+  const cancelGiftCardBtn = document.querySelector("#cancel-gift-card");
+
+  giftCardButton.addEventListener("click", () => {
+    giftCardGroup.classList.toggle("hidden");
+  });
+
+  cancelGiftCardBtn.addEventListener("click", () => {
+    giftCardAmountInput.value = "";
+    giftCardGroup.classList.add("hidden");
+  });
+
+  if (giftCardAmountInput) {
+    giftCardAmountInput.addEventListener("input", () => {
+      formatInputValue(giftCardAmountInput);
+    });
+  }
+
+  validateGiftCardBtn.addEventListener("click", () => {
+    const amount = Number(giftCardAmountInput.value.replace(",", "."));
+    if (amount > 0) {
+      addPaymentInput(amount, "gift_card");
+      giftCardAmountInput.value = "";
+      giftCardGroup.classList.add("hidden");
+    }
+  });
+
+  // ========================== ADDING PAYMENT INPUTS ==================================
 
   function createLabel(method) {
     const label = document.createElement("label");
-    label.textContent = method === "card" ? "Carte Bleue" : "Espèces";
+    if (method === "card") {
+      label.textContent = "Carte Bleue";
+    } else if (method === "cash") {
+      label.textContent = "Espèces";
+    } else if (method === "gift_card") {
+      label.textContent = "Carte Cadeau";
+    } else {
+      label.textContent = method;
+    }
     return label;
   }
 
@@ -162,11 +207,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.createElement("input");
     input.type = "text";
     input.classList.add("payment-input");
-    input.value = Number(amount);
+    input.value = amount != null ? Number(amount) : "";
     input.min = 0;
-    // input.name = method === "card" ? "card_amount" : "cash_amount";
-    input.name = method === "card" ? "card_amount[]" : "cash_amount[]";
 
+    if (method === "card") {
+      input.name = "card_amount[]";
+    } else if (method === "cash") {
+      input.name = "cash_amount[]";
+    } else if (method === "gift_card") {
+      input.name = "gift_card_amount[]";
+    } else {
+      input.name = `${method}_amount[]`;
+    }
+
+    input.dataset.method = method;
     return input;
   }
 
@@ -212,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAmounts();
   }
 
-  //_______________________________ ALERT MESSAGES FOR THE USER_________________________________________________________
+  //============================= ALERT MESSAGES FOR THE USER =========================
 
   function createWarningMessageRemainingAmount() {
     const warningMessageElement = document.createElement("p");
@@ -281,8 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   function handleKeepChangeOnSubmit() {
-    // const toggle = document.getElementById("change-amount-toggle");
-
     const hiddenInput = document.getElementById("change-amount");
     const remaining = getRemainingAmount(); // ex: -0.50
 
@@ -311,9 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     } else {
-      if (remaining > 0) {
-        addPaymentInput(remaining, method);
-      }
+      addPaymentInput(remaining, method);
     }
   }
 
@@ -411,7 +461,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   paymentButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
-      const paymentMethod = event.target.dataset.method;
+      const paymentMethod = button.dataset.method || event.currentTarget.dataset.method;
+      if (paymentMethod === "gift_card") return; // Gift card handled separately
       handlePaymentSelection(paymentMethod);
     });
   });
@@ -428,5 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   receiptButton.addEventListener("click", function () {
     mailInputGroup.classList.toggle("hidden");
+  });
+
+  toggle.addEventListener("change", () => {
+    updateAmounts();
   });
 });

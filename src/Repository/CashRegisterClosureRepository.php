@@ -52,13 +52,14 @@ class CashRegisterClosureRepository extends ServiceEntityRepository
                 'c.note',
                 'u.firstName AS closedByName',
                 'SUM(sales.totalPrice + COALESCE(sales.pwywAmount, 0)) AS totalSales',
-                'SUM(sales.cashAmount) AS totalCash',
-                'SUM(sales.cardAmount) AS totalCard',
+                'SUM(CASE WHEN payment.method = \'cash\' THEN payment.amount ELSE 0 END) AS totalCash',
+                'SUM(CASE WHEN payment.method = \'card\' THEN payment.amount ELSE 0 END) AS totalCard',
                 'SUM(sales.pwywAmount) AS totalPwyw'
             )
             ->leftJoin('c.closedBy', 'u')
             ->leftJoin('c.cashRegisterSession', 'session')
             ->leftJoin('session.sales', 'sales')
+            ->leftJoin('sales.payments', 'payment')
             ->groupBy('c.id', 'c.closedAt', 'c.closingCashAmount', 'c.discrepancy', 'u.firstName')
             ->orderBy('c.closedAt', 'DESC')
             ->setMaxResults(1)

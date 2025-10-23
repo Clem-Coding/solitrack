@@ -13,10 +13,6 @@
     padding: 0.7em;
     width: 100%;
   }
-
-  // i {
-  //   margin-right: 0.4em;
-  // }
 }
 
 .payments-list {
@@ -42,7 +38,7 @@
 
     label {
       display: inline-block;
-      width: 6em;
+      width: 8em;
     }
 
     input {
@@ -61,4 +57,32 @@
 
 .form-group.hidden {
   display: none;
+}
+
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  button {
+    width: auto;
+
+    i {
+      margin-right: 0;
+      font-size: $f30;
+    }
+
+    .ph-check-circle:hover {
+      color: $emerald-sea;
+    }
+
+    .ph-x-circle:hover {
+      color: $coral;
+    }
+  }
 }

@@ -1238,7 +1238,7 @@ form textarea:focus {
 }
 .payment-group .payment-details-container label {
   display: inline-block;
-  width: 6em;
+  width: 8em;
 }
 .payment-group .payment-details-container input {
   border: none;
@@ -1254,6 +1254,29 @@ form textarea:focus {
 
 .form-group.hidden {
   display: none;
+}
+
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.gift-card .button-container {
+  display: flex;
+  justify-content: center;
+}
+.gift-card button, .gift-card .see-calendar-btn {
+  width: auto;
+}
+.gift-card button i, .gift-card .see-calendar-btn i {
+  margin-right: 0;
+  font-size: 1.875rem;
+}
+.gift-card button .ph-check-circle:hover, .gift-card .see-calendar-btn .ph-check-circle:hover {
+  color: #00857a;
+}
+.gift-card button .ph-x-circle:hover, .gift-card .see-calendar-btn .ph-x-circle:hover {
+  color: #eb5a47;
 }
 
 @media (min-width: 1024px) {
