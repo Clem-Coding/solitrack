@@ -1,7 +1,6 @@
 import { formatNumber, formatInputValue } from "./helpers/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // CONSTANTES
   const dataPrice = document.querySelectorAll(".data-price");
   const remainingNumberElement = document.querySelector(".remaining");
   const paymentButtons = document.querySelectorAll(".payment-button");
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   remainingPriceElement.classList.add("alert");
 
   // ==========================
-  // 🔍 UTILITY FUNCTIONS
+  //  UTILITY FUNCTIONS
   // ==========================
 
   function formatPrices(dataPrice) {
@@ -135,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     remainingTitle.classList.add(statusClass);
     remainingPriceElement.classList.add(statusClass);
 
-    // 🔁 Enables/disables the toggle depending on the change to give back
+    // Enables/disables the toggle depending on the change to give back
     if (toggle) {
       if (isOverpaid) {
         toggle.disabled = false;
@@ -278,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================
-  // 🔧 HANDLE FUNCTIONS
+  // HANDLE FUNCTIONS
   // ==========================
 
   function handleKeepChangeOnSubmit() {
@@ -321,38 +320,93 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   // FETCH CITIES - API GOUV
   // ==========================
-  const zipcodeInput = document.getElementById("zipcode");
-  const citySelect = document.getElementById("city-select");
+  const zipcodeInput = document.querySelector("#zipcode");
+  const datalist = document.querySelector("#city-datalist");
+  const loading = document.querySelector("#zipcode-loading");
+  const zipcodeError = document.querySelector("#zipcode-error");
 
-  async function fetchCitiesByZip(zipcode) {
-    if (!/^\d{5}$/.test(zipcode)) {
-      citySelect.innerHTML = '<option value="">Code postal invalide</option>';
-      return;
-    }
+  function showError() {
+    zipcodeError.style.display = "block";
+    zipcodeError.textContent = "Code postal invalide";
+  }
+
+  let debounceTimer;
+
+  // Listen for input in the zipcode field, clear previous datalist options,
+  // and call searchPlaces with a 300ms debounce once the user types at least 2 characters.
+  zipcodeInput.addEventListener("input", (e) => {
+    const val = zipcodeInput.value;
+
+    // if the value is already in the datalist, do nothing
+    const datalistValues = Array.from(datalist.options).map((o) => o.value);
+    if (datalistValues.includes(val)) return;
+
+    // Filter to keep only digits and limit to 5 characters
+    let filtered = val.replace(/\D/g, "").slice(0, 5);
+    if (filtered !== val) zipcodeInput.value = filtered;
+
+    datalist.innerHTML = "";
+    zipcodeError.style.display = "none";
+
+    if (filtered.length < 2) return;
+
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => searchPlaces(filtered), 500);
+  });
+
+  async function searchPlaces(query) {
+    loading.style.display = "block";
 
     try {
-      const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${zipcode}&type=municipality&limit=20`);
-      const data = await response.json();
+      // Fetch data from the Government Address API
+      const response = await fetch(
+        `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&type=municipality&limit=15`
+      );
 
-      const cities = data.features.map((f) => f.properties.city).filter((v, i, a) => v && a.indexOf(v) === i);
-      if (cities.length === 0) {
-        citySelect.innerHTML = '<option value="">Aucune ville trouvée</option>';
-      } else {
-        citySelect.innerHTML = cities.map((city) => `<option value="${city}">${city}</option>`).join("");
+      if (!response.ok) {
+        throw new Error("Erreur API");
       }
-    } catch (err) {
-      console.error(err);
-      citySelect.innerHTML = '<option value="">Erreur lors du chargement</option>';
+
+      const data = await response.json();
+      populateDatalist(data.features);
+    } catch (error) {
+      console.error("Error fetching address data:", error);
+      showError();
+    } finally {
+      loading.style.display = "none";
     }
   }
 
-  zipcodeInput.addEventListener("blur", () => {
-    const zip = zipcodeInput.value.trim();
-    fetchCitiesByZip(zip);
-  });
+  function populateDatalist(features) {
+    datalist.innerHTML = "";
+    zipcodeError.textContent = "";
+
+    // Handle case with no results
+    if (!features || features.length === 0) {
+      showError();
+      return;
+    }
+
+    // Use a Set to store unique "postcode - city" combinations
+    const uniquePlaces = Array.from(
+      new Set(
+        features
+          .map((f) => f.properties)
+          .filter((p) => p.postcode && p.city)
+          .map((p) => `${p.postcode} - ${p.city}`)
+      )
+    ).sort((a, b) => a.localeCompare(b)); // Sort alphabetically
+
+    // Populate the datalist with unique places
+    uniquePlaces.forEach((place) => {
+      const option = document.createElement("option");
+      option.value = place;
+      datalist.appendChild(option);
+    });
+  }
 
   // ==========================
-  // 🖱️ EVENT LISTENERS
+  // EVENT LISTENERS
   // ==========================
 
   paymentButtons.forEach((button) => {

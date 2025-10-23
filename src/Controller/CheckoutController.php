@@ -26,12 +26,8 @@ class CheckoutController extends AbstractController
     #[Route('/ventes/caisse', name: 'app_sale_checkout')]
     public function index(SessionInterface $session, PriceManagementService $priceManagement): Response
     {
-
-
-        $form = $this->createForm(SaleType::class);
         $priceManagement->applyBulkPricingRule();
         $shoppingCart = $session->get('shopping_cart');
-
 
         if (empty($shoppingCart)) {
             $this->addFlash('error', 'Votre panier est vide. Veuillez ajouter des articles avant de passer à la caisse.');
@@ -39,9 +35,7 @@ class CheckoutController extends AbstractController
             return $this->redirectToRoute('app_sales');
         }
 
-
         return $this->render('sales/checkout.html.twig', [
-            'form' => $form,
             'shopping_cart' => $shoppingCart,
             'total' => $priceManagement->getCartTotal(),
         ]);
@@ -66,23 +60,24 @@ class CheckoutController extends AbstractController
             throw new \InvalidArgumentException('Invalid CSRF token');
         }
 
-
         $sale = new Sale();
 
         $openSession = $cashRegisterSessionRepository->findAnyOpenSession();
-        // dd($openSession);
 
         $cardAmounts = $request->get('card_amount', []);
         $cashAmounts = $request->get('cash_amount', []);
         $cardTotal = array_sum(array_map('floatval', $cardAmounts));
         $cashTotal = array_sum(array_map('floatval', $cashAmounts));
         $changeAmount = $request->get('change_amount');
-        // dd($changeAmount);
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
-        $zipcode = $request->get("zipcode");
-        $customerCity = $request->get('city');
+        $zipcodeInput = $request->get("zipcode");
         $shoppingCart = $session->get('shopping_cart', []);
+
+        // Split zipcode and city
+        $matches = explode(' -', $zipcodeInput, 2);
+        $zipcode = $matches[0] ?? null;
+        $customerCity = $matches[1] ?? null;
 
         $to = $request->get('email');
         if (!empty($to)) {
