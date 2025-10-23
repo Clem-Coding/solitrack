@@ -1096,22 +1096,23 @@ form textarea:focus {
   font-weight: 600;
 }
 
-.input-quantity-wrapper {
+.input-quantity-wrapper.flex {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: #eb5a47;
   border-radius: 2em;
   width: 100%;
 }
-.input-quantity-wrapper input,
-.input-quantity-wrapper button,
-.input-quantity-wrapper .see-calendar-btn {
+.input-quantity-wrapper.flex input,
+.input-quantity-wrapper.flex button,
+.input-quantity-wrapper.flex .see-calendar-btn {
   color: #ffffff;
-}
-.input-quantity-wrapper button, .input-quantity-wrapper .see-calendar-btn {
   width: auto;
 }
-.input-quantity-wrapper button i, .input-quantity-wrapper .see-calendar-btn i {
+.input-quantity-wrapper.flex input i,
+.input-quantity-wrapper.flex button i,
+.input-quantity-wrapper.flex .see-calendar-btn i {
   margin-right: 0;
   font-size: 1.5rem;
 }
