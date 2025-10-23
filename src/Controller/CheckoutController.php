@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Entity\SalesItem;
 use App\Entity\Sale;
 use App\Entity\Category;
-use App\Form\SaleType;
+use App\Entity\Payment;
 use App\Repository\CashRegisterSessionRepository;
 use App\Service\PriceManagementService;
 use App\Service\ReceiptMailer;
@@ -64,10 +64,6 @@ class CheckoutController extends AbstractController
 
         $openSession = $cashRegisterSessionRepository->findAnyOpenSession();
 
-        $cardAmounts = $request->get('card_amount', []);
-        $cashAmounts = $request->get('cash_amount', []);
-        $cardTotal = array_sum(array_map('floatval', $cardAmounts));
-        $cashTotal = array_sum(array_map('floatval', $cashAmounts));
         $changeAmount = $request->get('change_amount');
         $pwywAmount = $request->get("pwyw_amount");
         $pwywAmount = str_replace(',', '.', $pwywAmount);
@@ -93,14 +89,13 @@ class CheckoutController extends AbstractController
         $sale->setCashRegisterSession($openSession);
         $sale->setCreatedAt(new \DateTimeImmutable());
         $sale->setUser($user);
-        $sale->setCardAmount($cardTotal ?? null);
-        $sale->setCashAmount($cashTotal ?? null);
         $sale->setChangeAmount($changeAmount !== '' ? (float) $changeAmount : null);
         $sale->setPwywAmount($pwywAmount !== '' ? (float) $pwywAmount : null);
         $sale->setZipcodeCustomer($zipcode) ?? null;
         $sale->setCustomerCity($customerCity ?? null);
         $sale->setTotalPrice($totalPrice);
 
+        // Persist sale items
         foreach ($shoppingCart as $itemData) {
             $salesItem = new SalesItem();
             $category = $entityManager->getRepository(Category::class)->findOneBy(['name' => $itemData['category']]);
@@ -120,6 +115,22 @@ class CheckoutController extends AbstractController
             $entityManager->persist($salesItem);
         }
 
+        // Persist sale payments
+        $paymentsData = [
+            'cash' => (float) str_replace(',', '.', ($request->get('cash_amount')[0] ?? 0)),
+            'card' => (float) str_replace(',', '.', ($request->get('card_amount')[0] ?? 0)),
+        ];
+
+        foreach ($paymentsData as $method => $amount) {
+            if ((float) $amount <= 0) continue;
+            $payment = new Payment();
+            $payment->setSale($sale);
+            $payment->setMethod($method);
+            $payment->setAmount((float) $amount);
+            $entityManager->persist($payment);
+        }
+
+        // Persist sale
         $entityManager->persist($sale);
         $entityManager->flush();
         $session->remove('shopping_cart');

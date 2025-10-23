@@ -36,7 +36,7 @@ class CashRegisterController extends AbstractController
         $session = $cashRegisterSessionRepository->findAnyOpenSession();
 
 
-        // 📤 CASH MOVEMENT FORM
+        // CASH MOVEMENT FORM
         $cashMovement = new CashMovement();
         $cashMovementForm = $this->createForm(CashMovementType::class, $cashMovement);
         $cashMovementForm->handleRequest($request);
@@ -67,16 +67,23 @@ class CashRegisterController extends AbstractController
             }
         }
 
-
-
+        // CALCULATE SALES TOTALS
         $totalPrice = $totalCard = $totalCash = $totalKeepChange = $returnedChange = $totalPwywAmount = 0;
         foreach ($sales as $sale) {
             $totalPrice += (float) $sale->getTotalPrice() + (float) $sale->getPwywAmount();
-            $totalCard += (float) $sale->getCardAmount();
             $totalPwywAmount += (float) $sale->getPwywAmount();
             $changeAmount = $sale->getChangeAmount() ?? 0;
-            $totalCash += (float) $sale->getCashAmount();
 
+            foreach ($sale->getPayments() as $payment) {
+                switch ($payment->getMethod()) {
+                    case 'cash':
+                        $totalCash += $payment->getAmount();
+                        break;
+                    case 'card':
+                        $totalCard += $payment->getAmount();
+                        break;
+                }
+            }
 
             if ($changeAmount < 0) { // If negative, add the change returned amount to be deducted.
                 $returnedChange += abs($changeAmount);
@@ -93,7 +100,7 @@ class CashRegisterController extends AbstractController
 
 
 
-        // 🧾 CASH REGISTER CLOSURE FORM
+        // CASH REGISTER CLOSURE FORM
         $cashRegisterClosure = new CashRegisterClosure();
         $closureForm = $this->createForm(CashRegisterClosureType::class, $cashRegisterClosure);
         $closureForm->handleRequest($request);
@@ -122,7 +129,7 @@ class CashRegisterController extends AbstractController
         }
 
 
-        //💰 LAST CLOSURE
+        // LAST CLOSURE
         $lastClosure = $closureRepository->findLastClosureWithUser();
 
         // LAST OPERATION DETAILS
