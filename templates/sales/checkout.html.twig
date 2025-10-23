@@ -81,10 +81,9 @@
               <i class="ph ph-receipt"></i>Envoyer un reçu
             </button>
           </div>
-    
-         <input type="hidden" id="change-amount" name="change_amount" />
 
- 
+          <input type="hidden" id="change-amount" name="change_amount" />
+
           <div class="form-group hidden">
             <label for="email">Entrez l'adresse email :</label>
             <input type="email" id="email" name="email" placeholder="example@mail.com" />
@@ -92,16 +91,10 @@
 
           <div class="form-group">
             <label for="zipcode">Code postal</label>
-            <input
-              type="text"
-              id="zipcode"
-              name="zipcode"
-              placeholder="22830"
-              maxlength="5"
-              pattern="^\d{5}$"
-              title="Le code postal doit être composé de 5 chiffres"
-            />
-            <select id="city-select" name="city"><option value="">Choisissez une ville</option></select>
+            <input list="city-datalist" type="text" id="zipcode" name="zipcode" placeholder="exemple : 22830" />
+            <datalist id="city-datalist"></datalist>
+            <p role="note" class="hidden alert" id="zipcode-error"></p>
+            <div id="zipcode-loading" class="loading hidden">Recherche en cours...</div>
           </div>
 
           <input type="hidden" name="_csrf_token" value="{{ csrf_token('app_sale_register') }}" />
@@ -116,4 +109,3 @@
   {{ parent() }}
   <script src="{{ asset('js/checkout.js') }}" type="module"></script>
 {% endblock %}
-
