@@ -26,12 +26,8 @@ class CheckoutController extends AbstractController
     #[Route('/ventes/caisse', name: 'app_sale_checkout')]
     public function index(SessionInterface $session, PriceManagementService $priceManagement): Response
     {
-
-
-        $form = $this->createForm(SaleType::class);
         $priceManagement->applyBulkPricingRule();
         $shoppingCart = $session->get('shopping_cart');
-
 
         if (empty($shoppingCart)) {
             $this->addFlash('error', 'Votre panier est vide. Veuillez ajouter des articles avant de passer à la caisse.');
@@ -39,9 +35,7 @@ class CheckoutController extends AbstractController
             return $this->redirectToRoute('app_sales');
         }
 
-
         return $this->render('sales/checkout.html.twig', [
-            'form' => $form,
             'shopping_cart' => $shoppingCart,
             'total' => $priceManagement->getCartTotal(),
         ]);
@@ -65,7 +59,6 @@ class CheckoutController extends AbstractController
         if (!$csrfTokenManager->isTokenValid(new CsrfToken('app_sale_register', $token))) {
             throw new \InvalidArgumentException('Invalid CSRF token');
         }
-
 
         $sale = new Sale();
 
