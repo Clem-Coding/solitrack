@@ -64,3 +64,7 @@ form textarea:focus {
     }
   }
 }
+
+.placeholder-right::placeholder {
+  text-align: right;
+}

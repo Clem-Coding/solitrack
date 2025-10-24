@@ -1066,6 +1066,14 @@ form textarea:focus {
   }
 }
 
+.placeholder-right::-moz-placeholder {
+  text-align: right;
+}
+
+.placeholder-right::placeholder {
+  text-align: right;
+}
+
 .donation-form {
   display: flex;
   flex-direction: column;

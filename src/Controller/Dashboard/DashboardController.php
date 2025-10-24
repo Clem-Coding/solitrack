@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Dashboard;
 
-
+use App\Entity\OutgoingWeighing;
 use App\Entity\User;
 use App\Entity\Visitor;
+use App\Form\OutgoingWeighingType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Form\VisitorType;
 use App\Repository\DonationRepository;
+use App\Repository\OutgoingWeighingRepository;
 use App\Repository\SaleRepository;
 use App\Repository\SalesItemRepository;
 use App\Repository\VisitorRepository;
@@ -32,10 +34,11 @@ final class DashboardController extends AbstractController
         GeocoderService $geocoderService,
         DonationRepository $donationRepository,
         SalesItemRepository $salesItemRepository,
-        VisitorRepository $visitorRepository
+        VisitorRepository $visitorRepository,
     ): Response {
 
 
+        // VISITOR FORM
         $visitor = new Visitor;
         $form = $this->createForm(VisitorType::class, $visitor);
         $form->handleRequest($request);
@@ -45,11 +48,12 @@ final class DashboardController extends AbstractController
             $entityManager->persist($visitor);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Le nombre de visiteurs a été enregistré avec succès !');
+            $this->addFlash('success_visitors', 'Le nombre de visiteurs a été enregistré avec succès !');
             return $this->redirectToRoute('app_dashboard_index');
         }
 
 
+        // RECORDS DATA
         $recordsData = [];
         $recordsData['entry'] = $donationRepository->getRecordWeightDay();
         $recordsData['sales'] = $salesItemRepository->getRecordWeightDay();
@@ -57,6 +61,7 @@ final class DashboardController extends AbstractController
         $recordsData['sales_revenue'] = $saleRepository->getRecordWeightDay();
 
 
+        // GEOCODE VISITORS DATA
         $cityVisitorsData = $saleRepository->countVisitorsByCity();
 
         $points = [];
@@ -74,12 +79,31 @@ final class DashboardController extends AbstractController
             }
         }
 
+        // OUTGOING WEIGHING FORM
+
+        $outgoingWeighing = new OutgoingWeighing();
+        $outgoingWeighingForm = $this->createForm(OutgoingWeighingType::class, $outgoingWeighing);
+        $outgoingWeighingForm->handleRequest($request);
+
+        if ($outgoingWeighingForm->isSubmitted() && $outgoingWeighingForm->isValid()) {
+
+            $outgoingWeighing->setUser($user);
+            $outgoingWeighing->setType($outgoingWeighingForm->get('type')->getData());
+            $outgoingWeighing->setCreatedAt(new \DateTimeImmutable());
+
+            $entityManager->persist($outgoingWeighing);
+            $entityManager->flush();
+
+            $this->addFlash('success_outgoing', 'La pesée sortante a été enregistrée avec succès !');
+            return $this->redirectToRoute('app_dashboard_index');
+        }
 
         return $this->render('dashboard/index.html.twig', [
 
             'form' => $form,
             'points' => $points,
-            'recordsData' => $recordsData
+            'records_data' => $recordsData,
+            'outgoing_weighing_form' => $outgoingWeighingForm
         ]);
     }
 }

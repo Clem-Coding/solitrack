@@ -1,5 +1,26 @@
-{% for type, messages in app.flashes %}
+{#
+  Usage in a template to display only messages of a specific custom type:
+    exemple : {% include 'partials/flash.html.twig' with { flash_type: 'success_visitors' } %}
+
+  In the controller, to add a targeted flash message:
+    $this->addFlash('success_visitors', 'The visitor count was successfully recorded!');
+#}
+{% if flash_type is defined %}
+  {% set messages = app.flashes(flash_type) %}
   {% for message in messages %}
-    <div role="alert" class="flash flash-{{ type }}">{{ message }}</div>
+    <div role="alert" class="flash flash-success">{{ message }}</div>
   {% endfor %}
-{% endfor %}
+
+  {# Usage in a template to display all standard flash messages:
+     {% include 'partials/flash.html.twig' %} #}
+
+  {# For a standard global flash message in a controller:
+     $this->addFlash('success', 'Action successful!'); #}
+{% else %}
+  {% for type, messages in app.flashes %}
+    {% set cssClass = type starts with 'success' ? 'success' : type starts with 'error' ? 'error' : type %}
+    {% for message in messages %}
+      <div role="alert" class="flash flash-{{ cssClass }}">{{ message }}</div>
+    {% endfor %}
+  {% endfor %}
+{% endif %}
