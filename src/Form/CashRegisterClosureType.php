@@ -28,6 +28,7 @@ class CashRegisterClosureType extends AbstractType
                 'attr' => [
                     'id' => 'counted-balance',
                 ],
+                'attr' => ['placeholder' => '€', 'class' => 'placeholder-right'],
                 'constraints' => [
                     new Assert\NotBlank([
                         'message' => 'Veuillez saisir une valeur pour le solde compté.',

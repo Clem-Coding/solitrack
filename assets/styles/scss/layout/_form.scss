@@ -32,14 +32,6 @@ form textarea:focus {
   & input {
     margin-top: 0.5em;
   }
-
-  & .unit {
-    position: absolute;
-    top: 40%;
-    right: 1em;
-    transform: translateY(50%);
-    color: $grey-velvet;
-  }
 }
 
 .form-group {

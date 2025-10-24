@@ -47,7 +47,6 @@
       <div class="input-container" id="price-input">
         {{ form_label(form.price) }}
         {{ form_widget(form.price) }}
-        <span class="unit">€</span>
       </div>
       <div id="quantity-input" class="input-quantity-wrapper hidden">
         <button type="button" class="quantity-decrease"><i class="ph ph-minus-circle"></i></button>
@@ -58,7 +57,6 @@
       <div class="input-container" id="weight-input">
         {{ form_label(form.weight) }}
         {{ form_widget(form.weight) }}
-        <span class="unit">kg</span>
       </div>
       <button id="add-cart-button" type="submit" class="button-primary hidden">Ajouter au panier</button>
       {{ form_row(form.category) }}
@@ -67,7 +65,6 @@
 
     <section class="card contained" id="cart-section" aria-labelledby="cart-heading">
       <h2 id="cart-heading">Panier</h2>
-      {# <div id="flash-message-container"></div> #}
       <ul class="cart-container"></ul>
       <p class="cart-status"></p>
       <div>{% include 'partials/flash.html.twig' %}</div>

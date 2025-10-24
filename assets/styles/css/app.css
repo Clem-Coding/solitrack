@@ -1035,13 +1035,6 @@ form textarea:focus {
 .input-container input {
   margin-top: 0.5em;
 }
-.input-container .unit {
-  position: absolute;
-  top: 40%;
-  right: 1em;
-  transform: translateY(50%);
-  color: #6e6d7a;
-}
 
 .form-group {
   display: flex;

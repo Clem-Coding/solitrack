@@ -20,8 +20,9 @@ class SalesItemType extends AbstractType
                 'label' => 'Poids',
                 "row_attr" => [
                     "class" => "hidden",
-                    "id" => "weight-input"
+                    "id" => "weight-input",
                 ],
+                'attr' => ['placeholder' => 'kg', 'class' => 'placeholder-right'],
 
             ])
             ->add('price', null, [
@@ -30,6 +31,7 @@ class SalesItemType extends AbstractType
                     "class" => "hidden",
                     "id" => "price-input"
                 ],
+                'attr' => ['placeholder' => '€', 'class' => 'placeholder-right'],
             ])
             ->add('quantity', null, [
                 'label' => 'Quantité',

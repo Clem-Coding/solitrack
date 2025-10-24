@@ -24,7 +24,7 @@ class OutgoingWeighingType extends AbstractType
             ])
             ->add('weight', null, [
                 'label' => 'Poids',
-                'attr' => ['placeholder' => 'Kg', 'class' => 'placeholder-right'],
+                'attr' => ['placeholder' => 'kg', 'class' => 'placeholder-right'],
 
             ]);
     }

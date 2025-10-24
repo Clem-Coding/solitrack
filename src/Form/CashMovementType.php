@@ -27,9 +27,7 @@ class CashMovementType extends AbstractType
             ])
             ->add('amount', null, [
                 'label' => 'Montant',
-                'attr' => [
-                    'placeholder' => 'Entrez un montant',
-                ]
+                'attr' => ['placeholder' => '€', 'class' => 'placeholder-right'],
             ])
             ->add('comment', null, [
                 'label' => 'Commentaire',
