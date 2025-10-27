@@ -26,7 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
 
   const outgoingWeighingInput = document.getElementById("outgoing_weighing_weight");
-  outgoingWeighingInput.addEventListener("input", () => {
-    formatInputValue(outgoingWeighingInput);
-  });
+
+  if (outgoingWeighingInput) {
+    outgoingWeighingInput.addEventListener("input", () => {
+      formatInputValue(outgoingWeighingInput);
+    });
+  }
 });

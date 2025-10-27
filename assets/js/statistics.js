@@ -113,6 +113,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   // 📊 FUNCTION TO CREATE GRAPH
   // ==========================
   function createGraph(data) {
+    // Set canvas size to parent size
+    const canvas = document.getElementById("acquisitions");
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.parentElement.offsetHeight;
+
     const months = [
       "Janvier",
       "Février",
@@ -212,7 +217,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         datasets: datasets,
       },
       options: {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
         plugins: {
           tooltip: {

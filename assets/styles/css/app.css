@@ -585,6 +585,9 @@ input:checked + .slider::before {
 .footer .socials .icons-container i.ph-duotone {
   color: #080222;
 }
+.footer .socials .icons-container i {
+  font-size: 2rem;
+}
 .footer .site-infos {
   color: #6e6d7a;
   text-align: center;
@@ -896,6 +899,7 @@ main.container.zindex-visible {
 @media (min-width: 1024px) {
   .sidebar li a i {
     margin-right: 0.5em;
+    font-size: 1.75rem;
   }
 }
 
