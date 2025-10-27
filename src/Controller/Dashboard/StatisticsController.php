@@ -48,14 +48,12 @@ class StatisticsController extends AbstractController
         ]);
     }
 
-
     #[Route('/api/statistiques/', name: 'api_statistics_data', methods: ['GET'])]
     public function getStatisticsData(Request $request, StatisticsService $statsTest): JsonResponse
     {
         $category = $request->query->get('category');
         $type = $request->query->get("type");
         $period = $request->query->get('period');
-
         $year = $request->query->get("year");
         $month = $request->query->get("month");
 
@@ -84,7 +82,6 @@ class StatisticsController extends AbstractController
             'data' => $statistics,
         ]);
     }
-
 
     private function getRepositoryForCategory($category, $type): ObjectRepository
     {
