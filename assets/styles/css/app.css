@@ -1501,6 +1501,13 @@ form textarea:focus {
   font-size: 1.25rem;
   text-align: left;
 }
+.eventModal .eventModal-content i {
+  margin-right: 0.5em;
+}
+.eventModal .eventModal-content .deleteEventButton:hover {
+  color: #eb5a47;
+  border-color: #eb5a47;
+}
 .eventModal .eventModal-content .datetime-picker {
   display: flex;
   gap: 1em;
@@ -1553,7 +1560,6 @@ form textarea:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5em;
 }
 .eventModal .eventModal-content .editEventButton {
   margin-top: 1em;

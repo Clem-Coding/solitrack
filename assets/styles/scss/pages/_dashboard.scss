@@ -186,6 +186,15 @@
       text-align: left;
     }
 
+    i {
+      margin-right: 0.5em;
+    }
+
+    .deleteEventButton:hover {
+      color: $coral;
+      border-color: $coral;
+    }
+
     .datetime-picker {
       display: flex;
       gap: 1em;
@@ -248,7 +257,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.5em;
     }
 
     .editEventButton {
