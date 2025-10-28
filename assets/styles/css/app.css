@@ -585,6 +585,9 @@ input:checked + .slider::before {
 .footer .socials .icons-container i.ph-duotone {
   color: #080222;
 }
+.footer .socials .icons-container i {
+  font-size: 2rem;
+}
 .footer .site-infos {
   color: #6e6d7a;
   text-align: center;
@@ -896,6 +899,7 @@ main.container.zindex-visible {
 @media (min-width: 1024px) {
   .sidebar li a i {
     margin-right: 0.5em;
+    font-size: 1.75rem;
   }
 }
 
@@ -1035,13 +1039,6 @@ form textarea:focus {
 .input-container input {
   margin-top: 0.5em;
 }
-.input-container .unit {
-  position: absolute;
-  top: 40%;
-  right: 1em;
-  transform: translateY(50%);
-  color: #6e6d7a;
-}
 
 .form-group {
   display: flex;
@@ -1064,6 +1061,14 @@ form textarea:focus {
   .password-container i {
     font-size: 2rem;
   }
+}
+
+.placeholder-right::-moz-placeholder {
+  text-align: right;
+}
+
+.placeholder-right::placeholder {
+  text-align: right;
 }
 
 .donation-form {

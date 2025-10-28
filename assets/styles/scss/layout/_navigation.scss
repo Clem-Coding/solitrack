@@ -207,6 +207,7 @@ main.container {
       @include respond-to(desktop) {
         i {
           margin-right: 0.5em;
+          font-size: $f28;
         }
       }
     }

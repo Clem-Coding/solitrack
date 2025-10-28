@@ -14,7 +14,8 @@ class DonationFormType extends AbstractType
     {
         $builder
             ->add('weight', null, [
-                'label' => 'Poids'
+                'label' => 'Poids',
+                'attr' => ['placeholder' => 'kg', 'class' => 'placeholder-right'],
             ])
             ->add('categoryId', HiddenType::class, [
                 'mapped' => false,

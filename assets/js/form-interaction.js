@@ -1,4 +1,9 @@
+import { formatInputValue } from "./helpers/utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
+  // ==========================
+  //  TOGGLE PASSWORD VISIBILITY
+  // ==========================
   const eyeIcons = document.querySelectorAll(".toggle-password");
 
   eyeIcons.forEach((icon) => {
@@ -15,4 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // ==========================
+  //  FORM ON DASHBOARD HOME PAGE
+  // ==========================
+
+  const outgoingWeighingInput = document.getElementById("outgoing_weighing_weight");
+
+  if (outgoingWeighingInput) {
+    outgoingWeighingInput.addEventListener("input", () => {
+      formatInputValue(outgoingWeighingInput);
+    });
+  }
 });

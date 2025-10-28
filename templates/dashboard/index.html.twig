@@ -7,7 +7,7 @@
 {% block content %}
   <h1>Le tableau de bord</h1>
 
-  <div class="sections-container three-sections">
+  <div class="sections-container four-sections">
     <section class="card">
       <h2>Nombre de visiteurs</h2>
       {{ form_start(form) }}
@@ -22,36 +22,60 @@
       </div>
       <button type="submit" class="button-primary">Valider</button>
       {{ form_end(form) }}
-      <div>{% include 'partials/flash.html.twig' %}</div>
+      {% include 'partials/flash.html.twig' with {
+        flash_type: 'success_visitors'
+      } %}
     </section>
 
     <section class="card">
       <h2>Les records</h2>
 
-      {% if recordsData.entry is defined and recordsData.entry is not empty %}
+      {% if records_data.entry is defined and records_data.entry is not empty %}
         <p>
           <span class="semi-bold">Entrées</span> : <span class="highlighted">
-            {{ recordsData.entry.total_weight ?? 'N/A' }} kg
-          </span>, le {{ recordsData.entry.day ?? 'N/A' }}
+            {{ records_data.entry.total_weight ?? 'N/A' }} kg
+          </span>, le {{ records_data.entry.day ?? 'N/A' }}
         </p>
         <p>
           <span class="semi-bold">Sorties</span> : <span class="highlighted">
-            {{ recordsData.sales.total_weight ?? 'N/A' }} kg
-          </span>, le {{ recordsData.sales.day ?? 'N/A' }}
+            {{ records_data.sales.total_weight ?? 'N/A' }} kg
+          </span>, le {{ records_data.sales.day ?? 'N/A' }}
         </p>
         <p>
           <span class="semi-bold">Visiteurs</span> : <span class="highlighted">
-            {{ recordsData.visitors.count ?? 'N/A' }}
-          </span>, le {{ recordsData.visitors.day ?? 'N/A' }}
+            {{ records_data.visitors.count ?? 'N/A' }}
+          </span>, le {{ records_data.visitors.day ?? 'N/A' }}
         </p>
         <p>
           <span class="semi-bold">Chiffre des ventes</span> : <span class="highlighted">
-            {{ recordsData.sales_revenue.total_price ?? 'N/A' }} €
-          </span>, le {{ recordsData.sales_revenue.day ?? 'N/A' }}
+            {{ records_data.sales_revenue.total_price ?? 'N/A' }} €
+          </span>, le {{ records_data.sales_revenue.day ?? 'N/A' }}
         </p>
       {% else %}
         <p>Aucune donnée disponible dans la base de données.</p>
       {% endif %}
+    </section>
+
+    <section class="card">
+      <h2>Pesées sortantes</h2>
+      {{ form_start(outgoing_weighing_form) }}
+      <div class="form-group">
+        {% for choice in outgoing_weighing_form.type %}
+          <div class="radio-option">
+            {{ form_widget(choice) }}
+            {{ form_label(choice) }}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        {{ form_label(outgoing_weighing_form.weight) }}
+        {{ form_widget(outgoing_weighing_form.weight) }}
+      </div>
+      <button type="submit" class="button-primary">Valider</button>
+      {{ form_end(outgoing_weighing_form) }}
+      {% include 'partials/flash.html.twig' with {
+        flash_type: 'success_outgoing'
+      } %}
     </section>
 
     <section class="card">

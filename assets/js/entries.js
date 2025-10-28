@@ -3,7 +3,7 @@ import confetti from "canvas-confetti";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ==========================
-  // 🟡 VARIABLES
+  //  VARIABLES
   // ==========================
   const buttons = document.querySelectorAll(".category-button");
   const categoryInput = document.getElementById("donation_form_categoryId");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   weightInput.value = "";
 
   // ==========================
-  // 🔍 UTILITY FUNCTIONS
+  //  UTILITY FUNCTIONS
   // ==========================
   function setCategory(category) {
     categoryInput.value = category;
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================
-  // 🔧 HANDLE FILTER CHANGES
+  //  HANDLE FILTER CHANGES
   // ==========================
   function handleButtonClick(event) {
     const clickedButton = event.currentTarget;
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   // ==========================
-  // 🟡 CONFETTIS 🎉
+  //  CONFETTIS 🎉
   // ==========================
   let launchCount = 0;
 
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(launchConfetti, 1000);
 
   // ==========================
-  // 🖱️ EVENT LISTENERS
+  //  EVENT LISTENERS
   // ==========================
   buttons.forEach((button) => {
     button.addEventListener("click", (event) => {

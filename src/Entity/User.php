@@ -101,6 +101,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: VolunteerRegistration::class, mappedBy: 'user')]
     private Collection $volunteerRegistrations;
 
+    /**
+     * @var Collection<int, OutgoingWeighing>
+     */
+    #[ORM\OneToMany(targetEntity: OutgoingWeighing::class, mappedBy: 'user')]
+    private Collection $outgoingWeighings;
+
     public function __construct()
     {
         $this->donations = new ArrayCollection();
@@ -111,6 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->cashMovements = new ArrayCollection();
         $this->volunteerSessions = new ArrayCollection();
         $this->volunteerRegistrations = new ArrayCollection();
+        $this->outgoingWeighings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -446,6 +453,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($volunteerRegistration->getUser() === $this) {
                 $volunteerRegistration->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OutgoingWeighing>
+     */
+    public function getOutgoingWeighings(): Collection
+    {
+        return $this->outgoingWeighings;
+    }
+
+    public function addOutgoingWeighing(OutgoingWeighing $outgoingWeighing): static
+    {
+        if (!$this->outgoingWeighings->contains($outgoingWeighing)) {
+            $this->outgoingWeighings->add($outgoingWeighing);
+            $outgoingWeighing->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOutgoingWeighing(OutgoingWeighing $outgoingWeighing): static
+    {
+        if ($this->outgoingWeighings->removeElement($outgoingWeighing)) {
+            // set the owning side to null (unless already changed)
+            if ($outgoingWeighing->getUser() === $this) {
+                $outgoingWeighing->setUser(null);
             }
         }
 
