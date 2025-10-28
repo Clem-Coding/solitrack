@@ -1,4 +1,4 @@
-import { AVAILABLE, UNAVAILABLE, ALERT_RED, USER_REGISTERED, INK_NIGHT } from "./helpers/constants.js";
+import { AVAILABLE, UNAVAILABLE, ALERT_RED, USER_REGISTERED, PAST_EVENTS } from "./helpers/constants.js";
 
 // =======================
 // API REQUESTS (AJAX)
@@ -90,6 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const calendarElUserId = calendarEl.getAttribute("data-user-id");
       const currentUserId = calendarElUserId ? parseInt(calendarElUserId) : null;
 
+      // Applique la couleur grise aux événements passés
+      const now = new Date();
+      const eventEnd = info.event.end;
+      if (eventEnd && eventEnd < now) {
+        info.el.style.backgroundColor = PAST_EVENTS;
+        info.el.style.borderColor = PAST_EVENTS;
+        return;
+      }
+
       //Gestion des couleurs de l'événement en fonction du statut d'inscription
       if (currentUserId && volunteerIds.includes(currentUserId)) {
         info.el.style.backgroundColor = USER_REGISTERED;
@@ -160,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // création du bouton d'inscription/désinscription uniquement pour les événements futurs
       let toggleRegistrationBtn;
-      if (!isEventPast) {
+      if (!isEventPast && !isEventFull) {
         toggleRegistrationBtn = document.createElement("button");
         toggleRegistrationBtn.className = "toggleRegistrationBtn button-primary";
         toggleRegistrationBtn.setAttribute("data-session-id", info.event.id);
