@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // création du bouton d'inscription/désinscription uniquement pour les événements futurs
       let toggleRegistrationBtn;
-      if (!isEventPast && !isEventFull) {
+      if (!isEventPast && (!isEventFull || isUserRegistered)) {
         toggleRegistrationBtn = document.createElement("button");
         toggleRegistrationBtn.className = "toggleRegistrationBtn button-primary";
         toggleRegistrationBtn.setAttribute("data-session-id", info.event.id);
