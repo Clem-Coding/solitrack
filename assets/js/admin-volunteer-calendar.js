@@ -6,24 +6,68 @@ import { ADMIN_EVENT_PRIMARY } from "./helpers/constants.js";
 // =======================
 async function submitEventForm(calendar) {
   const form = document.querySelector(".createEventModal form");
-  form.addEventListener("submit", async function (e) {
+
+  form.addEventListener("submit", async function handler(e) {
     e.preventDefault();
-    const formData = new FormData(form);
 
-    const response = await fetch("/tableau-de-bord/planning-benevolat/creer", {
-      method: "POST",
-      body: formData,
-      headers: { "X-Requested-With": "XMLHttpRequest" },
-    });
+    form.removeEventListener("submit", handler);
 
-    const data = await response.json();
+    let formData = new FormData(form);
 
-    if (data.success) {
-      calendar.refetchEvents();
-      form.reset();
-      document.querySelector(".createEventModal").close();
-    } else {
-      alert("Erreur lors de la création");
+    try {
+      let response = await fetch("/tableau-de-bord/planning-benevolat/creer", {
+        method: "POST",
+        body: formData,
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      let data = await response.json();
+
+      if (!data.success) {
+        alert("Erreur lors de la création");
+        return;
+      }
+
+      if (data.warning) {
+        const warningModal = document.getElementById("warning-occurences-modal");
+        warningModal.querySelector(".modal-text").textContent = data.warning;
+
+        const btnCancel = warningModal.querySelector("#modal-cancel");
+        const btnConfirm = warningModal.querySelector("#modal-confirm");
+
+        btnCancel.onclick = () => warningModal.close();
+
+        btnConfirm.onclick = async () => {
+          try {
+            let confirmedFormData = new FormData(form);
+            confirmedFormData.append("confirmWarning", "1");
+
+            await fetch("/tableau-de-bord/planning-benevolat/creer", {
+              method: "POST",
+              body: confirmedFormData,
+              headers: { "X-Requested-With": "XMLHttpRequest" },
+            });
+
+            warningModal.close();
+            calendar.refetchEvents();
+            form.reset();
+            document.querySelector(".createEventModal").close();
+          } catch (err) {
+            alert("Erreur lors de la confirmation");
+            console.error(err);
+          }
+        };
+
+        warningModal.showModal();
+      } else {
+        calendar.refetchEvents();
+        form.reset();
+        document.querySelector(".createEventModal").close();
+      }
+    } catch (err) {
+      alert("Erreur réseau");
+      console.error(err);
+    } finally {
+      form.addEventListener("submit", handler);
     }
   });
 }
@@ -69,26 +113,40 @@ async function updateEventForm(calendar) {
   });
 }
 
-async function deleteCalendarEvent(eventId, eventObj, modal) {
-  //pour tester, à enlever ensuite (créer modale de confirmation)
-  if (!confirm("Voulez-vous vraiment supprimer cet événement ?")) return;
+function deleteCalendarEvent(eventId, eventObj, editModal) {
+  const confirmModal = document.getElementById("confirm-modal");
+  confirmModal.showModal();
 
-  try {
-    const response = await fetch(`/tableau-de-bord/planning-benevolat/schedule/${eventId}/cancel`, {
-      method: "DELETE",
-      headers: { "X-Requested-With": "XMLHttpRequest" },
-    });
-    const data = await response.json();
-    if (data.success) {
-      eventObj.remove(); // Supprime visuellement de la grille
-      if (modal) modal.close();
-    } else {
-      alert("Erreur lors de la suppression");
+  const btnCancel = confirmModal.querySelector("#modal-cancel");
+  const btnConfirm = confirmModal.querySelector("#modal-confirm");
+
+  // Nettoyage des anciens listeners
+  btnCancel.onclick = null;
+  btnConfirm.onclick = null;
+
+  btnCancel.onclick = () => {
+    confirmModal.close();
+    if (editModal) editModal.showModal(); // ré-ouvre la modale d'édition
+  };
+
+  btnConfirm.onclick = async () => {
+    try {
+      const response = await fetch(`/tableau-de-bord/planning-benevolat/schedule/${eventId}/cancel`, {
+        method: "DELETE",
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      const data = await response.json();
+      if (data.success) {
+        eventObj.remove(); // supprime visuellement
+        confirmModal.close();
+      } else {
+        alert("Erreur lors de la suppression");
+      }
+    } catch (error) {
+      alert("Erreur réseau");
+      console.error(error);
     }
-  } catch (error) {
-    alert("Erreur réseau");
-    console.error(error);
-  }
+  };
 }
 
 // =======================
@@ -447,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const deleteEventButton = editModal.querySelector(".deleteEventButton");
 
       deleteEventButton.onclick = () => {
-        deleteCalendarEvent(info.event.id, info.event, summaryModal);
+        deleteCalendarEvent(info.event.id, info.event, editModal);
         editModal.close();
       };
 

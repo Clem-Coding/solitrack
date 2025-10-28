@@ -511,6 +511,32 @@ input:checked + .slider::before {
   display: none;
 }
 
+dialog {
+  border: none;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-modal-content {
+  background: #ffffff;
+  padding: 2em;
+  border-radius: 8px;
+  text-align: center;
+  width: 400px;
+  max-width: 90vw;
+  margin: auto;
+}
+.confirm-modal-content img {
+  margin-bottom: 1em;
+}
+.confirm-modal-content .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-top: 1.5em;
+}
+
 .header {
   position: sticky;
   top: 0;

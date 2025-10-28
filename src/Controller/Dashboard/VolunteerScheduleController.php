@@ -73,6 +73,8 @@ class VolunteerScheduleController extends AbstractController
             $session->setCreatedAt(new \DateTimeImmutable());
             $session->setUpdatedAt(new \DateTimeImmutable());
 
+            $confirmWarning = $request->request->get('confirmWarning', false);
+
             if ($recurrenceValue) {
                 $recurrence = new VolunteerRecurrence();
                 $recurrence->setFrequency($recurrenceValue);
@@ -88,14 +90,19 @@ class VolunteerScheduleController extends AbstractController
                 $em->persist($recurrence);
                 $session->setRecurrence($recurrence);
 
-                $em->persist($session);
-                $em->flush();
 
-                $volunteerSessionGenerator->generateOccurrences($session);
-            } else {
-                $em->persist($session);
-                $em->flush();
+                $result = $volunteerSessionGenerator->generateOccurrences($session);
+
+                if ($result['warning'] && !$confirmWarning) {
+                    return new JsonResponse([
+                        'success' => true,
+                        'warning' => $result['warning']
+                    ]);
+                }
             }
+
+            $em->persist($session);
+            $em->flush();
 
             return new JsonResponse(['success' => true]);
         }
