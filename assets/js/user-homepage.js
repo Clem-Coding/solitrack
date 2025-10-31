@@ -32,4 +32,37 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     },
   });
+
+  // ===========================
+  // ANNULER L'INSCRIPTION À UNE SESSION
+  // ===========================
+
+  async function unsubscribeFromSession(sessionId) {
+    try {
+      const response = await fetch(`/mon-compte/benevolat/sessions/unsubscribe/${sessionId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      return data.success ? data : null;
+    } catch {
+      return null;
+    }
+  }
+
+  const unsubscribeButtons = document.querySelectorAll(".button-destructive");
+  unsubscribeButtons.forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      console.log("Clicked unsubscribe button");
+      event.preventDefault();
+      const sessionId = button.getAttribute("data-session-id");
+      const result = await unsubscribeFromSession(sessionId);
+      if (result?.success) {
+        //       // Recharger la page pour refléter les changements
+        window.location.reload();
+      } else {
+        alert("Une erreur est survenue lors de la désinscription. Veuillez réessayer.");
+      }
+    });
+  });
 });

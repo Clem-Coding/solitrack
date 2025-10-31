@@ -47,6 +47,9 @@
               {% if session.session.description %}
                 <p><i class="ph-fill ph-note"></i> {{ session.session.description }}</p>
               {% endif %}
+              <button class="button-destructive" data-session-id="{{ session.session.id }}">
+                Annuler ma participation
+              </button>
             </li>
           {% endfor %}
         </ul>

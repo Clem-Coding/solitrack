@@ -1730,6 +1730,15 @@ form textarea:focus {
   flex-direction: column;
   gap: 1em;
 }
+.user-sections-container .volunteer-sessions-list .button-destructive {
+  margin-top: 0.5em;
+}
+@media (min-width: 768px) {
+  .user-sections-container .volunteer-sessions-list .button-destructive {
+    width: auto;
+    align-self: flex-start;
+  }
+}
 
 .section-404-container {
   padding-top: 4em;
