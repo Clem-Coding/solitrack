@@ -13,7 +13,7 @@
     flex-direction: column;
     gap: 1em;
 
-    .button-destructive {
+    .unsubscribe-button {
       margin-top: 0.5em;
       @include respond-to(tablet) {
         width: auto;

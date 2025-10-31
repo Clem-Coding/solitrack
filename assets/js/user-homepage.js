@@ -50,19 +50,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  const unsubscribeButtons = document.querySelectorAll(".button-destructive");
+  const unsubscribeButtons = document.querySelectorAll(".unsubscribe-button");
+  const unsubscribeModal = document.getElementById("confirm-modal");
+
+  const btnCancel = unsubscribeModal.querySelector("#modal-cancel");
+  const btnConfirm = unsubscribeModal.querySelector("#modal-confirm");
+
+  btnCancel.addEventListener("click", () => {
+    unsubscribeModal.close();
+  });
+
   unsubscribeButtons.forEach((button) => {
-    button.addEventListener("click", async (event) => {
-      console.log("Clicked unsubscribe button");
-      event.preventDefault();
-      const sessionId = button.getAttribute("data-session-id");
-      const result = await unsubscribeFromSession(sessionId);
-      if (result?.success) {
-        //       // Recharger la page pour refléter les changements
-        window.location.reload();
-      } else {
-        alert("Une erreur est survenue lors de la désinscription. Veuillez réessayer.");
-      }
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const sessionId = button.dataset.sessionId;
+      unsubscribeModal.dataset.sessionId = sessionId;
+      unsubscribeModal.showModal();
     });
+  });
+
+  btnConfirm.addEventListener("click", async () => {
+    const sessionId = unsubscribeModal.dataset.sessionId;
+    const result = await unsubscribeFromSession(sessionId);
+    if (result?.success) {
+      window.location.reload();
+    } else {
+      alert("Une erreur est survenue lors de la désinscription. Veuillez réessayer.");
+    }
   });
 });

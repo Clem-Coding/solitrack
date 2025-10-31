@@ -1730,11 +1730,11 @@ form textarea:focus {
   flex-direction: column;
   gap: 1em;
 }
-.user-sections-container .volunteer-sessions-list .button-destructive {
+.user-sections-container .volunteer-sessions-list .unsubscribe-button {
   margin-top: 0.5em;
 }
 @media (min-width: 768px) {
-  .user-sections-container .volunteer-sessions-list .button-destructive {
+  .user-sections-container .volunteer-sessions-list .unsubscribe-button {
     width: auto;
     align-self: flex-start;
   }
