@@ -119,7 +119,7 @@ class VolunteerScheduleController extends AbstractController
             $volunteerIds = [];
 
             foreach ($s->getVolunteerRegistrations() as $registration) {
-                if ($registration->getStatus() !== 'cancelled_by_admin') {
+                if ($registration->getStatus() !== 'cancelled_by_admin' && $registration->getStatus() !== 'cancelled_by_user') {
                     $user = $registration->getUser();
                     if ($user) {
                         $firstNames[] = $user->getFirstName();
@@ -163,7 +163,10 @@ class VolunteerScheduleController extends AbstractController
                         $existingRegistration = $em->getRepository(VolunteerRegistration::class)
                             ->findOneBy(['session' => $session, 'user' => $user]);
                         if ($existingRegistration) {
-                            if ($existingRegistration->getStatus() === 'cancelled_by_admin') {
+                            if (
+                                $existingRegistration->getStatus() === 'cancelled_by_admin'
+                                || $existingRegistration->getStatus() === 'cancelled_by_user'
+                            ) {
                                 $existingRegistration->setStatus('registered');
                                 $existingRegistration->setUpdatedAt(new \DateTimeImmutable());
                                 $em->persist($existingRegistration);
