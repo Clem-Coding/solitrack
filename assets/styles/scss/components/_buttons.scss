@@ -16,10 +16,12 @@ button {
   background-color: $ink-night;
   color: $cloud;
   font-weight: $bold;
+  transition: all 0.1s ease;
+  will-change: transform;
 
   &:hover {
-    background-color: rgba($emerald-sea, 0.8);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: $ink-night-hover;
+    transform: scale(1.005);
   }
 }
 
@@ -28,10 +30,37 @@ button {
   color: $ink-night;
   border: 2px solid $ink-night;
   font-weight: $bold;
+  transition: all 0.1s ease;
+  will-change: transform;
 
   &:hover {
     color: $emerald-sea;
-    border: 2px solid $emerald-sea;
+    border-color: $emerald-sea;
+    transform: scale(1.005);
+  }
+}
+
+.button-constructive {
+  background-color: $emerald-sea;
+  color: $cloud;
+  padding: 0.4em;
+  font-size: 0.85em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: darken($emerald-sea, 5%);
+  }
+}
+
+.button-destructive {
+  background-color: $coral;
+  color: $cloud;
+  padding: 0.4em;
+  font-size: 0.85em;
+  font-weight: 600;
+
+  &:hover {
+    background-color: darken($coral, 5%);
   }
 }
 

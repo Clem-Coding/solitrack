@@ -210,7 +210,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function updateButtonState(button, isRegistered) {
           if (!button) return; // évite l'erreur
-          button.className = isRegistered ? "toggleRegistrationBtn btn-danger" : "toggleRegistrationBtn button-primary";
+          button.className = isRegistered
+            ? "toggleRegistrationBtn button-destructive"
+            : "toggleRegistrationBtn button-constructive";
           button.textContent = isRegistered ? "Se désinscrire" : "S'inscrire";
         }
         function updateVolunteerDisplay() {

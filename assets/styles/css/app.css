@@ -310,10 +310,12 @@ button i, .see-calendar-btn i {
   background-color: #080222;
   color: #ffffff;
   font-weight: 700;
+  transition: all 0.1s ease;
+  will-change: transform;
 }
 .button-primary:hover, .see-calendar-btn:hover {
-  background-color: rgba(0, 133, 122, 0.8);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #1a1545;
+  transform: scale(1.005);
 }
 
 .button-secondary {
@@ -321,10 +323,35 @@ button i, .see-calendar-btn i {
   color: #080222;
   border: 2px solid #080222;
   font-weight: 700;
+  transition: all 0.1s ease;
+  will-change: transform;
 }
 .button-secondary:hover {
   color: #00857a;
-  border: 2px solid #00857a;
+  border-color: #00857a;
+  transform: scale(1.005);
+}
+
+.button-constructive {
+  background-color: #00857a;
+  color: #ffffff;
+  padding: 0.4em;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.button-constructive:hover {
+  background-color: rgb(0, 107.5, 98.6090225564);
+}
+
+.button-destructive {
+  background-color: #eb5a47;
+  color: #ffffff;
+  padding: 0.4em;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.button-destructive:hover {
+  background-color: rgb(232.5, 69.375, 48);
 }
 
 .button-rounded {
@@ -1383,21 +1410,6 @@ form textarea:focus {
   gap: 0.5em;
   align-items: center;
 }
-.users-table .btn {
-  padding: 0.4em 0.8em;
-  font-size: 0.85em;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.users-table .btn-primary {
-  background-color: #00857a;
-  color: #ffffff;
-}
-.users-table .btn-primary:hover {
-  background-color: rgb(0, 82, 75.2180451128);
-}
 .users-table select {
   padding: 0.3em;
   font-size: 0.9em;
@@ -1599,10 +1611,7 @@ form textarea:focus {
   display: flex;
   justify-content: space-between;
 }
-.volunteer-management .volunteer-add-section button, .volunteer-management .volunteer-add-section .see-calendar-btn {
-  padding: 0.4em;
-  background-color: #00857a;
-  color: #ffffff;
+.volunteer-management .volunteer-add-section .button-constructive {
   margin-top: 1em;
 }
 .volunteer-management .volunteer-add-section select {

@@ -48,7 +48,7 @@
                       </option>
                     </select>
 
-                    <button type="submit" class="btn btn-primary">Attribuer rôle</button>
+                    <button type="submit" class="button-constructive">Attribuer rôle</button>
                   </form>
                 {% else %}
                   <p class="bold">Super Admin</p>
@@ -59,7 +59,7 @@
                   {# prettier-ignore #}
                   <form id="delete-user" action="{{ path('app_user_delete', { id: user.id }) }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
-                    <button type="submit" name="delete_user" value="{{ user.id }}" class="btn btn-danger">Supprimer</button>
+                    <button type="submit" name="delete_user" value="{{ user.id }}" class="button-destructive">Supprimer</button>
                   </form>
                 {% endif %}
               </td>
