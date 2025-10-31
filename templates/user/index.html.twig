@@ -40,10 +40,24 @@
               {% if session.session.location %}
                 <p><i class="ph-fill ph-map-pin"></i> {{ session.session.location }}</p>
               {% endif %}
+
+              {% set duration = session.session.endDatetime.getTimestamp()
+                - session.session.startDatetime.getTimestamp()
+              %}
+              {% set one_day = 24 * 60 * 60 %}
+
               <p>
-                <i class="ph-fill ph-clock"></i> {{ session.session.startDatetime|date('d/m/Y') }} |
+                <i class="ph-fill ph-clock"></i>
+                {% if duration > one_day %}
+                  {{ session.session.startDatetime|format_date(locale = 'fr', pattern = 'EEEE d MMMM')|capitalize }}
+                  au
+                  {{ session.session.endDatetime|format_date(locale = 'fr', pattern = 'EEEE d MMMM')|capitalize }}
+                {% else %}
+                  {{ session.session.startDatetime|format_date(locale = 'fr', pattern = 'EEEE d MMMM')|capitalize }}
+                {% endif %}|
                 {{ session.session.startDatetime|date('H:i') }} - {{ session.session.endDatetime|date('H:i') }}
               </p>
+
               {% if session.session.description %}
                 <p><i class="ph-fill ph-note"></i> {{ session.session.description }}</p>
               {% endif %}
