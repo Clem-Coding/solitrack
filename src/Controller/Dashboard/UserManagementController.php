@@ -66,9 +66,16 @@ class UserManagementController extends AbstractController
             return $this->redirectToRoute('app_dashboard_user_management');
         }
 
+        // Dissociate sales before deleting the user
         $sales = $entityManager->getRepository(Sale::class)->findBy(['user' => $user]);
         foreach ($sales as $sale) {
             $sale->setUser(null);
+        }
+
+        // Remove volunteer registrations before deleting the user
+        $volunteerRegistrations = $user->getVolunteerRegistrations();
+        foreach ($volunteerRegistrations as $registration) {
+            $entityManager->remove($registration);
         }
 
         $entityManager->remove($user);

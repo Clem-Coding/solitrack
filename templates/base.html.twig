@@ -48,8 +48,8 @@
             <nav class="navbar">
               <h2 class="sr-only">Menu principal</h2>
               <ul class="navbar-menu">
+                <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                 {% if is_granted('ROLE_VOLUNTEER_PLUS') %}
-                  <li><a href="{{ path('app_user_homepage') }}">Accueil</a></li>
                   <li><a href="{{ path('app_entry') }}">Les entrées</a></li>
                   <li><a href="{{ path('app_sales') }}">Les ventes</a></li>
                   <li class="dropdown">

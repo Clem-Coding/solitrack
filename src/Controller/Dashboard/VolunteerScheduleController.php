@@ -73,6 +73,8 @@ class VolunteerScheduleController extends AbstractController
             $session->setCreatedAt(new \DateTimeImmutable());
             $session->setUpdatedAt(new \DateTimeImmutable());
 
+            $confirmWarning = $request->request->get('confirmWarning', false);
+
             if ($recurrenceValue) {
                 $recurrence = new VolunteerRecurrence();
                 $recurrence->setFrequency($recurrenceValue);
@@ -88,14 +90,19 @@ class VolunteerScheduleController extends AbstractController
                 $em->persist($recurrence);
                 $session->setRecurrence($recurrence);
 
-                $em->persist($session);
-                $em->flush();
 
-                $volunteerSessionGenerator->generateOccurrences($session);
-            } else {
-                $em->persist($session);
-                $em->flush();
+                $result = $volunteerSessionGenerator->generateOccurrences($session);
+
+                if ($result['warning'] && !$confirmWarning) {
+                    return new JsonResponse([
+                        'success' => true,
+                        'warning' => $result['warning']
+                    ]);
+                }
             }
+
+            $em->persist($session);
+            $em->flush();
 
             return new JsonResponse(['success' => true]);
         }
@@ -112,7 +119,7 @@ class VolunteerScheduleController extends AbstractController
             $volunteerIds = [];
 
             foreach ($s->getVolunteerRegistrations() as $registration) {
-                if ($registration->getStatus() !== 'cancelled_by_admin') {
+                if ($registration->getStatus() !== 'cancelled_by_admin' && $registration->getStatus() !== 'cancelled_by_user') {
                     $user = $registration->getUser();
                     if ($user) {
                         $firstNames[] = $user->getFirstName();
@@ -156,7 +163,10 @@ class VolunteerScheduleController extends AbstractController
                         $existingRegistration = $em->getRepository(VolunteerRegistration::class)
                             ->findOneBy(['session' => $session, 'user' => $user]);
                         if ($existingRegistration) {
-                            if ($existingRegistration->getStatus() === 'cancelled_by_admin') {
+                            if (
+                                $existingRegistration->getStatus() === 'cancelled_by_admin'
+                                || $existingRegistration->getStatus() === 'cancelled_by_user'
+                            ) {
                                 $existingRegistration->setStatus('registered');
                                 $existingRegistration->setUpdatedAt(new \DateTimeImmutable());
                                 $em->persist($existingRegistration);

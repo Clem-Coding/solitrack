@@ -47,6 +47,9 @@
               {% if session.session.description %}
                 <p><i class="ph-fill ph-note"></i> {{ session.session.description }}</p>
               {% endif %}
+              <button class="button-constructive unsubscribe-button" data-session-id="{{ session.session.id }}">
+                Annuler ma participation
+              </button>
             </li>
           {% endfor %}
         </ul>
@@ -54,6 +57,7 @@
         <p>Aucun créneau de bénévolat à venir.</p>
       {% endif %}
       <a class="see-calendar-btn" href="{{ path('app_user_benevolat') }}">Voir le planning</a>
+      {% include 'user/partials/unsubscribe_modal.html.twig' %}
     </section>
   </div>
 {% endblock %}

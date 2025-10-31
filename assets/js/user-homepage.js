@@ -32,4 +32,50 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     },
   });
+
+  // ===========================
+  // ANNULER L'INSCRIPTION À UNE SESSION
+  // ===========================
+
+  async function unsubscribeFromSession(sessionId) {
+    try {
+      const response = await fetch(`/mon-compte/benevolat/sessions/unsubscribe/${sessionId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      return data.success ? data : null;
+    } catch {
+      return null;
+    }
+  }
+
+  const unsubscribeButtons = document.querySelectorAll(".unsubscribe-button");
+  const unsubscribeModal = document.getElementById("confirm-modal");
+
+  const btnCancel = unsubscribeModal.querySelector("#modal-cancel");
+  const btnConfirm = unsubscribeModal.querySelector("#modal-confirm");
+
+  btnCancel.addEventListener("click", () => {
+    unsubscribeModal.close();
+  });
+
+  unsubscribeButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const sessionId = button.dataset.sessionId;
+      unsubscribeModal.dataset.sessionId = sessionId;
+      unsubscribeModal.showModal();
+    });
+  });
+
+  btnConfirm.addEventListener("click", async () => {
+    const sessionId = unsubscribeModal.dataset.sessionId;
+    const result = await unsubscribeFromSession(sessionId);
+    if (result?.success) {
+      window.location.reload();
+    } else {
+      alert("Une erreur est survenue lors de la désinscription. Veuillez réessayer.");
+    }
+  });
 });

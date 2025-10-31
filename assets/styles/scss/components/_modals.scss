@@ -1,0 +1,27 @@
+dialog {
+  border: none;
+  padding: 1em;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-modal-content {
+  background: $cloud;
+  padding: 2em;
+  border-radius: 8px;
+  text-align: center;
+  width: 400px;
+  max-width: 90vw;
+  margin: auto;
+
+  img {
+    margin-bottom: 1em;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    margin-top: 1.5em;
+  }
+}

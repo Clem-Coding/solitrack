@@ -8,8 +8,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class VolunteerSessionGeneratorService
 {
 
-    // Limit occurrences to avoid bug performance issues, to do : define type or numer later
-    private const MAX_OCCURRENCES = 4;
+    // Limit occurrences to avoid bug performance issues. 
+    // Max occurrences based on typical 2-month volunteer session schedules with weekly repetitions
+    private const MAX_OCCURRENCES = 15;
 
     public function __construct(private EntityManagerInterface $em) {}
 
@@ -57,10 +58,8 @@ class VolunteerSessionGeneratorService
             $count++;
         }
 
-        $this->em->flush();
-
         $warning = ($count >= self::MAX_OCCURRENCES)
-            ? "Attention : nombre maximum d'occurrences autorisées ({self::MAX_OCCURRENCES}) atteint."
+            ? "Attention : le nombre maximum de répétitions autorisées (" . self::MAX_OCCURRENCES . ") est atteint. La session sera crée mais tronquée"
             : null;
 
         return ['count' => $count, 'warning' => $warning];
